@@ -1,18 +1,18 @@
 'use strict';
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrDate = date.split(fromFormat[3]);
-
+  const arrFromDate = date.split(fromFormat[3]);
   const newData = {};
   const newDateArr = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i][0] === 'Y') {
-      newData.Y = arrDate[i];
-    } else if (fromFormat[i][0] === 'M') {
-      newData.M = arrDate[i];
-    } else {
-      newData.D = arrDate[i];
+    switch (fromFormat[i][0]) {
+      case 'Y': newData.Y = arrFromDate[i];
+        break;
+      case 'M': newData.M = arrFromDate[i];
+        break;
+      case 'D': newData.D = arrFromDate[i];
+        break;
     }
   }
 
