@@ -1,25 +1,71 @@
+
 'use strict';
 
-/**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
- *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
- */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  if (date.includes(fromFormat[3])) {
+    const dateSplit = date.split(fromFormat[3]);
+    let day = 'DD';
+    let monts = 'MM';
+    let year = 'YYYY';
+
+    if (fromFormat[0] === day) {
+      day = dateSplit[0];
+    } else if (fromFormat[1] === day) {
+      day = dateSplit[1];
+    } else {
+      day = dateSplit[2];
+    };
+
+    if (fromFormat[0] === monts) {
+      monts = dateSplit[0];
+    } else if (fromFormat[1] === monts) {
+      monts = dateSplit[1];
+    } else {
+      monts = dateSplit[2];
+    };
+
+    if (fromFormat[0] === year) {
+      year = dateSplit[0];
+    } else if (fromFormat[1] === year) {
+      year = dateSplit[1];
+    } else {
+      year = dateSplit[2];
+    };
+
+    if (toFormat[0] === 'DD') {
+      toFormat[0] = day;
+    } else if (toFormat[1] === 'DD') {
+      toFormat[1] = day;
+    } else {
+      toFormat[2] = day;
+    };
+
+    if (toFormat[0] === 'MM') {
+      toFormat[0] = monts;
+    } else if (toFormat[1] === 'MM') {
+      toFormat[1] = monts;
+    } else {
+      toFormat[2] = monts;
+    };
+
+    if (toFormat[0] === 'YY') {
+      toFormat[0] = year.slice(2);
+    } else if (toFormat[1] === 'YY') {
+      toFormat[1] = year.slice(2);
+    } else if (toFormat[2] === 'YY') {
+      toFormat[2] = year.slice(2);
+    } else if (toFormat[0] === 'YYYY') {
+      toFormat[0] = year;
+    } else if (toFormat[1] === 'YYYY') {
+      toFormat[0] = year;
+    } else if (toFormat[2] === 'YYYY') {
+      toFormat[2] = year;
+    }
+
+    const finalString = toFormat.slice(0, 3).join(toFormat[3]);
+
+    return finalString;
+  };
+};
 
 module.exports = formatDate;
