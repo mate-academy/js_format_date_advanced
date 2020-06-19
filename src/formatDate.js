@@ -1,25 +1,61 @@
 'use strict';
 
-/**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
- *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
- */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let countEight = 2;
+  let countYear = 0; let countMonth = 0; let countDay = 0;
+  const separator = toFormat.slice(-1);
+  let result = '';
+  let year = ''; let month = ''; let day = '';
+  const newFromFormat = fromFormat.slice(' ', 3).join(' ');
+  const newToFormat = toFormat.slice(' ', 3).join(' ');
+
+  for (let i = 0; i < newFromFormat.length; i++) {
+    if (newFromFormat[i] === 'Y') {
+      year += date[i];
+    }
+
+    if (newFromFormat[i] === 'D') {
+      day += date[i];
+    }
+
+    if (newFromFormat[i] === 'M') {
+      month += date[i];
+    }
+  }
+
+  for (let i = 0; i < newToFormat.length; i++) {
+    if (newToFormat.length === 8) {
+      if (newToFormat[i] === 'Y') {
+        result += year[countEight];
+        countEight++;
+      } else if (newToFormat[i] === 'D') {
+        result += day[countDay];
+        countDay++;
+      } else if (newToFormat[i] === 'M') {
+        result += month[countMonth];
+        countMonth++;
+      } else {
+        result += separator;
+      }
+    }
+
+    if (newToFormat.length === 10) {
+      if (newToFormat[i] === 'Y') {
+        result += year[countYear];
+        countYear++;
+      } else if (newToFormat[i] === 'D') {
+        result += day[countDay];
+        countDay++;
+      } else if (newToFormat[i] === 'M') {
+        result += month[countMonth];
+        countMonth++;
+      } else {
+        result += separator;
+      }
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
