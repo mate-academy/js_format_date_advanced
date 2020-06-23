@@ -1,61 +1,45 @@
 'use strict';
 
 function formatDate(date, fromFormat, toFormat) {
-  let countEight = 2;
-  let countYear = 0; let countMonth = 0; let countDay = 0;
-  const separator = toFormat.slice(-1);
-  let result = '';
-  let year = ''; let month = ''; let day = '';
-  const newFromFormat = fromFormat.slice(' ', 3).join(' ');
-  const newToFormat = toFormat.slice(' ', 3).join(' ');
+  let year;
+  let day;
+  let month;
+  const dateArray = date.split(fromFormat[3]);
+  const dateResult = [];
 
-  for (let i = 0; i < newFromFormat.length; i++) {
-    if (newFromFormat[i] === 'Y') {
-      year += date[i];
-    }
-
-    if (newFromFormat[i] === 'D') {
-      day += date[i];
-    }
-
-    if (newFromFormat[i] === 'M') {
-      month += date[i];
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i][0]) {
+      case 'D': day = dateArray[i];
+        break;
+      case 'M': month = dateArray[i];
+        break;
+      case 'Y': year = dateArray[i];
+        break;
+      default: break;
     }
   }
 
-  for (let i = 0; i < newToFormat.length; i++) {
-    if (newToFormat.length === 8) {
-      if (newToFormat[i] === 'Y') {
-        result += year[countEight];
-        countEight++;
-      } else if (newToFormat[i] === 'D') {
-        result += day[countDay];
-        countDay++;
-      } else if (newToFormat[i] === 'M') {
-        result += month[countMonth];
-        countMonth++;
-      } else {
-        result += separator;
-      }
-    }
-
-    if (newToFormat.length === 10) {
-      if (newToFormat[i] === 'Y') {
-        result += year[countYear];
-        countYear++;
-      } else if (newToFormat[i] === 'D') {
-        result += day[countDay];
-        countDay++;
-      } else if (newToFormat[i] === 'M') {
-        result += month[countMonth];
-        countMonth++;
-      } else {
-        result += separator;
-      }
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i][0]) {
+      case 'D': dateResult.push(day);
+        break;
+      case 'M': dateResult.push(month);
+        break;
+      case 'Y':
+        if (toFormat[i].length > 2) {
+          dateResult.push(year.length === 4
+            ? year
+            : '19' + year
+          );
+        } else {
+          dateResult.push(year.slice(-2));
+        }
+        break;
+      default: break;
     }
   }
 
-  return result;
+  return dateResult.join(toFormat[3]);
 }
 
 module.exports = formatDate;
