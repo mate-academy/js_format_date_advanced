@@ -28,8 +28,8 @@ function formatDate(date, fromFormat, toFormat) {
   const arrDate = date.split(fromFormat[3]);
   const newArr = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
-    for (let j = 0; j < fromFormat.length; j++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (let j = 0; j < fromFormat.length - 1; j++) {
       if (toFormat[i] === fromFormat[j]) {
         newArr.push(arrDate[j]);
       } else if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
