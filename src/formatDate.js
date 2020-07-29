@@ -36,63 +36,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // get marks format
-  const fromMark = fromFormat[3];
-  const toMark = toFormat[3];
-  // ---------------------- //
+  const dateResalt = [];
+  const dateArr = date.split(fromFormat[3]);
 
-  const dateArr = date.split(`${fromMark}`);
-
-  // ------from format
-  const fullYearIndex = fromFormat.indexOf('YYYY');
-  const halfYearIndex = fromFormat.indexOf('YY');
-  const monthIndex = fromFormat.indexOf('MM');
-  const dayIndex = fromFormat.indexOf('DD');
-  // ---------------------- //
-
-  // get dates
-  const month = dateArr[monthIndex];
-  const day = dateArr[dayIndex];
+  // from format
+  let month;
+  let day;
   let year;
-  // ---------------------- //
 
-  for (const getYear of fromFormat) {
-    if (getYear === 'YYYY') {
-      year = dateArr[fullYearIndex];
+  for (const element in fromFormat) {
+    if (fromFormat[element] === 'DD') {
+      day = dateArr[element];
     }
 
-    if (getYear === 'YY') {
-      year = dateArr[halfYearIndex];
+    if (fromFormat[element] === 'MM') {
+      month = dateArr[element];
+    }
+
+    if (fromFormat[element] === 'YYYY' || fromFormat[element] === 'YY') {
+      year = dateArr[element];
     }
   }
 
   // ------to format
-  const dateResalt = [];
-  const getArrYear = year.split('');
+  const toYear = toFormat[2];
 
   for (const typeDate of toFormat) {
-    switch (typeDate) {
-      case 'DD':
+    switch (typeDate[0]) {
+      case 'D':
         dateResalt.push(day);
         break;
 
-      case 'MM':
+      case 'M':
         dateResalt.push(month);
         break;
 
-      case 'YYYY':
-        Number(getArrYear[0]) === 9
-          ? dateResalt.push(`19${year}`)
-          : dateResalt.push(year);
-        break;
-
-      case 'YY':
-        dateResalt.push(year.slice(2));
+      case 'Y':
+        if (toYear.length === 4) {
+          dateResalt.push(year);
+        } else if (toYear.length === 2) {
+          dateResalt.push(year.slice(2));
+        }
         break;
     }
   }
 
-  return dateResalt.join(`${toMark}`);
+  return dateResalt.join(toFormat[3]);
 }
 
 module.exports = formatDate;
