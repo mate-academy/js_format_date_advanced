@@ -20,51 +20,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let arr = [];
+  let resultArray = [];
   let y = 0;
   const objDate = {};
-  let str = '';
-  let YY;
 
-  arr = date.split(fromFormat[3]);
+  resultArray = date.split(fromFormat[3]);
 
   for (let x = 0; x < fromFormat.length; x++) {
     if (x === fromFormat.length - 1) {
       objDate.symbol = fromFormat[x];
     }
 
-    for (y; y < arr.length;) {
-      objDate[fromFormat[x]] = arr[y];
+    for (y; y < resultArray.length;) {
+      objDate[fromFormat[x]] = resultArray[y];
       break;
     }
     y++;
   };
 
-  for (let z = 0; z < toFormat.length; z++) {
-    objDate.symbol = toFormat[3];
+  resultArray = [];
 
-    if (toFormat[z] === 'YY') {
-      objDate[toFormat[z]] = YY;
-    }
+  toFormat.forEach(element => {
+    switch (element) {
+      case 'YYYY':
+        resultArray.push(objDate[element]);
+        break;
 
-    for (const key in objDate) {
-      if (toFormat[z] === 'YY' && key === 'YYYY') {
-        YY = String(objDate[key]).split('').slice(2).join('');
-        objDate.YY = YY;
-      }
+      case 'MM':
+        resultArray.push(objDate[element]);
+        break;
 
-      if (key === toFormat[z]) {
-        if (z === toFormat.length - 2) {
-          str += objDate[key];
-          break;
-        }
+      case 'DD':
+        resultArray.push(objDate[element]);
+        break;
 
-        str += objDate[key] + objDate.symbol;
-      }
-    }
-  }
+      case 'YY':
+        resultArray.push(objDate['YYYY'].split('').slice(2, 4).join(''));
+        break;
 
-  return str;
+      case 'symbol':
+        resultArray.push(objDate[element]);
+        break;
+    };
+  });
+
+  resultArray = resultArray.join(toFormat[3]);
+
+  return resultArray;
 }
 
 module.exports = formatDate;
