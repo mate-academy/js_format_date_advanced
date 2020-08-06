@@ -5,7 +5,7 @@
  * and create a function for formatting dates.
  * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
  * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
+ *
  * Example:
  * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
  * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
@@ -19,7 +19,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[3]);
+  const arrResult = Array(3);
+  const arrLetterDate = [['YY', 'YYYY'], ['DD'], ['MM']];
+
+  for (let i = 0; i < arrDate.length; i++) {
+    let indexTo = toFormat.indexOf(arrLetterDate[i][0]);
+
+    if (indexTo === -1) {
+      indexTo = toFormat.indexOf(arrLetterDate[i][1]);
+    }
+
+    let indexFrom = fromFormat.indexOf(arrLetterDate[i][0]);
+
+    if (indexFrom === -1) {
+      indexFrom = fromFormat.indexOf(arrLetterDate[i][1]);
+    }
+
+    if (toFormat[indexTo] === 'YY') {
+      if (fromFormat[indexFrom] === 'YYYY') {
+        arrResult[indexTo] = arrDate[indexFrom].slice(2);
+        continue;
+      }
+    } else if (toFormat[indexTo] === 'YYYY') {
+      if (fromFormat[indexFrom] === 'YY') {
+        if (Number(arrDate[indexFrom][0]) === 0) {
+          arrResult[indexTo] = '20' + arrDate[indexFrom];
+        } else {
+          arrResult[indexTo] = '19' + arrDate[indexFrom];
+        }
+      } else {
+        arrResult[indexTo] = arrDate[indexFrom];
+      }
+    } else {
+      arrResult[indexTo] = arrDate[indexFrom];
+    }
+  }
+
+  return arrResult.join(toFormat[3]);
 }
+
 
 module.exports = formatDate;
