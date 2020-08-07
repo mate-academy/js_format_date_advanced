@@ -1,16 +1,6 @@
 'use strict';
 
 /**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
- *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -19,7 +9,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSep = fromFormat[3];
+  const newSep = toFormat[3];
+  const splitedDate = date.split(oldSep);
+  const newDate = [];
+  let getYear, getMonth, getDay;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+      getYear = splitedDate[i];
+    } else if (fromFormat[i] === 'DD') {
+      getDay = splitedDate[i];
+    } else if (fromFormat[i] === 'MM') {
+      getMonth = splitedDate[i];
+    }
+  }
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    for (let j = 0; j < toFormat.length; j++) {
+      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
+        getYear = getYear.split('').splice(2, 2).join('');
+      } else if (fromFormat[i] === 'YY'
+                && toFormat[j] === 'YYYY'
+                && getYear > 21) {
+        getYear = `19${getYear}`;
+      } else if (fromFormat[i] === 'YY'
+                && toFormat[j] === 'YYYY'
+                && getYear <= 21) {
+        getYear = `20${getYear}`;
+      }
+    }
+  }
+
+  for (let i = 0; i < splitedDate.length; i++) {
+    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+      newDate.push(getYear);
+    } else if (toFormat[i] === 'DD') {
+      newDate.push(getDay);
+    } else if (toFormat[i] === 'MM') {
+      newDate.push(getMonth);
+    }
+  }
+
+  return newDate.join(newSep);
 }
 
 module.exports = formatDate;
