@@ -15,25 +15,25 @@ function formatDate(date, fromFormat, toFormat) {
 
   const separator = toFormat[3];
 
-  const testDate = dateWithoutSeparator.split(' ');
+  const formattedDate = dateWithoutSeparator.split(' ');
 
   if (toFormat[2].length === 2) {
-    for (let i = 0; i < testDate.length; i++) {
-      if (testDate[i].length > toFormat[0].length) {
-        testDate[i] = testDate[i].split('').splice(-2, 2).join('');
+    for (let i = 0; i < formattedDate.length; i++) {
+      if (formattedDate[i].length > toFormat[0].length) {
+        formattedDate[i] = formattedDate[i].split('').splice(-2, 2).join('');
       }
     }
   }
 
   if (fromFormat[0] !== toFormat[0]) {
-    [testDate[0], testDate[1]] = [testDate[1], testDate[0]];
+    [formattedDate[0], formattedDate[1]] = [formattedDate[1], formattedDate[0]];
   }
 
   if (fromFormat[0].includes('YY')) {
-    return testDate.reverse().join(`${separator}`);
+    return formattedDate.reverse().join(`${separator}`);
   }
 
-  return testDate.join(`${separator}`);
+  return formattedDate.join(`${separator}`);
 }
 
 module.exports = formatDate;
