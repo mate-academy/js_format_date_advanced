@@ -1,15 +1,6 @@
 'use strict';
 
 /**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -19,7 +10,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // removes all non-digit elements from "date" string
+  const dateWithoutSeparator = date.replace(/\D/g, ' ');
+
+  const separator = toFormat[3];
+  // transform "date" string to array
+  const formattedDate = dateWithoutSeparator.split(' ');
+
+  // checks if toFormat date year length is 2
+  if (toFormat[2].length === 2) {
+    for (let i = 0; i < formattedDate.length; i++) {
+      // this check is required to not to splice day or month
+      if (formattedDate[i].length > toFormat[2].length) {
+        // removes two last digits from year
+        formattedDate[i] = formattedDate[i].split('').splice(-2, 2).join('');
+      }
+    }
+  }
+
+  // checks if fromFormat day and month position matches toFormat date format
+  if (fromFormat[0] !== toFormat[0]) {
+    // changes day and month position
+    [formattedDate[0], formattedDate[1]] = [formattedDate[1], formattedDate[0]];
+  }
+
+  // check if year is at the beginning of the fromFormat date format
+  if (fromFormat[0].includes('YY')) {
+    // if yes, I reverse formattedDate array and join the array with separator
+    return formattedDate.reverse().join(`${separator}`);
+  }
+
+  // join the array with separator
+  return formattedDate.join(`${separator}`);
 }
 
 module.exports = formatDate;
