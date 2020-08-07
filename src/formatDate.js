@@ -1,15 +1,6 @@
 'use strict';
 
 /**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -20,6 +11,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dateWithoutSeparator = date.replace(/\D/g, ' ');
+
+  const separator = toFormat[3];
+
+  const testDate = dateWithoutSeparator.split(' ');
+
+  if (toFormat[2].length === 2) {
+    for (let i = 0; i < testDate.length; i++) {
+      if (testDate[i].length > toFormat[0].length) {
+        testDate[i] = testDate[i].split('').splice(-2, 2).join('');
+      }
+    }
+  }
+
+  if (fromFormat[0] !== toFormat[0]) {
+    [testDate[0], testDate[1]] = [testDate[1], testDate[0]];
+  }
+
+  if (fromFormat[0].includes('YY')) {
+    return testDate.reverse().join(`${separator}`);
+  }
+
+  return testDate.join(`${separator}`);
 }
 
 module.exports = formatDate;
