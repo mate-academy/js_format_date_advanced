@@ -2,10 +2,12 @@
 
 /**
  * Time flies, standards change. Let's get rid of the routine
- * of changing the date format, and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the
- * old `fromFormat` array variable, and the new `toFormat` array variable.
- * Function returns given date in `toFormat` format.
+ * of changing the date format,
+ * and create a function for formatting dates.
+ * Create a `formatDate` function that accepts the `date` string,
+ * the old `fromFormat` array variable,
+ * and the new `toFormat` array variable. Function returns
+ * given date in `toFormat` format.
  *
  * Example:
  * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/'])
@@ -41,7 +43,7 @@ function formatDate(date, fromFormat, toFormat) {
         switch (newTime[0]) {
           case 'Y':
             if (newTime.length === 4 && oldTime.length === 2) {
-              if (+oldDate[index] > 50 && +oldDate[index] < 99) {
+              if (+oldDate[index] > 50 && +oldDate[index] <= 99) {
                 result.push('19' + oldDate[index]);
               } else {
                 result.push('20' + oldDate[index]);
