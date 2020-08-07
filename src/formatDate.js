@@ -5,8 +5,8 @@
  * the routine of changing the date format,
  * and create a function for formatting dates.
  * Create a `formatDate` function that accepts
- * the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function
+ * the `date` string, the old `fromFormat` arrDateay variable,
+ * and the new `toFormat` arrDateay variable. Function
  * returns given date in `toFormat` format.
  *
  * Example:
@@ -25,28 +25,28 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const arr = date.split(fromFormat[3]);
+  const arrDate = date.split(fromFormat[3]);
   const format = {};
-  const ans = [];
+  const result = [];
 
-  format['MM'] = arr[fromFormat.indexOf('MM')];
-  format['DD'] = arr[fromFormat.indexOf('DD')];
+  format['MM'] = arrDate[fromFormat.indexOf('MM')];
+  format['DD'] = arrDate[fromFormat.indexOf('DD')];
 
   if (fromFormat.includes('YY')) {
-    format['YY'] = arr[fromFormat.indexOf('YY')];
+    format['YY'] = arrDate[fromFormat.indexOf('YY')];
 
     format['YYYY'] = Number(format['YY']) > 21
       ? '19' + format['YY'] : '20' + format['YY'];
   } else {
-    format['YYYY'] = arr[fromFormat.indexOf('YYYY')];
+    format['YYYY'] = arrDate[fromFormat.indexOf('YYYY')];
     format['YY'] = format['YYYY'].substr(2);
   }
 
   for (let i = 0; i < 3; i++) {
-    ans[i] = format[toFormat[i]];
+    result[i] = format[toFormat[i]];
   }
 
-  return ans.join(toFormat[3]);
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
