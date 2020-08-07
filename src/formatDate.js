@@ -13,41 +13,49 @@ function formatDate(date, fromFormat, toFormat) {
   const newSep = toFormat[3];
   const splitedDate = date.split(oldSep);
   const newDate = [];
-  let getYear, getMonth, getDay;
+  let year, month, day;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      getYear = splitedDate[i];
-    } else if (fromFormat[i] === 'DD') {
-      getDay = splitedDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      getMonth = splitedDate[i];
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        year = splitedDate[i];
+        break;
+      case 'DD':
+        day = splitedDate[i];
+        break;
+      case 'MM':
+        month = splitedDate[i];
     }
   }
 
   for (let i = 0; i < fromFormat.length; i++) {
     for (let j = 0; j < toFormat.length; j++) {
       if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
-        getYear = getYear.split('').splice(2, 2).join('');
-      } else if (fromFormat[i] === 'YY'
-                && toFormat[j] === 'YYYY'
-                && getYear > 21) {
-        getYear = `19${getYear}`;
-      } else if (fromFormat[i] === 'YY'
-                && toFormat[j] === 'YYYY'
-                && getYear <= 21) {
-        getYear = `20${getYear}`;
+        year = year.split('').splice(2, 2).join('');
+      }
+
+      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY' && year > 21) {
+        year = `19${year}`;
+      }
+
+      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY' && year < 22) {
+        year = `20${year}`;
       }
     }
   }
 
   for (let i = 0; i < splitedDate.length; i++) {
-    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
-      newDate.push(getYear);
-    } else if (toFormat[i] === 'DD') {
-      newDate.push(getDay);
-    } else if (toFormat[i] === 'MM') {
-      newDate.push(getMonth);
+    switch (toFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        newDate.push(year);
+        break;
+      case 'DD':
+        newDate.push(day);
+        break;
+      case 'MM':
+        newDate.push(month);
     }
   }
 
