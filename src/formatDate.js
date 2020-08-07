@@ -33,7 +33,13 @@ function formatDate(date, fromFormat, toFormat) {
       if (fromFormat.includes('YYYY')) {
         result.push(arrDate[fromFormat.indexOf('YYYY')]);
       } else if (fromFormat.includes('YY')) {
-        result.push(`20${arrDate[fromFormat.indexOf('YY')]}`);
+        const fromYear = arrDate[fromFormat.indexOf('YY')];
+
+        if (fromYear > 21) {
+          result.push(`19${fromYear}`);
+        } else {
+          result.push(`20${fromYear}`);
+        }
       }
     }
   }
