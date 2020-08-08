@@ -11,11 +11,11 @@
  *
  * Example:
  * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/'])
- * // '18/02/20'
+ *  '18/02/20'
  * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/'])
- * // '18/02/21'
+ *  '18/02/21'
  * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.'])
- * // '18.02.1997'
+ *  '18.02.1997'
  *
  * @param {string} date
  * @param {string[]} fromFormat
