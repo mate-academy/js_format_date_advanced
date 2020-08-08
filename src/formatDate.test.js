@@ -18,6 +18,24 @@ describe('formatDate', () => {
     ['MM', 'DD', 'YYYY', '-'],
   );
 
+  const result4 = formatDate(
+    '97/02/18',
+    ['YY', 'MM', 'DD', '/'],
+    ['DD', 'MM', 'YYYY', ' ']
+  );
+
+  const result5 = formatDate(
+    '14/13/08',
+    ['YY', 'DD', 'MM', '/'],
+    ['MM', 'YYYY', 'DD', '_']
+  );
+  
+  const result6 = formatDate(
+    '27/12/09',
+    ['DD', 'MM', 'YY', '/'],
+    ['YYYY', 'MM', 'DD', '.']
+  );
+  
   it(`Function 'formatDate' should be declared`, () => {
     expect(formatDate).toBeInstanceOf(Function);
   });
@@ -37,4 +55,16 @@ describe('formatDate', () => {
   it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
     expect(result3).toBe('12-11-1999');
   });
+
+  it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
+      expect(result4).toBe('18 02 1997');
+    });
+  
+  it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
+      expect(result5).toBe('08_2014_13');
+    });
+  
+  it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
+      expect(result6).toBe('2009.12.27');
+    });
 });
