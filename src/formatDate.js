@@ -41,8 +41,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (itemIndex === -1) {
       switch (toF[i]) {
         case 'YYYY':
-          const oldYearIndex = fromF.indexOf('YY');
-          let year = dateArr[oldYearIndex];
+          let year = dateArr[fromF.indexOf('YY')];
 
           if (year > 21) {
             year = 19 + year;
@@ -56,8 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
           break;
 
         case 'YY':
-          const oldYearIndx = fromF.indexOf('YYYY');
-          const oldYear = dateArr[oldYearIndx];
+          const oldYear = dateArr[fromF.indexOf('YYYY')];
           const newYear = oldYear.split('').slice(-2).join('');
 
           newFormatDate[i] = newYear;
