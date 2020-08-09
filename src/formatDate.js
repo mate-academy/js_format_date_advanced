@@ -4,41 +4,41 @@ function formatDate(date, fromFormat, toFormat) {
   const [, , , sep] = fromFormat;
   const [, , , finalSep] = toFormat;
 
-  const fromPattern = {};
+  const dateObject = {};
   const finalDate = [];
   const initialDate = date.split(sep);
 
   for (let i = 0; i < 3; i++) {
     switch (fromFormat[i][0]) {
       case 'D':
-        fromPattern.D = initialDate[i];
+        dateObject.D = initialDate[i];
         break;
 
       case 'M':
-        fromPattern.M = initialDate[i];
+        dateObject.M = initialDate[i];
         break;
 
       case 'Y':
-        fromPattern.Y = initialDate[i];
+        dateObject.Y = initialDate[i];
 
         if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-          fromPattern.Y = initialDate[i].slice(2, 4);
+          dateObject.Y = initialDate[i].slice(2, 4);
         }
 
         if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
           if (+initialDate[i] > 22) {
-            fromPattern.Y = '19' + initialDate[i];
+            dateObject.Y = '19' + initialDate[i];
           } else {
-            fromPattern.Y = '20' + initialDate[i];
+            dateObject.Y = '20' + initialDate[i];
           }
         }
     }
   }
 
-  for (const key in fromPattern) {
+  for (const key in dateObject) {
     for (let i = 0; i < 3; i++) {
       if (toFormat[i].includes(key)) {
-        finalDate[i] = fromPattern[key];
+        finalDate[i] = dateObject[key];
       }
     }
   }
