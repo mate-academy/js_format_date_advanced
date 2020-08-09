@@ -4,54 +4,46 @@ function formatDate(date, fromFormat, toFormat) {
   const [, , , sep] = fromFormat;
   const [, , , finalSep] = toFormat;
 
-  const finalFormat = toFormat.slice(0, 3);
-  const initialFormat = fromFormat.slice(0, 3);
-
   const fromPattern = {};
-  const toPattern = {};
+  const finalDate = [];
   const initialDate = date.split(sep);
 
-  fromPattern.MM = initialDate[initialFormat.indexOf('MM')];
-  fromPattern.DD = initialDate[initialFormat.indexOf('DD')];
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i][0]) {
+      case 'D':
+        fromPattern.D = initialDate[i];
+        break;
 
-  if (initialFormat.includes('YYYY')) {
-    if (finalFormat.includes('YY')) {
-      fromPattern.YY = initialDate[initialFormat.indexOf('YYYY')].slice(2, 4);
-    } else {
-      fromPattern.YY = initialDate[initialFormat.indexOf('YYYY')];
+      case 'M':
+        fromPattern.M = initialDate[i];
+        break;
+
+      case 'Y':
+        fromPattern.Y = initialDate[i];
+
+        if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+          fromPattern.Y = initialDate[i].slice(2, 4);
+        }
+
+        if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+          if (+initialDate[i] > 22) {
+            fromPattern.Y = '19' + initialDate[i];
+          } else {
+            fromPattern.Y = '20' + initialDate[i];
+          }
+        }
     }
   }
 
-  if (initialFormat.includes('YY')) {
-    if (finalFormat.includes('YYYY')) {
-      if (+initialDate[initialFormat.indexOf('YY')] > 22) {
-        fromPattern.YY = '19' + initialDate[initialFormat.indexOf('YY')];
-      } else {
-        fromPattern.YY = '20' + initialDate[initialFormat.indexOf('YY')];
-      }
-    } else {
-      fromPattern.YY = initialDate[initialFormat.indexOf('YY')];
-    }
-  }
-
-  for (let pattern of finalFormat) {
-    if (pattern === 'YYYY') {
-      pattern = 'YY';
-    }
-    toPattern[pattern] = null;
-  }
-
-  for (const dateFrom in fromPattern) {
-    for (const dateTo in toPattern) {
-      if (dateFrom === dateTo) {
-        toPattern[dateTo] = fromPattern[dateFrom];
+  for (const key in fromPattern) {
+    for (let i = 0; i < 3; i++) {
+      if (toFormat[i].includes(key)) {
+        finalDate[i] = fromPattern[key];
       }
     }
   }
 
-  const finalDate = Object.values(toPattern).join(finalSep);
-
-  return finalDate;
+  return finalDate.join(finalSep);
 }
 
 module.exports = formatDate;
