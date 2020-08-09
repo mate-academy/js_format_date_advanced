@@ -1,25 +1,49 @@
 'use strict';
 
-/**
- * Time flies, standards change. Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string, the old `fromFormat` array variable,
- * and the new `toFormat` array variable. Function returns given date in `toFormat` format.
- * 
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']) // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']) // '18.02.1997'
- *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
- */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [, , , sep] = fromFormat;
+  const [, , , finalSep] = toFormat;
+
+  const dateObject = {};
+  const finalDate = [];
+  const initialDate = date.split(sep);
+
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i][0]) {
+      case 'D':
+        dateObject.D = initialDate[i];
+        break;
+
+      case 'M':
+        dateObject.M = initialDate[i];
+        break;
+
+      case 'Y':
+        dateObject.Y = initialDate[i];
+
+        if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+          dateObject.Y = initialDate[i].slice(2, 4);
+        }
+
+        if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+          if (+initialDate[i] > 22) {
+            dateObject.Y = '19' + initialDate[i];
+          } else {
+            dateObject.Y = '20' + initialDate[i];
+          }
+        }
+    }
+  }
+
+  for (const key in dateObject) {
+    for (let i = 0; i < 3; i++) {
+      if (toFormat[i].includes(key)) {
+        finalDate[i] = dateObject[key];
+      }
+    }
+  }
+
+  return finalDate.join(finalSep);
 }
 
 module.exports = formatDate;
