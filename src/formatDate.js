@@ -40,7 +40,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (obj.hasOwnProperty('YY')) {
-    if (Number(obj.YY) > 20) {
+    if (Number(obj.YY) > 30) {
       newDate.push('19' + obj.YY);
     } else {
       newDate.push('20' + obj.YY);
