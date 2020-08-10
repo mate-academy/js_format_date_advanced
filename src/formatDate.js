@@ -1,20 +1,46 @@
 'use strict';
 
 /**
- * Time flies, standards change.
- * Let's get rid of the routine of changing the date format,
- * and create a function for formatting dates.
- * Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array variable,
- * and the new `toFormat` array variable.
- * Function returns given date in `toFormat` format.
- * Example:
- * formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'],['DD', 'MM', 'YY', '/'])
- *  // '18/02/20'
- * formatDate('2021-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/'])
- *  // '18/02/21'
- * formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.'])
- *  // '18.02.1997'
+ *   Time flies, standards change. Let's get rid of the routine of changing the
+ * date format. Create a `formatDate` function that accepts the `date` string,
+ * the old `fromFormat` array and the new `toFormat` array. Function returns
+ * given date in new format.
+ *   The function can change a separator, reorder the date parts of convert a
+ * year from 4 digits to 2 digits and back.
+ *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
+ *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
+ *
+ * Examples:
+ *
+ * formatDate(
+ *   '2020-02-18',
+ *   ['YYYY', 'MM', 'DD', '-'],
+ *   ['YYYY', 'MM', 'DD', '.'],
+ * ) // '2020.02.18'
+ *
+ * formatDate(
+ *   '2020-02-18',
+ *   ['YYYY', 'MM', 'DD', '-'],
+ *   ['DD', 'MM', 'YYYY', '.'],
+ * ) // '18.02.2020'
+ *
+ * formatDate(
+ *   '18-02-2020',
+ *   ['DD', 'MM', 'YYYY', '-'],
+ *   ['DD', 'MM', 'YY', '/'],
+ * ) // '18/02/20'
+ *
+ * formatDate(
+ *   '20/02/18',
+ *   ['YY', 'MM', 'DD', '/'],
+ *   ['YYYY', 'MM', 'DD', '.'],
+ * ) // '2020.02.18'
+ *
+ * formatDate(
+ *   '97/02/18',
+ *   ['YY', 'MM', 'DD', '/'],
+ *   ['DD', 'MM', 'YYYY', '.'],
+ * ) // '18.02.1997'
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -47,42 +73,44 @@ function formatDate(date, fromFormat, toFormat) {
       case 'D':
         oldDayIndex = +index;
         break;
+
+      default:
     }
   }
 
-  for (const oldDatePart in fromFormat) {
-    for (const newDatePart in toFormat) {
-      if (fromFormat[oldDatePart][0] === toFormat[newDatePart][0]
-        && fromFormat[oldDatePart][0] === 'Y') {
-        if (fromFormat[oldDatePart].length === toFormat[newDatePart].length) {
-          newDateArray[newDatePart] = oldDateArray[oldYearIndex];
-        } else
+  for (const index in oldDateArray) {
+    switch (toFormat[index]) {
+      case 'YYYY':
+        if (fromFormat[oldYearIndex].length === 2) {
+          const firstYearDigits = oldDateArray[oldYearIndex].slice(-2);
 
-        if (fromFormat[oldDatePart].length === 4
-          && toFormat[newDatePart].length === 2) {
-          newDateArray[newDatePart] = oldDateArray[oldYearIndex][2]
-            + oldDateArray[oldYearIndex][3];
-        } else {
-          const firstYearDigits = oldDateArray[oldYearIndex][0]
-            + oldDateArray[oldYearIndex][1];
-
-          if (firstYearDigits > 30) {
-            newDateArray[newDatePart] = '19' + firstYearDigits;
+          if (firstYearDigits > 29) {
+            newDateArray[index] = '19' + firstYearDigits;
           } else {
-            newDateArray[newDatePart] = '20' + firstYearDigits;
+            newDateArray[index] = '20' + firstYearDigits;
           }
+        } else {
+          newDateArray[index] = oldDateArray[oldYearIndex];
         }
-      }
+        break;
 
-      if (fromFormat[oldDatePart][0] === toFormat[newDatePart][0]
-        && fromFormat[oldDatePart][0] === 'M') {
-        newDateArray[newDatePart] = oldDateArray[oldMonthIndex];
-      }
+      case 'YY':
+        if (fromFormat[oldYearIndex].length === 4) {
+          newDateArray[index] = oldDateArray[oldYearIndex].slice(2);
+        } else {
+          newDateArray[index] = oldDateArray[oldYearIndex];
+        }
+        break;
 
-      if (fromFormat[oldDatePart][0] === toFormat[newDatePart][0]
-        && fromFormat[oldDatePart][0] === 'D') {
-        newDateArray[newDatePart] = oldDateArray[oldDayIndex];
-      }
+      case 'MM':
+        newDateArray[index] = oldDateArray[oldMonthIndex];
+        break;
+
+      case 'DD':
+        newDateArray[index] = oldDateArray[oldDayIndex];
+        break;
+
+      default:
     }
   }
 
