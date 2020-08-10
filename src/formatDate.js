@@ -75,13 +75,12 @@ function formatDate(date, fromFormat, toFormat) {
         if (fromFormat.includes('YY')) {
           toFormatArray.push(year);
         } else {
-          toFormatArray.push(dateToArr[fromFormat.indexOf('YYYY')].slice(2, 4));
+          toFormatArray.push(year.slice(2, 4));
         }
         break;
 
       case 'YYYY':
-        // if (dateToArr[fromFormat.indexOf('YYYY')] > -1) {
-        if (dateToArr[fromFormat.indexOf('YYYY')] > -1) {
+        if (year.length > 2) {
           toFormatArray.push(year);
         } else {
           if (dateToArr[fromFormat.indexOf('YY')] >= 30) {
