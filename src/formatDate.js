@@ -32,33 +32,35 @@ function formatDate(date, fromFormat, toFormat) {
 
   const oldDate = date.split(separatorOld);
 
-  const oldFormat = fromFormat.slice(0, 4);
-  const newFormat = toFormat.slice(0, 4);
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        result[toFormat.indexOf('DD')] = oldDate[i];
+        break;
 
-  for (const newTime of newFormat) {
-    for (const oldTime of oldFormat) {
-      const index = oldFormat.indexOf(oldTime);
+      case 'MM':
+        result[toFormat.indexOf('MM')] = oldDate[i];
+        break;
 
-      if (newTime[0] === oldTime[0]) {
-        switch (newTime[0]) {
-          case 'Y':
-            if (newTime.length === 4 && oldTime.length === 2) {
-              if (+oldDate[index] > 50 && +oldDate[index] <= 99) {
-                result.push('19' + oldDate[index]);
-              } else {
-                result.push('20' + oldDate[index]);
-              }
-            } else if (newTime.length === 2 && oldTime.length === 4) {
-              result.push(oldDate[index][2] + oldDate[index][3]);
-            } else {
-              result.push(oldDate[index]);
-            }
-            break;
-
-          default:
-            result.push(oldDate[index]);
+      case 'YY':
+        if (toFormat.includes('YYYY')) {
+          if (+oldDate[i] >= 30 && +oldDate[i] <= 99) {
+            result[toFormat.indexOf('YYYY')] = '19' + oldDate[i];
+          } else {
+            result[toFormat.indexOf('YYYY')] = '20' + oldDate[i];
+          }
+        } else {
+          result[toFormat.indexOf('YY')] = oldDate[i];
         }
-      }
+        break;
+
+      case 'YYYY':
+        if (toFormat.includes('YYYY')) {
+          result[toFormat.indexOf('YYYY')] = oldDate[i];
+        } else {
+          result[toFormat.indexOf('YY')] = oldDate[i][2] + oldDate[i][3];
+        }
+        break;
     }
   }
 
