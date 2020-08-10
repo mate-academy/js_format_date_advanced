@@ -68,7 +68,7 @@ function formatDate(date, fromFormat, toFormat) {
           newDate.push(year);
           break;
         } else if (elem.includes('Y') && toFormat[i].length === 4) {
-          if(elem.length == 2) {
+          if(elem.length === 2) {
             year = splitDate[fromFormat.indexOf('YY')];
 
             if (year >= 30) {
