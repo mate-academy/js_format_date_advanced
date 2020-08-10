@@ -83,7 +83,7 @@ function formatDate(date, fromFormat, toFormat) {
         if (year.length > 2) {
           toFormatArray.push(year);
         } else {
-          if (dateToArr[fromFormat.indexOf('YY')] >= 30) {
+          if (year >= 30) {
             toFormatArray.push('19' + year);
           } else {
             toFormatArray.push('20' + year);
