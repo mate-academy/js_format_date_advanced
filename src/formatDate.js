@@ -40,10 +40,10 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length; i++) {
     for (let j = 0; j < toFormat.length; j++) {
-      const isGrater = fromFormat[i].length > toFormat[j].length;
+      const isGreater = fromFormat[i].length > toFormat[j].length;
       const isLower = fromFormat[i].length < toFormat[j].length;
 
-      if (fromFormat[i][0] === toFormat[j][0] && isGrater) {
+      if (fromFormat[i][0] === toFormat[j][0] && isGreater) {
         result[j] = dateArray[i].slice(2);
         break;
       }
