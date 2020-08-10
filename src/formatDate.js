@@ -35,16 +35,18 @@ function formatDate(date, fromFormat, toFormat) {
   const newDateArray = Array(3);
 
   for (const index in fromFormat) {
-    if (fromFormat[index][0] === 'Y') {
-      oldYearIndex = +index;
-    }
+    switch (fromFormat[index][0]) {
+      case 'Y':
+        oldYearIndex = +index;
+        break;
 
-    if (fromFormat[index][0] === 'M') {
-      oldMonthIndex = +index;
-    }
+      case 'M':
+        oldMonthIndex = +index;
+        break;
 
-    if (fromFormat[index][0] === 'D') {
-      oldDayIndex = +index;
+      case 'D':
+        oldDayIndex = +index;
+        break;
     }
   }
 
@@ -52,13 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
     for (const newDatePart in toFormat) {
       if (fromFormat[oldDatePart][0] === toFormat[newDatePart][0]
         && fromFormat[oldDatePart][0] === 'Y') {
-        if (fromFormat[oldDatePart].length === 2
-          && toFormat[newDatePart].length === 2) {
-          newDateArray[newDatePart] = oldDateArray[oldYearIndex];
-        } else
-
-        if (fromFormat[oldDatePart].length === 4
-          && toFormat[newDatePart].length === 4) {
+        if (fromFormat[oldDatePart].length === toFormat[newDatePart].length) {
           newDateArray[newDatePart] = oldDateArray[oldYearIndex];
         } else
 
@@ -70,11 +66,9 @@ function formatDate(date, fromFormat, toFormat) {
           const firstYearDigits = oldDateArray[oldYearIndex][0]
             + oldDateArray[oldYearIndex][1];
 
-          if (firstYearDigits >= 22) {
+          if (firstYearDigits > 30) {
             newDateArray[newDatePart] = '19' + firstYearDigits;
-          } else
-
-          if (firstYearDigits < 22) {
+          } else {
             newDateArray[newDatePart] = '20' + firstYearDigits;
           }
         }
