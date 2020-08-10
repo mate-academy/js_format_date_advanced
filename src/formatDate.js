@@ -36,28 +36,32 @@ function formatDate(date, fromFormat, toFormat) {
       indexFrom = fromFormat.indexOf(arrLetterDate[i][1]);
     }
 
-    if (toFormat[indexTo] === 'YY') {
-      if (fromFormat[indexFrom] === 'YYYY') {
-        arrResult[indexTo] = arrDate[indexFrom].slice(2);
-        continue;
-      }
-    } else if (toFormat[indexTo] === 'YYYY') {
-      if (fromFormat[indexFrom] === 'YY') {
-        if (Number(arrDate[indexFrom][0]) === 0) {
-          arrResult[indexTo] = '20' + arrDate[indexFrom];
-        } else {
-          arrResult[indexTo] = '19' + arrDate[indexFrom];
+    switch(toFormat[indexTo]) {
+      case 'YY':
+        if (fromFormat[indexFrom] === 'YYYY') {
+          arrResult[indexTo] = arrDate[indexFrom].slice(2);
+          continue;
         }
-      } else {
+        break;
+
+      case 'YYYY':
+        if (fromFormat[indexFrom] === 'YY') {
+          if (+arrDate[indexFrom][0] <  3) {
+            arrResult[indexTo] = '20' + arrDate[indexFrom];
+          } else {
+            arrResult[indexTo] = '19' + arrDate[indexFrom];
+          }
+        } else {
+          arrResult[indexTo] = arrDate[indexFrom];
+        }
+        break;
+
+      default:
         arrResult[indexTo] = arrDate[indexFrom];
-      }
-    } else {
-      arrResult[indexTo] = arrDate[indexFrom];
     }
   }
 
   return arrResult.join(toFormat[3]);
 }
-
 
 module.exports = formatDate;
