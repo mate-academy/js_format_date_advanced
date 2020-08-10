@@ -1,8 +1,8 @@
 'use strict';
 
 function formatDate(date, fromFormat, toFormat) {
-  const [, , , sep] = fromFormat;
-  const [, , , finalSep] = toFormat;
+  const sep = fromFormat[3];
+  const finalSep = toFormat[3];
 
   const dateObject = {};
   const finalDate = [];
@@ -26,10 +26,12 @@ function formatDate(date, fromFormat, toFormat) {
         }
 
         if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-          if (+initialDate[i] > 22) {
-            dateObject.Y = '19' + initialDate[i];
-          } else {
-            dateObject.Y = '20' + initialDate[i];
+          switch (true) {
+            case (+initialDate[i] > 30):
+              dateObject.Y = '19' + initialDate[i];
+              break;
+            default:
+              dateObject.Y = '20' + initialDate[i];
           }
         }
     }
