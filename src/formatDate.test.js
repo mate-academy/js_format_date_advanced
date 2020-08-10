@@ -53,7 +53,7 @@ describe('formatDate', () => {
         .toBe('21-12-2012');
     });
 
-    it(`if we shorten year from 4 digits to 2 digits`, () => {
+    it(`if we shorten YYYY to YY`, () => {
       const result = formatDate(
         '10/22/1979',
         ['MM', 'DD', 'YYYY', '/'],
@@ -61,40 +61,51 @@ describe('formatDate', () => {
       );
 
       expect(result)
-        .toBe('22/10/79');
+        .toBe('10/22/79');
     });
 
-    it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
-      const result4 = formatDate(
+    it(`if we extend YY < 30 to YYYY`, () => {
+      const result = formatDate(
+        '20/02/18',
+        ['YY', 'MM', 'DD', '/'],
+        ['YYYY', 'MM', 'DD', '-'],
+      );
+
+      expect(result)
+        .toBe('2020-02-18');
+    });
+
+    it(`if we extend YY = 00 to YYYY`, () => {
+      const result = formatDate(
+        '00.02.18',
+        ['YY', 'MM', 'DD', '.'],
+        ['YYYY', 'MM', 'DD', '.'],
+      );
+
+      expect(result)
+        .toBe('2000.02.18');
+    });
+
+    it(`if we extend YY = 30 to YYYY`, () => {
+      const result = formatDate(
+        '30.02.18',
+        ['YY', 'MM', 'DD', '.'],
+        ['YYYY', 'MM', 'DD', '.'],
+      );
+
+      expect(result)
+        .toBe('1930.02.18');
+    });
+
+    it(`if we extend YY > 30 to YYYY`, () => {
+      const result = formatDate(
         '97/02/18',
         ['YY', 'MM', 'DD', '/'],
-        ['DD', 'MM', 'YYYY', ' ']
+        ['YYYY', 'MM', 'DD', '/'],
       );
 
-      expect(result4)
-        .toBe('18 02 1997');
-    });
-
-    it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
-      const result5 = formatDate(
-        '14/13/08',
-        ['YY', 'DD', 'MM', '/'],
-        ['MM', 'YYYY', 'DD', '_']
-      );
-
-      expect(result5)
-        .toBe('08_2014_13');
-    });
-
-    it(`Function 'formatDate' should return date in 'toFormat' format`, () => {
-      const result6 = formatDate(
-        '27/12/09',
-        ['DD', 'MM', 'YY', '/'],
-        ['YYYY', 'MM', 'DD', '.']
-      );
-
-      expect(result6)
-        .toBe('2009.12.27');
+      expect(result)
+        .toBe('1997/02/18');
     });
   });
 });
