@@ -73,26 +73,23 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    for (let j = 0; j < toFormat.length; j++) {
-      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
-        year = year.split('').splice(2).join('');
-      }
-
-      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
-        if (year > 14) {
-          year = `19${year}`;
-        } else {
-          year = `20${year}`;
-        }
-      }
-    }
-  }
-
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'YY':
       case 'YYYY':
+
+        if (fromFormat[i] === 'YYYY' && toFormat[i] === 'YY') {
+          year = year.slice(2);
+        }
+
+        if (fromFormat[i] === 'YY' && toFormat[i] === 'YYYY') {
+          if (year < 30) {
+            year = `20${year}`;
+          } else {
+            year = `19${year}`;
+          }
+        }
+
         newDate.push(year);
         break;
       case 'MM':
