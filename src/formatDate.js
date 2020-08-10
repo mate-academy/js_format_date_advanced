@@ -72,7 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        if (fromFormat.includes('YY')) {
+        if (year.length < 2) {
           toFormatArray.push(year);
         } else {
           toFormatArray.push(year.slice(2, 4));
