@@ -27,22 +27,22 @@
 function formatDate(date, fromFormat, toFormat) {
   const result = [];
   const dateArr = date.split(fromFormat[3]);
-  const redate = new Date(date);
+  const newDateObj = new Date(date);
 
   const dateObj = {
     MM: '',
     DD: '',
-    YYYY: redate.getFullYear() + '',
+    YYYY: newDateObj.getFullYear() + '',
 
     get YY() {
       return this.YYYY.slice((2));
     },
   };
 
-  for (let i = 0; i <= fromFormat.length - 1; i++) {
-    switch (true) {
-      case fromFormat[i] === 'DD' : dateObj.DD = dateArr[i]; break;
-      case fromFormat[i] === 'MM' : dateObj.MM = dateArr[i]; break;
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD' : dateObj.DD = dateArr[i]; break;
+      case 'MM' : dateObj.MM = dateArr[i]; break;
     }
   }
 
