@@ -77,7 +77,6 @@ function formatDate(date, fromFormat, toFormat) {
     switch (toFormat[i]) {
       case 'YY':
       case 'YYYY':
-
         if (fromFormat[i] === 'YYYY' && toFormat[i] === 'YY') {
           year = year.slice(2);
         }
@@ -89,7 +88,6 @@ function formatDate(date, fromFormat, toFormat) {
             year = `19${year}`;
           }
         }
-
         newDate.push(year);
         break;
       case 'MM':
