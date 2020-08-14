@@ -50,28 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
+  const oldDate = date.split(fromFormat[fromFormat.length - 1]);
   const res = [];
 
-  for (let i = 0; i < 3; i++) {
-    for (let y = 0; y < 3; y++) {
-      if (fromFormat[i] === toFormat[y]) {
-        res[y] = oldDate[i];
-      } else if (fromFormat[i].includes('Y') && toFormat[y].includes('Y')) {
-        if (fromFormat[i].length > toFormat[i].length) {
-          res[y] = oldDate[i].slice(2, 4);
-        } else {
-          if (oldDate[i] < 30) {
-            res[y] = `20${oldDate[i]}`;
-          } else {
-            res[y] = `19${oldDate[i]}`;
+  for (const key of fromFormat) {
+    const keyIndex = fromFormat.indexOf(key);
+
+    for (const value of toFormat) {
+      const valueIndex = toFormat.indexOf(value);
+      const dateOld = oldDate[keyIndex];
+
+      switch (key) {
+        case value:
+          res[valueIndex] = dateOld;
+          break;
+        case 'YY':
+
+          if (value === 'YYYY') {
+            res[valueIndex] = dateOld < 30 ? `20${dateOld}` : `19${dateOld}`;
           }
-        }
+
+          break;
+        case 'YYYY':
+
+          if (value === 'YY') {
+            res[valueIndex] = dateOld.slice(2, 4);
+          }
+
+          break;
       }
     }
   }
 
-  return res.join(toFormat[3]);
+  return res.slice(0, 3).join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
