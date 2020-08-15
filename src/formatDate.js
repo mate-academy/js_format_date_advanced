@@ -9,53 +9,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const newDate = [];
+
   const oldSep = fromFormat[3];
   const newSep = toFormat[3];
-  const splitedDate = date.split(oldSep);
-  const newDate = [];
-  let year, month, day;
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (fromFormat[i]) {
-      case 'YYYY':
-      case 'YY':
-        year = splitedDate[i];
-        break;
-      case 'DD':
-        day = splitedDate[i];
-        break;
-      case 'MM':
-        month = splitedDate[i];
-    }
-  }
+  const dateArr = date.split(oldSep);
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    for (let j = 0; j < toFormat.length; j++) {
-      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
-        year = year.split('').splice(2, 2).join('');
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const itemIndex = fromFormat.indexOf(toFormat[i]);
+
+    if (itemIndex === -1) {
+      switch (toFormat[i]) {
+        case 'YYYY':
+          let year = dateArr[fromFormat.indexOf('YY')];
+
+          year > 21
+            ? year = `19${year}`
+            : year = `20${year}`;
+
+          newDate[i] = year;
+          break;
+
+        case 'YY':
+          const oldYear = dateArr[fromFormat.indexOf('YYYY')];
+          const newYear = oldYear.split('').slice(-2).join('');
+
+          newDate[i] = newYear;
+          break;
+
+        default:
+          return 'Incorrect format';
       }
-
-      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY' && year > 21) {
-        year = `19${year}`;
-      }
-
-      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY' && year < 22) {
-        year = `20${year}`;
-      }
-    }
-  }
-
-  for (let i = 0; i < splitedDate.length; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-      case 'YY':
-        newDate.push(year);
-        break;
-      case 'DD':
-        newDate.push(day);
-        break;
-      case 'MM':
-        newDate.push(month);
+    } else {
+      newDate[i] = dateArr[itemIndex];
     }
   }
 
