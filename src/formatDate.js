@@ -56,7 +56,8 @@ function formatDate(date, fromFormat, toFormat) {
           newDate[i] = shortYear.join('');
         } else {
           if (toFormat[i].length > year.length) {
-            if (+year.join('') <= 99 && +year.join('') > 20) {
+            if (+year.join('') <= 99
+              && +year.join('') > 30) {
               year.unshift('19');
               newDate[i] = year.join('');
             } else {
