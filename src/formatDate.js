@@ -54,54 +54,43 @@ function formatDate(date, fromFormat, toFormat) {
   const newDayIndex = toFormat.indexOf('DD');
   const newMounthIndex = toFormat.indexOf('MM');
   const newSeparator = toFormat[toFormat.length - 1];
-  let newYearIndex = 0;
-  let newYearLength = 0;
-  let newYear = '';
+  let newYearIndex;
+  let year = '';
 
-  if (toFormat.includes('YY')) {
-    newYearIndex = toFormat.indexOf('YY');
-    newYearLength = 2;
-  } else {
-    newYearIndex = toFormat.indexOf('YYYY');
-    newYearLength = 4;
-  }
-
-  const dayIndex = fromFormat.indexOf('DD');
-  const mounthIndex = fromFormat.indexOf('MM');
   const separator = fromFormat[fromFormat.length - 1];
   let yearIndex;
-  let yearLength = 0;
-
-  if (fromFormat.includes('YY')) {
-    yearIndex = fromFormat.indexOf('YY');
-    yearLength = 2;
-  } else {
-    yearIndex = fromFormat.indexOf('YYYY');
-    yearLength = 4;
-  }
 
   const arrDate = date.split(separator);
-  const newArrDate = ['iuhfdkjahfjk', '', ''];
 
-  newArrDate[0] = 'hi';
+  const day = arrDate[fromFormat.indexOf('DD')];
+  const mouth = arrDate[fromFormat.indexOf('MM')];
+
+  (toFormat.includes('YY'))
+    ? newYearIndex = toFormat.indexOf('YY')
+    : newYearIndex = toFormat.indexOf('YYYY');
+
+  (fromFormat.includes('YY'))
+    ? yearIndex = fromFormat.indexOf('YY')
+    : yearIndex = fromFormat.indexOf('YYYY');
+
+  const yearLength = fromFormat[yearIndex].length;
+  const newYearLength = toFormat[newYearIndex].length;
 
   if (newYearLength === yearLength) {
-    newYear = arrDate[yearIndex];
-  } else if (newYearLength === 2 && yearLength === 4) {
-    newYear = '' + arrDate[yearIndex][2] + arrDate[yearIndex][3];
-  } else if (newYearLength === 4 && yearLength === 2) {
-    if (+arrDate[yearIndex] >= 30) {
-      newYear = '19' + arrDate[yearIndex];
-    } else {
-      newYear = '20' + arrDate[yearIndex];
-    }
+    year = arrDate[yearIndex];
+  } else if (newYearLength < yearLength) {
+    year = '' + arrDate[yearIndex][2] + arrDate[yearIndex][3];
+  } else if (newYearLength > yearLength) {
+    (+arrDate[yearIndex] >= 30)
+      ? year = '19' + arrDate[yearIndex]
+      : year = '20' + arrDate[yearIndex];
   }
 
-  newArrDate[0] = '00';
+  const newArrDate = [];
 
-  newArrDate[newYearIndex] = newYear;
-  newArrDate[newDayIndex] = arrDate[dayIndex];
-  newArrDate[newMounthIndex] = arrDate[mounthIndex];
+  newArrDate[newYearIndex] = year;
+  newArrDate[newDayIndex] = day;
+  newArrDate[newMounthIndex] = mouth;
 
   const newDate = newArrDate.join(newSeparator);
 
