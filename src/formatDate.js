@@ -20,38 +20,37 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const newDate = [];
-  const value = date.split(fromFormat[fromFormat.length - 1]);
-  const obj = {
-    [fromFormat[0]]: value[0],
-    [fromFormat[1]]: value[1],
-    [fromFormat[2]]: value[2],
-  };
+  const currentDate = date.split(fromFormat[3]);
+  const newFormat = ['', '', ''];
+  const yearFormat = (fromFormat.includes('YY'))
+    ? currentDate[fromFormat.indexOf('YY')]
+    : currentDate[fromFormat.indexOf('YYYY')];
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (obj.hasOwnProperty(toFormat[i])) {
-      newDate.push(obj[toFormat[i]]);
+  newFormat[toFormat.indexOf('DD')] = currentDate[fromFormat.indexOf('DD')];
+  newFormat[toFormat.indexOf('MM')] = currentDate[fromFormat.indexOf('MM')];
+
+  for (let i = 0; i < currentDate.length; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (yearFormat.length === 2 && yearFormat <= 21) {
+          newFormat[toFormat.indexOf('YYYY')] = '20' + yearFormat;
+        } else if (yearFormat.length === 2) {
+          newFormat[toFormat.indexOf('YYYY')]
+            = '19' + yearFormat;
+        } else {
+          newFormat[toFormat.indexOf('YYYY')]
+            = yearFormat;
+        }
+        break;
+
+      case 'YY':
+        newFormat[toFormat.indexOf('YY')]
+          = yearFormat.slice(-2);
+        break;
     }
   }
 
-  if (obj.hasOwnProperty('YY') === toFormat.includes('YY')
-  || obj.hasOwnProperty('YYYY') === toFormat.includes('YYYY')) {
-    return newDate.join(toFormat[toFormat.length - 1]);
-  }
-
-  if (obj.hasOwnProperty('YY')) {
-    if (Number(obj.YY) > 30) {
-      newDate.push('19' + obj.YY);
-    } else {
-      newDate.push('20' + obj.YY);
-    }
-  }
-
-  if (obj.hasOwnProperty('YYYY')) {
-    newDate.push(obj.YYYY.split('').splice(2, 2).join(''));
-  }
-
-  return newDate.join(toFormat[toFormat.length - 1]);
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
