@@ -27,40 +27,41 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const arrayOfDate = date.split(fromFormat[3]);
-  const copy = arrayOfDate;
-  let elementOfYear;
+  let year;
+  let result;
 
   for (let q = 0; q < fromFormat.length; q++) {
     if (fromFormat[q] === 'YYYY') {
-      elementOfYear = q;
-    } else if (fromFormat[q] === 'YY') {
-      elementOfYear = q;
+      year = q;
     }
   }
 
   for (let w = 0; w < toFormat.length; w++) {
     if (toFormat[w] === 'YY') {
-      arrayOfDate[elementOfYear] = arrayOfDate[elementOfYear].substring(2);
+      arrayOfDate[year] = arrayOfDate[year].substring(2);
+      fromFormat[year] = 'YY';
     }
   }
 
-  let joinNewDate;
-  let finalDate;
+  const objectOfFromFormatDate = {};
+  const formatToNewDate = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let y = 0; y < toFormat.length - 1; y++) {
-      if (fromFormat[i] === toFormat[y] && i !== y) {
-        const temp = arrayOfDate[y];
+  for (let q = 0; q < fromFormat.length - 1; q++) {
+    objectOfFromFormatDate[fromFormat[q]] = arrayOfDate[q];
+  }
 
-        arrayOfDate[y] = copy[i];
-        arrayOfDate[i] = temp;
-        joinNewDate = arrayOfDate.join(' ');
-        finalDate = joinNewDate.replace(/ /g, toFormat[3]);
-
-        return finalDate;
-      }
+  for (let w = 0; w < toFormat.length - 1; w++) {
+    switch (toFormat[w]) {
+      case toFormat[w]:
+        formatToNewDate[w] = objectOfFromFormatDate[toFormat[w]];
+        break;
     }
   }
+
+  // eslint-disable-next-line prefer-const
+  result = formatToNewDate.join(toFormat[3]);
+
+  return result;
 }
 
 module.exports = formatDate;
