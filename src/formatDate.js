@@ -51,6 +51,75 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const newDateArr = [];
+  const oldSep = fromFormat[3];
+  const sep = toFormat[3];
+  const dateArr = date.split(oldSep);
+  const step1 = dateArr[fromFormat.indexOf('YYYY')];
+  const step2 = dateArr[fromFormat.indexOf('YY')];
+  let year = +(step1 || step2);
+  const oldForm = fromFormat;
+  const newForm = toFormat;
+  let indexYearOld;
+  let indexYearNew;
+  let yearNew;
+  let yearOld;
+
+  if (fromFormat.includes('YY')) {
+    yearOld = 2;
+  } else if (fromFormat.includes('YYYY')) {
+    yearOld = 4;
+  }
+
+  if (toFormat.includes('YY')) {
+    yearNew = 2;
+  } else if (toFormat.includes('YYYY')) {
+    yearNew = 4;
+  }
+
+  if (yearOld > yearNew) {
+    year = year % 100;
+
+    if (year < 10) {
+      year = '0' + year;
+    }
+  } else if (yearOld < yearNew) {
+    if (year >= 30) {
+      year = 1900 + year;
+    } else if (year < 30 && year > 0) {
+      year = 2000 + year;
+    } else if (year === 0) {
+      year = 2000;
+    }
+  }
+
+  oldForm.pop();
+  newForm.pop();
+
+  if (yearNew !== yearOld) {
+    if (oldForm.indexOf('YY') > oldForm.indexOf('YYYY')) {
+      indexYearOld = oldForm.indexOf('YY');
+    } else {
+      indexYearOld = oldForm.indexOf('YYYY');
+    }
+
+    if (newForm.indexOf('YY') > newForm.indexOf('YYYY')) {
+      indexYearNew = newForm.indexOf('YY');
+    } else {
+      indexYearNew = newForm.indexOf('YYYY');
+    }
+
+    newForm[indexYearNew] = oldForm[indexYearOld];
+  }
+
+  for (let i = 0; i < oldForm.length; i++) {
+    newDateArr[newForm.indexOf(oldForm[i])] = dateArr[i];
+  }
+  newDateArr[indexYearNew] = year;
+
+  const newDate = newDateArr.join(sep);
+
+  return newDate;
 }
 
 module.exports = formatDate;
