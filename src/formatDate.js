@@ -85,10 +85,4 @@ function formatDate(date, fromFormat, toFormat) {
   return result.join(toFormat[3]);
 }
 
-formatDate(
-  '12-12-21',
-  ['YY', 'MM', 'DD', '-'],
-  ['YYYY', 'MM', 'DD', '.']
-);
-
 module.exports = formatDate;
