@@ -73,7 +73,7 @@ function formatDate(date, fromFormat, toFormat) {
           newFormatDate.push(20 + dateYearToFormat);
         }
       } else {
-        newFormatDate.push(dateYearToFormat.slice(2));
+        newFormatDate.push(dateYearToFormat.substr(2));
       }
     } else {
       newFormatDate.push(dateToFormat[format[0]]);
