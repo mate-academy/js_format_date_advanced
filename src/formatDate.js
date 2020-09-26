@@ -66,7 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const format of toFormat) {
     if (format[0] === 'Y' && format.length !== dateYearToFormat.length) {
-      if (format.length > dateYearToFormat.length) {
+      if (format.length === 4) {
         if (dateYearToFormat >= 30) {
           newFormatDate.push(19 + dateYearToFormat);
         } else {
