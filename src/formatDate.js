@@ -52,32 +52,32 @@
 function formatDate(date, fromFormat, toFormat) {
   const typeFormat = toFormat.slice(0, 3);
   const symbolFromFormat = fromFormat[3];
-  const symbolTOFormat = toFormat[3];
-  const newDate = date.split(symbolFromFormat);
-  const objDate = {
-    [fromFormat[0]]: newDate[0],
-    [fromFormat[1]]: newDate[1],
-    [fromFormat[2]]: newDate[2],
+  const symbolToFormat = toFormat[3];
+  const splitDate = date.split(symbolFromFormat);
+  const mapDate = {
+    [fromFormat[0]]: splitDate[0],
+    [fromFormat[1]]: splitDate[1],
+    [fromFormat[2]]: splitDate[2],
   };
 
   const newFormatDate = [];
 
   for (const typeDate of typeFormat) {
-    if (objDate.hasOwnProperty(typeDate)) {
-      newFormatDate.push(objDate[typeDate]);
+    if (mapDate.hasOwnProperty(typeDate)) {
+      newFormatDate.push(mapDate[typeDate]);
       continue;
     }
 
     if (typeDate === 'YY') {
-      newFormatDate.push(objDate.YYYY.slice(-2));
+      newFormatDate.push(mapDate.YYYY.slice(-2));
     } else {
       newFormatDate.push(
-        objDate.YY < 30 ? `20${objDate.YY}` : `19${objDate.YY}`
+        mapDate.YY < 30 ? `20${mapDate.YY}` : `19${mapDate.YY}`
       );
     }
   }
 
-  return newFormatDate.join(symbolTOFormat);
+  return newFormatDate.join(symbolToFormat);
 }
 
 module.exports = formatDate;
