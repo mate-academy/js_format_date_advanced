@@ -50,44 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
-  const dateFrom = date.split(fromSeparator);
-  const dateTo = [];
+  const separator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+  const splitedDate = date.split(separator);
+  const newDate = [];
 
   for (let i = 0; i < toFormat.length; i++) {
     if (i === toFormat.indexOf('DD')) {
-      dateTo.push(dateFrom[fromFormat.indexOf('DD')]);
+      newDate.push(splitedDate[fromFormat.indexOf('DD')]);
     }
 
     if (i === toFormat.indexOf('MM')) {
-      dateTo.push(dateFrom[fromFormat.indexOf('MM')]);
+      newDate.push(splitedDate[fromFormat.indexOf('MM')]);
     }
 
-    if (i === toFormat.indexOf('YYYY')) {
-      if (fromFormat.includes('YYYY')) {
-        dateTo.push(dateFrom[fromFormat.indexOf('YYYY')]);
-      } else if (fromFormat.includes('YY')) {
-        const year = dateFrom[fromFormat.indexOf('YY')];
-
-        if (year < 30) {
-          dateTo.push(`20${year}`);
-        } else {
-          dateTo.push(`19${year}`);
-        }
-      }
+    if (i === toFormat.indexOf('YYYY')
+      && fromFormat.includes('YYYY')) {
+      newDate.push(splitedDate[fromFormat.indexOf('YYYY')]);
     }
 
-    if (i === toFormat.indexOf('YY')) {
-      if (fromFormat.includes('YY')) {
-        dateTo.push(dateFrom[fromFormat.indexOf('YY')]);
-      } else if (fromFormat.includes('YYYY')) {
-        dateTo.push(dateFrom[fromFormat.indexOf('YYYY')].slice(-2));
-      }
+    if (i === toFormat.indexOf('YYYY')
+      && fromFormat.includes('YY')
+      && splitedDate[fromFormat.indexOf('YY')] < 30) {
+      newDate.push(`20${splitedDate[fromFormat.indexOf('YY')]}`);
+    }
+
+    if (i === toFormat.indexOf('YYYY')
+      && fromFormat.includes('YY')
+      && splitedDate[fromFormat.indexOf('YY')] >= 30) {
+      newDate.push(`19${splitedDate[fromFormat.indexOf('YY')]}`);
+    }
+
+    if (i === toFormat.indexOf('YY') && fromFormat.includes('YY')) {
+      newDate.push(splitedDate[fromFormat.indexOf('YY')]);
+    }
+
+    if (i === toFormat.indexOf('YY') && fromFormat.includes('YYYY')) {
+      newDate.push(splitedDate[fromFormat.indexOf('YYYY')].slice(-2));
     }
   }
 
-  return (dateTo.join(toSeparator));
+  return (newDate.join(newSeparator));
 }
 
 module.exports = formatDate;
