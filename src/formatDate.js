@@ -51,29 +51,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const splitedDate = date.split(fromFormat[3]);
-  const newDate = {
+  const oldDateFormat = {
     [fromFormat[0]]: splitedDate[0],
     [fromFormat[1]]: splitedDate[1],
     [fromFormat[2]]: splitedDate[2],
   };
 
-  const result = [];
+  const newDateFormat = [];
 
   for (const type of toFormat.slice(0, 3)) {
-    if (newDate.hasOwnProperty(type)) {
-      result.push(newDate[type]);
+    if (oldDateFormat.hasOwnProperty(type)) {
+      newDateFormat.push(oldDateFormat[type]);
       continue;
     }
 
     if (type === 'YYYY') {
       // eslint-disable-next-line
-      result.push(newDate.YY < 30 ? `20${newDate.YY}` : `19${newDate.YY}`);
+      newDateFormat.push(oldDateFormat.YY < 30 ? `20${oldDateFormat.YY}` : `19${oldDateFormat.YY}`);
     } else {
-      result.push(newDate.YYYY.slice(-2));
+      newDateFormat.push(oldDateFormat.YYYY.slice(-2));
     }
   }
 
-  return result.join(toFormat[3]);
+  return newDateFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
