@@ -59,9 +59,9 @@ function formatDate(date, fromFormat, toFormat) {
         if (toFormat[j].includes('YYYY')) {
           newDate[j] = +tempDate[i];
         // eslint-disable-next-line max-len
-        } else if (toFormat[j].includes('YY') && +tempDate[i] > 1900 && +tempDate[i] < 2000) {
+        } else if (toFormat[j].includes('YY') && tempDate[i] > 1900 && tempDate[i] < 2000) {
           newDate[j] = +tempDate[i] - 1900;
-        } else if (toFormat[j].includes('YY') && +tempDate[i] >= 2000) {
+        } else if (toFormat[j].includes('YY') && tempDate[i] >= 2000) {
           newDate[j] = +tempDate[i] - 2000;
         }
       }
@@ -71,9 +71,9 @@ function formatDate(date, fromFormat, toFormat) {
       for (let j = 0; j < toFormat.length - 1; j++) {
         if (toFormat[j].includes('YY') && toFormat[j].length === 2) {
           newDate[j] = +tempDate[i];
-        } else if (toFormat[j].includes('YYYY') && +tempDate[i] < 30) {
+        } else if (toFormat[j].includes('YYYY') && tempDate[i] < 30) {
           newDate[j] = +tempDate[i] + 2000;
-        } else if (toFormat[j].includes('YYYY') && +tempDate[i] >= 30) {
+        } else if (toFormat[j].includes('YYYY') && tempDate[i] >= 30) {
           newDate[j] = +tempDate[i] + 1900;
         }
       }
@@ -82,11 +82,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromFormat[i].includes('MM')) {
       for (let j = 0; j < toFormat.length - 1; j++) {
         if (toFormat[j].includes('MM')) {
-          newDate[j] = +tempDate[i];
-
-          if (newDate[j] < 10) {
-            newDate[j] = '0' + newDate[j];
-          }
+          newDate[j] = tempDate[i];
         }
       }
     }
@@ -94,11 +90,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromFormat[i].includes('DD')) {
       for (let j = 0; j < toFormat.length - 1; j++) {
         if (toFormat[j].includes('DD')) {
-          newDate[j] = +tempDate[i];
-
-          if (newDate[j] < 10) {
-            newDate[j] = '0' + newDate[j];
-          }
+          newDate[j] = tempDate[i];
         }
       }
     }
