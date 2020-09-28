@@ -51,29 +51,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
-  const [,,, oldSeparator] = fromFormat;
-  const [,,, newSeparator] = toFormat;
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
   const oldDate = date.split(oldSeparator);
-  const dateObject = {};
+  const mapOldDate = {};
 
-  for (let dateItem = 0; dateItem < fromFormat.length - 1; dateItem++) {
-    dateObject[fromFormat[dateItem]] = oldDate[dateItem];
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    mapOldDate[fromFormat[i]] = oldDate[i];
   }
 
-  for (const dateItem of toFormat.slice(0, 3)) {
-    if (!dateObject.hasOwnProperty(dateItem)) {
-      if (dateItem === 'YYYY') {
+  for (const formatItem of toFormat.slice(0, 3)) {
+    if (!mapOldDate.hasOwnProperty(formatItem)) {
+      if (formatItem === 'YYYY') {
         newDate.push(
-          +dateObject['YY'] <= 20
-            ? `20${dateObject['YY']}`
-            : `19${dateObject['YY']}`
+          +mapOldDate['YY'] <= 20
+            ? `20${mapOldDate['YY']}`
+            : `19${mapOldDate['YY']}`
         );
       } else {
-        newDate.push(dateObject['YYYY'].slice(2));
+        newDate.push(mapOldDate['YYYY'].slice(2));
       }
       continue;
     }
-    newDate.push(dateObject[dateItem]);
+    newDate.push(mapOldDate[formatItem]);
   }
 
   return newDate.join(newSeparator);
