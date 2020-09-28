@@ -50,38 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const splitedDate = date.split(fromFormat[3]);
   const currentFormat = {};
   const neededFormat = {};
-  const result = [];
+  const formatedDate = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    currentFormat[fromFormat[i]] = dateArray[i];
+    currentFormat[fromFormat[i]] = splitedDate[i];
     neededFormat[toFormat[i]] = 0;
   }
 
-  if (currentFormat.hasOwnProperty('YY') || neededFormat.hasOwnProperty('YY')) {
-    if (currentFormat.hasOwnProperty('YY')
-         && neededFormat.hasOwnProperty('YYYY')) {
-      if (currentFormat['YY'] < 30) {
-        currentFormat['YYYY'] = '20' + currentFormat['YY'];
-      } else {
-        currentFormat['YYYY'] = '19' + currentFormat['YY'];
-      }
+  if (currentFormat.hasOwnProperty('YY')
+        && neededFormat.hasOwnProperty('YYYY')) {
+    if (currentFormat['YY'] < 30) {
+      currentFormat['YYYY'] = '20' + currentFormat['YY'];
+    } else {
+      currentFormat['YYYY'] = '19' + currentFormat['YY'];
     }
+  }
 
-    if (currentFormat.hasOwnProperty('YYYY')
-        && neededFormat.hasOwnProperty('YY')) {
-      currentFormat['YY'] = currentFormat['YYYY'] % 100;
-    }
+  if (currentFormat.hasOwnProperty('YYYY')
+      && neededFormat.hasOwnProperty('YY')) {
+    currentFormat['YY'] = currentFormat['YYYY'] % 100;
   }
 
   for (const prop in neededFormat) {
     neededFormat[prop] = currentFormat[prop];
-    result.push(neededFormat[prop]);
+    formatedDate.push(neededFormat[prop]);
   }
 
-  return result.join(toFormat[3]);
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
