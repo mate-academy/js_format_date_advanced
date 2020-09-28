@@ -50,11 +50,11 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrOfDate = date.split(fromFormat[3]);
+  const splitedDate = date.split(fromFormat[3]);
   const objDate = {
-    [fromFormat[0]]: arrOfDate[0],
-    [fromFormat[1]]: arrOfDate[1],
-    [fromFormat[2]]: arrOfDate[2],
+    [fromFormat[0]]: splitedDate[0],
+    [fromFormat[1]]: splitedDate[1],
+    [fromFormat[2]]: splitedDate[2],
   };
 
   const arrOfNewDate = [];
