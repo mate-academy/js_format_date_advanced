@@ -52,25 +52,26 @@
 function formatDate(date, fromFormat, toFormat) {
   let day, month, year;
   const dateFinal = [];
-  let separator = fromFormat.pop();
-  const dateArr = date.split(separator);
+  const separator = fromFormat.pop();
+  const separatorNew = toFormat.pop();
+  const dateInput = date.split(separator);
 
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'DD' :
-        day = dateArr[i];
+        day = dateInput[i];
         break;
       case 'MM' :
-        month = dateArr[i];
+        month = dateInput[i];
         break;
       case 'YYYY' :
-        year = dateArr[i];
+        year = dateInput[i];
         break;
       case 'YY' :
-        if (dateArr[i] > 20 && dateArr[i] < 99) {
-          year = '19' + dateArr[i];
+        if (dateInput[i] > 20 && dateInput[i] < 99) {
+          year = '19' + dateInput[i];
         } else {
-          year = '20' + dateArr[i];
+          year = '20' + dateInput[i];
         }
         break;
     }
@@ -92,9 +93,8 @@ function formatDate(date, fromFormat, toFormat) {
         break;
     }
   }
-  separator = toFormat.pop();
 
-  return dateFinal.join(separator);
+  return dateFinal.join(separatorNew);
 }
 
 module.exports = formatDate;
