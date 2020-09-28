@@ -54,43 +54,29 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat.pop();
   const splitedDate = date.split(separator);
   const newDate = [];
+  const yearShort = splitedDate[fromFormat.indexOf('YY')];
+  const yearLong = splitedDate[fromFormat.indexOf('YYYY')];
+  const month = splitedDate[fromFormat.indexOf('MM')];
+  const day = splitedDate[fromFormat.indexOf('DD')];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (i === toFormat.indexOf('DD')) {
-      newDate.push(splitedDate[fromFormat.indexOf('DD')]);
-    }
-
-    if (i === toFormat.indexOf('MM')) {
-      newDate.push(splitedDate[fromFormat.indexOf('MM')]);
-    }
-
-    if (i === toFormat.indexOf('YYYY')
-      && fromFormat.includes('YYYY')) {
-      newDate.push(splitedDate[fromFormat.indexOf('YYYY')]);
-    }
-
-    if (i === toFormat.indexOf('YYYY')
-      && fromFormat.includes('YY')
-      && splitedDate[fromFormat.indexOf('YY')] < 30) {
-      newDate.push(`20${splitedDate[fromFormat.indexOf('YY')]}`);
-    }
-
-    if (i === toFormat.indexOf('YYYY')
-      && fromFormat.includes('YY')
-      && splitedDate[fromFormat.indexOf('YY')] >= 30) {
-      newDate.push(`19${splitedDate[fromFormat.indexOf('YY')]}`);
-    }
-
-    if (i === toFormat.indexOf('YY') && fromFormat.includes('YY')) {
-      newDate.push(splitedDate[fromFormat.indexOf('YY')]);
-    }
-
-    if (i === toFormat.indexOf('YY') && fromFormat.includes('YYYY')) {
-      newDate.push(splitedDate[fromFormat.indexOf('YYYY')].slice(-2));
+    if (toFormat[i] === 'DD') {
+      newDate.push(day);
+    } else if (toFormat[i] === 'MM') {
+      newDate.push(month);
+    } else if (toFormat[i] === 'YYYY' && fromFormat.includes('YYYY')) {
+      newDate.push(yearLong);
+    } else if (toFormat[i] === 'YYYY' && yearShort < 30) {
+      newDate.push(`20${yearShort}`);
+    } else if (toFormat[i] === 'YYYY' && yearShort >= 30) {
+      newDate.push(`19${yearShort}`);
+    } else if (toFormat[i] === 'YY' && fromFormat.includes('YY')) {
+      newDate.push(yearShort);
+    } else {
+      newDate.push(yearLong.slice(-2));
     }
   }
 
   return (newDate.join(newSeparator));
 }
-
 module.exports = formatDate;
