@@ -50,7 +50,63 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newFormatDate = [];
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+  const splitedDate = date.split(oldSeparator);
+  const nineteenthCentury = '19';
+  const twentiethCentury = '20';
+
+  let day;
+  let month;
+  let year;
+
+  for (
+    let dateElementIndex = 0;
+    dateElementIndex < fromFormat.length;
+    dateElementIndex++
+  ) {
+    if (fromFormat[dateElementIndex].includes('D')) {
+      day = splitedDate[dateElementIndex];
+    }
+
+    if (fromFormat[dateElementIndex].includes('M')) {
+      month = splitedDate[dateElementIndex];
+    }
+
+    if (fromFormat[dateElementIndex].includes('Y')) {
+      year = splitedDate[dateElementIndex];
+    }
+  }
+
+  for (const dateElement of toFormat) {
+    if (dateElement.includes('D')) {
+      newFormatDate.push(day);
+    }
+
+    if (dateElement.includes('M')) {
+      newFormatDate.push(month);
+    }
+
+    if (dateElement.includes('Y')) {
+      let newFormatYear = year;
+
+      if (dateElement.length > year.length && year < 30) {
+        newFormatYear = twentiethCentury + year;
+      }
+
+      if (dateElement.length > year.length && year >= 30) {
+        newFormatYear = nineteenthCentury + year;
+      }
+
+      if (dateElement.length < year.length) {
+        newFormatYear = year.slice(2);
+      }
+      newFormatDate.push(newFormatYear);
+    }
+  }
+
+  return newFormatDate.join(newSeparator);
 }
 
 module.exports = formatDate;
