@@ -61,19 +61,20 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const formatItem of toFormat.slice(0, 3)) {
-    if (!mapOldDate.hasOwnProperty(formatItem)) {
-      if (formatItem === 'YYYY') {
-        newDate.push(
-          +mapOldDate['YY'] <= 20
-            ? `20${mapOldDate['YY']}`
-            : `19${mapOldDate['YY']}`
-        );
-      } else {
-        newDate.push(mapOldDate['YYYY'].slice(2));
-      }
+    if (mapOldDate.hasOwnProperty(formatItem)) {
+      newDate.push(mapOldDate[formatItem]);
       continue;
     }
-    newDate.push(mapOldDate[formatItem]);
+
+    if (formatItem === 'YYYY') {
+      newDate.push(
+        +mapOldDate['YY'] <= 20
+          ? `20${mapOldDate['YY']}`
+          : `19${mapOldDate['YY']}`
+      );
+    } else {
+      newDate.push(mapOldDate['YYYY'].slice(2));
+    }
   }
 
   return newDate.join(newSeparator);
