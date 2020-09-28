@@ -61,21 +61,17 @@ function formatDate(date, fromFormat, toFormat) {
   let month;
   let year;
 
-  for (
-    let dateElementIndex = 0;
-    dateElementIndex < fromFormat.length;
-    dateElementIndex++
-  ) {
-    if (fromFormat[dateElementIndex].includes('D')) {
-      day = splitedDate[dateElementIndex];
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i].includes('D')) {
+      day = splitedDate[i];
     }
 
-    if (fromFormat[dateElementIndex].includes('M')) {
-      month = splitedDate[dateElementIndex];
+    if (fromFormat[i].includes('M')) {
+      month = splitedDate[i];
     }
 
-    if (fromFormat[dateElementIndex].includes('Y')) {
-      year = splitedDate[dateElementIndex];
+    if (fromFormat[i].includes('Y')) {
+      year = splitedDate[i];
     }
   }
 
