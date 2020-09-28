@@ -19,8 +19,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
-  const dateArrFormatted = [];
+  const splitedDate = date.split(fromFormat[3]);
+  const dateFormatted = [];
 
   function findElement(array, element) {
     // eslint-disable-next-line max-len
@@ -30,25 +30,25 @@ function formatDate(date, fromFormat, toFormat) {
   for (const i of toFormat) {
     for (const j of fromFormat) {
       if (i.length === 2 && j.length === 4 && i.slice(0, 2) === j.slice(0, 2)) {
-        dateArrFormatted.push(findElement(dateArr, j).slice(2));
+        dateFormatted.push(findElement(splitedDate, j).slice(2));
       }
 
       if (i.length === 4 && j.length === 2 && i.slice(0, 2) === j.slice(0, 2)) {
-        if (findElement(dateArr, j).slice(0, 2) > 90
-        && findElement(dateArr, j).slice(0, 2) <= 99) {
-          dateArrFormatted.push('19' + findElement(dateArr, j).slice(0, 2));
+        if (findElement(splitedDate, j).slice(0, 2) > 90
+        && findElement(splitedDate, j).slice(0, 2) <= 99) {
+          dateFormatted.push('19' + findElement(splitedDate, j).slice(0, 2));
         } else {
-          dateArrFormatted.push('20' + findElement(dateArr, j).slice(0, 2));
+          dateFormatted.push('20' + findElement(splitedDate, j).slice(0, 2));
         }
       }
 
       if (i === j) {
-        dateArrFormatted.push(findElement(dateArr, j));
+        dateFormatted.push(findElement(splitedDate, j));
       }
     }
   }
 
-  return dateArrFormatted.join(toFormat[3]);
+  return dateFormatted.join(toFormat[3]);
 }
 
 module.exports = formatDate;
