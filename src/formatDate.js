@@ -50,29 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
-  const dateObj = {
-    [fromFormat[0]]: dateArr[0],
-    [fromFormat[1]]: dateArr[1],
-    [fromFormat[2]]: dateArr[2],
+  const splitedDate = date.split(fromFormat[3]);
+  const newDate = {
+    [fromFormat[0]]: splitedDate[0],
+    [fromFormat[1]]: splitedDate[1],
+    [fromFormat[2]]: splitedDate[2],
   };
 
-  const newDate = [];
+  const result = [];
 
   for (const type of toFormat.slice(0, 3)) {
-    if (dateObj.hasOwnProperty(type)) {
-      newDate.push(dateObj[type]);
+    if (newDate.hasOwnProperty(type)) {
+      result.push(newDate[type]);
       continue;
     }
 
     if (type === 'YYYY') {
-      newDate.push(dateObj.YY < 30 ? `20${dateObj.YY}` : `19${dateObj.YY}`);
+      // eslint-disable-next-line
+      result.push(newDate.YY < 30 ? `20${newDate.YY}` : `19${newDate.YY}`);
     } else {
-      newDate.push(dateObj.YYYY.slice(-2));
+      result.push(newDate.YYYY.slice(-2));
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
