@@ -52,57 +52,57 @@
 function formatDate(date, fromFormat, toFormat) {
   const separator = fromFormat.pop();
   const joiner = toFormat.pop();
-  const dateArr = date.split(separator);
-  const newArr = [];
+  const dateParts = date.split(separator);
+  const newDate = [];
 
   if (fromFormat[2] === toFormat[0]) {
     if (fromFormat[0] !== toFormat[2]) {
-      newArr.unshift(dateArr[0].slice(-2));
+      newDate.unshift(dateParts[0].slice(-2));
 
-      for (let i = 1; i < dateArr.length; i++) {
-        newArr.unshift(dateArr[i]);
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.unshift(dateParts[i]);
       }
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     } else {
-      for (let i = 0; i < dateArr.length; i++) {
-        newArr.unshift(dateArr[i]);
+      for (let i = 0; i < dateParts.length; i++) {
+        newDate.unshift(dateParts[i]);
       }
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     }
   } else if (fromFormat[0] === toFormat[0]) {
     if (fromFormat[2] === 'YYYY' && toFormat[2] === 'YY') {
-      for (let i = 0; i < dateArr.length - 1; i++) {
-        newArr.push(dateArr[i]);
+      for (let i = 0; i < dateParts.length - 1; i++) {
+        newDate.push(dateParts[i]);
       }
-      newArr.push(dateArr[2].slice(-2));
+      newDate.push(dateParts[2].slice(-2));
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     } else {
-      for (let i = 0; i < dateArr.length; i++) {
-        newArr.push(dateArr[i]);
+      for (let i = 0; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
       }
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     }
   } else {
-    if (+dateArr[0] >= +'00' && +dateArr[0] <= '20') {
-      newArr[0] = '20'.concat(dateArr[0]);
+    if (+dateParts[0] >= +'00' && +dateParts[0] <= '20') {
+      newDate[0] = '20'.concat(dateParts[0]);
 
-      for (let i = 1; i < dateArr.length; i++) {
-        newArr.push(dateArr[i]);
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
       }
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     } else {
-      newArr[0] = '19'.concat(dateArr[0]);
+      newDate[0] = '19'.concat(dateParts[0]);
 
-      for (let i = 1; i < dateArr.length; i++) {
-        newArr.push(dateArr[i]);
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
       }
 
-      return newArr.join(joiner);
+      return newDate.join(joiner);
     }
   }
 }
