@@ -54,8 +54,8 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[fromFormat.length - 1];
   const newSeparator = toFormat[toFormat.length - 1];
   const splitedDate = date.split(oldSeparator);
-  const nineteenthCentury = '19';
-  const twentiethCentury = '20';
+  const lastCentury = '19';
+  const currentCentury = '20';
 
   let day;
   let month;
@@ -88,11 +88,11 @@ function formatDate(date, fromFormat, toFormat) {
       let newFormatYear = year;
 
       if (dateElement.length > year.length && year < 30) {
-        newFormatYear = twentiethCentury + year;
+        newFormatYear = currentCentury + year;
       }
 
       if (dateElement.length > year.length && year >= 30) {
-        newFormatYear = nineteenthCentury + year;
+        newFormatYear = lastCentury + year;
       }
 
       if (dateElement.length < year.length) {
