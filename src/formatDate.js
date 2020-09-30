@@ -9,8 +9,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const resultArr = [];
-  const dateArr = date.split(fromFormat[3]);
+  const formatedDate = [];
+  const splitedDate = date.split(fromFormat[3]);
   const yearIndex = fromFormat.indexOf('YYYY');
   const yearIndexShort = fromFormat.indexOf('YY');
   const monthIndex = fromFormat.indexOf('MM');
@@ -18,35 +18,35 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const key of toFormat) {
     if (key === 'DD') {
-      resultArr.push(dateArr[dayIndex]);
+      formatedDate.push(splitedDate[dayIndex]);
     }
 
     if (key === 'MM') {
-      resultArr.push(dateArr[monthIndex]);
+      formatedDate.push(splitedDate[monthIndex]);
     }
 
     if (key === 'YYYY') {
-      if (dateArr[yearIndex]) {
-        resultArr.push(dateArr[yearIndex]);
+      if (splitedDate[yearIndex]) {
+        formatedDate.push(splitedDate[yearIndex]);
       } else {
-        if (+dateArr[yearIndexShort] > 20) {
-          resultArr.push(`19${dateArr[yearIndexShort]}`);
+        if (+splitedDate[yearIndexShort] > 20) {
+          formatedDate.push(`19${splitedDate[yearIndexShort]}`);
         } else {
-          resultArr.push(`20${dateArr[yearIndexShort]}`);
+          formatedDate.push(`20${splitedDate[yearIndexShort]}`);
         }
       }
     }
 
     if (key === 'YY') {
-      if (dateArr[yearIndexShort]) {
-        resultArr.push(dateArr[yearIndexShort]);
+      if (splitedDate[yearIndexShort]) {
+        formatedDate.push(splitedDate[yearIndexShort]);
       } else {
-        resultArr.push(dateArr[yearIndex].slice(2));
+        formatedDate.push(splitedDate[yearIndex].slice(2));
       }
     }
   }
 
-  return resultArr.join(toFormat[3]);
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
