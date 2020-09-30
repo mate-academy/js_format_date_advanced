@@ -50,7 +50,61 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = fromFormat.pop();
+  const joiner = toFormat.pop();
+  const dateParts = date.split(separator);
+  const newDate = [];
+
+  if (fromFormat[2] === toFormat[0]) {
+    if (fromFormat[0] !== toFormat[2]) {
+      newDate.unshift(dateParts[0].slice(-2));
+
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.unshift(dateParts[i]);
+      }
+
+      return newDate.join(joiner);
+    } else {
+      for (let i = 0; i < dateParts.length; i++) {
+        newDate.unshift(dateParts[i]);
+      }
+
+      return newDate.join(joiner);
+    }
+  } else if (fromFormat[0] === toFormat[0]) {
+    if (fromFormat[2] === 'YYYY' && toFormat[2] === 'YY') {
+      for (let i = 0; i < dateParts.length - 1; i++) {
+        newDate.push(dateParts[i]);
+      }
+      newDate.push(dateParts[2].slice(-2));
+
+      return newDate.join(joiner);
+    } else {
+      for (let i = 0; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
+      }
+
+      return newDate.join(joiner);
+    }
+  } else {
+    if (+dateParts[0] >= +'00' && +dateParts[0] <= '20') {
+      newDate[0] = '20'.concat(dateParts[0]);
+
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
+      }
+
+      return newDate.join(joiner);
+    } else {
+      newDate[0] = '19'.concat(dateParts[0]);
+
+      for (let i = 1; i < dateParts.length; i++) {
+        newDate.push(dateParts[i]);
+      }
+
+      return newDate.join(joiner);
+    }
+  }
 }
 
 module.exports = formatDate;
