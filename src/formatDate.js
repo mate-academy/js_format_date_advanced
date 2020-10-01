@@ -50,39 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [, , , fromSeparator] = fromFormat;
-  const [, , , toSeparator] = toFormat;
-  let newFormatDate = [];
+  const splitedDate = date.split(fromFormat[3]);
+  const toSeparator = toFormat[3];
+  const fromDate = {};
 
-  const splitedDate = date.split(fromSeparator);
+  fromDate[fromFormat[0]] = splitedDate[0];
+  fromDate[fromFormat[1]] = splitedDate[1];
+  fromDate[fromFormat[2]] = splitedDate[2];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    for (let j = 0; j < fromFormat.length - 1; j++) {
-      if (toFormat[i][0] === fromFormat[j][0] && fromFormat[j][0] !== 'Y') {
-        newFormatDate[i] = splitedDate[j];
-      } else {
-        if (toFormat[i][0] === fromFormat[j][0] && fromFormat[j][0] === 'Y') {
-          if (toFormat[i].length === fromFormat[j].length) {
-            newFormatDate[i] = splitedDate[j];
-          } else {
-            if (toFormat[i].length < fromFormat[j].length) {
-              newFormatDate[i] = splitedDate[j][2] + splitedDate[j][3];
-            } else {
-              if (splitedDate[j] < 30) {
-                newFormatDate[i] = '20' + splitedDate[j];
-              } else {
-                newFormatDate[i] = '19' + splitedDate[j];
-              }
-            }
-          }
-        }
-      }
-    }
+  if (!fromDate.hasOwnProperty('YY') && toFormat.includes('YY')) {
+    fromDate.YY = fromDate.YYYY.slice(2);
   }
 
-  newFormatDate = newFormatDate.join(toSeparator);
+  if (!fromDate.hasOwnProperty('YYYY') && toFormat.includes('YYYY')) {
+    fromDate.YYYY = fromDate.YY < 30 ? `20${fromDate.YY}` : `19${fromDate.YY}`;
+  }
 
-  return newFormatDate;
+  const formatedDate = [
+    fromDate[toFormat[0]],
+    fromDate[toFormat[1]],
+    fromDate[toFormat[2]],
+  ].join(toSeparator);
+
+  return formatedDate;
 }
 
 module.exports = formatDate;
