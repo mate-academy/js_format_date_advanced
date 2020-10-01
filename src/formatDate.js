@@ -64,41 +64,49 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i].includes('D')) {
       day = splitedDate[i];
-    }
-
-    if (fromFormat[i].includes('M')) {
-      month = splitedDate[i];
-    }
-
-    if (fromFormat[i].includes('Y')) {
-      year = splitedDate[i];
+    } else {
+      if (fromFormat[i].includes('M')) {
+        month = splitedDate[i];
+      } else {
+        if (fromFormat[i].includes('Y')) {
+          year = splitedDate[i];
+        }
+      }
     }
   }
 
   for (const dateElement of toFormat) {
     if (dateElement.includes('D')) {
       newFormatDate.push(day);
-    }
-
-    if (dateElement.includes('M')) {
-      newFormatDate.push(month);
-    }
-
-    if (dateElement.includes('Y')) {
-      let newFormatYear = year;
-
-      if (dateElement.length > year.length && year < 30) {
-        newFormatYear = currentCentury + year;
+    } else {
+      if (dateElement.includes('M')) {
+        newFormatDate.push(month);
+      } else {
+        if (
+          dateElement.includes('Y')
+          && dateElement.length < year.length
+        ) {
+          newFormatDate.push(year.slice(2));
+        } else {
+          if (
+            dateElement.includes('Y')
+            && dateElement.length > year.length
+          ) {
+            newFormatDate.push(
+              year < 30
+                ? currentCentury + year
+                : lastCentury + year
+            );
+          } else {
+            if (
+              dateElement.includes('Y')
+              && dateElement.length === year.length
+            ) {
+              newFormatDate.push(year);
+            }
+          }
+        }
       }
-
-      if (dateElement.length > year.length && year >= 30) {
-        newFormatYear = lastCentury + year;
-      }
-
-      if (dateElement.length < year.length) {
-        newFormatYear = year.slice(2);
-      }
-      newFormatDate.push(newFormatYear);
     }
   }
 
