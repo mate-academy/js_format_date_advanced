@@ -55,15 +55,17 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDayIndex = fromFormat.indexOf('DD');
   const oldMonthIndex = fromFormat.indexOf('MM');
 
-  const oldYearIndex = fromFormat.includes('YYYY') 
+  const oldYearIndex = fromFormat.includes('YYYY')
     ? fromFormat.indexOf('YYYY')
     : fromFormat.indexOf('YY');
   const oldYearLength = fromFormat[oldYearIndex].length;
 
   const newDayIndex = toFormat.indexOf('DD');
   const newMonthIndex = toFormat.indexOf('MM');
-  // eslint-disable-next-line max-len
-  const newYearIndex = toFormat.includes('YYYY') ? toFormat.indexOf('YYYY') : toFormat.indexOf('YY');
+
+  const newYearIndex = toFormat.includes('YYYY')
+    ? toFormat.indexOf('YYYY')
+    : toFormat.indexOf('YY');
   const newYearLength = toFormat[newYearIndex].length;
   const newSeparator = toFormat[3];
 
