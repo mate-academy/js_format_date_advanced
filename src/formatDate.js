@@ -22,7 +22,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateNumbers = date.split(fromFormat[3]);
   let year;
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
     for (let j = 0; j < toFormat.length; j++) {
@@ -37,9 +37,8 @@ function formatDate(date, fromFormat, toFormat) {
       }
     }
   }
-  result = result.join(toFormat[3]);
 
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
