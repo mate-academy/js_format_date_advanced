@@ -20,53 +20,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let resultArray = [];
-  let y = 0;
-  const objDate = {};
+  const dateNumbers = date.split(fromFormat[3]);
+  let year;
+  let result = [];
 
-  resultArray = date.split(fromFormat[3]);
+  for (let i = 0; i < fromFormat.length; i++) {
+    for (let j = 0; j < toFormat.length; j++) {
+      if (toFormat[i] === fromFormat[j]) {
+        result.push(dateNumbers[j]);
+        break;
+      }
 
-  for (let x = 0; x < fromFormat.length; x++) {
-    if (x === fromFormat.length - 1) {
-      objDate.symbol = fromFormat[x];
+      if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
+        year = dateNumbers[j].slice(2);
+        result.push(year);
+      }
     }
+  }
+  result = result.join(toFormat[3]);
 
-    for (y; y < resultArray.length;) {
-      objDate[fromFormat[x]] = resultArray[y];
-      break;
-    }
-    y++;
-  };
-
-  resultArray = [];
-
-  toFormat.forEach(element => {
-    switch (element) {
-      case 'YYYY':
-        resultArray.push(objDate[element]);
-        break;
-
-      case 'MM':
-        resultArray.push(objDate[element]);
-        break;
-
-      case 'DD':
-        resultArray.push(objDate[element]);
-        break;
-
-      case 'YY':
-        resultArray.push(objDate['YYYY'].split('').slice(2, 4).join(''));
-        break;
-
-      case 'symbol':
-        resultArray.push(objDate[element]);
-        break;
-    };
-  });
-
-  resultArray = resultArray.join(toFormat[3]);
-
-  return resultArray;
+  return result;
 }
 
 module.exports = formatDate;
