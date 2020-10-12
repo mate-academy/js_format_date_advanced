@@ -50,44 +50,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateUnformated = date.split(fromFormat[3]);
+  const unformatedDate = date.split(fromFormat[3]);
+  const formatedDate = [];
+  const separator = toFormat[3];
 
-  let day = dateUnformated[fromFormat.indexOf('DD')];
-  let month = dateUnformated[fromFormat.indexOf('MM')];
-  let yearShort = dateUnformated[fromFormat.indexOf('YY')];
-  let yearLong = dateUnformated[fromFormat.indexOf('YYYY')];
+  let day;
+  let month;
+  let shortYear;
+  let longYear;
 
-  const formatedDate = new Array();
-
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    
-    if (toFormat[i] === 'DD') {
-      formatedDate.push(day);
-    }
-
-    if (toFormat[i] === 'MM') {
-      formatedDate.push(month);
-    }
-
-    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-    
-      if (!!yearLong) {
-        if (toFormat[i] === 'YY') {
-          yearLong = yearLong % 100;
-        }
-        formatedDate.push(yearLong);
-      }
-
-      if (!!yearShort) {
-        if (toFormat[i] === 'YYYY') {
-          yearShort = yearShort < 30 ? 2000 + +yearShort : 1900 + +yearShort;
-        }
-        formatedDate.push(yearShort);
-      }
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = unformatedDate[i];
+        break;
+      case 'MM':
+        month = unformatedDate[i];
+        break;
+      case 'YY':
+        shortYear = unformatedDate[i];
+        break;
+      case 'YYYY':
+        longYear = unformatedDate[i];
+        break;
     }
   }
 
-  return formatedDate.join(toFormat[3]);
+  for (const partOfDate of toFormat) {
+    switch (partOfDate) {
+      case 'DD':
+        formatedDate[formatedDate.length] = day;
+        break;
+      case 'MM':
+        formatedDate[formatedDate.length] = month;
+        break;
+      case 'YY':
+        formatedDate[formatedDate.length] = shortYear === undefined
+          ? longYear % 100 : shortYear;
+        break;
+      case 'YYYY':
+        formatedDate[formatedDate.length] = longYear === undefined
+          ? shortYear < 30 ? 2000 + +shortYear : 1900 + +shortYear : longYear;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return formatedDate.join(separator);
 }
 
 module.exports = formatDate;
