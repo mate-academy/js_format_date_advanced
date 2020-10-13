@@ -50,7 +50,68 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const delimitorFrom = fromFormat[fromFormat.length - 1];
+  const delimitotTo = toFormat[toFormat.length - 1];
+
+  switch (fromFormat[0]) {
+    case 'YY': {
+      if (toFormat[0] === 'YYYY') {
+        let newFormat;
+        const arrayOFoldFormat = date.split(delimitorFrom);
+
+        if (arrayOFoldFormat[0] < 30) {
+          arrayOFoldFormat[0] = '20' + String(arrayOFoldFormat[0]);
+
+          newFormat = arrayOFoldFormat.join(delimitotTo);
+        } else {
+          arrayOFoldFormat[0] = '19' + String(arrayOFoldFormat[0]);
+
+          newFormat = arrayOFoldFormat.join(delimitotTo);
+        }
+
+        return String(newFormat.trim());
+      }
+      break;
+    }
+
+    case 'YYYY': {
+      if (toFormat[0] === fromFormat[0]) {
+        const newFormat = date.split(delimitorFrom).join(delimitotTo);
+
+        return String(newFormat);
+      } else {
+        if (toFormat[0] === 'DD') {
+          const newFormat = date.split(delimitorFrom).reverse();
+
+          const str = newFormat.join(delimitotTo);
+
+          return String(str);
+        }
+      }
+      break;
+    }
+
+    case 'MM': {
+      let newFormat;
+
+      if (fromFormat[fromFormat.length - 2] === 'YYYY'
+      && toFormat[toFormat.length - 2] === 'YY') {
+        newFormat = date.split(delimitorFrom);
+
+        const str = newFormat[newFormat.length - 1].slice(2);
+
+        newFormat[newFormat.length - 1] = str;
+
+        newFormat.join(delimitotTo);
+
+        return String(newFormat.join(delimitotTo));
+      }
+
+      newFormat = date.split(delimitorFrom).join(delimitotTo);
+
+      return String(newFormat);
+    }
+  }
 }
 
 module.exports = formatDate;
