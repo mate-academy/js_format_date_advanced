@@ -93,6 +93,6 @@ function formatDate(date, fromFormat, toFormat) {
 
     return date1.join(signtoFormat);
   }
-};
+}
 
 module.exports = formatDate;
