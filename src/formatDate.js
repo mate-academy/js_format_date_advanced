@@ -52,7 +52,41 @@
 function formatDate(date, fromFormat, toFormat) {
   const delimitorFrom = fromFormat[fromFormat.length - 1];
   const delimitotTo = toFormat[toFormat.length - 1];
+  const dateObj = {};
 
+  const dateArray = date.split(delimitorFrom);
+  const newDateArray = [];
+
+  for (let inDX = 0; inDX < fromFormat.length - 1; inDX++) {
+    dateObj[fromFormat[inDX]] = dateArray[inDX];
+  }
+
+  for (let inDX = 0; inDX < toFormat.length - 1; inDX++) {
+    const property = toFormat[inDX];
+
+    if (!dateObj.hasOwnProperty(property)) {
+      if (property === 'YYYY' && dateObj.hasOwnProperty('YY')) {
+        let { YY: temp } = dateObj;
+
+        temp = (temp < 30) ? '20' + String(temp) : '19' + String(temp);
+        newDateArray.push(temp);
+      } else if (property === 'YY' && dateObj.hasOwnProperty('YYYY')) {
+        const { YYYY: temp } = dateObj;
+        let tempStr = '';
+
+        tempStr = temp.slice(2);
+        newDateArray.push(tempStr);
+      }
+      continue;
+    }
+
+    newDateArray.push(dateObj[property]);
+  }
+
+  const result = newDateArray.join(delimitotTo);
+
+  return String(result);
+  /*
   switch (fromFormat[0]) {
     case 'YY': {
       if (toFormat[0] === 'YYYY') {
@@ -111,7 +145,7 @@ function formatDate(date, fromFormat, toFormat) {
 
       return String(newFormat);
     }
-  }
+  } */
 }
 
 module.exports = formatDate;
