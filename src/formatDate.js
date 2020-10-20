@@ -52,47 +52,43 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
 
-  const signFromFormat = fromFormat.slice(-1);
-  const signtoFormat = toFormat.slice(-1);
+  const arrDate = date.split(fromFormat[3]);
+  const arrResult = [];
 
-  if (fromFormat.join() === ['YYYY', 'MM', 'DD', '-'].join()
-    && toFormat.join() === ['YYYY', 'MM', 'DD', '.'].join()) {
-    return date.split(signFromFormat).join(signtoFormat);
-  }
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        arrResult.push(arrDate[fromFormat.indexOf('DD')]);
+        break;
 
-  if (fromFormat.join() === ['YYYY', 'MM', 'DD', '-'].join()
-    && toFormat.join() === ['DD', 'MM', 'YY', '/'].join()) {
-    return date.split(signFromFormat).join(signtoFormat);
-  }
+      case 'MM':
+        arrResult.push(arrDate[fromFormat.indexOf('MM')]);
+        break;
 
-  if (fromFormat.join() === ['YYYY', 'MM', 'DD', '-'].join()
-    && toFormat.join() === ['DD', 'MM', 'YYYY', '-'].join()) {
-    return date.split(signFromFormat).reverse().join(signtoFormat);
-  }
+      case 'YY':
+        if (arrDate[fromFormat.indexOf('YYYY')].length > 2) {
+          arrResult.push(arrDate[fromFormat.indexOf('YYYY')].slice(-2));
+        } else {
+          arrResult.push(arrDate[fromFormat.indexOf('YY')]);
+        }
+        break;
 
-  if (fromFormat.join() === ['MM', 'DD', 'YYYY', '/'].join()
-    && toFormat.join() === ['MM', 'DD', 'YY', '/'].join()) {
-    const datas = date.split(signFromFormat).splice(2, 1).join('').split('');
-    const date1 = date.split(signFromFormat);
+      case 'YYYY':
+        if (fromFormat.indexOf('YY') !== -1) {
+          if (arrDate[fromFormat.indexOf('YY')] < 30) {
+            arrResult.push(`20${arrDate[fromFormat.indexOf('YY')]}`);
+          } else {
+            arrResult.push(`19${arrDate[fromFormat.indexOf('YY')]}`);
+          }
+        } else {
+          arrResult.push(arrDate[fromFormat.indexOf('YYYY')]);
+        }
 
-    date1.splice(2, 1, datas.slice(-2).join(''));
-
-    return date1.join(signtoFormat);
-  }
-
-  if (fromFormat.slice(0, -1).join() === ['YY', 'MM', 'DD'].join()
-    && toFormat.slice(0, -1).join() === ['YYYY', 'MM', 'DD'].join()) {
-    const datas = date.split(signFromFormat).splice(0, 1).join('');
-    const date1 = date.split(signFromFormat);
-
-    if (+datas < 30) {
-      date1.splice(0, 1, `20${datas}`);
-    } else {
-      date1.splice(0, 1, `19${datas}`);
+        break;
     }
-
-    return date1.join(signtoFormat);
   }
+
+  return arrResult.join(toFormat[3]);
 }
 
 module.exports = formatDate;
