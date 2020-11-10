@@ -52,47 +52,68 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dateArr = date.split(fromFormat[fromFormat.length - 1]);
-  let index = 0;
-  const formattedDateArr = [];
+  const objDate = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    index = fromFormat.indexOf(toFormat[i]);
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case `DD`:
+        objDate.day = dateArr[i];
+        break;
 
-    if (index === -1 && toFormat[i] === `YY`) {
-      index = fromFormat.indexOf(`YYYY`);
-      formattedDateArr[i] = dateArr[index].split(``).slice(2).join(``);
+      case `MM`:
+        objDate.month = dateArr[i];
+        break;
 
-      continue;
+      case `YYYY`:
+        objDate.year = dateArr[i];
+        break;
+
+      case `YY`:
+        objDate.year = dateArr[i];
+        break;
     }
-
-    if (index === -1 && toFormat[i] === `YYYY`) {
-      index = fromFormat.indexOf(`YY`);
-
-      if (+dateArr[index] < 30) {
-        const newArr = dateArr[index].split(` `);
-
-        newArr.unshift(`20`);
-
-        formattedDateArr[i] = newArr.join(``);
-
-        continue;
-      } else {
-        const newArr = dateArr[index].split(``);
-
-        newArr.unshift(19);
-
-        formattedDateArr[i] = newArr.join(``);
-      }
-
-      continue;
-    }
-
-    formattedDateArr[i] = dateArr[index];
   }
 
-  const formattedDateStr = formattedDateArr.join(toFormat[toFormat.length - 1]);
+  if (fromFormat.includes(`YYYY`) && toFormat.includes(`YY`)) {
+    objDate.year = objDate.year.split(``).slice(2).join(``);
+  }
 
-  return formattedDateStr;
+  if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
+   && +objDate.year < 30) {
+    objDate.year = objDate.year.split(` `);
+    objDate.year.unshift(`20`);
+    objDate.year = objDate.year.join(``);
+  } else if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
+   && +objDate.year >= 30) {
+    objDate.year = objDate.year.split(` `);
+    objDate.year.unshift(`19`);
+    objDate.year = objDate.year.join(``);
+  }
+
+  const formatedArr = [];
+
+  for (const value of toFormat) {
+    switch (value) {
+      case `DD`:
+        formatedArr.push(objDate.day);
+        break;
+
+      case `MM`:
+        formatedArr.push(objDate.month);
+        break;
+
+      case `YYYY`:
+        formatedArr.push(objDate.year);
+        break;
+
+      case `YY`:
+        formatedArr.push(objDate.year);
+        break;
+    }
+  }
+
+  const formatedDate = formatedArr.join(toFormat[toFormat.length - 1]);
+
+  return formatedDate;
 }
-
 module.exports = formatDate;
