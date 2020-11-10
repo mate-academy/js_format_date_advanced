@@ -74,39 +74,30 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (fromFormat.includes(`YYYY`) && toFormat.includes(`YY`)) {
-    objDate.year = objDate.year.split(``).slice(2).join(``);
-  }
-
-  if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
-   && +objDate.year < 30) {
-    objDate.year = objDate.year.split(` `);
-    objDate.year.unshift(`20`);
-    objDate.year = objDate.year.join(``);
-  } else if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
-   && +objDate.year >= 30) {
-    objDate.year = objDate.year.split(` `);
-    objDate.year.unshift(`19`);
-    objDate.year = objDate.year.join(``);
-  }
-
   const formatedArr = [];
 
   for (const value of toFormat) {
-    switch (value) {
-      case `DD`:
+    switch (value[0]) {
+      case `D`:
         formatedArr.push(objDate.day);
         break;
 
-      case `MM`:
+      case `M`:
         formatedArr.push(objDate.month);
         break;
 
-      case `YYYY`:
-        formatedArr.push(objDate.year);
-        break;
+      case `Y`:
+        if (fromFormat.includes(`YYYY`) && toFormat.includes(`YY`)) {
+          objDate.year = objDate.year.substr(2);
+        }
 
-      case `YY`:
+        if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
+         && +objDate.year < 30) {
+          objDate.year = `20${objDate.year}`;
+        } else if (fromFormat.includes(`YY`) && toFormat.includes(`YYYY`)
+         && +objDate.year >= 30) {
+          objDate.year = `19${objDate.year}`;
+        }
         formatedArr.push(objDate.year);
         break;
     }
@@ -116,4 +107,5 @@ function formatDate(date, fromFormat, toFormat) {
 
   return formatedDate;
 }
+
 module.exports = formatDate;
