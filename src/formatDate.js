@@ -55,20 +55,16 @@ function formatDate(date, fromFormat, toFormat) {
   const objDate = {};
 
   for (let i = 0; i < fromFormat.length; i++) {
-    switch (fromFormat[i]) {
-      case `DD`:
+    switch (fromFormat[i][0]) {
+      case `D`:
         objDate.day = dateArr[i];
         break;
 
-      case `MM`:
+      case `M`:
         objDate.month = dateArr[i];
         break;
 
-      case `YYYY`:
-        objDate.year = dateArr[i];
-        break;
-
-      case `YY`:
+      case `Y`:
         objDate.year = dateArr[i];
         break;
     }
