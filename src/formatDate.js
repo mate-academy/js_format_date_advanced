@@ -48,86 +48,48 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
   const answer = [];
   const dateArray = date.split(fromFormat[3]);
-  let year, day, month;
+  let year, month, day;
 
-  if (fromFormat[0].includes('M')) {
-    month = dateArray[0];
-  } else {
-    month = dateArray[1];
-  }
-
-  if (fromFormat[0].includes('Y')) {
-    year = dateArray[0];
-  } else {
-    year = dateArray[2];
-  }
-
-  if (fromFormat[0].includes('D')) {
-    day = dateArray[0];
-  } else {
-    day = dateArray[1];
-  }
-
-  if (toFormat[0].includes('Y')) {
-    switch (true) {
-      case (year.length < toFormat[0].length && parseInt(year, 10) < 30): {
-        answer[0] = '20' + year;
-        break;
-      }
-
-      case (year.length < toFormat[0].length && parseInt(year, 10) >= 30): {
-        answer[0] = '19' + year;
-        break;
-      }
-
-      case (year.length > toFormat[0].length): {
-        answer[0] = year.slice(2);
-        break;
-      }
-
-      default : {
-        answer[0] = year;
-      }
-    }
-  } else {
-    switch (true) {
-      case (year.length < toFormat[2].length && parseInt(year, 10) < 30): {
-        answer[2] = '20' + year;
-        break;
-      }
-
-      case (year.length < toFormat[2].length && parseInt(year, 10) >= 30): {
-        answer[2] = '19' + year;
-        break;
-      }
-
-      case (year.length > toFormat[2].length): {
-        answer[2] = year.slice(2);
-        break;
-      }
-
-      default : {
-        answer[2] = year;
-      }
+  for (let i = 0; i < dateArray.length; i++) {
+    if (fromFormat[i].includes('Y')) {
+      year = dateArray[i];
+    } else if (fromFormat[i].includes('M')) {
+      month = dateArray[i];
+    } else {
+      day = dateArray[i];
     }
   }
 
-  if (toFormat[0].includes('D')) {
-    answer[0] = day;
-  } else if (toFormat[1].includes('D')) {
-    answer[1] = day;
-  } else {
-    answer[2] = day;
-  }
+  for (let i = 0; i < dateArray.length; i++) {
+    if (toFormat[i].includes('Y')) {
+      switch (true) {
+        case (year.length < toFormat[i].length && parseInt(year, 10) < 30): {
+          answer[i] = '20' + year;
+          break;
+        }
 
-  if (toFormat[0].includes('M')) {
-    answer[0] = month;
-  } else {
-    answer[1] = month;
+        case (year.length < toFormat[i].length && parseInt(year, 10) >= 30): {
+          answer[i] = '19' + year;
+          break;
+        }
+
+        case (year.length > toFormat[i].length): {
+          answer[i] = year.slice(2);
+          break;
+        }
+
+        default : {
+          answer[i] = year;
+        }
+      }
+    } else if (toFormat[i].includes('M')) {
+      answer[i] = month;
+    } else {
+      answer[i] = day;
+    }
   }
 
   return answer.join(toFormat[3]);
