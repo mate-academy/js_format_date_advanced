@@ -52,47 +52,52 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
 
+  const formatedArr = [];
   const splitedDate = date.split(fromFormat[3]);
-  // console.log(splitedDate);
 
-  const indexYYFormat = fromFormat.indexOf('YY');
-  const indexYYYYFormat = fromFormat.indexOf('YYYY');
+  let day = null;
+  let month = null;
+  let year = null;
 
-  const indexYYtoFormat = toFormat.indexOf('YY');
-  const indexYYYYtoFormat = toFormat.indexOf('YYYY');
-
-  const indexMMFormat = fromFormat.indexOf('MM');
-  const indexMMtoFormat = toFormat.indexOf('MM');
-
-  const indexDDFormat = fromFormat.indexOf('DD');
-  const indexDDtoFormat = toFormat.indexOf('DD');
-
-  const formattedArr = Array(3);
-
-  formattedArr[indexMMtoFormat] = splitedDate[indexMMFormat];
-  formattedArr[indexDDtoFormat] = splitedDate[indexDDFormat];
-
-  if ((indexYYFormat !== -1) && (indexYYtoFormat !== -1)) {
-    formattedArr[indexYYtoFormat] = formattedArr[indexYYFormat];
-  }
-
-  if ((indexYYFormat !== -1) && (indexYYYYtoFormat !== -1)) {
-    if (splitedDate[indexYYFormat] < 30) {
-      formattedArr[indexYYYYtoFormat] = 20 + splitedDate[indexYYFormat];
-    } else {
-      formattedArr[indexYYYYtoFormat] = '19' + splitedDate[indexYYFormat];
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = splitedDate[i];
+        break;
+      case 'MM':
+        month = splitedDate[i];
+        break;
+      case 'YYYY':
+        year = splitedDate[i];
+        break;
+      case 'YY':
+        if (splitedDate[i] > 20 && splitedDate[i] < 99) {
+          year = '19' + splitedDate[i];
+        } else {
+          year = '20' + splitedDate[i];
+        }
+        break;
     }
   }
 
-  if ((indexYYYYFormat !== -1) && (indexYYYYtoFormat !== -1)) {
-    formattedArr[indexYYYYtoFormat] = splitedDate[indexYYYYFormat];
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        formatedArr.push(day);
+        break;
+      case 'MM':
+        formatedArr.push(month);
+        break;
+      case 'YYYY':
+        formatedArr.push(year);
+        break;
+      case 'YY':
+        formatedArr.push(year.slice(2));
+        break;
+    }
   }
 
-  if ((indexYYYYFormat !== -1) && (indexYYtoFormat !== -1)) {
-    formattedArr[indexYYtoFormat] = splitedDate[indexYYYYFormat].slice(2);
-  }
-
-  return formattedArr.join(toFormat[3]);
+  return formatedArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
