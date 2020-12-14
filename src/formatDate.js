@@ -51,6 +51,31 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const [ key0, key1, key2, separator ] = fromFormat;
+  const arr = date.split(separator);
+  const obj = {};
+  const toStr = [];
+
+  obj[key0] = arr[0];
+  obj[key1] = arr[1];
+  obj[key2] = arr[2];
+  obj.separator = toFormat[3];
+
+  if (obj.hasOwnProperty('YY')) {
+    if (+obj.YY <= 21) {
+      obj.YYYY = `${20}${obj.YY}`;
+    } else {
+      obj.YYYY = `${19}${obj.YY}`;
+    }
+  } else {
+    obj.YY = obj.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    toStr.push(obj[toFormat[i]]);
+  }
+
+  return toStr.join(obj.separator);
 }
 
 module.exports = formatDate;
