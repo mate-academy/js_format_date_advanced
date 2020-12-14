@@ -59,7 +59,6 @@ function formatDate(date, fromFormat, toFormat) {
   obj[key0] = arr[0];
   obj[key1] = arr[1];
   obj[key2] = arr[2];
-  obj.separator = toFormat[3];
 
   if (obj.hasOwnProperty('YY')) {
     if (+obj.YY <= 21) {
@@ -75,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
     toStr.push(obj[toFormat[i]]);
   }
 
-  return toStr.join(obj.separator);
+  return toStr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
