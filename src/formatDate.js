@@ -52,36 +52,28 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateSeparate = date.split(`${fromFormat[fromFormat.length - 1]}`);
 
-  if (fromFormat[0] === 'YY') {
-    if (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY') {
-      if (dateSeparate[0] < 30) {
-        dateSeparate[0] = '20' + dateSeparate[0];
-      } else {
-        dateSeparate[0] = '19' + dateSeparate[0];
-      }
+  if (fromFormat[0] === 'YY' && toFormat.includes('YYYY')) {
+    if (dateSeparate[0] < 30) {
+      dateSeparate[0] = '20' + dateSeparate[0];
+    } else {
+      dateSeparate[0] = '19' + dateSeparate[0];
     }
   }
 
-  if (fromFormat[0] === 'YYYY') {
-    if (toFormat[0] === 'YY' || toFormat[2] === 'YY') {
-      dateSeparate[0] = dateSeparate[0].slice(2);
+  if (fromFormat[0] === 'YYYY' && toFormat.includes('YY')) {
+    dateSeparate[0] = dateSeparate[0].slice(2);
+  }
+
+  if (fromFormat[0] === 'DD' && toFormat.includes('YYYY')) {
+    if (dateSeparate[2] < 30) {
+      dateSeparate[2] = '19' + fromFormat[2];
+    } else {
+      dateSeparate[2] = '20' + fromFormat[2];
     }
   }
 
-  if (fromFormat[0] === 'DD') {
-    if (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY') {
-      if (dateSeparate[2] <= 30) {
-        dateSeparate[2] = '19' + fromFormat[2];
-      } else {
-        dateSeparate[2] = '20' + fromFormat[2];
-      }
-    }
-  }
-
-  if (fromFormat[2] === 'YYYY') {
-    if (toFormat[0] === 'YY' || toFormat[2] === 'YY') {
-      dateSeparate[2] = dateSeparate[2].slice(2);
-    }
+  if (fromFormat[2] === 'YYYY' && toFormat.includes('YY')) {
+    dateSeparate[2] = dateSeparate[2].slice(2);
   }
 
   switch (true) {
