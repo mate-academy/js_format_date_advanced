@@ -42,15 +42,56 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
+ * @param {string} date date to be converted into specified format.
+ * @param {string[]} fromFormat current format of the date.
+ * @param {string[]} toFormat format into which the date will be converted.
  *
- * @returns {string}
+ * @returns {string} date in the new format.
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateInfo = date.split(fromFormat[3]);
+  const separator = toFormat[toFormat.length - 1];
+  let result = '';
+  let day, month, year;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i].includes('D')) {
+      day = dateInfo[i];
+    }
+
+    if (fromFormat[i].includes('M')) {
+      month = dateInfo[i];
+    }
+
+    if (fromFormat[i].includes('Y')) {
+      year = dateInfo[i];
+
+      if (year.length === 2) {
+        year = Number(year) < 30 ? '20' + year : '19' + year;
+      }
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i].includes('D')) {
+      result += separator + day;
+    }
+
+    if (toFormat[i].includes('M')) {
+      result += separator + month;
+    }
+
+    if (toFormat[i].includes('Y')) {
+      if (toFormat[i].length === 4) {
+        result += separator + year;
+      } else {
+        result += separator + year.substring(2);
+      }
+    }
+  }
+
+  return result.substring(1);
 }
 
 module.exports = formatDate;
