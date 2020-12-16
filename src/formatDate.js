@@ -50,7 +50,28 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[fromFormat.length - 1]);
+  let index = 0;
+
+  if (toFormat[0][0] !== fromFormat[0][0]) {
+    dateArr.reverse();
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    index = toFormat.indexOf('YYYY');
+
+    if (dateArr[index] < 30) {
+      dateArr[index] = '20' + dateArr[index];
+    } else {
+      dateArr[index] = '19' + dateArr[index];
+    }
+  } else if (toFormat.includes('YY') && fromFormat.includes('YYYY')) {
+    index = toFormat.indexOf('YY');
+
+    dateArr[index] = dateArr[index].slice(2);
+  }
+
+  return dateArr.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
