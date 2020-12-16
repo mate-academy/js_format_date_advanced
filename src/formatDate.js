@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newYearVal = '';
+  let resultDate = [];
+
+  const oldYearIndex = fromFormat.findIndex(dateEl => dateEl[0][0] === 'Y');
+  const oldMonthIndex = fromFormat.findIndex(dateEl => dateEl[0][0] === 'M');
+  const oldDayIndex = fromFormat.findIndex(dateEl => dateEl[0][0] === 'D');
+  const newYearIndex = toFormat.findIndex(dateEl => dateEl[0][0] === 'Y');
+
+  const oldYearMask = fromFormat[oldYearIndex];
+  const newYearMask = toFormat[newYearIndex];
+
+  const dateArr = date.replace(/\D/g, ' ').split(' ');
+  const year = dateArr[oldYearIndex];
+  const month = dateArr[oldMonthIndex];
+  const day = dateArr[oldDayIndex];
+  const newSeparator = toFormat[3];
+
+  if (oldYearMask.length === 2 && newYearMask.length === 4) {
+    if (year.slice(-2) < 30) {
+      newYearVal += 20 + year;
+    } else {
+      newYearVal += 19 + year;
+    }
+  } else if (oldYearMask.length === 4 && newYearMask.length === 2) {
+    newYearVal = year.slice(-2);
+  } else {
+    newYearVal = year;
+  }
+
+  if (toFormat[0][0] === 'Y') {
+    resultDate
+      = resultDate.concat(newYearVal, newSeparator, month, newSeparator, day);
+  } else if (toFormat[0][0] === 'M') {
+    resultDate
+      = resultDate.concat(month, newSeparator, day, newSeparator, newYearVal);
+  } else {
+    resultDate
+      = resultDate.concat(day, newSeparator, month, newSeparator, newYearVal);
+  }
+
+  return resultDate.join('');
 }
 
 module.exports = formatDate;
