@@ -108,14 +108,14 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const joiner = toFormat[3];
+  const separator = toFormat[3];
 
   if (needToReverse === 1) {
-    return dateArray.reverse().join(joiner);
+    return dateArray.reverse().join(separator);
   }
 
   if (needToReverse === 0) {
-    return dateArray.join(joiner);
+    return dateArray.join(separator);
   }
 }
 
