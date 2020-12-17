@@ -53,7 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const arrDate = date.split(fromFormat[3]);
   const arrResult = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'DD':
         arrResult.push(arrDate[fromFormat.indexOf('DD')]);
