@@ -7,7 +7,3 @@ node_modules
 
 # MacOS
 .DS_Store
-
-# Others
-.package-lock
-.package
