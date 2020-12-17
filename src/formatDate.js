@@ -68,7 +68,7 @@ function formatDate(date, fromFormat, toFormat) {
 
         break;
 
-      case 'YYYY':
+      default:
         if (fromFormat.indexOf('YYYY') !== -1) {
           arrResult.push(arrDate[fromFormat.indexOf('YYYY')]);
         } else {
