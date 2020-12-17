@@ -51,10 +51,6 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[fromFormat.length - 1]);
-  const separator = toFormat[toFormat.length - 1];
-
-  fromFormat.splice(-1);
-  toFormat.splice(-1);
 
   if (toFormat[0][0] !== fromFormat[0][0]) {
     dateArr.reverse();
@@ -78,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const result = dateArr.join(separator);
+  const result = dateArr.join(toFormat[toFormat.length - 1]);
 
   return result;
 }
