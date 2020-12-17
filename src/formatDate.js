@@ -52,44 +52,31 @@
 function formatDate(date, fromFormat, toFormat) {
   const oldFormat = {};
   const newFormat = [];
-
-  const oldSeparator = fromFormat[fromFormat.length - 1];
-  const newSeparator = toFormat[toFormat.length - 1];
-  let remover = new RegExp(oldSeparator, 'g');
-
-  if (oldSeparator === '.') {
-    remover = /\./g;
-  }
-
-  const newDate = date.replace(remover, ' ');
-  const newDateArr = newDate.split(' ');
+  const newDateArr = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     oldFormat[fromFormat[i]] = newDateArr[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (oldFormat.hasOwnProperty(toFormat[i])) {
+    const property = oldFormat.hasOwnProperty(toFormat[i]);
+
+    if (property) {
       newFormat.push(oldFormat[toFormat[i]]);
-    } else {
-      if (toFormat[i] === 'YY') {
-        newFormat.push(oldFormat['YYYY'].slice(2, 4));
-      }
+    }
 
-      if (toFormat[i] === 'YYYY') {
-        let shortYear = oldFormat['YY'];
+    if (!property && toFormat[i] === 'YY') {
+      newFormat.push(oldFormat['YYYY'].slice(2));
+    }
 
-        if (+shortYear < 30) {
-          shortYear = '20' + shortYear;
-        } else {
-          shortYear = '19' + shortYear;
-        }
-        newFormat.push(shortYear);
-      }
+    if (!property && toFormat[i] === 'YYYY') {
+      const year = oldFormat['YY'];
+
+      (+year < 30) ? newFormat.push('20' + year) : newFormat.push('19' + year);
     }
   }
 
-  return newFormat.join(newSeparator);
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
