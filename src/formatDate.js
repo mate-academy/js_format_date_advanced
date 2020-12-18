@@ -51,20 +51,8 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const resultDate = date.split(fromFormat[3]);
-  let fromYearPosition;
-  let toYearPosition;
-
-  if (fromFormat.indexOf('YY') === -1) {
-    fromYearPosition = fromFormat.indexOf('YYYY');
-  } else {
-    fromYearPosition = fromFormat.indexOf('YY');
-  }
-
-  if (toFormat.indexOf('YY') === -1) {
-    toYearPosition = toFormat.indexOf('YYYY');
-  } else {
-    toYearPosition = toFormat.indexOf('YY');
-  }
+  const fromYearPosition = fromFormat.findIndex(x => x.includes('Y'));
+  const toYearPosition = toFormat.findIndex(x => x.includes('Y'));
 
   if (fromYearPosition !== toYearPosition) {
     resultDate.reverse();
