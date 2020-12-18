@@ -64,11 +64,11 @@ function formatDate(date, fromFormat, toFormat) {
       yearFormat = element;
     }
 
-    if (element === 'MM' || element === 'MMMM') {
+    if (element === 'MM') {
       month = parts[index];
     }
 
-    if (element === 'DD' || element === 'DDDD') {
+    if (element === 'DD') {
       day = parts[index];
     }
   });
