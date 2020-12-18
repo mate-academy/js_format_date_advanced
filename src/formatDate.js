@@ -50,7 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultDate = date.split(fromFormat[3]);
+  let fromYearPosition;
+  let toYearPosition;
+
+  if (fromFormat.indexOf('YY') === -1) {
+    fromYearPosition = fromFormat.indexOf('YYYY');
+  } else {
+    fromYearPosition = fromFormat.indexOf('YY');
+  }
+
+  if (toFormat.indexOf('YY') === -1) {
+    toYearPosition = toFormat.indexOf('YYYY');
+  } else {
+    toYearPosition = toFormat.indexOf('YY');
+  }
+
+  if (fromYearPosition !== toYearPosition) {
+    resultDate.reverse();
+  }
+
+  if (fromFormat[fromYearPosition] !== toFormat[toYearPosition]) {
+    if (toFormat[toYearPosition] === 'YYYY') {
+      if (resultDate[toYearPosition] < '30') {
+        resultDate[toYearPosition] = '20' + resultDate[toYearPosition];
+      } else {
+        resultDate[toYearPosition] = '19' + resultDate[toYearPosition];
+      }
+    } else {
+      resultDate[toYearPosition] = resultDate[toYearPosition].slice(2);
+    }
+  }
+
+  return resultDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
