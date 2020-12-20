@@ -77,8 +77,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   const fromYearFormat = fromFormat[fromYearIndex];
 
-  const yearValue = +(newArr[toYearIndex]
-    .length > 2 ? newArr[toYearIndex].slice(2) : newArr[toYearIndex]);
+  const yearValue = +(newArr[toYearIndex].length > 2
+    ? newArr[toYearIndex].slice(2)
+    : newArr[toYearIndex]);
 
   let century = '';
 
