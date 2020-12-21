@@ -50,12 +50,25 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const resultDate = date.split(fromFormat[3]);
+  const stplitedDate = date.split(fromFormat[3]);
+  const resultDate = [...stplitedDate];
+
   const fromYearPosition = fromFormat.findIndex(x => x.includes('Y'));
   const toYearPosition = toFormat.findIndex(x => x.includes('Y'));
 
-  if (fromYearPosition !== toYearPosition) {
-    resultDate.reverse();
+  const fromDayPosition = fromFormat.findIndex(x => x === 'DD');
+  const toDayPosition = toFormat.findIndex(x => x === 'DD');
+
+  const fromMonthPosition = fromFormat.findIndex(x => x === 'MM');
+  const toMonthPosition = toFormat.findIndex(x => x === 'MM');
+
+  if (fromYearPosition !== toYearPosition
+    || fromDayPosition !== toDayPosition
+    || fromMonthPosition !== toMonthPosition
+  ) {
+    resultDate[toYearPosition] = stplitedDate[fromYearPosition];
+    resultDate[toDayPosition] = stplitedDate[fromDayPosition];
+    resultDate[toMonthPosition] = stplitedDate[fromMonthPosition];
   }
 
   if (fromFormat[fromYearPosition] !== toFormat[toYearPosition]) {
