@@ -50,7 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const stplitedDate = date.split(fromFormat[3]);
+  const resultDate = [...stplitedDate];
+
+  const fromYearPosition = fromFormat.findIndex(x => x.includes('Y'));
+  const toYearPosition = toFormat.findIndex(x => x.includes('Y'));
+
+  const fromDayPosition = fromFormat.findIndex(x => x === 'DD');
+  const toDayPosition = toFormat.findIndex(x => x === 'DD');
+
+  const fromMonthPosition = fromFormat.findIndex(x => x === 'MM');
+  const toMonthPosition = toFormat.findIndex(x => x === 'MM');
+
+  if (fromYearPosition !== toYearPosition
+    || fromDayPosition !== toDayPosition
+    || fromMonthPosition !== toMonthPosition
+  ) {
+    resultDate[toYearPosition] = stplitedDate[fromYearPosition];
+    resultDate[toDayPosition] = stplitedDate[fromDayPosition];
+    resultDate[toMonthPosition] = stplitedDate[fromMonthPosition];
+  }
+
+  if (fromFormat[fromYearPosition] !== toFormat[toYearPosition]) {
+    if (toFormat[toYearPosition] === 'YYYY') {
+      if (resultDate[toYearPosition] < '30') {
+        resultDate[toYearPosition] = '20' + resultDate[toYearPosition];
+      } else {
+        resultDate[toYearPosition] = '19' + resultDate[toYearPosition];
+      }
+    } else {
+      resultDate[toYearPosition] = resultDate[toYearPosition].slice(2);
+    }
+  }
+
+  return resultDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
