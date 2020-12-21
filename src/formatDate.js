@@ -55,6 +55,13 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
   let add = 0;
 
+  if (fromFormatCopy[1] !== toFormat[1]) {
+    const temp = dateArray[1];
+
+    dateArray[1] = dateArray[2];
+    dateArray[2] = temp;
+  };
+
   if (fromFormatCopy[0][0] !== toFormat[0][0]) {
     fromFormatCopy = fromFormatCopy.reverse();
     dateArray = dateArray.reverse();
