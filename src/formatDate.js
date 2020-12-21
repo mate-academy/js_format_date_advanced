@@ -50,47 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separator1 = fromFormat[3];
-  const separator2 = toFormat[3];
-  const dateArray = date.split(separator1);
-  let result;
+  const separatorFrom = fromFormat[3];
+  const separatorTo = toFormat[3];
+  const dateArray = date.split(separatorFrom);
+  const result = [];
+  let day;
+  let month;
+  let year;
 
-  if (fromFormat[0] === toFormat[0] && fromFormat[2] === toFormat[2]) {
-    result = dateArray;
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'DD') {
+      day = dateArray[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = dateArray[i];
+    }
+
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      year = dateArray[i];
+    }
   }
 
-  if (fromFormat[0][1] === toFormat[2][1]) {
-    result = dateArray.reverse();
-  }
+  for (let j = 0; j < toFormat.length; j++) {
+    if (toFormat[j] === 'DD') {
+      result[j] = day;
+    }
 
-  if (fromFormat[0] !== toFormat[2]
-    && (fromFormat[0].length > toFormat[0].length
-    || fromFormat[2].length > toFormat[2].length)) {
-    const year = dateArray[2].slice(2);
+    if (toFormat[j] === 'MM') {
+      result[j] = month;
+    }
 
-    dateArray.splice(2, 1, year);
-    result = dateArray;
-  }
+    if (toFormat[j] === 'YYYY' && year.length === 4) {
+      result[j] = year;
+    }
 
-  if (fromFormat[0] !== toFormat[2]
-  && (fromFormat[0].length < toFormat[0].length
-  || fromFormat[2].length < toFormat[2].length)) {
-    if (fromFormat[0][0] === 'Y') {
-      if (dateArray[0] < 30) {
-        const year = '20' + dateArray[0];
+    if (toFormat[j] === 'YY' && year.length === 4) {
+      result[j] = year.slice(2);
+    }
 
-        dateArray.splice(0, 1, year);
-        result = dateArray;
+    if (toFormat[j] === 'YYYY' && year.length === 2) {
+      if (year >= 30) {
+        result[j] = '19' + year;
       } else {
-        const year = '19' + dateArray[0];
-
-        dateArray.splice(0, 1, year);
-        result = dateArray;
+        result[j] = '20' + year;
       }
     }
   }
 
-  return result.join(separator2);
+  return result.join(separatorTo);
 }
 
 module.exports = formatDate;
