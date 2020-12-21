@@ -69,10 +69,9 @@ function formatDate(date, fromFormat, toFormat) {
 
       case 'YY':
         convert.push((yearFull).slice(2));
-
         break;
 
-      default:
+      case 'YYYY':
         if (fromFormat.indexOf('YYYY') !== -1) {
           convert.push(yearFull);
         } else {
