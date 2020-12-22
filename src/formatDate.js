@@ -52,39 +52,39 @@
 function formatDate(date, fromFormat, toFormat) {
   const result = [];
   const oldDate = date.split(fromFormat[3]);
-  let yy, yyyy, mm, dd;
+  let yearShort, yearLarge, month, day;
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YYYY') {
-      yyyy = oldDate[i];
+      yearLarge = oldDate[i];
     } else if (fromFormat[i] === 'YY') {
-      yy = oldDate[i];
+      yearShort = oldDate[i];
     } else if (fromFormat[i] === 'MM') {
-      mm = oldDate[i];
+      month = oldDate[i];
     } else if (fromFormat[i] === 'DD') {
-      dd = oldDate[i];
+      day = oldDate[i];
     }
   }
 
-  for (let j = 0; j < 3; j++) {
-    if (toFormat[j] === 'YYYY' && yy < 30) {
-      result.push(yyyy !== undefined ? yyyy : 20 + yy);
-    } else if (toFormat[j] === 'YYYY' && yy >= 30) {
-      result.push(yyyy !== undefined ? yyyy : 19 + yy);
+  for (let j = 0; j < fromFormat.length - 1; j++) {
+    if (toFormat[j] === 'YYYY' && yearShort < 30) {
+      result.push(yearLarge !== undefined ? yearLarge : 20 + yearShort);
+    } else if (toFormat[j] === 'YYYY' && yearShort >= 30) {
+      result.push(yearLarge !== undefined ? yearLarge : 19 + yearShort);
     } else if (toFormat[j] === 'YYYY') {
-      result.push(yyyy);
+      result.push(yearLarge);
     } else if (toFormat[j] === 'YY') {
       result.push(
-        yy !== undefined
-          ? yy
-          : ((Math.floor(yyyy / 100) - yyyy / 100) * -100).toFixed()
+        yearShort !== undefined
+          ? yearShort
+          : yearLarge.split('').splice(2, 2).join('')
       );
     } else if (toFormat[j] === 'YY') {
-      result.push(yy);
+      result.push(yearShort);
     } else if (toFormat[j] === 'MM') {
-      result.push(mm);
+      result.push(month);
     } else if (toFormat[j] === 'DD') {
-      result.push(dd);
+      result.push(day);
     }
   }
 
