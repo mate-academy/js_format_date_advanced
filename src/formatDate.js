@@ -58,17 +58,16 @@ function formatDate(date, fromFormat, toFormat) {
   };
   const result = [];
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < dateArray.length; i++) {
     switch (fromFormat[i][0]) {
       case 'Y':
         dateObj.year = dateArray[i];
-        dateObj.month = dateArray[i + 1];
-        dateObj.day = dateArray[i + 2];
         break;
       case 'M':
         dateObj.month = dateArray[i];
-        dateObj.day = dateArray[i + 1];
-        dateObj.year = dateArray[i + 2];
+        break;
+      case 'D':
+        dateObj.day = dateArray[i];
         break;
     }
   }
