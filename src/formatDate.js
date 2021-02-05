@@ -52,35 +52,34 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateToArr = date.split(fromFormat[fromFormat.length - 1]);
   const glueToFormat = toFormat[toFormat.length - 1];
-  let result;
+  let j = 0;
 
-  if (fromFormat.includes('YYYY') === toFormat.includes('YYYY')) {
-    result = (fromFormat.indexOf('YYYY') === toFormat.indexOf('YYYY'))
-      ? dateToArr.join(glueToFormat)
-      : dateToArr.reverse().join(glueToFormat);
-  } else {
-    if (fromFormat.indexOf('YYYY') >= 0 && toFormat.indexOf('YYYY') < 0) {
-      dateToArr[fromFormat.indexOf('YYYY')]
-      = dateToArr[fromFormat.indexOf('YYYY')].split('').splice(2).join('');
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] !== toFormat[j] && fromFormat[i].includes('Y')) {
+      if (toFormat.indexOf(fromFormat[i]) >= 0) {
+        return dateToArr.reverse().join(glueToFormat);
+      }
 
-      result = (fromFormat.indexOf('YYYY') === toFormat.indexOf('YY'))
-        ? dateToArr.join(glueToFormat)
-        : dateToArr.reverse().join(glueToFormat);
+      if (fromFormat[i].length > 2) {
+        dateToArr[i] = dateToArr[i].split('').splice(2).join('');
+      }
+
+      if (fromFormat[i].length <= 2) {
+        dateToArr[i] = (dateToArr[i] < 30) ? '20' + dateToArr[i]
+          : '19' + dateToArr[i];
+      }
+
+      if (toFormat[j].includes('Y')) {
+        break;
+      }
+
+      return dateToArr.reverse().join(glueToFormat);
     }
-
-    if (fromFormat.indexOf('YYYY') < 0 && toFormat.indexOf('YYYY') >= 0) {
-      dateToArr[fromFormat.indexOf('YY')]
-        = (dateToArr[fromFormat.indexOf('YY')] < 30)
-          ? '20' + dateToArr[fromFormat.indexOf('YY')]
-          : '19' + dateToArr[fromFormat.indexOf('YY')];
-
-      result = (fromFormat.indexOf('YY') === toFormat.indexOf('YYYY'))
-        ? dateToArr.join(glueToFormat)
-        : dateToArr.reverse().join(glueToFormat);
-    }
+    j++;
+    continue;
   }
 
-  return result;
+  return dateToArr.join(glueToFormat);
 }
 
 module.exports = formatDate;
