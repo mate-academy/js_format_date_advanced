@@ -50,7 +50,62 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formatedDate = date.split(fromFormat[3]);
+
+  if (fromFormat[0] === toFormat[0] && fromFormat[2] === toFormat[2]) {
+    return date.split(fromFormat[3]).join(toFormat[3]);
+  } else if (fromFormat[0] === toFormat[2]) {
+    return date.split(fromFormat[3]).reverse().join(toFormat[3]);
+  } else if (fromFormat[2] !== toFormat[2]) {
+    let year = formatedDate.pop();
+
+    year = year.split('');
+    year = year.slice(2, 4);
+    year = year.join('');
+    formatedDate.splice(2, 1, year);
+
+    return formatedDate.join(toFormat[3]);
+  } else if (+formatedDate[0] < 30 && +formatedDate[0] !== 0) {
+    let formatedYear = formatedDate.shift();
+
+    formatedYear = formatedYear.split(' ');
+    formatedYear.push('20');
+    formatedYear = formatedYear.join('');
+    formatedDate.slice(0, 1);
+    formatedDate.unshift(formatedYear);
+
+    return formatedDate.join(toFormat[3]);
+  } else if (formatedDate[0] === '00') {
+    let fullYear = formatedDate.shift();
+
+    fullYear = fullYear.split(' ');
+    fullYear.unshift('20');
+    fullYear = fullYear.join('');
+    formatedDate.slice(0, 1);
+    formatedDate.unshift(fullYear);
+
+    return formatedDate.join(toFormat[3]);
+  } else if (+formatedDate[0] === 30) {
+    let fullYear = formatedDate.shift();
+
+    fullYear = fullYear.split(' ');
+    fullYear.unshift('19');
+    fullYear = fullYear.join('');
+    formatedDate.slice(0, 1);
+    formatedDate.unshift(fullYear);
+
+    return formatedDate.join(toFormat[3]);
+  } else if (+formatedDate[0] > 30) {
+    let fullYear = formatedDate.shift();
+
+    fullYear = fullYear.split(' ');
+    fullYear.unshift('19');
+    fullYear = fullYear.join('');
+    formatedDate.slice(0, 1);
+    formatedDate.unshift(fullYear);
+
+    return formatedDate.join(toFormat[3]);
+  }
 }
 
 module.exports = formatDate;
