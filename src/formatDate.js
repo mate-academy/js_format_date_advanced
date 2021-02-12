@@ -54,6 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[3];
 
   const splitedData = date.split(oldSeparator);
+  const isYear = 'YY';
 
   if (fromFormat[0] === toFormat[2]) {
     return splitedData.reverse().join(newSeparator);
@@ -61,17 +62,18 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (
     fromFormat[2][0] === toFormat[2][0]
-    && fromFormat[2].length > toFormat[2].length
+    && fromFormat[2].length === 4
   ) {
-    const splitedDataPush = splitedData[2];
+    const currentYear = splitedData[2];
 
     splitedData.pop();
-    splitedData.push(splitedDataPush - 1900);
+    splitedData.push(currentYear - 1900);
   }
 
   if (
-    fromFormat[0][0] === toFormat[0][0]
-    && fromFormat[0].length < toFormat[0].length
+    fromFormat[0].includes(isYear)
+    && toFormat[0].includes(isYear)
+    && fromFormat[0].length === 2
   ) {
     const yearFromFormat = +splitedData[0];
 
@@ -88,6 +90,22 @@ function formatDate(date, fromFormat, toFormat) {
       splitedData.shift();
       splitedData.unshift(lastCentury);
     }
+
+    // switch (yearFromFormat) {
+    //   case yearFromFormat < 30 :
+    //     const thisCentury = 2000 + yearFromFormat;
+
+    //     splitedData.shift();
+    //     splitedData.unshift(thisCentury);
+    //     break;
+
+    //   case yearFromFormat >= 30 :
+    //     const lastCentury = 1900 + yearFromFormat;
+
+    //     splitedData.shift();
+    //     splitedData.unshift(lastCentury);
+    //     break;
+    // }
   }
 
   return splitedData.join(newSeparator);
