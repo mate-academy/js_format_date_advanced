@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const separatorFromFormat = fromFormat[3];
+  const separatorToFormat = toFormat[3];
+  const separatedDate = date.split(`${separatorFromFormat}`);
+
+  const yearFullStart = separatedDate[0].length === 4;
+  const yearShortStart = separatedDate[0].length === 2;
+  const yearFullEnd = separatedDate[2].length === 4;
+  const yearFromFormatFullStart = fromFormat[0].length === 4;
+  const yearFromFormatShortStart = fromFormat[0].length === 2;
+  const yearToFormatFullStart = toFormat[0].length === 4;
+  const yearToFormatShortStart = toFormat[0].length === 2;
+  const yearFromFormatFullEnd = fromFormat[2].length === 4;
+  const yearToFormatShortEnd = toFormat[2].length === 2;
+
+  if (yearFullStart
+    && yearFromFormatFullStart
+    && yearToFormatShortStart) {
+    return separatedDate.reverse().join(`${separatorToFormat}`);
+  }
+
+  if (yearFullStart
+    && yearFromFormatFullStart
+    && yearToFormatFullStart) {
+    return separatedDate.join(`${separatorToFormat}`);
+  }
+
+  if (yearShortStart
+    && yearFromFormatShortStart
+    && yearToFormatFullStart) {
+    let century = '20';
+
+    if (separatedDate[0] >= 30) {
+      century = '19';
+    } else {
+      century = '20';
+    }
+    separatedDate[0] = century + separatedDate[0];
+
+    return separatedDate.join(`${separatorToFormat}`);
+  }
+
+  if (yearFullEnd
+    && yearFromFormatFullEnd
+    && yearToFormatShortEnd) {
+    const shortYear = separatedDate[2].slice(2);
+
+    separatedDate[2] = shortYear;
+
+    return separatedDate.join(`${separatorToFormat}`);
+  }
+};
 
 module.exports = formatDate;
