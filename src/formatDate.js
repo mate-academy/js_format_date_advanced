@@ -50,7 +50,48 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let indexYearsTo;
+  let yearsToLength;
+  let correctDate = '';
+
+  const divideByFrom = fromFormat[fromFormat.length - 1];
+
+  const dates = date.split(divideByFrom);
+
+  const dateValues = Array(3);
+
+  const indexDaysTo = toFormat.indexOf('DD');
+
+  const indexMonthTo = toFormat.indexOf('MM');
+
+  for (const i in toFormat) {
+    if ((toFormat[i] === 'YY') || (toFormat[i] === 'YYYY')) {
+      indexYearsTo = toFormat.indexOf(toFormat[i]);
+      yearsToLength = toFormat[i].length;
+    }
+  }
+
+  const divideByTo = toFormat[toFormat.length - 1];
+
+  for (const i in fromFormat) {
+    if (fromFormat[i] === 'DD') {
+      dateValues.fill(dates[i], indexDaysTo, indexDaysTo + 1);
+    } else if (fromFormat[i] === 'MM') {
+      dateValues.fill(dates[i], indexMonthTo, indexMonthTo + 1);
+    } else if ((fromFormat[i].length < yearsToLength) && (+dates[i] < 30)) {
+      dateValues.fill(20 + dates[i], indexYearsTo, indexYearsTo + 1);
+    } else if ((fromFormat[i].length < yearsToLength) && (+dates[i] >= 30)) {
+      dateValues.fill(19 + dates[i], indexYearsTo, indexYearsTo + 1);
+    } else if (fromFormat[i].length > yearsToLength) {
+      dateValues.fill(dates[i].slice(2), indexYearsTo, indexYearsTo + 1);
+    } else if (fromFormat[i].length === yearsToLength) {
+      dateValues.fill(dates[i], indexYearsTo, indexYearsTo + 1);
+    }
+  }
+
+  correctDate = dateValues.join(divideByTo);
+
+  return correctDate;
 }
 
 module.exports = formatDate;
