@@ -56,6 +56,16 @@ function formatDate(date, fromFormat, toFormat) {
   const fromDayIndex = fromFormat.indexOf('DD');
   const toMounthIndex = toFormat.indexOf('MM');
   const fromMounthIndex = fromFormat.indexOf('MM');
+  let fromYearIndex = 0;
+  let toYearIndex = 0;
+  let bigYear = 0;
+
+  if (fromDate[fromYearIndex] < 30
+    || fromDate[fromYearIndex] === '00') {
+    bigYear = '20' + `${fromDate[fromYearIndex]}`;
+  } else {
+    bigYear = '19' + `${fromDate[fromYearIndex]}`;
+  }
 
   for (let i = 0; i < fromDate.length; i++) {
     switch (fromFormat[i]) {
@@ -68,42 +78,31 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
+
+        fromYearIndex = fromFormat.indexOf('YY');
+        toYearIndex = toFormat.indexOf('YY');
+
+        if (toFormat.includes('YYYY')) {
+          const toYearIndexBig = toFormat.indexOf('YYYY');
+
+          toDate[toYearIndexBig] = `${bigYear}`;
+        } else {
+          toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
+        }
+        break;
       case 'YYYY':
 
-        if (fromFormat.includes('YY')) {
-          const fromYearIndex = fromFormat.indexOf('YY');
-          const toYearIndex = toFormat.indexOf('YY');
+        fromYearIndex = fromFormat.indexOf('YYYY');
+        toYearIndex = toFormat.indexOf('YYYY');
 
-          if (toFormat.includes('YYYY')) {
-            const toYearIndexBig = toFormat.indexOf('YYYY');
+        if (toFormat.includes('YY')) {
+          const toYearIndexSmall = toFormat.indexOf('YY');
 
-            if (fromDate[fromYearIndex] < 30
-                  || fromDate[fromYearIndex] === '00') {
-              const bigYear = '20' + `${fromDate[fromYearIndex]}`;
-
-              toDate[toYearIndexBig] = `${bigYear}`;
-            } else {
-              const bigYear = '19' + `${fromDate[fromYearIndex]}`;
-
-              toDate[toYearIndexBig] = `${bigYear}`;
-            }
-          } else {
-            toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
-          }
+          toDate[toYearIndexSmall] = `${fromDate[fromYearIndex].slice(2)}`;
+        } else {
+          toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
         }
 
-        if (fromFormat.includes('YYYY')) {
-          const fromYearIndex = fromFormat.indexOf('YYYY');
-          const toYearIndex = toFormat.indexOf('YYYY');
-
-          if (toFormat.includes('YY')) {
-            const toYearIndexSmall = toFormat.indexOf('YY');
-
-            toDate[toYearIndexSmall] = `${fromDate[fromYearIndex].slice(2)}`;
-          } else {
-            toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
-          }
-        }
         break;
     }
   }
