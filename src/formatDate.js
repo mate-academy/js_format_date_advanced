@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formatingArray = Array(3);
+
+  const separate = fromFormat[fromFormat.length - 1];
+
+  let oldYear;
+  const oldMonth = fromFormat.indexOf('MM');
+  const oldDays = fromFormat.indexOf('DD');
+
+  let newYear;
+  const newMonth = toFormat.indexOf('MM');
+  const newDays = toFormat.indexOf('DD');
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYY'
+    || toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+      newYear = i;
+    }
+
+    if (fromFormat[i] === 'YYY'
+    || fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+      oldYear = i;
+    }
+  }
+
+  const symbolsSplited = date.split(`${separate}`);
+
+  const joinedSeparate = toFormat[toFormat.length - 1];
+
+  formatingArray[newMonth] = symbolsSplited[oldMonth];
+  formatingArray[newDays] = symbolsSplited[oldDays];
+  formatingArray[newYear] = symbolsSplited[oldYear];
+
+  if (toFormat[newYear].length >= 3 && fromFormat[oldYear].length <= 2) {
+    if (formatingArray[newYear].slice(0, 1) === '2'
+    || formatingArray[newYear].slice(0, 1) === '0') {
+      formatingArray[newYear] = +formatingArray[newYear] + 2000;
+    } else {
+      formatingArray[newYear] = +formatingArray[newYear] + 1900;
+    }
+  }
+
+  if (toFormat[newYear].length <= 2) {
+    formatingArray[newYear]
+    = formatingArray[newYear].slice(2, formatingArray.length + 1);
+  }
+
+  return formatingArray.join(`${joinedSeparate}`);
 }
 
 module.exports = formatDate;
