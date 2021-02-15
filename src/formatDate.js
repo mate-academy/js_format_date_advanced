@@ -56,12 +56,14 @@ function formatDate(date, fromFormat, toFormat) {
   const splitedData = date.split(oldSeparator);
   const isYear = 'YY';
 
-  if (fromFormat[0] === toFormat[2]) {
+  if (fromFormat[0].includes(isYear)
+    && !toFormat[0].includes(isYear)) {
     return splitedData.reverse().join(newSeparator);
   }
 
   if (
-    fromFormat[2][0] === toFormat[2][0]
+    fromFormat[2].includes(isYear)
+    && toFormat[2].includes(isYear)
     && fromFormat[2].length === 4
   ) {
     const currentYear = splitedData[2];
