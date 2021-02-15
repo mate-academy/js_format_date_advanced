@@ -50,74 +50,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat[3];
-  const newSeparator = toFormat[3];
+  const bigYear = fromFormat.indexOf('YYYY');
+  const smallYear = fromFormat.indexOf('YY');
+  const month = fromFormat.indexOf('MM');
+  const days = fromFormat.indexOf('DD');
+  const splitDate = date.split(fromFormat[3]);
+  const formatedDates = [];
 
-  const splitedData = date.split(oldSeparator);
-  const isYear = 'YY';
+  for (let i = 0; i < splitDate.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        formatedDates.push(splitDate[days]);
+        break;
 
-  const isFromFormatFirstElementYear = fromFormat[0].includes(isYear);
-  const isToFormatFirstElementYear = toFormat[0].includes(isYear);
-  const isFromFormatLastElementYear = fromFormat[2].includes(isYear);
-  const isToFormatLastElementYear = toFormat[2].includes(isYear);
-  const isFromFormatFirstElementSmall = fromFormat[0].length === 2;
-  const isToFormatLastElementYearFull = fromFormat[2].length === 4;
+      case 'MM':
+        formatedDates.push(splitDate[month]);
+        break;
 
-  if (isFromFormatFirstElementYear
-    && !isToFormatFirstElementYear) {
-    return splitedData.reverse().join(newSeparator);
-  }
+      case 'YY':
+        if (fromFormat.includes('YY')) {
+          formatedDates.push(splitDate[smallYear]);
+        } else {
+          formatedDates.push(splitDate[bigYear].slice(2));
+        }
+        break;
 
-  if (
-    isFromFormatLastElementYear
-    && isToFormatLastElementYear
-    && isToFormatLastElementYearFull
-  ) {
-    const currentYear = splitedData[2];
-
-    splitedData.pop();
-    splitedData.push(currentYear - 1900);
-  }
-
-  if (
-    isFromFormatFirstElementYear
-    && isToFormatFirstElementYear
-    && isFromFormatFirstElementSmall
-  ) {
-    const yearFromFormat = +splitedData[0];
-
-    if (yearFromFormat < 30) {
-      const thisCentury = 2000 + yearFromFormat;
-
-      splitedData.shift();
-      splitedData.unshift(thisCentury);
+      case 'YYYY':
+        if (fromFormat.includes('YYYY')) {
+          formatedDates.push(splitDate[bigYear]);
+        } else if (+splitDate[smallYear] > 20) {
+          formatedDates.push(`19${splitDate[smallYear]}`);
+        } else {
+          formatedDates.push(`20${splitDate[smallYear]}`);
+        }
+        break;
     }
-
-    if (yearFromFormat >= 30) {
-      const lastCentury = 1900 + yearFromFormat;
-
-      splitedData.shift();
-      splitedData.unshift(lastCentury);
-    }
-
-    // switch (yearFromFormat) {
-    //   case yearFromFormat < 30 :
-    //     const thisCentury = 2000 + yearFromFormat;
-
-    //     splitedData.shift();
-    //     splitedData.unshift(thisCentury);
-    //     break;
-
-    //   case yearFromFormat >= 30 :
-    //     const lastCentury = 1900 + yearFromFormat;
-
-    //     splitedData.shift();
-    //     splitedData.unshift(lastCentury);
-    //     break;
-    // }
   }
 
-  return splitedData.join(newSeparator);
+  return formatedDates.join(toFormat[3]);
 }
 
 module.exports = formatDate;
