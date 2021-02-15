@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromDate = date.split(fromFormat[3]);
+  const toDate = Array(3).fill(1);
+  const toDayIndex = toFormat.indexOf('DD');
+  const fromDayIndex = fromFormat.indexOf('DD');
+  const toMounthIndex = toFormat.indexOf('MM');
+  const fromMounthIndex = fromFormat.indexOf('MM');
+  let fromYearIndex = 0;
+  let toYearIndex = 0;
+  let bigYear = 0;
+
+  if (fromDate[fromYearIndex] < 30
+    || fromDate[fromYearIndex] === '00') {
+    bigYear = '20' + `${fromDate[fromYearIndex]}`;
+  } else {
+    bigYear = '19' + `${fromDate[fromYearIndex]}`;
+  }
+
+  for (let i = 0; i < fromDate.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        toDate[toDayIndex] = fromDate[fromDayIndex];
+        break;
+
+      case 'MM':
+        toDate[toMounthIndex] = fromDate[fromMounthIndex];
+        break;
+
+      case 'YY':
+
+        fromYearIndex = fromFormat.indexOf('YY');
+        toYearIndex = toFormat.indexOf('YY');
+
+        if (toFormat.includes('YYYY')) {
+          const toYearIndexBig = toFormat.indexOf('YYYY');
+
+          toDate[toYearIndexBig] = `${bigYear}`;
+        } else {
+          toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
+        }
+        break;
+      case 'YYYY':
+
+        fromYearIndex = fromFormat.indexOf('YYYY');
+        toYearIndex = toFormat.indexOf('YYYY');
+
+        if (toFormat.includes('YY')) {
+          const toYearIndexSmall = toFormat.indexOf('YY');
+
+          toDate[toYearIndexSmall] = `${fromDate[fromYearIndex].slice(2)}`;
+        } else {
+          toDate[toYearIndex] = `${fromDate[fromYearIndex]}`;
+        }
+
+        break;
+    }
+  }
+
+  const newDate = toDate.join(toFormat[3]);
+
+  return newDate;
 }
 
 module.exports = formatDate;
