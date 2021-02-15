@@ -56,15 +56,22 @@ function formatDate(date, fromFormat, toFormat) {
   const splitedData = date.split(oldSeparator);
   const isYear = 'YY';
 
-  if (fromFormat[0].includes(isYear)
-    && !toFormat[0].includes(isYear)) {
+  const isFromFormatFirstElementYear = fromFormat[0].includes(isYear);
+  const isToFormatFirstElementYear = toFormat[0].includes(isYear);
+  const isFromFormatLastElementYear = fromFormat[2].includes(isYear);
+  const isToFormatLastElementYear = toFormat[2].includes(isYear);
+  const isFromFormatFirstElementSmall = fromFormat[0].length === 2;
+  const isToFormatLastElementYearFull = fromFormat[2].length === 4;
+
+  if (isFromFormatFirstElementYear
+    && !isToFormatFirstElementYear) {
     return splitedData.reverse().join(newSeparator);
   }
 
   if (
-    fromFormat[2].includes(isYear)
-    && toFormat[2].includes(isYear)
-    && fromFormat[2].length === 4
+    isFromFormatLastElementYear
+    && isToFormatLastElementYear
+    && isToFormatLastElementYearFull
   ) {
     const currentYear = splitedData[2];
 
@@ -73,9 +80,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (
-    fromFormat[0].includes(isYear)
-    && toFormat[0].includes(isYear)
-    && fromFormat[0].length === 2
+    isFromFormatFirstElementYear
+    && isToFormatFirstElementYear
+    && isFromFormatFirstElementSmall
   ) {
     const yearFromFormat = +splitedData[0];
 
