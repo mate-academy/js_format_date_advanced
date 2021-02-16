@@ -49,6 +49,18 @@
  * @returns {string}
  */
 
+const transformYear = (toFormat, fromFormat, value, index) => {
+  if (toFormat.includes('YY')) {
+    return value[index].slice(2);
+  }
+
+  if (fromFormat.includes('YY')) {
+    return +value[index] < 30 ? `20${value[index]}` : `19${value[index]}`;
+  } else {
+    return value[index];
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
   const formatingArray = Array(3);
 
@@ -80,28 +92,20 @@ function formatDate(date, fromFormat, toFormat) {
 
   const symbolsSplited = date.split(`${separateOldFormat}`);
 
-  const joinedseparateOldFormat = toFormat[toFormat.length - 1];
+  const joinNewFormat = toFormat[toFormat.length - 1];
 
   formatingArray[indexNewMonth] = symbolsSplited[indexOldMonth];
   formatingArray[indexNewDays] = symbolsSplited[indexOldDays];
   formatingArray[indexNewYear] = symbolsSplited[indexOldYear];
 
-  if (toFormat[indexNewYear].length >= 3
-    && fromFormat[indexOldYear].length <= 2) {
-    if (formatingArray[indexNewYear].slice(0, 1) === '2'
-    || formatingArray[indexNewYear].slice(0, 1) === '0') {
-      formatingArray[indexNewYear] = +formatingArray[indexNewYear] + 2000;
-    } else {
-      formatingArray[indexNewYear] = +formatingArray[indexNewYear] + 1900;
-    }
-  }
+  formatingArray[indexNewYear] = transformYear(
+    toFormat,
+    fromFormat,
+    formatingArray,
+    indexNewYear
+  );
 
-  if (toFormat[indexNewYear].length <= 2) {
-    formatingArray[indexNewYear]
-    = formatingArray[indexNewYear].slice(2, formatingArray.length + 1);
-  }
-
-  return formatingArray.join(`${joinedseparateOldFormat}`);
+  return formatingArray.join(`${joinNewFormat}`);
 }
 
 module.exports = formatDate;
