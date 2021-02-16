@@ -51,64 +51,46 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const oldSeparator = fromFormat[3];
-  const result = date.split(oldSeparator);
   const newSeparator = toFormat[3];
+  const oldSeparator = fromFormat[3];
+  const fromeDate = date.split(oldSeparator);
+  const day = fromFormat.indexOf('DD');
+  const month = fromFormat.indexOf('MM');
+  const longYear = fromFormat.indexOf('YYYY');
+  const shortYear = fromFormat.indexOf('YY');
+  const result = [];
 
-  if (fromFormat[0] === toFormat[0] && fromFormat[2] === toFormat[2]) {
-    return date.split(oldSeparator).join(newSeparator);
-  } else if (fromFormat[0] === toFormat[2]) {
-    return date.split(oldSeparator).reverse().join(newSeparator);
-  } else if (fromFormat[2] !== toFormat[2]) {
-    let year = result.pop();
+  for (let i = 0; i < fromeDate.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        result.push(fromeDate[day]);
+        break;
 
-    year = year.split('');
-    year = year.slice(2, 4);
-    year = year.join('');
-    result.splice(2, 1, year);
+      case 'MM':
+        result.push(fromeDate[month]);
+        break;
 
-    return result.join(toFormat[3]);
-  } else if (+result[0] < 30 && +result[0] !== 0) {
-    let formatedYear = result.shift();
+      case 'YY':
+        if (fromFormat.includes('YY')) {
+          result.push(fromeDate[shortYear]);
+        } else {
+          result.push(fromeDate[longYear].slice(2));
+        }
+        break;
 
-    formatedYear = formatedYear.split(' ');
-    formatedYear.push('20');
-    formatedYear = formatedYear.join('');
-    result.slice(0, 1);
-    result.unshift(formatedYear);
-
-    return result.join(toFormat[3]);
-  } else if (result[0] === '00') {
-    let fullYear = result.shift();
-
-    fullYear = fullYear.split(' ');
-    fullYear.unshift('20');
-    fullYear = fullYear.join('');
-    result.slice(0, 1);
-    result.unshift(fullYear);
-
-    return result.join(toFormat[3]);
-  } else if (+result[0] === 30) {
-    let fullYear = result.shift();
-
-    fullYear = fullYear.split(' ');
-    fullYear.unshift('19');
-    fullYear = fullYear.join('');
-    result.slice(0, 1);
-    result.unshift(fullYear);
-
-    return result.join(toFormat[3]);
-  } else if (+result[0] > 30) {
-    let fullYear = result.shift();
-
-    fullYear = fullYear.split(' ');
-    fullYear.unshift('19');
-    fullYear = fullYear.join('');
-    result.slice(0, 1);
-    result.unshift(fullYear);
-
-    return result.join(toFormat[3]);
+      case 'YYYY':
+        if (fromFormat.includes('YYYY')) {
+          result.push(fromeDate[longYear]);
+        } else if (+fromeDate[shortYear] > 20) {
+          result.push('19' + fromeDate[shortYear]);
+        } else {
+          result.push('20' + fromeDate[shortYear]);
+        }
+        break;
+    }
   }
+
+  return result.join(newSeparator);
 }
 
 module.exports = formatDate;
