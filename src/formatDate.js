@@ -50,44 +50,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const bigYear = fromFormat.indexOf('YYYY');
-  const smallYear = fromFormat.indexOf('YY');
-  const month = fromFormat.indexOf('MM');
-  const days = fromFormat.indexOf('DD');
+  const indexBigYear = fromFormat.indexOf('YYYY');
+  const indexSmallYear = fromFormat.indexOf('YY');
+  const indexMonth = fromFormat.indexOf('MM');
+  const indexDays = fromFormat.indexOf('DD');
   const splitDate = date.split(fromFormat[3]);
-  const formatedDates = [];
+  const formatedDate = [];
 
   for (let i = 0; i < splitDate.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        formatedDates.push(splitDate[days]);
+        formatedDate.push(splitDate[indexDays]);
         break;
 
       case 'MM':
-        formatedDates.push(splitDate[month]);
+        formatedDate.push(splitDate[indexMonth]);
         break;
 
       case 'YY':
-        if (fromFormat.includes('YY')) {
-          formatedDates.push(splitDate[smallYear]);
+        if (toFormat.indexOf('YY') === indexSmallYear) {
+          formatedDate.push(splitDate[indexSmallYear]);
         } else {
-          formatedDates.push(splitDate[bigYear].slice(2));
+          formatedDate.push(splitDate[indexBigYear].slice(2));
         }
         break;
 
       case 'YYYY':
-        if (fromFormat.includes('YYYY')) {
-          formatedDates.push(splitDate[bigYear]);
-        } else if (+splitDate[smallYear] > 20) {
-          formatedDates.push(`19${splitDate[smallYear]}`);
+        if (+splitDate[indexSmallYear] > 20) {
+          formatedDate.push(`19${splitDate[indexSmallYear]}`);
+        } else if (+splitDate[indexSmallYear] <= 30) {
+          formatedDate.push(`20${splitDate[indexSmallYear]}`);
         } else {
-          formatedDates.push(`20${splitDate[smallYear]}`);
+          formatedDate.push(splitDate[indexBigYear]);
         }
         break;
     }
   }
 
-  return formatedDates.join(toFormat[3]);
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
