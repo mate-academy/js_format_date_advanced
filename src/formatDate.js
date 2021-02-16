@@ -53,9 +53,9 @@ function formatDate(date, fromFormat, toFormat) {
   let indexYearsTo;
   let yearsToLength;
 
-  const separatorFrom = fromFormat[fromFormat.length - 1];
+  const separatorFrom = fromFormat[3];
 
-  const dates = date.split(separatorFrom);
+  const values = date.split(separatorFrom);
 
   const formatedDate = Array(3);
 
@@ -63,28 +63,29 @@ function formatDate(date, fromFormat, toFormat) {
 
   const indexMonthTo = toFormat.indexOf('MM');
 
-  for (const i in toFormat) {
-    if ((toFormat[i] === 'YY') || (toFormat[i] === 'YYYY')) {
-      indexYearsTo = toFormat.indexOf(toFormat[i]);
-      yearsToLength = toFormat[i].length;
-    }
+  if (toFormat.includes('YY')) {
+    indexYearsTo = toFormat.indexOf('YY');
+    yearsToLength = 2;
+  } else {
+    indexYearsTo = toFormat.indexOf('YYYY');
+    yearsToLength = 4;
   }
 
-  const separatorTo = toFormat[toFormat.length - 1];
+  const separatorTo = toFormat[3];
 
-  for (const i in fromFormat) {
+  for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
-      formatedDate.fill(dates[i], indexDaysTo, indexDaysTo + 1);
+      formatedDate.fill(values[i], indexDaysTo, indexDaysTo + 1);
     } else if (fromFormat[i] === 'MM') {
-      formatedDate.fill(dates[i], indexMonthTo, indexMonthTo + 1);
-    } else if ((fromFormat[i].length < yearsToLength) && (+dates[i] < 30)) {
-      formatedDate.fill(20 + dates[i], indexYearsTo, indexYearsTo + 1);
-    } else if ((fromFormat[i].length < yearsToLength) && (+dates[i] >= 30)) {
-      formatedDate.fill(19 + dates[i], indexYearsTo, indexYearsTo + 1);
+      formatedDate.fill(values[i], indexMonthTo, indexMonthTo + 1);
+    } else if ((fromFormat[i].length < yearsToLength) && (+values[i] < 30)) {
+      formatedDate.fill(20 + values[i], indexYearsTo, indexYearsTo + 1);
+    } else if ((fromFormat[i].length < yearsToLength) && (+values[i] >= 30)) {
+      formatedDate.fill(19 + values[i], indexYearsTo, indexYearsTo + 1);
     } else if (fromFormat[i].length > yearsToLength) {
-      formatedDate.fill(dates[i].slice(2), indexYearsTo, indexYearsTo + 1);
+      formatedDate.fill(values[i].slice(2), indexYearsTo, indexYearsTo + 1);
     } else if (fromFormat[i].length === yearsToLength) {
-      formatedDate.fill(dates[i], indexYearsTo, indexYearsTo + 1);
+      formatedDate.fill(values[i], indexYearsTo, indexYearsTo + 1);
     }
   }
 
