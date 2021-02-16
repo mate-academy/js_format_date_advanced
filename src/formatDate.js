@@ -57,7 +57,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const values = date.split(separatorFrom);
 
-  const formatedDate = Array(3);
+  const formatedDate = [];
 
   const indexDaysTo = toFormat.indexOf('DD');
 
@@ -75,17 +75,17 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
-      formatedDate.fill(values[i], indexDaysTo, indexDaysTo + 1);
+      formatedDate[indexDaysTo] = values[i];
     } else if (fromFormat[i] === 'MM') {
-      formatedDate.fill(values[i], indexMonthTo, indexMonthTo + 1);
+      formatedDate[indexMonthTo] = values[i];
     } else if ((fromFormat[i].length < yearsToLength) && (+values[i] < 30)) {
-      formatedDate.fill(20 + values[i], indexYearsTo, indexYearsTo + 1);
+      formatedDate[indexYearsTo] = 20 + values[i];
     } else if ((fromFormat[i].length < yearsToLength) && (+values[i] >= 30)) {
-      formatedDate.fill(19 + values[i], indexYearsTo, indexYearsTo + 1);
+      formatedDate[indexYearsTo] = 19 + values[i];
     } else if (fromFormat[i].length > yearsToLength) {
-      formatedDate.fill(values[i].slice(2), indexYearsTo, indexYearsTo + 1);
+      formatedDate[indexYearsTo] = values[i].slice(2);
     } else if (fromFormat[i].length === yearsToLength) {
-      formatedDate.fill(values[i], indexYearsTo, indexYearsTo + 1);
+      formatedDate[indexYearsTo] = values[i];
     }
   }
 
