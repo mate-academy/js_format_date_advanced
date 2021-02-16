@@ -71,7 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        if (fromFormat.includes('YY')) {
+        if (toFormat.indexOf('YY') === shortYear) {
           result.push(fromeDate[shortYear]);
         } else {
           result.push(fromeDate[longYear].slice(2));
@@ -79,12 +79,12 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YYYY':
-        if (fromFormat.includes('YYYY')) {
-          result.push(fromeDate[longYear]);
-        } else if (+fromeDate[shortYear] > 20) {
-          result.push('19' + fromeDate[shortYear]);
+        if (+fromeDate[shortYear] > 20) {
+          result.push(`19${fromeDate[shortYear]}`);
+        } else if (+fromeDate[shortYear] <= 30) {
+          result.push(`20${fromeDate[shortYear]}`);
         } else {
-          result.push('20' + fromeDate[shortYear]);
+          result.push(fromeDate[longYear]);
         }
         break;
     }
