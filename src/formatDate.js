@@ -62,9 +62,9 @@ const transformYear = (toFormat, fromFormat, value, index) => {
 };
 
 function formatDate(date, fromFormat, toFormat) {
-  const formatingArray = Array(3);
+  const formatingArray = [];
 
-  const separateOldFormat = fromFormat[fromFormat.length - 1];
+  const separateOldFormat = fromFormat[3];
 
   let indexOldYear;
   const indexOldMonth = fromFormat.indexOf('MM');
@@ -74,20 +74,14 @@ function formatDate(date, fromFormat, toFormat) {
   const indexNewMonth = toFormat.indexOf('MM');
   const indexNewDays = toFormat.indexOf('DD');
 
-  if (toFormat.includes('YYYY')) {
-    indexNewYear = toFormat.indexOf('YYYY');
-  } else if (toFormat.includes('YYY')) {
-    indexNewYear = toFormat.indexOf('YYY');
-  } else if (toFormat.includes('YY')) {
-    indexNewYear = toFormat.indexOf('YY');
-  }
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i].includes('Y')) {
+      indexNewYear = i;
+    }
 
-  if (fromFormat.includes('YYYY')) {
-    indexOldYear = fromFormat.indexOf('YYYY');
-  } else if (fromFormat.includes('YYY')) {
-    indexOldYear = fromFormat.indexOf('YYY');
-  } else if (fromFormat.includes('YY')) {
-    indexOldYear = fromFormat.indexOf('YY');
+    if (fromFormat[i].includes('Y')) {
+      indexOldYear = i;
+    }
   }
 
   const symbolsSplited = date.split(`${separateOldFormat}`);
