@@ -54,37 +54,37 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[3];
   const oldSeparator = fromFormat[3];
   const fromeDate = date.split(oldSeparator);
-  const day = fromFormat.indexOf('DD');
-  const month = fromFormat.indexOf('MM');
-  const longYear = fromFormat.indexOf('YYYY');
-  const shortYear = fromFormat.indexOf('YY');
+  const indexDay = fromFormat.indexOf('DD');
+  const indexMonth = fromFormat.indexOf('MM');
+  const indexLongYear = fromFormat.indexOf('YYYY');
+  const indexShortYear = fromFormat.indexOf('YY');
   const result = [];
 
   for (let i = 0; i < fromeDate.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        result.push(fromeDate[day]);
+        result.push(fromeDate[indexDay]);
         break;
 
       case 'MM':
-        result.push(fromeDate[month]);
+        result.push(fromeDate[indexMonth]);
         break;
 
       case 'YY':
-        if (toFormat.indexOf('YY') === shortYear) {
-          result.push(fromeDate[shortYear]);
+        if (toFormat.indexOf('YY') === indexShortYear) {
+          result.push(fromeDate[indexShortYear]);
         } else {
-          result.push(fromeDate[longYear].slice(2));
+          result.push(fromeDate[indexLongYear].slice(2));
         }
         break;
 
       case 'YYYY':
-        if (+fromeDate[shortYear] > 20) {
-          result.push(`19${fromeDate[shortYear]}`);
-        } else if (+fromeDate[shortYear] <= 30) {
-          result.push(`20${fromeDate[shortYear]}`);
+        if (+fromeDate[indexShortYear] > 20) {
+          result.push(`19${fromeDate[indexShortYear]}`);
+        } else if (+fromeDate[indexShortYear] <= 30) {
+          result.push(`20${fromeDate[indexShortYear]}`);
         } else {
-          result.push(fromeDate[longYear]);
+          result.push(fromeDate[indexLongYear]);
         }
         break;
     }
