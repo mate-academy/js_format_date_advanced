@@ -50,45 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separatorDateFinish = toFormat.splice(-1);
-  const saparatorDateStart = fromFormat[fromFormat.length - 1];
-  const dateStart = date.split(saparatorDateStart);
-  const dateFinish = [];
+  const separatorDateNew = toFormat[3];
+  const saparatorDateOld = fromFormat[3];
+  const dateOldSplited = date.split(saparatorDateOld);
+  const indexOfDay = fromFormat.indexOf('DD');
+  const indexOfMonth = fromFormat.indexOf('MM');
+  const dateNew = [];
+  let formatOfYearNew;
+  let indexOfYearNew;
+  let indexOfYearOld;
+  let dateOfYear;
 
-  for (const value of toFormat) {
-    const index = fromFormat.indexOf(value);
+  for (let i = 0; i < dateOldSplited.length; i++) {
+    if (toFormat[i] === 'DD') {
+      dateNew.push(dateOldSplited[indexOfDay]);
+    }
 
-    if (index > -1) {
-      dateFinish.push(dateStart[index]);
-    } else {
-      const formatOfYear = value;
+    if (toFormat[i] === 'MM') {
+      dateNew.push(dateOldSplited[indexOfMonth]);
+    }
 
-      let indexOfYearFinish = toFormat.indexOf('YY');
-      let indexOfYearStart = fromFormat.indexOf('YY');
-
-      if (indexOfYearStart === -1) {
-        indexOfYearStart = fromFormat.indexOf('YYYY');
-      }
-
-      if (indexOfYearFinish === -1) {
-        indexOfYearFinish = toFormat.indexOf('YYYY');
-      }
-
-      let dateOfYear = dateStart[indexOfYearStart];
-
-      if (dateOfYear.length > formatOfYear.length) {
-        dateOfYear = dateOfYear.substring(2);
-      }
-
-      if (dateOfYear.length < formatOfYear.length) {
-        dateOfYear = +dateOfYear < 30 ? '20' + dateOfYear : '19' + dateOfYear;
-      }
-
-      dateFinish.splice(indexOfYearFinish, 0, dateOfYear);
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      formatOfYearNew = toFormat[i];
+      indexOfYearNew = i;
     }
   }
 
-  return dateFinish.join(separatorDateFinish);
+  if (fromFormat.includes('YY')) {
+    indexOfYearOld = fromFormat.indexOf('YY');
+  }
+
+  if (fromFormat.includes('YYYY')) {
+    indexOfYearOld = fromFormat.indexOf('YYYY');
+  }
+
+  dateOfYear = dateOldSplited[indexOfYearOld];
+
+  if (dateOfYear.length > formatOfYearNew.length) {
+    dateOfYear = dateOfYear.substring(2);
+  }
+
+  if (dateOfYear.length < formatOfYearNew.length) {
+    dateOfYear = dateOfYear < 30 ? '20' + dateOfYear : '19' + dateOfYear;
+  }
+
+  dateNew.splice(indexOfYearNew, 0, dateOfYear);
+
+  return dateNew.join(separatorDateNew);
 }
 
 module.exports = formatDate;
