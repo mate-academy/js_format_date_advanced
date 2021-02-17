@@ -62,44 +62,38 @@ const transformYear = (toFormat, fromFormat, value, index) => {
 };
 
 function formatDate(date, fromFormat, toFormat) {
-  const formatingArray = [];
+  const splitNewData = [];
 
   const separateOldFormat = fromFormat[3];
 
-  let indexOldYear;
   const indexOldMonth = fromFormat.indexOf('MM');
-  const indexOldDays = fromFormat.indexOf('DD');
+  const indexOldDay = fromFormat.indexOf('DD');
 
-  let indexNewYear;
   const indexNewMonth = toFormat.indexOf('MM');
-  const indexNewDays = toFormat.indexOf('DD');
+  const indexNewDay = toFormat.indexOf('DD');
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i].includes('Y')) {
-      indexNewYear = i;
-    }
+  const indexNewYear = toFormat.findIndex((element) => element === 'YY'
+  || element === 'YYY' || element === 'YYYY');
 
-    if (fromFormat[i].includes('Y')) {
-      indexOldYear = i;
-    }
-  }
+  const indexOldYear = fromFormat.findIndex((element) => element === 'YY'
+  || element === 'YYY' || element === 'YYYY');
 
-  const symbolsSplited = date.split(`${separateOldFormat}`);
+  const dataSplited = date.split(`${separateOldFormat}`);
 
-  const joinNewFormat = toFormat[toFormat.length - 1];
+  const separateNewFormat = toFormat[3];
 
-  formatingArray[indexNewMonth] = symbolsSplited[indexOldMonth];
-  formatingArray[indexNewDays] = symbolsSplited[indexOldDays];
-  formatingArray[indexNewYear] = symbolsSplited[indexOldYear];
+  splitNewData[indexNewMonth] = dataSplited[indexOldMonth];
+  splitNewData[indexNewDay] = dataSplited[indexOldDay];
+  splitNewData[indexNewYear] = dataSplited[indexOldYear];
 
-  formatingArray[indexNewYear] = transformYear(
+  splitNewData[indexNewYear] = transformYear(
     toFormat,
     fromFormat,
-    formatingArray,
+    splitNewData,
     indexNewYear
   );
 
-  return formatingArray.join(`${joinNewFormat}`);
+  return splitNewData.join(`${separateNewFormat}`);
 }
 
 module.exports = formatDate;
