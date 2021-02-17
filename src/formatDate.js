@@ -49,8 +49,51 @@
  * @returns {string}
  */
 
+const transformYear = (toFormat, fromFormat, value, index) => {
+  if (toFormat.includes('YY')) {
+    return value[index].slice(2);
+  }
+
+  if (fromFormat.includes('YY')) {
+    return +value[index] < 30 ? `20${value[index]}` : `19${value[index]}`;
+  } else {
+    return value[index];
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitNewData = [];
+
+  const separateOldFormat = fromFormat[3];
+
+  const indexOldMonth = fromFormat.indexOf('MM');
+  const indexOldDay = fromFormat.indexOf('DD');
+
+  const indexNewMonth = toFormat.indexOf('MM');
+  const indexNewDay = toFormat.indexOf('DD');
+
+  const indexNewYear = toFormat.findIndex((element) => element === 'YY'
+  || element === 'YYY' || element === 'YYYY');
+
+  const indexOldYear = fromFormat.findIndex((element) => element === 'YY'
+  || element === 'YYY' || element === 'YYYY');
+
+  const dataSplited = date.split(`${separateOldFormat}`);
+
+  const separateNewFormat = toFormat[3];
+
+  splitNewData[indexNewMonth] = dataSplited[indexOldMonth];
+  splitNewData[indexNewDay] = dataSplited[indexOldDay];
+  splitNewData[indexNewYear] = dataSplited[indexOldYear];
+
+  splitNewData[indexNewYear] = transformYear(
+    toFormat,
+    fromFormat,
+    splitNewData,
+    indexNewYear
+  );
+
+  return splitNewData.join(`${separateNewFormat}`);
 }
 
 module.exports = formatDate;
