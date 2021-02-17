@@ -50,7 +50,154 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  let separator;
+  const newDate = date.split('');
 
+  for (let i = 0; i < newDate.length; i++) {
+    if (isNaN(newDate[i])) {
+      separator = newDate[i];
+    };
+  };
+
+  const tempFrom = fromFormat.join();
+  const tempTo = toFormat.join();
+  const fromSplit = tempFrom.split('');
+  const toSplit = tempTo.split('');
+  let countFrom = 0;
+  let countTo = 0;
+
+  for (let i = 0; i < fromSplit.length; i++) {
+    if (fromSplit[i] === 'Y') {
+      countFrom++;
+    };
+  };
+
+  for (let i = 0; i < toSplit.length; i++) {
+    if (toSplit[i] === 'Y') {
+      countTo++;
+    };
+  };
+
+  const nD = date.split(separator);
+  const oldFormat = nD.concat(separator);
+  const newSeparator = toFormat.pop();
+  // const sep = fromFormat.pop();
+  let fromFormat1 = [];
+
+  if (countFrom === countTo) {
+    for (let i = 0; i < fromFormat.length; i++) {
+      if (fromFormat[i] !== toFormat[i]) {
+        fromFormat1 = nD.reverse();
+        break;
+      }
+
+      if (fromFormat[i] === toFormat[i]) {
+        fromFormat1 = nD;
+        break;
+      }
+    };
+  };
+
+  let nD0;
+  let nDlast;
+  let temp;
+  let temp1;
+
+  if (countFrom < countTo) {
+    if (fromSplit[0] === 'Y' && fromSplit[0] === toSplit[0]) {
+      if (+oldFormat[0] < 30) {
+        nD0 = nD.shift();
+        temp = 20 + nD0;
+        nD.unshift(temp);
+        fromFormat1 = nD;
+      } else {
+        nD0 = nD.shift();
+        temp = 19 + nD0;
+        nD.unshift(temp);
+        fromFormat1 = nD;
+      };
+    };
+
+    if (fromSplit[0] === 'Y' && fromSplit[0] !== toSplit[0]) {
+      if (+oldFormat[0] < 30) {
+        nD0 = nD.shift();
+        temp = 20 + nD0;
+        nD.unshift(temp);
+        fromFormat1 = nD.reverse();
+      } else {
+        nD0 = nD.shift();
+        temp = 19 + nD0;
+        nD.unshift(temp);
+        fromFormat1 = nD.reverse();
+      };
+    };
+
+    if (fromSplit[6] === 'Y' && fromSplit[6] === toSplit[6]) {
+      if (+oldFormat[0] < 30) {
+        nDlast = nD.pop();
+        temp = 20 + nDlast;
+        nD.push(temp);
+        fromFormat1 = nD;
+      } else {
+        nDlast = nD.pop();
+        temp = 19 + nDlast;
+        nD.push(temp);
+        fromFormat1 = nD;
+      }
+    };
+
+    if (fromSplit[6] === 'Y' && fromSplit[6] !== toSplit[6]) {
+      if (+oldFormat[0] < 30) {
+        nDlast = nD.pop();
+        temp = 20 + nDlast;
+        nD.push(temp);
+        fromFormat1 = nD.reverse();
+      } else {
+        nDlast = nD.pop();
+        temp = 19 + nDlast;
+        nD.push(temp);
+        fromFormat1 = nD.reverse;
+      }
+    }
+  };
+
+  if (countFrom > countTo) {
+    if (fromSplit[0] === 'Y' && fromSplit[0] === toSplit[0]) {
+      temp = nD.shift();
+      temp1 = temp.split('');
+      nDlast = temp1[2] + temp1[3];
+      nD.concat(nDlast);
+      fromFormat1 = nD;
+    }
+
+    if (fromSplit[0] === 'Y' && fromSplit[0] !== toSplit[0]) {
+      temp = nD.shift();
+      temp1 = temp.split('');
+      nDlast = temp1[2] + temp1[3];
+      nD.concat(nDlast);
+      fromFormat1 = nD.reverse();
+    };
+
+    if (fromSplit[6] === 'Y' && fromSplit[6] === toSplit[6]) {
+      temp = nD.pop();
+      temp1 = temp.split('');
+      nDlast = temp1[2] + temp1[3];
+      fromFormat1 = nD.concat(nDlast);
+    }
+
+    if (fromSplit[6] === 'Y' && fromSplit[6] !== toSplit[6]) {
+      temp = nD.pop();
+      temp1 = temp.split('');
+      nDlast = temp1[2] + temp1[3];
+      nD.concat(nDlast);
+      fromFormat1 = nD.reverse();
+    }
+  };
+
+  // const newFormat = fromFormat1.concat(separator);
+  // let dateFormat = fromFormat.splice(0, fromFormat.length, ...newFormat);
+  const newDate1 = fromFormat1.join(newSeparator);
+
+  return newDate1;
+}
 module.exports = formatDate;
