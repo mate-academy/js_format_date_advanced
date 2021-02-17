@@ -51,6 +51,55 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const separator = fromFormat[3];
+  const joiner = toFormat[3];
+  const dateArray = date.split(separator);
+  const formatedDate = [];
+
+  const yearsFormat = 'YYYY';
+  const shortYearsFormat = 'YY';
+  const monthFormat = 'MM';
+  const daysFormat = 'DD';
+
+  const yearsFormatIndex = toFormat.indexOf(yearsFormat);
+  const shortYearsFormatIndex = toFormat.indexOf(shortYearsFormat);
+  const monthFormatIndex = toFormat.indexOf(monthFormat);
+  const daysFormatIndex = toFormat.indexOf(daysFormat);
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === yearsFormat) {
+      formatedDate[yearsFormatIndex] = dateArray[i];
+    }
+
+    if (fromFormat[i] === yearsFormat
+      && (!toFormat.includes(yearsFormat))) {
+      formatedDate[shortYearsFormatIndex] = dateArray[i].slice(2);
+    }
+
+    if (fromFormat[i] === shortYearsFormat
+      && (!toFormat.includes(shortYearsFormat))) {
+      let yearsNeedtoChange = dateArray[i];
+
+      if (+yearsNeedtoChange < 30) {
+        yearsNeedtoChange = '20' + yearsNeedtoChange;
+      } else if (yearsNeedtoChange === '00') {
+        yearsNeedtoChange = '2000';
+      } else {
+        yearsNeedtoChange = '19' + yearsNeedtoChange;
+      }
+      formatedDate[yearsFormatIndex] = yearsNeedtoChange;
+    }
+
+    if (fromFormat[i] === monthFormat) {
+      formatedDate[monthFormatIndex] = dateArray[i];
+    }
+
+    if (fromFormat[i] === daysFormat) {
+      formatedDate[daysFormatIndex] = dateArray[i];
+    }
+  }
+
+  return formatedDate.join(joiner);
 }
 
 module.exports = formatDate;
