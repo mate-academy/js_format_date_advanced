@@ -78,124 +78,121 @@ function formatDate(date, fromFormat, toFormat) {
     };
   };
 
-  const nD = date.split(separator);
-  const oldFormat = nD.concat(separator);
+  const fromDate = date.split(separator);
+  const oldFormat = fromDate.concat(separator);
   const newSeparator = toFormat.pop();
-  // const sep = fromFormat.pop();
   let fromFormat1 = [];
 
   if (countFrom === countTo) {
     for (let i = 0; i < fromFormat.length; i++) {
       if (fromFormat[i] !== toFormat[i]) {
-        fromFormat1 = nD.reverse();
+        fromFormat1 = fromDate.reverse();
         break;
       }
 
       if (fromFormat[i] === toFormat[i]) {
-        fromFormat1 = nD;
+        fromFormat1 = fromDate;
         break;
       }
     };
   };
 
-  let nD0;
-  let nDlast;
-  let temp;
-  let temp1;
+  let firstItem;
+  let lastItem;
+  let year;
+  let yearPart;
 
   if (countFrom < countTo) {
     if (fromSplit[0] === 'Y' && fromSplit[0] === toSplit[0]) {
       if (+oldFormat[0] < 30) {
-        nD0 = nD.shift();
-        temp = 20 + nD0;
-        nD.unshift(temp);
-        fromFormat1 = nD;
+        firstItem = fromDate.shift();
+        year = 20 + firstItem;
+        fromDate.unshift(year);
+        fromFormat1 = fromDate;
       } else {
-        nD0 = nD.shift();
-        temp = 19 + nD0;
-        nD.unshift(temp);
-        fromFormat1 = nD;
+        firstItem = fromDate.shift();
+        year = 19 + firstItem;
+        fromDate.unshift(year);
+        fromFormat1 = fromDate;
       };
     };
 
     if (fromSplit[0] === 'Y' && fromSplit[0] !== toSplit[0]) {
       if (+oldFormat[0] < 30) {
-        nD0 = nD.shift();
-        temp = 20 + nD0;
-        nD.unshift(temp);
-        fromFormat1 = nD.reverse();
+        firstItem = fromDate.shift();
+        year = 20 + firstItem;
+        fromDate.unshift(year);
+        fromFormat1 = fromDate.reverse();
       } else {
-        nD0 = nD.shift();
-        temp = 19 + nD0;
-        nD.unshift(temp);
-        fromFormat1 = nD.reverse();
+        firstItem = fromDate.shift();
+        year = 19 + firstItem;
+        fromDate.unshift(year);
+        fromFormat1 = fromDate.reverse();
       };
     };
 
     if (fromSplit[6] === 'Y' && fromSplit[6] === toSplit[6]) {
       if (+oldFormat[0] < 30) {
-        nDlast = nD.pop();
-        temp = 20 + nDlast;
-        nD.push(temp);
-        fromFormat1 = nD;
+        lastItem = fromDate.pop();
+        year = 20 + lastItem;
+        fromDate.push(year);
+        fromFormat1 = fromDate;
       } else {
-        nDlast = nD.pop();
-        temp = 19 + nDlast;
-        nD.push(temp);
-        fromFormat1 = nD;
+        lastItem = fromDate.pop();
+        year = 19 + lastItem;
+        fromDate.push(year);
+        fromFormat1 = fromDate;
       }
     };
 
     if (fromSplit[6] === 'Y' && fromSplit[6] !== toSplit[6]) {
       if (+oldFormat[0] < 30) {
-        nDlast = nD.pop();
-        temp = 20 + nDlast;
-        nD.push(temp);
-        fromFormat1 = nD.reverse();
+        lastItem = fromDate.pop();
+        year = 20 + lastItem;
+        fromDate.push(year);
+        fromFormat1 = fromDate.reverse();
       } else {
-        nDlast = nD.pop();
-        temp = 19 + nDlast;
-        nD.push(temp);
-        fromFormat1 = nD.reverse;
+        lastItem = fromDate.pop();
+        year = 19 + lastItem;
+        fromDate.push(year);
+        fromFormat1 = fromDate.reverse;
       }
     }
   };
 
   if (countFrom > countTo) {
     if (fromSplit[0] === 'Y' && fromSplit[0] === toSplit[0]) {
-      temp = nD.shift();
-      temp1 = temp.split('');
-      nDlast = temp1[2] + temp1[3];
-      nD.concat(nDlast);
-      fromFormat1 = nD;
+      year = fromDate.shift();
+      yearPart = year.split('');
+      lastItem = yearPart[2] + yearPart[3];
+      fromDate.concat(lastItem);
+      fromFormat1 = fromDate;
     }
 
     if (fromSplit[0] === 'Y' && fromSplit[0] !== toSplit[0]) {
-      temp = nD.shift();
-      temp1 = temp.split('');
-      nDlast = temp1[2] + temp1[3];
-      nD.concat(nDlast);
-      fromFormat1 = nD.reverse();
+      year = fromDate.shift();
+      yearPart = year.split('');
+      lastItem = yearPart[2] + yearPart[3];
+      fromDate.concat(lastItem);
+      fromFormat1 = fromDate.reverse();
     };
 
     if (fromSplit[6] === 'Y' && fromSplit[6] === toSplit[6]) {
-      temp = nD.pop();
-      temp1 = temp.split('');
-      nDlast = temp1[2] + temp1[3];
-      fromFormat1 = nD.concat(nDlast);
+      year = fromDate.pop();
+      yearPart = year.split('');
+      lastItem = yearPart[2] + yearPart[3];
+      fromFormat1 = fromDate.concat(lastItem);
     }
 
     if (fromSplit[6] === 'Y' && fromSplit[6] !== toSplit[6]) {
-      temp = nD.pop();
-      temp1 = temp.split('');
-      nDlast = temp1[2] + temp1[3];
-      nD.concat(nDlast);
-      fromFormat1 = nD.reverse();
+      year = fromDate.pop();
+      yearPart = year.split('');
+      lastItem = yearPart[2] + yearPart[3];
+      fromDate.concat(lastItem);
+      fromFormat1 = fromDate.reverse();
     }
   };
 
-  // const newFormat = fromFormat1.concat(separator);
-  // let dateFormat = fromFormat.splice(0, fromFormat.length, ...newFormat);
   const newDate1 = fromFormat1.join(newSeparator);
 
   return newDate1;
