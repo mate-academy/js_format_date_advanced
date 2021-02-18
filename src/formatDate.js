@@ -50,7 +50,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
   let newFormatDate = date.split(fromFormat[3]);
 
   if (fromFormat.indexOf('DD') !== toFormat.indexOf('DD')) {
@@ -59,22 +58,26 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (fromFormat[0].length > toFormat[0].length) {
     newFormatDate[0].slice(2);
-  } else if (newFormatDate[0].length < toFormat[0].length) {
-    if (+newFormatDate[0] < 30) {
-      newFormatDate[0] = `20${newFormatDate[0]}`;
-    } else if (+newFormatDate[0] >= 30) {
-      newFormatDate[0] = `19${newFormatDate[0]}`;
-    }
   }
 
   if (fromFormat[2].length > toFormat[2].length) {
     newFormatDate[2] = newFormatDate[2].slice(2);
-  } else if (newFormatDate[2].length < toFormat[2].length) {
-    if (+newFormatDate[2] < 30) {
-      newFormatDate[2] = `20${newFormatDate[2]}`;
-    } else if (+newFormatDate[2] >= 30) {
-      newFormatDate[2] = `19${newFormatDate[2]}`;
-    }
+  }
+
+  if (newFormatDate[0].length < toFormat[0].length && +newFormatDate[0] < 30) {
+    newFormatDate[0] = `20${newFormatDate[0]}`;
+  }
+
+  if (newFormatDate[0].length < toFormat[0].length && +newFormatDate[0] >= 30) {
+    newFormatDate[0] = `19${newFormatDate[0]}`;
+  }
+
+  if (newFormatDate[2].length < toFormat[2].length && +newFormatDate[2] < 30) {
+    newFormatDate[2] = `20${newFormatDate[2]}`;
+  }
+
+  if (newFormatDate[0].length < toFormat[0].length && +newFormatDate[0] >= 30) {
+    newFormatDate[2] = `19${newFormatDate[2]}`;
   }
 
   return newFormatDate.join(toFormat[3]);
