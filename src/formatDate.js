@@ -54,30 +54,36 @@ function formatDate(date, fromFormat, toFormat) {
   const changedDate = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (toFormat[i] === 'DD') {
-      changedDate.push(oldDate[fromFormat.indexOf('DD')]);
-    } else if (toFormat[i] === 'MM') {
-      changedDate.push(oldDate[fromFormat.indexOf('MM')]);
-    } else if (toFormat[i] === 'YY') {
-      if (fromFormat.includes('YY')) {
-        changedDate.push(oldDate[fromFormat.indexOf('YY')]);
-      } else {
-        changedDate.push(oldDate[fromFormat.indexOf('YYYY')].slice(2));
-      }
-    } else if (toFormat[i] === 'YYYY') {
-      if (fromFormat.includes('YYYY')) {
-        changedDate.push(oldDate[fromFormat.indexOf('YYYY')]);
-      } else if (fromFormat.includes('YY')) {
-        if (oldDate[fromFormat.indexOf('YY')] < 30) {
+    switch (toFormat[i]) {
+      case 'DD':
+        changedDate.push(oldDate[fromFormat.indexOf('DD')]);
+        break;
+
+      case 'MM':
+        changedDate.push(oldDate[fromFormat.indexOf('MM')]);
+        break;
+
+      case 'YY':
+        if (fromFormat.includes('YY')) {
+          changedDate.push(oldDate[fromFormat.indexOf('YY')]);
+        } else {
+          changedDate.push(oldDate[fromFormat.indexOf('YYYY')].slice(2));
+        }
+        break;
+
+      case 'YYYY':
+        if (fromFormat.includes('YYYY')) {
+          changedDate.push(oldDate[fromFormat.indexOf('YYYY')]);
+        } else if (oldDate[fromFormat.indexOf('YY')] < 30) {
           changedDate.push(`20${oldDate[fromFormat.indexOf('YY')]}`);
         } else {
           changedDate.push(`19${oldDate[fromFormat.indexOf('YY')]}`);
         }
-      }
+        break;
     }
   }
 
   return changedDate.join(toFormat[3]);
-}
+};
 
 module.exports = formatDate;
