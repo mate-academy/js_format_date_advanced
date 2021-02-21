@@ -50,7 +50,32 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const uniDate = uniDateGet(date, fromFormat);
+  const res = [];
+
+  res.push(uniDate[toFormat[0]]);
+  res.push(uniDate[toFormat[1]]);
+  res.push(uniDate[toFormat[2]]);
+
+  return res.join(toFormat[3]);
 }
 
+function uniDateGet(date, fromFormat) {
+  const dateArr = date.split(fromFormat[3]);
+  const uniDate = {};
+
+  uniDate[fromFormat[0]] = dateArr[0];
+  uniDate[fromFormat[1]] = dateArr[1];
+  uniDate[fromFormat[2]] = dateArr[2];
+
+  if (uniDate['YY'] === undefined) {
+    uniDate['YY'] = uniDate['YYYY'].slice(-2);
+  } else {
+    const firstTwo = uniDate['YY'] < 30 ? '20' : '19';
+
+    uniDate['YYYY'] = firstTwo + uniDate['YY'];
+  }
+
+  return uniDate;
+}
 module.exports = formatDate;
