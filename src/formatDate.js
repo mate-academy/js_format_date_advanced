@@ -56,45 +56,43 @@ function formatDate(date, fromFormat, toFormat) {
   let day;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      year = newDate[i];
-    }
-
-    if (fromFormat[i] === 'MM') {
-      month = newDate[i];
-    }
-
-    if (fromFormat[i] === 'DD') {
-      day = newDate[i];
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        year = newDate[i];
+        break;
+      case 'YY':
+        year = newDate[i];
+        break;
+      case 'MM':
+        month = newDate[i];
+        break;
+      case 'DD':
+        day = newDate[i];
     }
   }
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (toFormat[i] === 'YYYY' && year.length > 2) {
-      newDate[i] = year;
-    }
-
-    if (toFormat[i] === 'YYYY' && year.length < 4) {
-      if (year >= 30) {
+    switch (true) {
+      case toFormat[i] === 'YYYY' && year.length > 2:
+        newDate[i] = year;
+        break;
+      case toFormat[i] === 'YY' && year.length > 2:
+        year = year.slice(2, 4);
+        newDate[i] = year;
+        break;
+      case toFormat[i] === 'MM':
+        newDate[i] = month;
+        break;
+      case toFormat[i] === 'DD':
+        newDate[i] = day;
+        break;
+      case toFormat[i] === 'YYYY' && year.length < 4 && year >= 30:
         year = '19' + year;
-      } else {
+        newDate[i] = year;
+        break;
+      case toFormat[i] === 'YYYY' && year.length < 4 && year < 30:
         year = '20' + year;
-      }
-
-      newDate[i] = year;
-    }
-
-    if (toFormat[i] === 'YY' && year.length > 2) {
-      year = year.slice(2, 4);
-      newDate[i] = year;
-    }
-
-    if (toFormat[i] === 'MM') {
-      newDate[i] = month;
-    }
-
-    if (toFormat[i] === 'DD') {
-      newDate[i] = day;
+        newDate[i] = year;
     }
   }
 
