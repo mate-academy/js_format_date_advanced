@@ -76,16 +76,16 @@ function formatDate(date, fromFormat, toFormat) {
     oldFormat[oldFormat.indexOf('YYYY')] = 'YY';
   }
 
-  const oldFormatOnject = {};
+  const oldFormatObject = {};
 
   for (const x in oldFormat) {
-    oldFormatOnject[oldFormat[x]] = time[x];
+    oldFormatObject[oldFormat[x]] = time[x];
   }
 
   const newFormatObject = {};
 
   for (const x in newFormat) {
-    newFormatObject[newFormat[x]] = oldFormatOnject[newFormat[x]];
+    newFormatObject[newFormat[x]] = oldFormatObject[newFormat[x]];
   }
 
   return Object.values(newFormatObject).join(separatorNew);
