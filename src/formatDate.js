@@ -60,12 +60,17 @@ function formatDate(date, fromFormat, toFormat) {
   separator = toFormat[3];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = startingDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      month = startingDate[i];
-    } else {
-      year = startingDate[i];
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = startingDate[i];
+        break;
+
+      case 'MM':
+        month = startingDate[i];
+        break;
+
+      default:
+        year = startingDate[i];
     }
   }
 
@@ -82,12 +87,17 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      output.push(day);
-    } else if (toFormat[i] === 'MM') {
-      output.push(month);
-    } else {
-      output.push(year);
+    switch (toFormat[i]) {
+      case 'DD':
+        output.push(day);
+        break;
+
+      case 'MM':
+        output.push(month);
+        break;
+
+      default:
+        output.push(year);
     }
   }
 
