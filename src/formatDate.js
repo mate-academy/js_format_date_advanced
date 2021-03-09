@@ -51,6 +51,55 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldDate = date.split(fromFormat[fromFormat.length - 1]);
+  let year = '';
+  let month = '';
+  let day = '';
+  const newDate = [];
+
+  for (let i = 0; i < oldDate.length; i++) {
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      year = oldDate[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = oldDate[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = oldDate[i];
+    }
+  }
+
+  if (toFormat.includes('YYYY') && fromFormat.includes('YYYY')) {
+    newDate[toFormat.indexOf('YYYY')] = year;
+  }
+
+  if (toFormat.includes('YY') && fromFormat.includes('YY')) {
+    newDate[toFormat.indexOf('YY')] = year;
+  }
+
+  if (toFormat.includes('YY') && fromFormat.includes('YYYY')) {
+    newDate[toFormat.indexOf('YY')] = year.slice(2);
+  }
+
+  if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
+    if (year > 21) {
+      newDate[toFormat.indexOf('YYYY')] = '19' + year;
+    } else {
+      newDate[toFormat.indexOf('YYYY')] = '20' + year;
+    }
+  }
+
+  if (toFormat.includes('MM')) {
+    newDate[toFormat.indexOf('MM')] = month;
+  }
+
+  if (toFormat.includes('DD')) {
+    newDate[toFormat.indexOf('DD')] = day;
+  }
+
+  return newDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
