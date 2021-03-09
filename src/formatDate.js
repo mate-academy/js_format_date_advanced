@@ -82,13 +82,13 @@ function formatDate(date, fromFormat, toFormat) {
     oldFormatObject[oldFormat[x]] = time[x];
   }
 
-  const newFormatObject = {};
+  const result = [];
 
   for (const x in newFormat) {
-    newFormatObject[newFormat[x]] = oldFormatObject[newFormat[x]];
+    result.push(oldFormatObject[newFormat[x]]);
   }
 
-  return Object.values(newFormatObject).join(separatorNew);
+  return result.join(separatorNew);
 };
 
 module.exports = formatDate;
