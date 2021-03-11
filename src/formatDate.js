@@ -50,44 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateToChange = date.split(fromFormat[3]);
-  let fromYearFormat = 0;
-  let toYearFormat = 0;
-  const separator = toFormat[3];
+  const dateToChange = date.split(fromFormat[fromFormat.length - 1]);
+  const separator = toFormat[toFormat.length - 1];
+  let fromYearFormat;
+  let toYearFormat;
+  let fromYearIndex;
+  let toYearIndex;
+  const result = [];
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].startsWith('Y')) {
-      fromYearFormat = fromFormat[i].length;
-      fromFormat[i] = 'Y';
-    }
+  if (fromFormat.includes('YY')) {
+    fromYearFormat = 2;
+    fromYearIndex = fromFormat.indexOf('YY');
+  } else {
+    fromYearFormat = 4;
+    fromYearIndex = fromFormat.indexOf('YYYY');
+  }
 
-    if (toFormat[i].startsWith('Y')) {
-      toYearFormat = toFormat[i].length;
-      toFormat[i] = 'Y';
+  if (toFormat.includes('YY')) {
+    toYearFormat = 2;
+    toYearIndex = toFormat.indexOf('YY');
+  } else {
+    toYearFormat = 4;
+    toYearIndex = toFormat.indexOf('YYYY');
+  }
+
+  fromFormat[fromYearIndex] = 'Y';
+  toFormat[toYearIndex] = 'Y';
+
+  if (fromYearFormat === 4 && toYearFormat === 2) {
+    dateToChange[fromYearIndex] = dateToChange[fromYearIndex].slice(2);
+  } else if (fromYearFormat === 2 && toYearFormat === 4) {
+    if (Number(dateToChange[fromYearIndex]) < 30) {
+      dateToChange[fromYearIndex] = `20${dateToChange[fromYearIndex]}`;
+    } else {
+      dateToChange[fromYearIndex] = `19${dateToChange[fromYearIndex]}`;
     }
   }
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    const idx = toFormat.indexOf(fromFormat[i]);
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const index = fromFormat.indexOf(toFormat[i]);
 
-    toFormat[idx] = dateToChange[i];
-
-    if (fromFormat[i] === 'Y') {
-      if (fromYearFormat === 4 && toYearFormat === 2) {
-        toFormat[idx] = dateToChange[i].slice(2);
-      } else if (fromYearFormat === 2 && toYearFormat === 4) {
-        if (Number(dateToChange[i]) < 30) {
-          toFormat[idx] = `20${dateToChange[i]}`;
-        } else {
-          toFormat[idx] = `19${dateToChange[i]}`;
-        }
-      }
-    }
+    result[result.length] = dateToChange[index];
   }
 
-  const result = toFormat.slice(0, 3).join(separator);
-
-  return result;
+  return result.join(separator);
 }
 
 module.exports = formatDate;
