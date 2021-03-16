@@ -86,53 +86,5 @@ function formatDate(date, fromFormat, toFormat) {
 
   return res.join(toFormat[3]);
 }
-// function formatDate(date, fromFormat, toFormat) {
-//   const dateArr = date.split(fromFormat[3]);
-
-//   if (fromFormat[0] !== 'DD' && fromFormat[1] !== 'DD') {
-//     dateArr.reverse();
-//   }
-
-//   const year = dateArr[2].split('');
-
-//   if (toFormat[0] !== 'DD' && toFormat[1] !== 'DD') {
-//     dateArr.reverse();
-
-//     if (toFormat[0] === 'YYYY') {
-//       if (year.length === 2) {
-//         if (dateArr[0] >= 30) {
-//           dateArr[0] = 1900 + +dateArr[0];
-//         } else {
-//           dateArr[0] = 2000 + +dateArr[0];
-//         }
-//       }
-//     } else if (toFormat[2] === 'YY') {
-//       if (year.length > 2) {
-//         dateArr[0] = year.shift().shift().join('');
-//         // dateArr[2] = year.join('');
-//       }
-//     }
-
-//     return dateArr.join(toFormat[3]);
-//   } else {
-//     if (toFormat[2] === 'YYYY') {
-//       if (year.length === 2) {
-//         if (dateArr[2] > 30) {
-//           dateArr[2] = 1900 + +dateArr[2];
-//         } else {
-//           dateArr[2] = 2000 + +dateArr[2];
-//         }
-//       }
-//     } else if (toFormat[2] === 'YY') {
-//       if (year.length > 2) {
-//         year.shift();
-//         year.shift();
-//         dateArr[2] = year.join('');
-//       }
-//     }
-
-//     return dateArr.join(toFormat[3]);
-//   }
-// }
 
 module.exports = formatDate;
