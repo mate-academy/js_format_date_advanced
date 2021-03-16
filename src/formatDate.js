@@ -59,80 +59,37 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < dateArr.length; i++) {
-    if (toFormat[i] === 'YYYY') {
-      if (!dateObj.hasOwnProperty(toFormat[i])) {
-        if (dateObj['YY'] >= 30) {
-          res.push(1900 + +dateObj['YY']);
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (!dateObj.hasOwnProperty(toFormat[i])) {
+          if (dateObj['YY'] >= 30) {
+            res.push(1900 + +dateObj['YY']);
+          } else {
+            res.push(2000 + +dateObj['YY']);
+          }
         } else {
-          res.push(2000 + +dateObj['YY']);
+          res.push(+dateObj[toFormat[i]]);
         }
-      } else {
-        res.push(+dateObj[toFormat[i]]);
-      }
-    } else if (toFormat[i] === 'YY') {
-      if (!dateObj.hasOwnProperty(toFormat[i])) {
-        const help = dateObj['YYYY'].split('');
+        break;
 
-        help.shift();
-        help.shift();
-        res.push(help.join(''));
-      } else {
-        res.push(+dateObj[toFormat[i]]);
-      }
-    } else {
-      res.push(dateObj[toFormat[i]]);
+      case 'YY':
+        if (!dateObj.hasOwnProperty(toFormat[i])) {
+          const help = dateObj['YYYY'].split('');
+
+          help.shift();
+          help.shift();
+          res.push(help.join(''));
+        } else {
+          res.push(+dateObj[toFormat[i]]);
+        }
+        break;
+      default:
+        res.push(dateObj[toFormat[i]]);
+        break;
     }
   }
 
   return res.join(toFormat[3]);
 }
-// function formatDate(date, fromFormat, toFormat) {
-//   const dateArr = date.split(fromFormat[3]);
-
-//   if (fromFormat[0] !== 'DD' && fromFormat[1] !== 'DD') {
-//     dateArr.reverse();
-//   }
-
-//   const year = dateArr[2].split('');
-
-//   if (toFormat[0] !== 'DD' && toFormat[1] !== 'DD') {
-//     dateArr.reverse();
-
-//     if (toFormat[0] === 'YYYY') {
-//       if (year.length === 2) {
-//         if (dateArr[0] >= 30) {
-//           dateArr[0] = 1900 + +dateArr[0];
-//         } else {
-//           dateArr[0] = 2000 + +dateArr[0];
-//         }
-//       }
-//     } else if (toFormat[2] === 'YY') {
-//       if (year.length > 2) {
-//         dateArr[0] = year.shift().shift().join('');
-//         // dateArr[2] = year.join('');
-//       }
-//     }
-
-//     return dateArr.join(toFormat[3]);
-//   } else {
-//     if (toFormat[2] === 'YYYY') {
-//       if (year.length === 2) {
-//         if (dateArr[2] > 30) {
-//           dateArr[2] = 1900 + +dateArr[2];
-//         } else {
-//           dateArr[2] = 2000 + +dateArr[2];
-//         }
-//       }
-//     } else if (toFormat[2] === 'YY') {
-//       if (year.length > 2) {
-//         year.shift();
-//         year.shift();
-//         dateArr[2] = year.join('');
-//       }
-//     }
-
-//     return dateArr.join(toFormat[3]);
-//   }
-// }
 
 module.exports = formatDate;
