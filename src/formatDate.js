@@ -14,7 +14,7 @@
  *
  * formatDate(
  *   '2020-02-18',
- *   ['YYYY', 'MM', 'DD', '-'],
+ *   [''YYYY'', 'MM', 'DD', '-'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arr = date.split(fromFormat[3]);
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    const i = fromFormat.indexOf('YYYY');
+
+    arr[i] = arr[i].substr(2);
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    const i = fromFormat.indexOf('YY');
+
+    if (+(arr[i]) >= 30) {
+      arr[i] = `19${arr[i]}`;
+    }
+
+    if (+(arr[i]) < 30) {
+      arr[i] = `20${arr[i]}`;
+    }
+  }
+
+  if (fromFormat[0] === 'DD' && toFormat[0] !== 'DD') {
+    return arr.reverse().join(toFormat[3]);
+  }
+
+  if (fromFormat[2] === 'DD' && toFormat[2] !== 'DD') {
+    return arr.reverse().join(toFormat[3]);
+  }
+
+  return arr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
