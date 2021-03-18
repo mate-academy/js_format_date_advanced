@@ -14,7 +14,7 @@
  *
  * formatDate(
  *   '2020-02-18',
- *   ['YYYY', 'MM', 'DD', '-'],
+ *   [''YYYY'', 'MM', 'DD', '-'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arr = date.split(fromFormat[3]);
+  const newDate = [0, 1, 3];
+  const day = arr[fromFormat.indexOf('DD')];
+  const month = arr[fromFormat.indexOf('MM')];
+  let shortYear = arr[fromFormat.indexOf('YY')];
+  let fullYear = arr[fromFormat.indexOf('YYYY')];
+
+  if (fromFormat.includes('YYYY')) {
+    if (toFormat.includes('YY')) {
+      fullYear = fullYear.substr(2);
+
+      newDate[toFormat.indexOf('YY')] = fullYear;
+    }
+
+    if (toFormat.includes('YYYY')) {
+      newDate[toFormat.indexOf('YYYY')] = fullYear;
+    }
+  }
+
+  if (fromFormat.includes('YY')) {
+    if (toFormat.includes('YYYY')) {
+      if (+(shortYear) >= 30) {
+        shortYear = `19${shortYear}`;
+      }
+
+      if (+(shortYear) < 30) {
+        shortYear = `20${shortYear}`;
+      }
+
+      newDate[toFormat.indexOf('YYYY')] = shortYear;
+    }
+
+    if (toFormat.includes('YY')) {
+      newDate[toFormat.indexOf('YY')] = shortYear;
+    }
+  }
+
+  newDate[toFormat.indexOf('DD')] = day;
+  newDate[toFormat.indexOf('MM')] = month;
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
