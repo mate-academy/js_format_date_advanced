@@ -51,34 +51,46 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const arr = date.split(fromFormat[3]);
+  const newDate = [0, 1, 3];
+  const day = arr[fromFormat.indexOf('DD')];
+  const month = arr[fromFormat.indexOf('MM')];
+  let shortYear = arr[fromFormat.indexOf('YY')];
+  let fullYear = arr[fromFormat.indexOf('YYYY')];
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const i = fromFormat.indexOf('YYYY');
+  if (fromFormat.includes('YYYY')) {
+    if (toFormat.includes('YY')) {
+      fullYear = fullYear.substr(2);
 
-    arr[i] = arr[i].substr(2);
-  }
-
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const i = fromFormat.indexOf('YY');
-
-    if (+(arr[i]) >= 30) {
-      arr[i] = `19${arr[i]}`;
+      newDate[toFormat.indexOf('YY')] = fullYear;
     }
 
-    if (+(arr[i]) < 30) {
-      arr[i] = `20${arr[i]}`;
+    if (toFormat.includes('YYYY')) {
+      newDate[toFormat.indexOf('YYYY')] = fullYear;
     }
   }
 
-  if (fromFormat[0] === 'DD' && toFormat[0] !== 'DD') {
-    return arr.reverse().join(toFormat[3]);
+  if (fromFormat.includes('YY')) {
+    if (toFormat.includes('YYYY')) {
+      if (+(shortYear) >= 30) {
+        shortYear = `19${shortYear}`;
+      }
+
+      if (+(shortYear) < 30) {
+        shortYear = `20${shortYear}`;
+      }
+
+      newDate[toFormat.indexOf('YYYY')] = shortYear;
+    }
+
+    if (toFormat.includes('YY')) {
+      newDate[toFormat.indexOf('YY')] = shortYear;
+    }
   }
 
-  if (fromFormat[2] === 'DD' && toFormat[2] !== 'DD') {
-    return arr.reverse().join(toFormat[3]);
-  }
+  newDate[toFormat.indexOf('DD')] = day;
+  newDate[toFormat.indexOf('MM')] = month;
 
-  return arr.join(toFormat[3]);
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
