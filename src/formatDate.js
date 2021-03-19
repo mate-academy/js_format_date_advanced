@@ -52,9 +52,8 @@
 function formatDate(date, fromFormat, toFormat) {
   const obj = {};
   const result = [];
-  const str = date.split(fromFormat[3]);
 
-  [obj[fromFormat[0]], obj[fromFormat[1]], obj[fromFormat[2]]] = str;
+  [obj[fromFormat[0]], obj[fromFormat[1]], obj[fromFormat[2]]] = date.split(fromFormat[3]);
 
   if ('YY' in obj) {
     obj.YYYY = obj.YY >= 30 ? 1900 + parseInt(obj.YY) : 2000 + parseInt(obj.YY);
