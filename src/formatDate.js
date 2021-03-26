@@ -49,50 +49,32 @@
  * @returns {string}
  */
 
-const getDateFromFormat = (date, fromFormat) => {
-  const dateUnits = {
-    year: '',
-    month: '',
-    day: '',
-  };
-
-  const splitDate = date.split(fromFormat.slice(-1));
-
-  for (let i = 0; i < splitDate.length; i++) {
-    if (fromFormat[i].includes('Y')) {
-      dateUnits.year = splitDate[i];
-    } else if (fromFormat[i].includes('M')) {
-      dateUnits.month = splitDate[i];
-    } else {
-      dateUnits.day = splitDate[i];
-    }
-  }
-
-  return dateUnits;
-};
-
-const formatYear = (year, format) => {
+const formatYear = (date) => {
   const threshold = 30;
 
-  if (format.length === 2) {
-    return year.slice(-2);
+  if ('YYYY' in date) {
+    date['YY'] = date['YYYY'].slice(-2);
   } else {
-    return year.padStart(4, year.slice(-2) < threshold ? '20' : '19');
+    date['YYYY'] = date['YY'].padStart(
+      4, date['YY'] < threshold ? '20' : '19'
+    );
   }
 };
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateUnits = getDateFromFormat(date, fromFormat);
+  const dateUnits = {};
+  const splitDate = date.split(fromFormat.slice(-1));
+
+  for (let i = 0; i < splitDate.length; i++) {
+    dateUnits[fromFormat[i]] = splitDate[i];
+  }
+
+  formatYear(dateUnits);
+
   const formattedDate = [];
 
-  for (const format of toFormat) {
-    if (format.includes('Y')) {
-      formattedDate.push(formatYear(dateUnits.year, format));
-    } else if (format.includes('M')) {
-      formattedDate.push(dateUnits.month);
-    } else if (format.includes('D')) {
-      formattedDate.push(dateUnits.day);
-    }
+  for (const format of toFormat.slice(0, -1)) {
+    formattedDate.push(dateUnits[format]);
   }
 
   return formattedDate.join(toFormat.slice(-1));
