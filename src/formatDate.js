@@ -50,7 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newDate = '';
+  const temporaryDate = date.split(fromFormat[3]);
+  const dateObject = {};
+
+  if (fromFormat[0] === 'DD') {
+    dateObject.day = temporaryDate[0];
+  } else if (fromFormat[1] === 'DD') {
+    dateObject.day = temporaryDate[1];
+  } else {
+    dateObject.day = temporaryDate[2];
+  }
+
+  if (fromFormat[1] === 'MM') {
+    dateObject.month = temporaryDate[1];
+  } else {
+    dateObject.month = temporaryDate[0];
+  }
+
+  if (toFormat.join().length > fromFormat.join().length) {
+    if (fromFormat[0].includes('Y')) {
+      dateObject.year = (temporaryDate[0] >= 30)
+        ? '19' + temporaryDate[0]
+        : '20' + temporaryDate[0];
+    } else {
+      dateObject.year = (temporaryDate[2] >= 30)
+        ? ('19' + temporaryDate[2])
+        : ('20' + temporaryDate[2]);
+    }
+  }
+
+  if (toFormat.join().length === fromFormat.join().length) {
+    dateObject.year = (fromFormat[0].includes('Y'))
+      ? temporaryDate[0]
+      : temporaryDate[2];
+  }
+
+  if (toFormat.join().length < fromFormat.join().length) {
+    dateObject.year = (fromFormat[0].includes('Y'))
+      ? date.slice(2, 4)
+      : date.slice(8, 10);
+  }
+
+  if (toFormat[0].includes('D')) {
+    newDate = dateObject.day + toFormat[3] + dateObject.month
+      + toFormat[3] + dateObject.year;
+  }
+
+  if (toFormat[0].includes('M')) {
+    newDate = dateObject.month + toFormat[3] + dateObject.day
+      + toFormat[3] + dateObject.year;
+  }
+
+  if (toFormat[0].includes('Y')) {
+    newDate = dateObject.year + toFormat[3] + dateObject.month
+      + toFormat[3] + dateObject.day;
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
