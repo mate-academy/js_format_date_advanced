@@ -63,38 +63,50 @@ function formatDate(date, fromFormat, toFormat) {
   const fromDateArr = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].includes('Y')) {
-      fromYear = fromDateArr[i];
-    } else if (fromFormat[i].includes('M')) {
-      fromMonth = fromDateArr[i];
-    } else if (fromFormat[i].includes('D')) {
-      fromDay = fromDateArr[i];
+    const temp = (fromFormat[i][0]);
+
+    switch (temp) {
+      case 'Y':
+        fromYear = fromDateArr[i];
+        break;
+      case 'M':
+        fromMonth = fromDateArr[i];
+        break;
+      case 'D':
+        fromDay = fromDateArr[i];
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i].includes('Y')) {
-      if (toFormat[i].length === 4 && fromYear.length === 4) {
-        newYear = fromYear;
-        result.push(newYear);
-      } else if (toFormat[i].length === 4 && fromYear.length === 2) {
-        if (fromYear < 30) {
-          newYear = '20' + fromYear;
+    const temp = toFormat[i][0];
+
+    switch (temp) {
+      case 'Y':
+        if (toFormat[i].length === 4 && fromYear.length === 4) {
+          newYear = fromYear;
           result.push(newYear);
-        } else {
-          newYear = '19' + fromYear;
+        } else if (toFormat[i].length === 4 && fromYear.length === 2) {
+          if (fromYear < 30) {
+            newYear = '20' + fromYear;
+            result.push(newYear);
+          } else {
+            newYear = '19' + fromYear;
+            result.push(newYear);
+          }
+        } else if (toFormat[i].length === 2 && fromYear.length === 4) {
+          newYear = fromYear.slice(-2);
           result.push(newYear);
         }
-      } else if (toFormat[i].length === 2 && fromYear.length === 4) {
-        newYear = fromYear.slice(-2);
-        result.push(newYear);
-      }
-    } else if (toFormat[i].includes('M')) {
-      newMonth = fromMonth;
-      result.push(newMonth);
-    } else if (toFormat[i].includes('D')) {
-      newDay = fromDay;
-      result.push(newDay);
+        break;
+      case 'M':
+        newMonth = fromMonth;
+        result.push(newMonth);
+        break;
+      case 'D':
+        newDay = fromDay;
+        result.push(newDay);
+        break;
     }
   }
 
