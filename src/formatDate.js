@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateMap = initDateMap(date, fromFormat);
+  let formatedDate = String();
+  const toSeparator = toFormat[3];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    formatedDate += getDatePart(toFormat[i], dateMap) + toSeparator;
+  }
+
+  return formatedDate.substr(0, formatedDate.length - 1);
+}
+
+function initDateMap(date, fromFormat) {
+  const rawDate = getNoSeparatorDate(date, fromFormat);
+  const dateMap = new Map();
+  let currentLength = 0;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const leftIndex = currentLength;
+    const rightIndex = leftIndex + fromFormat[i].length;
+    const typeKey = fromFormat[i].charAt(0);
+
+    dateMap.set(typeKey, rawDate.substring(leftIndex, rightIndex));
+    currentLength += fromFormat[i].length;
+  }
+
+  return dateMap;
+}
+
+function getDatePart(dateMapping, map) {
+  const key = dateMapping.charAt(0);
+
+  if (key === 'Y') {
+    return convertYear(map.get(key), dateMapping);
+  }
+
+  return map.get(key);
+}
+
+function convertYear(value, mapping) {
+  if (value.length >= mapping.length) {
+    return value.substr(value.length - mapping.length, mapping.length);
+  }
+
+  return Number(value) < 30 ? '20' + value : '19' + value;
+}
+
+function getNoSeparatorDate(date, format) {
+  const separator = format[3] === '.' ? '\\.' : format[3];
+  const dilimeterRegex = new RegExp(separator, 'g');
+
+  return date.replace(dilimeterRegex, '');
 }
 
 module.exports = formatDate;
