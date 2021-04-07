@@ -63,16 +63,19 @@ function formatDate(date, fromFormat, toFormat) {
   const fromDateArr = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length; i++) {
-    const temp = (fromFormat[i][0]);
+    const temp = (fromFormat[i]);
 
     switch (temp) {
-      case 'Y':
+      case 'YY':
         fromYear = fromDateArr[i];
         break;
-      case 'M':
+      case 'YYYY':
+        fromYear = fromDateArr[i];
+        break;
+      case 'MM':
         fromMonth = fromDateArr[i];
         break;
-      case 'D':
+      case 'DD':
         fromDay = fromDateArr[i];
         break;
     }
@@ -83,7 +86,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     switch (temp) {
       case 'Y':
-        if (toFormat[i].length === 4 && fromYear.length === 4) {
+        if (toFormat[i].length === fromYear.length) {
           newYear = fromYear;
           result.push(newYear);
         } else if (toFormat[i].length === 4 && fromYear.length === 2) {
