@@ -50,42 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateMap = initDateMap(date, fromFormat);
-  let formatedDate = String();
+  const dateObj = initOjectDate(date, fromFormat);
+
+  return formResultDate(dateObj, toFormat);
+}
+
+function formResultDate(dateObj, toFormat) {
   const toSeparator = toFormat[3];
+  let resultDate = String();
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    formatedDate += getDatePart(toFormat[i], dateMap) + toSeparator;
+    switch (toFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        resultDate += convertYear(dateObj.year, toFormat[i]) + toSeparator;
+        break;
+      case 'DD':
+        resultDate += dateObj.day + toSeparator;
+        break;
+      case 'MM':
+        resultDate += dateObj.month + toSeparator;
+    }
   }
 
-  return formatedDate.substr(0, formatedDate.length - 1);
+  return resultDate.substr(0, resultDate.length - 1);
 }
 
-function initDateMap(date, fromFormat) {
-  const rawDate = getNoSeparatorDate(date, fromFormat);
-  const dateMap = new Map();
-  let currentLength = 0;
+function initOjectDate(date, fromFormat) {
+  const fromSeparator = fromFormat[3];
+  const dateArr = date.split(fromSeparator);
+  const dateObj = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    const leftIndex = currentLength;
-    const rightIndex = leftIndex + fromFormat[i].length;
-    const typeKey = fromFormat[i].charAt(0);
-
-    dateMap.set(typeKey, rawDate.substring(leftIndex, rightIndex));
-    currentLength += fromFormat[i].length;
+    switch (fromFormat[i].charAt(0)) {
+      case 'Y':
+        dateObj.year = dateArr[i];
+        break;
+      case 'M':
+        dateObj.month = dateArr[i];
+        break;
+      case 'D':
+        dateObj.day = dateArr[i];
+        break;
+    }
   }
 
-  return dateMap;
-}
-
-function getDatePart(dateMapping, map) {
-  const key = dateMapping.charAt(0);
-
-  if (key === 'Y') {
-    return convertYear(map.get(key), dateMapping);
-  }
-
-  return map.get(key);
+  return dateObj;
 }
 
 function convertYear(value, mapping) {
@@ -94,13 +104,6 @@ function convertYear(value, mapping) {
   }
 
   return Number(value) < 30 ? '20' + value : '19' + value;
-}
-
-function getNoSeparatorDate(date, format) {
-  const separator = format[3] === '.' ? '\\.' : format[3];
-  const dilimeterRegex = new RegExp(separator, 'g');
-
-  return date.replace(dilimeterRegex, '');
 }
 
 module.exports = formatDate;
