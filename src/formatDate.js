@@ -51,6 +51,103 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const arrayFromDate = date.split(fromFormat[3]);
+  const operations = [];
+  const from = [...fromFormat];
+  const to = [...toFormat];
+
+  if (fromFormat[0][0] !== toFormat[0][0]) {
+    operations[0] = 'reverse';
+    to.pop();
+    from.pop();
+    from.reverse();
+  }
+
+  for (let i = 0; i < from.length; i++) {
+    if (from[i].length > to[i].length) {
+      operations.push('cut' + [i]);
+    } else if (from[i].length < to[i].length) {
+      operations.push('add' + [i]);
+    }
+  }
+
+  if (operations.length === 0) {
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 1 && operations.includes('reverse')) {
+    return arrayFromDate.reverse().join(toFormat[3]);
+  }
+
+  if (operations.length === 1 && operations.includes('cut0')) {
+    arrayFromDate[0] = arrayFromDate[0].slice(2, 4);
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 1 && operations.includes('cut2')) {
+    arrayFromDate[2] = arrayFromDate[2].slice(2, 4);
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 1 && operations.includes('add0')) {
+    if (arrayFromDate[0] >= 30) {
+      arrayFromDate[0] = '19' + arrayFromDate[0];
+    } else if (arrayFromDate[0] < 30) {
+      arrayFromDate[0] = '20' + arrayFromDate[0];
+    }
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 1 && operations.includes('add2')) {
+    if (arrayFromDate[2] >= 30) {
+      arrayFromDate[2] = '19' + arrayFromDate[2];
+    } else if (arrayFromDate[2] < 30) {
+      arrayFromDate[2] = '20' + arrayFromDate[2];
+    }
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 2 && operations.includes('cut0')) {
+    arrayFromDate.reverse();
+    arrayFromDate[0] = arrayFromDate[0].slice(2, 4);
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 2 && operations.includes('cut2')) {
+    arrayFromDate.reverse();
+    arrayFromDate[2] = arrayFromDate[2].slice(2, 4);
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 2 && operations.includes('add0')) {
+    arrayFromDate.reverse();
+
+    if (arrayFromDate[0] >= 30) {
+      arrayFromDate[0] = '19' + arrayFromDate[0];
+    } else if (arrayFromDate[0] < 30) {
+      arrayFromDate[0] = '20' + arrayFromDate[0];
+    }
+
+    return arrayFromDate.join(toFormat[3]);
+  }
+
+  if (operations.length === 2 && operations.includes('add0')) {
+    arrayFromDate.reverse();
+
+    if (arrayFromDate[2] >= 30) {
+      arrayFromDate[2] = '19' + arrayFromDate[2];
+    } else if (arrayFromDate[2] < 30) {
+      arrayFromDate[2] = '20' + arrayFromDate[2];
+    }
+
+    return arrayFromDate.join(toFormat[3]);
+  }
 }
 
 module.exports = formatDate;
