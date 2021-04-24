@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  function changeYearFormat(yearFormat, currentDate, index) {
+    if (yearFormat[index].length === 4) {
+      currentDate[index] = currentDate[index].substr(2);
+
+      return currentDate;
+    }
+
+    if (currentDate[index] < 30) {
+      currentDate[index] = '20' + currentDate[index];
+    } else {
+      currentDate[index] = '19' + currentDate[index];
+    }
+
+    return currentDate;
+  }
+
+  const separator = toFormat[3];
+  const dateSplited = date.split(fromFormat[3]);
+
+  if (fromFormat[0] === toFormat[0] && fromFormat[2] === toFormat[2]) {
+    return dateSplited.join(separator);
+  }
+
+  if (fromFormat[0] === toFormat[2] && fromFormat[2] === toFormat[0]) {
+    return dateSplited.reverse().join(separator);
+  }
+
+  if (fromFormat[0] === toFormat[0] && fromFormat[2] !== toFormat[2]) {
+    const newDateFormat = changeYearFormat(fromFormat, dateSplited, 2);
+
+    return newDateFormat.join(separator);
+  }
+
+  if (fromFormat[0] !== toFormat[0] && fromFormat[2] === toFormat[2]) {
+    const newDateFormat = changeYearFormat(fromFormat, dateSplited, 0);
+
+    return newDateFormat.join(separator);
+  }
+
+  if (fromFormat[0] !== toFormat[2] && fromFormat[2] === toFormat[0]) {
+    const newDateFormat = changeYearFormat(fromFormat, dateSplited, 0);
+
+    return newDateFormat.reverse().join(separator);
+  }
 }
 
 module.exports = formatDate;
