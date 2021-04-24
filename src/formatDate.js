@@ -71,83 +71,35 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (operations.length === 0) {
-    return arrayFromDate.join(toFormat[3]);
+  if (operations.includes('reverse')) {
+    arrayFromDate.reverse();
   }
 
-  if (operations.length === 1 && operations.includes('reverse')) {
-    return arrayFromDate.reverse().join(toFormat[3]);
-  }
-
-  if (operations.length === 1 && operations.includes('cut0')) {
+  if (operations.includes('cut0')) {
     arrayFromDate[0] = arrayFromDate[0].slice(2, 4);
-
-    return arrayFromDate.join(toFormat[3]);
   }
 
-  if (operations.length === 1 && operations.includes('cut2')) {
+  if (operations.includes('cut2')) {
     arrayFromDate[2] = arrayFromDate[2].slice(2, 4);
-
-    return arrayFromDate.join(toFormat[3]);
   }
 
-  if (operations.length === 1 && operations.includes('add0')) {
+  if (operations.includes('add0')) {
     if (arrayFromDate[0] >= 30) {
       arrayFromDate[0] = '19' + arrayFromDate[0];
     } else if (arrayFromDate[0] < 30) {
       arrayFromDate[0] = '20' + arrayFromDate[0];
     }
-
-    return arrayFromDate.join(toFormat[3]);
   }
 
-  if (operations.length === 1 && operations.includes('add2')) {
+  if (operations.includes('add2')) {
     if (arrayFromDate[2] >= 30) {
       arrayFromDate[2] = '19' + arrayFromDate[2];
     } else if (arrayFromDate[2] < 30) {
       arrayFromDate[2] = '20' + arrayFromDate[2];
     }
-
-    return arrayFromDate.join(toFormat[3]);
   }
 
-  if (operations.length === 2 && operations.includes('cut0')) {
-    arrayFromDate.reverse();
-    arrayFromDate[0] = arrayFromDate[0].slice(2, 4);
-
-    return arrayFromDate.join(toFormat[3]);
-  }
-
-  if (operations.length === 2 && operations.includes('cut2')) {
-    arrayFromDate.reverse();
-    arrayFromDate[2] = arrayFromDate[2].slice(2, 4);
-
-    return arrayFromDate.join(toFormat[3]);
-  }
-
-  if (operations.length === 2 && operations.includes('add0')) {
-    arrayFromDate.reverse();
-
-    if (arrayFromDate[0] >= 30) {
-      arrayFromDate[0] = '19' + arrayFromDate[0];
-    } else if (arrayFromDate[0] < 30) {
-      arrayFromDate[0] = '20' + arrayFromDate[0];
-    }
-
-    return arrayFromDate.join(toFormat[3]);
-  }
-
-  if (operations.length === 2 && operations.includes('add0')) {
-    arrayFromDate.reverse();
-
-    if (arrayFromDate[2] >= 30) {
-      arrayFromDate[2] = '19' + arrayFromDate[2];
-    } else if (arrayFromDate[2] < 30) {
-      arrayFromDate[2] = '20' + arrayFromDate[2];
-    }
-
-    return arrayFromDate.join(toFormat[3]);
-  }
+  return arrayFromDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
