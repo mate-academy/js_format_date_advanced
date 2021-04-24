@@ -50,43 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrFromDate = date.split(fromFormat[3]);
-  const resultArr = [];
+  const separatorFormats = [];
+  const yearFormats = [];
 
-  // year
-  const oldIndexY = fromFormat.indexOf('YY') >= 0
-    ? fromFormat.indexOf('YY')
-    : fromFormat.indexOf('YYYY');
+  getFormat(fromFormat, yearFormats, separatorFormats);
+  getFormat(toFormat, yearFormats, separatorFormats);
 
-  const newIndexY = toFormat.indexOf('YY') >= 0
-    ? toFormat.indexOf('YY')
-    : toFormat.indexOf('YYYY');
+  const oldFormat = date.split(separatorFormats[0]);
+  const result = [];
+  let yearIndex;
 
-  if (fromFormat[oldIndexY] === 'YY' && toFormat[newIndexY] === 'YYYY') {
-    if (arrFromDate[oldIndexY] >= 30) {
-      resultArr[newIndexY] = '19' + arrFromDate[oldIndexY];
-    } else {
-      resultArr[newIndexY] = '20' + arrFromDate[oldIndexY];
+  for (let i = 0; i < 3; i++) {
+    let oldIndex;
+
+    if (toFormat[i].includes('Y')) {
+      oldIndex = searchFormatItem('Y', fromFormat);
+      result[i] = oldFormat[oldIndex];
+      yearIndex = i;
+    } else if (toFormat[i].includes('M')) {
+      oldIndex = searchFormatItem('M', fromFormat);
+      result[i] = oldFormat[oldIndex];
+    } else if (toFormat[i].includes('D')) {
+      oldIndex = searchFormatItem('D', fromFormat);
+      result[i] = oldFormat[oldIndex];
     }
-  } else if (fromFormat[oldIndexY] === 'YYYY' && toFormat[newIndexY] === 'YY') {
-    resultArr[newIndexY] = arrFromDate[oldIndexY].slice(2);
-  } else {
-    resultArr[newIndexY] = arrFromDate[oldIndexY];
   }
 
-  // month
-  const oldIndexM = fromFormat.indexOf('MM');
-  const newIndexM = toFormat.indexOf('MM');
+  if (yearFormats[0].length === yearFormats[1].length) {
+    return result.join(separatorFormats[1]);
+  } else if (yearFormats[0].length > yearFormats[1].length) {
+    result[yearIndex] = result[yearIndex].slice(-2);
+  } else {
+    let year = result[yearIndex].slice(-2);
 
-  resultArr[newIndexM] = arrFromDate[oldIndexM];
+    year = year < 30 ? '20' + year : '19' + year;
+    result[yearIndex] = year;
+  }
 
-  // day
-  const oldIndexD = fromFormat.indexOf('DD');
-  const newIndexD = toFormat.indexOf('DD');
+  return result.join(separatorFormats[1]);
+}
 
-  resultArr[newIndexD] = arrFromDate[oldIndexD];
+function getFormat(format, yearFormats, separatorFormats) {
+  for (const item of format) {
+    switch (item[0]) {
+      case 'Y':
+        yearFormats.push(item);
+        break;
 
-  return resultArr.join(toFormat[3]);
+      case 'M':
+      case 'D':
+        break;
+
+      default:
+        separatorFormats.push(item);
+    }
+  }
+}
+
+function searchFormatItem(key, format) {
+  for (let i = 0; i < 3; i++) {
+    if (format[i].includes(key)) {
+      return i;
+    }
+  }
 }
 
 module.exports = formatDate;
