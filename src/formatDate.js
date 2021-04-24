@@ -52,12 +52,12 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const arrayFromDate = date.split(fromFormat[3]);
-  const operations = [];
+  const operations = {};
   const from = [...fromFormat];
   const to = [...toFormat];
 
   if (fromFormat[0][0] !== toFormat[0][0]) {
-    operations[0] = 'reverse';
+    operations.reverse = 'reverse';
     to.pop();
     from.pop();
     from.reverse();
@@ -65,37 +65,25 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < from.length; i++) {
     if (from[i].length > to[i].length) {
-      operations.push('cut' + [i]);
+      operations.cut = i;
     } else if (from[i].length < to[i].length) {
-      operations.push('add' + [i]);
+      operations.add = i;
     }
   }
 
-  if (operations.includes('reverse')) {
+  if (operations.hasOwnProperty('reverse')) {
     arrayFromDate.reverse();
   }
 
-  if (operations.includes('cut0')) {
-    arrayFromDate[0] = arrayFromDate[0].slice(2, 4);
+  if (operations.hasOwnProperty('cut')) {
+    arrayFromDate[operations.cut] = arrayFromDate[operations.cut].slice(2, 4);
   }
 
-  if (operations.includes('cut2')) {
-    arrayFromDate[2] = arrayFromDate[2].slice(2, 4);
-  }
-
-  if (operations.includes('add0')) {
-    if (arrayFromDate[0] >= 30) {
-      arrayFromDate[0] = '19' + arrayFromDate[0];
+  if (operations.hasOwnProperty('add')) {
+    if (arrayFromDate[operations.add] >= 30) {
+      arrayFromDate[operations.add] = '19' + arrayFromDate[operations.add];
     } else if (arrayFromDate[0] < 30) {
-      arrayFromDate[0] = '20' + arrayFromDate[0];
-    }
-  }
-
-  if (operations.includes('add2')) {
-    if (arrayFromDate[2] >= 30) {
-      arrayFromDate[2] = '19' + arrayFromDate[2];
-    } else if (arrayFromDate[2] < 30) {
-      arrayFromDate[2] = '20' + arrayFromDate[2];
+      arrayFromDate[operations.add] = '20' + arrayFromDate[operations.add];
     }
   }
 
