@@ -68,7 +68,7 @@ function formatDate(date, fromFormat, toFormat) {
     dateArr[yearIndex] = dateArr[yearIndex][2] + dateArr[yearIndex][3];
   }
 
-  if (fromFormat[0] === toFormat[2] || fromFormat[2] === toFormat[0]) {
+  if (fromFormat[0][0] !== toFormat[0][0]) {
     dateArr.reverse();
   }
 
