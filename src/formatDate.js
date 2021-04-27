@@ -63,14 +63,12 @@ function formatDate(date, fromFormat, toFormat) {
     };
   };
 
-  if (typeof format.YYYY === 'undefined') {
+  if (!format.YYYY) {
     if (format.YY < 30) {
       format['YYYY'] = '20' + format.YY;
-    } else if (format.YY >= 30) {
-      format['YYYY'] = '19' + format.YY;
     } else {
-      format['YYYY'] = format.YY + '\'';
-    };
+      format['YYYY'] = '19' + format.YY;
+    }
   };
 
   for (let j = 0; j < toFormat.length - 1; j++) {
