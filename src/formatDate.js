@@ -66,57 +66,45 @@ function formatDate(date, fromFormat, toFormat) {
   const year4New = toFormat.indexOf(year4);
 
   let result = '';
-  const sheme = [];
+  const sсheme = [];
 
   // find date array
 
   const dateArray = date.split(fromFormat[3]);
 
-  // dateArray[0] = fromFormat[0];
-  // dateArray[1] = fromFormat[1];
-  // dateArray[2] = fromFormat[2];
-
   // make new date format
 
-  sheme[daysNew] = dateArray[daysOld];
-  sheme[monthNew] = dateArray[monthOld];
+  sсheme[daysNew] = dateArray[daysOld];
+  sсheme[monthNew] = dateArray[monthOld];
 
   if (year2Old === -1) {
     if (year2New === -1) {
-      sheme[year4New] = dateArray[year4Old];
-    }
-
-    if (year2New !== -1) {
-      sheme[year2New] = (dateArray[year4Old] / 100).toString().split('.')[1];
-      // 1234 --> 12.34 --> ( dateArray[year4Old] )
+      sсheme[year4New] = dateArray[year4Old];
+    } else {
+      sсheme[year2New] = (dateArray[year4Old] / 100).toString().split('.')[1];
+      // 1234 --> 12.34 --> ( [12, 34][1] )
     }
   }
 
   if (year4Old === -1) {
     if (year4New === -1) {
-      sheme[year2New] = dateArray[year2Old];
-    }
-
-    if (year4New !== -1) {
-      if (+dateArray[year2Old] < +'30') { // '20/02/18'  2020
-        sheme[year4New] = +('20' + dateArray[year2Old]);
+      sсheme[year2New] = dateArray[year2Old];
+    } else {
+      if (+dateArray[year2Old] < 30) { // '20/02/18'  2020
+        sсheme[year4New] = +('20' + dateArray[year2Old]);
       }
 
       if (dateArray[year2Old] === '00') {
-        sheme[year4New] = +('20' + dateArray[year2Old]);
+        sсheme[year4New] = +('20' + dateArray[year2Old]);
       }
 
-      if (dateArray[year2Old] === '30') { // '30.02.18'  1930
-        sheme[year4New] = +('19' + dateArray[year2Old]);
-      }
-
-      if (+dateArray[year2Old] > +'30') { // '97/02/18', 1997
-        sheme[year4New] = +('19' + dateArray[year2Old]);
+      if (dateArray[year2Old] >= '30') { // '30.02.18'  1930
+        sсheme[year4New] = +('19' + dateArray[year2Old]);
       }
     }
   }
 
-  result = sheme.join(toFormat[3]);
+  result = sсheme.join(toFormat[3]);
 
   return result;
 }
