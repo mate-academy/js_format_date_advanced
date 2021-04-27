@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromObj = {};
+  const sepF = fromFormat[3];
+  const sepT = toFormat[3];
+  const dateArr = date.split(sepF);
+  const res = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    fromObj[fromFormat[i][0]] = dateArr[i];
+  }
+
+  if (fromFormat.find(el => el.startsWith('Y')).length === 2) {
+    if (fromObj['Y'] > 20) {
+      fromObj['Y'] = (+fromObj['Y'] + 1900).toString();
+    } else {
+      fromObj['Y'] = (+fromObj['Y'] + 2000).toString();
+    }
+  }
+
+  if (toFormat.find(el => el.startsWith('Y')).length === 2) {
+    if (fromObj['Y'] > 2000) {
+      fromObj['Y'] = (+fromObj['Y'] - 2000).toString();
+    } else {
+      fromObj['Y'] = (+fromObj['Y'] - 1900).toString();
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    toFormat[i] = fromObj[toFormat[i][0]];
+    res.push(toFormat[i]);
+  }
+
+  return res.join(sepT);
 }
 
 module.exports = formatDate;
