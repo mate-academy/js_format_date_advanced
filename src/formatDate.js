@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
   if (fromFormat.indexOf('YYYY') + 1 && toFormat.indexOf('YY') + 1) {
     const yearIndex = fromFormat.indexOf('YYYY');
 
-    dateArr[yearIndex] = dateArr[yearIndex].split('').splice(2, 2).join('');
+    dateArr[yearIndex] = dateArr[yearIndex][2] + dateArr[yearIndex][3];
   }
 
   if (fromFormat[0] === toFormat[2] || fromFormat[2] === toFormat[0]) {
