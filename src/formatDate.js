@@ -51,6 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const arrayFromDate = date.split(fromFormat[3]);
+  const operations = {};
+  const from = [...fromFormat];
+  const to = [...toFormat];
+
+  if (fromFormat[0][0] !== toFormat[0][0]) {
+    operations.reverse = 'reverse';
+    to.pop();
+    from.pop();
+    from.reverse();
+  }
+
+  for (let i = 0; i < from.length; i++) {
+    if (from[i].length > to[i].length) {
+      operations.cut = i;
+    } else if (from[i].length < to[i].length) {
+      operations.add = i;
+    }
+  }
+
+  if (operations.hasOwnProperty('reverse')) {
+    arrayFromDate.reverse();
+  }
+
+  if (operations.hasOwnProperty('cut')) {
+    arrayFromDate[operations.cut] = arrayFromDate[operations.cut].slice(2, 4);
+  }
+
+  if (operations.hasOwnProperty('add')) {
+    if (arrayFromDate[operations.add] >= 30) {
+      arrayFromDate[operations.add] = '19' + arrayFromDate[operations.add];
+    } else if (arrayFromDate[0] < 30) {
+      arrayFromDate[operations.add] = '20' + arrayFromDate[operations.add];
+    }
+  }
+
+  return arrayFromDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
