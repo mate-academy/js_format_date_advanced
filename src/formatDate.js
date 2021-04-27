@@ -50,20 +50,15 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const days = 'DD';
-  const month = 'MM';
-  const year2 = 'YY';
-  const year4 = 'YYYY';
+  const days = fromFormat.indexOf('DD');
+  const month = fromFormat.indexOf('MM');
+  const yearShort = fromFormat.indexOf('YY');
+  const yearLong = fromFormat.indexOf('YYYY');
 
-  const daysOld = fromFormat.indexOf(days);
-  const monthOld = fromFormat.indexOf(month);
-  const year2Old = fromFormat.indexOf(year2);
-  const year4Old = fromFormat.indexOf(year4);
-
-  const daysNew = toFormat.indexOf(days);
-  const monthNew = toFormat.indexOf(month);
-  const year2New = toFormat.indexOf(year2);
-  const year4New = toFormat.indexOf(year4);
+  const daysNew = toFormat.indexOf('DD');
+  const monthNew = toFormat.indexOf('MM');
+  const yearShortNew = toFormat.indexOf('YY');
+  const yearLongNew = toFormat.indexOf('YYYY');
 
   let result = '';
   const sсheme = [];
@@ -74,32 +69,33 @@ function formatDate(date, fromFormat, toFormat) {
 
   // make new date format
 
-  sсheme[daysNew] = dateArray[daysOld];
-  sсheme[monthNew] = dateArray[monthOld];
+  sсheme[daysNew] = dateArray[days];
+  sсheme[monthNew] = dateArray[month];
 
-  if (year2Old === -1) {
-    if (year2New === -1) {
-      sсheme[year4New] = dateArray[year4Old];
+  if (yearShort === -1) {
+    if (yearShortNew === -1) {
+      sсheme[yearLongNew] = dateArray[yearLong];
     } else {
-      sсheme[year2New] = (dateArray[year4Old] / 100).toString().split('.')[1];
+      sсheme[yearShortNew]
+      = (dateArray[yearLong] / 100).toString().split('.')[1];
       // 1234 --> 12.34 --> ( [12, 34][1] )
     }
   }
 
-  if (year4Old === -1) {
-    if (year4New === -1) {
-      sсheme[year2New] = dateArray[year2Old];
+  if (yearLong === -1) {
+    if (yearLongNew === -1) {
+      sсheme[yearShortNew] = dateArray[yearShort];
     } else {
-      if (+dateArray[year2Old] < 30) { // '20/02/18'  2020
-        sсheme[year4New] = +('20' + dateArray[year2Old]);
+      if (+dateArray[yearShort] < 30) { // '20/02/18'  2020
+        sсheme[yearLongNew] = +('20' + dateArray[yearShort]);
       }
 
-      if (dateArray[year2Old] === '00') {
-        sсheme[year4New] = +('20' + dateArray[year2Old]);
+      if (dateArray[yearShort] === '00') {
+        sсheme[yearLongNew] = +('20' + dateArray[yearShort]);
       }
 
-      if (dateArray[year2Old] >= '30') { // '30.02.18'  1930
-        sсheme[year4New] = +('19' + dateArray[year2Old]);
+      if (dateArray[yearShort] >= '30') { // '30.02.18'  1930
+        sсheme[yearLongNew] = +('19' + dateArray[yearShort]);
       }
     }
   }
