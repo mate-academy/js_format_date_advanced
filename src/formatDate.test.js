@@ -53,6 +53,17 @@ describe('formatDate', () => {
         .toBe('21-12-2012');
     });
 
+    it(`for unpredictable parts order`, () => {
+      const result = formatDate(
+        '12-2012-21',
+        ['MM', 'YYYY', 'DD', '-'],
+        ['DD', 'MM', 'YYYY', '-'],
+      );
+
+      expect(result)
+        .toBe('21-12-2012');
+    });
+
     it(`if we shorten YYYY to YY`, () => {
       const result = formatDate(
         '10/22/1979',
