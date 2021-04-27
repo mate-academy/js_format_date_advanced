@@ -51,6 +51,33 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldSeparator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+
+  const numDate = date.split(oldSeparator);
+  const res = [];
+
+  toFormat.forEach((newForm) => {
+    fromFormat.forEach((oldForm, index) => {
+      if (newForm[0] === oldForm[0]) {
+        res.push(numDate[index]);
+      }
+    });
+  });
+
+  for (let i = 0; i < res.length; i++) {
+    if (toFormat[i].includes('Y')) {
+      if (res[i].length > toFormat[i].length) {
+        res[i] = res[i].slice(-2);
+      } else if (res[i].length < toFormat[i].length) {
+        res[i] = res[i] < 30
+          ? '20' + res[i]
+          : '19' + res[i];
+      }
+    }
+  }
+
+  return res.join(newSeparator);
 }
 
 module.exports = formatDate;
