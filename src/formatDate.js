@@ -51,11 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateObj = {};
-  let str = '';
+  let result = '';
 
-  const dateArr = date.split(fromFormat[3]);
-
-  dateArr.forEach((el, index) => {
+  date.split(fromFormat[3]).forEach((el, index) => {
     dateObj[fromFormat[index]] = el;
   });
 
@@ -79,15 +77,15 @@ function formatDate(date, fromFormat, toFormat) {
     };
 
     if (index < toFormat.length - 1) {
-      str += addValue;
+      result += addValue;
 
       if (index < toFormat.length - 2) {
-        str += toFormat[3];
+        result += toFormat[3];
       };
     };
   });
 
-  return str;
+  return result;
 };
 
 module.exports = formatDate;
