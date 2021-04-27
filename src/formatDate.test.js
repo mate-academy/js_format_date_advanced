@@ -53,7 +53,9 @@ describe('formatDate', () => {
         .toBe('21-12-2012');
     });
 
-    it(`for unpredictable parts order`, () => {
+    it(`for non standard parts order '12-2012-21'
+         from ['MM', 'YYYY', 'DD', '-']
+         to ['DD', 'MM', 'YYYY', '-']`, () => {
       const result = formatDate(
         '12-2012-21',
         ['MM', 'YYYY', 'DD', '-'],
