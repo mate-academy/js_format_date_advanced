@@ -50,9 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day = 0;
-  let month = 0;
-  let year = 0;
+  let day;
+  let month;
+  let year;
 
   const dateArr = date.split(fromFormat[3]);
   const newDateArr = [];
@@ -83,9 +83,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (toFormat[i] === 'YY') {
       if (year.length === 2) {
         newDateArr.push(year);
-      }
-
-      if (year.length === 4) {
+      } else {
         newDateArr.push(year[2] + year[3]);
       }
     }
@@ -95,9 +93,9 @@ function formatDate(date, fromFormat, toFormat) {
         newDateArr.push(year);
       }
 
-      if (year.length === 2 && +year < 30) {
+      if (year.length === 2 && (+year < 30)) {
         newDateArr.push(`20${year}`);
-      } else if (year.length === 2 && +year >= 30) {
+      } else if (year.length === 2 && (+year >= 30)) {
         newDateArr.push(`19${year}`);
       }
     }
