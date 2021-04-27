@@ -70,11 +70,10 @@ function formatDate(date, fromFormat, toFormat) {
     if (elem.length === 2 && !(elem in dateObj)) {
       dateObj[elem] = dateObj[elem + elem].slice(2, 4);
     } else if (elem.length === 4 && !(elem in dateObj)) {
-      if (dateObj[elem.slice(2, 4)] >= 30) {
-        dateObj[elem] = '19' + dateObj[elem.slice(2, 4)];
-      } else if (dateObj[elem.slice(2, 4)] < 30
-        || dateObj[elem.slice(2, 4)] >= 0) {
+      if (dateObj[elem.slice(2, 4)] < 30) {
         dateObj[elem] = '20' + dateObj[elem.slice(2, 4)];
+      } else {
+        dateObj[elem] = '19' + dateObj[elem.slice(2, 4)];
       }
     }
 
