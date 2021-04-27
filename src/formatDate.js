@@ -64,19 +64,16 @@ function formatDate(date, fromFormat, toFormat) {
     obj[arrOldDate[arrOldDate.length - 1 - i]] = oldDate[i];
   }
 
-  const yy = obj.YY;
-  const yyyy = obj.YYYY;
-
-  if (yy >= 30) {
+  if (obj.YY >= 30) {
     obj.YYYY = String(+obj.YY + 1900);
   }
 
-  if (yy < 30) {
+  if (obj.YY < 30) {
     obj.YYYY = String(+obj.YY + 2000);
   }
 
-  if (yyyy) {
-    obj.YY = yyyy.substring(2, 4);
+  if (obj.YYYY) {
+    obj.YY = obj.YYYY.substring(2, 4);
   }
 
   for (let j = arrNewDate.length - 1; j >= 0; j--) {
