@@ -50,26 +50,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fomatData = {};
+  const formatData = {};
 
   const oldFormat = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    fomatData[fromFormat[i]] = oldFormat[i];
+    formatData[fromFormat[i]] = oldFormat[i];
   }
 
-  if (!fomatData.hasOwnProperty('YY')) {
-    fomatData.YY = getYear(fomatData.YYYY);
+  if (!formatData.hasOwnProperty('YY')) {
+    formatData.YY = getYear(formatData.YYYY);
   }
 
-  if (!fomatData.hasOwnProperty('YYYY')) {
-    fomatData.YYYY = getYear(fomatData.YY);
+  if (!formatData.hasOwnProperty('YYYY')) {
+    formatData.YYYY = getYear(formatData.YY);
   }
 
   const newFormat = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    newFormat.push(fomatData[toFormat[i]]);
+    newFormat.push(formatData[toFormat[i]]);
   }
 
   return newFormat.join(toFormat[3]);
