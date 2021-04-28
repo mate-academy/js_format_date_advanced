@@ -50,56 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day, month, year;
-
-  const dates = date.split(fromFormat[3]);
-  const newDates = [];
+  // write code here
+  const fromFormatObj = {};
+  const fromF = fromFormat[3];
+  const toF = toFormat[3];
+  const dateArr = date.split(fromF);
+  const res = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = dates[i];
-    }
+    fromFormatObj[fromFormat[i][0]] = dateArr[i];
+  }
 
-    if (fromFormat[i] === 'MM') {
-      month = dates[i];
+  if (fromFormat.find(el => el.startsWith('Y')).length === 2) {
+    if (fromFormatObj['Y'] > 20) {
+      fromFormatObj['Y'] = (+fromFormatObj['Y'] + 1900).toString();
+    } else {
+      fromFormatObj['Y'] = (+fromFormatObj['Y'] + 2000).toString();
     }
+  }
 
-    if (fromFormat[i] === 'DD') {
-      day = dates[i];
+  if (toFormat.find(el => el.startsWith('Y')).length === 2) {
+    if (fromFormatObj['Y'] > 2000) {
+      fromFormatObj['Y'] = (+fromFormatObj['Y'] - 2000).toString();
+    } else {
+      fromFormatObj['Y'] = (+fromFormatObj['Y'] - 1900).toString();
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      newDates.push(day);
-    }
-
-    if (toFormat[i] === 'MM') {
-      newDates.push(month);
-    }
-
-    if (toFormat[i] === 'YY') {
-      if (year.length === 2) {
-        newDates.push(year);
-      } else {
-        newDates.push(year[2] + year[3]);
-      }
-    }
-
-    if (toFormat[i] === 'YYYY') {
-      if (year.length === 4) {
-        newDates.push(year);
-      }
-
-      if (year.length === 2 && (+year < 30)) {
-        newDates.push(`20${year}`);
-      } else if (year.length === 2 && (+year >= 30)) {
-        newDates.push(`19${year}`);
-      }
-    }
+    toFormat[i] = fromFormatObj[toFormat[i][0]];
+    res.push(toFormat[i]);
   }
 
-  return newDates.join(toFormat[3]);
+  return res.join(toF);
 }
 
 module.exports = formatDate;
