@@ -50,33 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat.pop();
-  const newSeparator = toFormat.pop();
-  const SplitArray = date.split(oldSeparator);
-  const dataObject = {};
-  const newDate = [];
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const startFormat = fromFormat.slice(0, 3);
+  const endFormat = toFormat.slice(0, 3);
+  const oldDate = date.split(oldSeparator);
+  const dayMonthYear = {};
+  const dateParts = [];
 
-  for (let i = SplitArray.length; i > 0; i--) {
-    dataObject[fromFormat[fromFormat.length - i]] = SplitArray[fromFormat.length - i];
+  for (let i = oldDate.length; i > 0; i--) {
+    dayMonthYear[startFormat[startFormat.length - i]] = oldDate[startFormat.length - i];
   }
 
-  if (dataObject.YY >= 30) {
-    dataObject.YYYY = `${(+dataObject.YY + 1900)}`;
+  if (dayMonthYear.YY >= 30) {
+    dayMonthYear.YYYY = `${(+dayMonthYear.YY + 1900)}`;
   }
 
-  if (dataObject.YY < 30) {
-    dataObject.YYYY = `${(+dataObject.YY + 2000)}`;
+  if (dayMonthYear.YY < 30) {
+    dayMonthYear.YYYY = `${(+dayMonthYear.YY + 2000)}`;
   }
 
-  if (dataObject.YYYY) {
-    dataObject.YY = dataObject.YYYY.slice(2);
+  if (dayMonthYear.YYYY) {
+    dayMonthYear.YY = dayMonthYear.YYYY.slice(2);
   }
 
-  for (let j = 0; j < toFormat.length; j++) {
-    newDate.push(dataObject[toFormat[j]]);
+  for (let j = 0; j < endFormat.length; j++) {
+    dateParts.push(dayMonthYear[endFormat[j]]);
   }
 
-  return newDate.join(newSeparator);
+  return dateParts.join(newSeparator);
 }
 
 module.exports = formatDate;
