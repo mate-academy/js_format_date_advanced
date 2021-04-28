@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDataSeparator = fromFormat[fromFormat.length - 1];
+  const newDataSeparator = toFormat[toFormat.length - 1];
+  const oldDateArr = date.split(oldDataSeparator);
+  const oldDataObj = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const key = fromFormat[i];
+
+    oldDataObj[key] = oldDateArr[i];
+  }
+
+  const newDataArr = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const key = toFormat[i];
+
+    if (key in oldDataObj) {
+      newDataArr[i] = oldDataObj[key];
+    } else {
+      const yearNewFormat = defineYearFormat(toFormat);
+      const yearOldFormat = defineYearFormat(fromFormat);
+      let year;
+
+      if (yearOldFormat === 'YYYY' && yearNewFormat === 'YY') {
+        year = oldDataObj['YYYY'].slice(2);
+      }
+
+      if (yearOldFormat === 'YY' && yearNewFormat === 'YYYY') {
+        if (oldDataObj['YY'] < 30) {
+          year = '20'.concat(oldDataObj['YY']);
+        } else {
+          year = '19'.concat(oldDataObj['YY']);
+        }
+      }
+      newDataArr[i] = year;
+    }
+  }
+
+  return newDataArr.join(newDataSeparator);
+}
+
+function defineYearFormat(dateArr) {
+  let yearFormat;
+
+  for (const item of dateArr) {
+    if (item.startsWith('Y')) {
+      yearFormat = item;
+    }
+  }
+
+  return yearFormat;
 }
 
 module.exports = formatDate;
