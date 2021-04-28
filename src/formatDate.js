@@ -69,8 +69,8 @@ function formatDate(date, fromFormat, toFormat) {
     if (key in oldDataObj) {
       newDataArr[i] = oldDataObj[key];
     } else {
-      const yearNewFormat = defineNewYearFormat(toFormat);
-      const yearOldFormat = defineOldYearFormat(fromFormat);
+      const yearNewFormat = defineYearFormat(toFormat);
+      const yearOldFormat = defineYearFormat(fromFormat);
       let year;
 
       if (yearOldFormat === 'YYYY' && yearNewFormat === 'YY') {
@@ -91,28 +91,16 @@ function formatDate(date, fromFormat, toFormat) {
   return newDataArr.join(newDataSeparator);
 }
 
-function defineOldYearFormat(dateArr) {
-  let yearOldFormat;
+function defineYearFormat(dateArr) {
+  let yearFormat;
 
   for (const item of dateArr) {
     if (item.startsWith('Y')) {
-      yearOldFormat = item;
+      yearFormat = item;
     }
   }
 
-  return yearOldFormat;
-}
-
-function defineNewYearFormat(dateArr) {
-  let yearNewFormat;
-
-  for (const item of dateArr) {
-    if (item.startsWith('Y')) {
-      yearNewFormat = item;
-    }
-  }
-
-  return yearNewFormat;
+  return yearFormat;
 }
 
 module.exports = formatDate;
