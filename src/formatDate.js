@@ -51,8 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
+  const newFormatDate = [];
 
-  if (fromFormat.indexOf('YY') + 1 && toFormat.indexOf('YYYY') + 1) {
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
     const yearIndex = fromFormat.indexOf('YY');
 
     if (dateArr[yearIndex] < 30) {
@@ -62,17 +63,21 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (fromFormat.indexOf('YYYY') + 1 && toFormat.indexOf('YY') + 1) {
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     const yearIndex = fromFormat.indexOf('YYYY');
 
     dateArr[yearIndex] = dateArr[yearIndex][2] + dateArr[yearIndex][3];
   }
 
-  if (fromFormat[0][0] !== toFormat[0][0]) {
-    dateArr.reverse();
+  for (let i = 0; i < dateArr.length; i++) {
+    const index = fromFormat.findIndex(el => {
+      return toFormat[i][0] === el[0];
+    });
+
+    newFormatDate.push(dateArr[index]);
   }
 
-  const transformDate = dateArr.join(toFormat[3]);
+  const transformDate = newFormatDate.join(toFormat[3]);
 
   return transformDate;
 }
