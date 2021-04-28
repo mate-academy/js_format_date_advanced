@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultDateArr = [];
+  const separatorFrom = fromFormat[fromFormat.length - 1];
+  const dateArr = date.split(separatorFrom);
+  const separatorTo = toFormat[toFormat.length - 1];
+  let indexOfYearFrom = fromFormat.indexOf('YYYY');
+
+  if (indexOfYearFrom === -1) {
+    indexOfYearFrom = fromFormat.indexOf('YY');
+  }
+
+  const indexOfMonthFrom = fromFormat.indexOf('MM');
+  const indexOfDayFrom = fromFormat.indexOf('DD');
+  let year = dateArr[indexOfYearFrom];
+  const month = dateArr[indexOfMonthFrom];
+  const day = dateArr[indexOfDayFrom];
+
+  let indexOfYearTo = toFormat.indexOf('YYYY');
+
+  if (indexOfYearTo === -1) {
+    indexOfYearTo = toFormat.indexOf('YY');
+  }
+
+  const indexOfMonthTo = toFormat.indexOf('MM');
+  const indexOfDayTo = toFormat.indexOf('DD');
+
+  resultDateArr[indexOfMonthTo] = month;
+  resultDateArr[indexOfDayTo] = day;
+
+  const incomingYearLength = fromFormat[indexOfYearFrom].length;
+  const outgoingYearLength = toFormat[indexOfYearTo].length;
+
+  if (incomingYearLength === outgoingYearLength) {
+    resultDateArr[indexOfYearTo] = year;
+
+    return resultDateArr.join(separatorTo);
+  }
+
+  if (incomingYearLength > outgoingYearLength) {
+    year = year.slice(2);
+  } else if (incomingYearLength < outgoingYearLength) {
+    if (parseInt(year) < 30) {
+      year = '20' + year;
+    } else {
+      year = '19' + year;
+    }
+  }
+  resultDateArr[indexOfYearTo] = year;
+
+  const resultDateStr = resultDateArr.join(separatorTo);
+
+  return resultDateStr;
 }
 
 module.exports = formatDate;
