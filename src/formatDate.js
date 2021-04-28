@@ -50,7 +50,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDate = date.split(fromFormat[3]);
+  const fromFormatCopy = [...fromFormat];
+  const newDate = Array(3);
+  const currentDDIndex = fromFormat.indexOf('DD');
+  const newDDIndex = toFormat.indexOf('DD');
+  const currentMMIndex = fromFormat.indexOf('MM');
+  const newMMIndex = toFormat.indexOf('MM');
+
+  if (fromFormatCopy.includes('YY') && toFormat.includes('YYYY')) {
+    const indexOfYear = fromFormatCopy.indexOf('YY');
+
+    if (oldDate[indexOfYear] >= 30) {
+      oldDate[indexOfYear] = '19' + oldDate[indexOfYear];
+    } else {
+      oldDate[indexOfYear] = '20' + oldDate[indexOfYear];
+    }
+    newDate[toFormat.indexOf('YYYY')] = oldDate[indexOfYear];
+
+    fromFormatCopy[fromFormatCopy.indexOf('YY')] += 'YY';
+  }
+
+  if (fromFormatCopy.includes('YYYY') && toFormat.includes('YY')) {
+    const indexOfYear = fromFormatCopy.indexOf('YYYY');
+
+    oldDate[indexOfYear] = oldDate[indexOfYear].slice(2);
+    newDate[toFormat.indexOf('YY')] = oldDate[indexOfYear];
+    fromFormatCopy[indexOfYear] = 'YY';
+  }
+
+  if (fromFormatCopy.includes('YYYY') && toFormat.includes('YYYY')) {
+    newDate[toFormat.indexOf('YYYY')] = oldDate[fromFormatCopy.indexOf('YYYY')];
+  } else if (fromFormatCopy.includes('YY') && toFormat.includes('YY')) {
+    newDate[toFormat.indexOf('YY')] = oldDate[fromFormatCopy.indexOf('YY')];
+  }
+
+  if (currentDDIndex !== newDDIndex) {
+    newDate[newDDIndex] = oldDate[currentDDIndex];
+  } else {
+    newDate[newDDIndex] = oldDate[newDDIndex];
+  }
+
+  if (currentMMIndex !== newMMIndex) {
+    newDate[newMMIndex] = oldDate[currentMMIndex];
+  } else {
+    newDate[newMMIndex] = oldDate[newMMIndex];
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
