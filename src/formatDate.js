@@ -50,7 +50,60 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateObj = {};
+  const res = [];
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const arrDate = date.split(oldSeparator);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        dateObj.year = arrDate[i];
+        break;
+
+      case 'DD':
+        dateObj.day = arrDate[i];
+        break;
+
+      case 'MM':
+        dateObj.month = arrDate[i];
+        break;
+    }
+  }
+
+  for (let a = 0; a < toFormat.length - 1; a++) {
+    switch (toFormat[a]) {
+      case 'YYYY':
+        if (dateObj.year.length === 4) {
+          res.push(dateObj.year);
+        } else if (dateObj.year < 30) {
+          res.push(`20${dateObj.year}`);
+        } else {
+          res.push(`19${dateObj.year}`);
+        }
+        break;
+
+      case 'YY':
+        if (dateObj.year.length === 2) {
+          res.push(dateObj.year);
+        }
+        res.push(dateObj.year.toString().slice(2));
+
+        break;
+
+      case 'DD':
+        res.push(dateObj.day);
+        break;
+
+      case 'MM':
+        res.push(dateObj.month);
+        break;
+    }
+  }
+
+  return (res.join(newSeparator));
 }
 
 module.exports = formatDate;
