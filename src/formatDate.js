@@ -50,54 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const days = fromFormat.indexOf('DD');
-  const month = fromFormat.indexOf('MM');
-  const yearShort = fromFormat.indexOf('YY');
-  const yearLong = fromFormat.indexOf('YYYY');
-
-  const daysNew = toFormat.indexOf('DD');
-  const monthNew = toFormat.indexOf('MM');
-  const yearShortNew = toFormat.indexOf('YY');
-  const yearLongNew = toFormat.indexOf('YYYY');
-
   let result = '';
   const sсheme = [];
-
-  // find date array
+  const dateValue = {};
 
   const dateArray = date.split(fromFormat[3]);
 
-  // make new date format
-
-  sсheme[daysNew] = dateArray[days];
-  sсheme[monthNew] = dateArray[month];
-
-  if (yearShort === -1) {
-    if (yearShortNew === -1) {
-      sсheme[yearLongNew] = dateArray[yearLong];
-    } else {
-      sсheme[yearShortNew]
-      = (dateArray[yearLong] / 100).toString().split('.')[1];
-      // 1234 --> 12.34 --> ( [12, 34][1] )
-    }
+  for (let i = 0; i < dateArray.length; i++) {
+    dateValue[fromFormat[i]] = dateArray[i];
   }
 
-  if (yearLong === -1) {
-    if (yearLongNew === -1) {
-      sсheme[yearShortNew] = dateArray[yearShort];
-    } else {
-      if (+dateArray[yearShort] < 30) { // '20/02/18'  2020
-        sсheme[yearLongNew] = +('20' + dateArray[yearShort]);
-      }
+  if (dateValue.YY >= 30) {
+    dateValue.YYYY = '19' + dateValue.YY;
+  }
 
-      if (dateArray[yearShort] === '00') {
-        sсheme[yearLongNew] = +('20' + dateArray[yearShort]);
-      }
+  if (dateValue.YY < 30) {
+    dateValue.YYYY = '20' + dateValue.YY;
+  }
 
-      if (dateArray[yearShort] >= '30') { // '30.02.18'  1930
-        sсheme[yearLongNew] = +('19' + dateArray[yearShort]);
-      }
-    }
+  if (dateValue.YYYY) {
+    dateValue.YY = dateValue.YYYY.substring(2, 4);
+  }
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    sсheme.push(dateValue[toFormat[j]]);
   }
 
   result = sсheme.join(toFormat[3]);
