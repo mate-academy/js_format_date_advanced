@@ -53,40 +53,26 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dateData = date.split(fromFormat[3]);
   const targetDateData = {};
-  const coolResult = [];
+  const resultDate = [];
   let year;
 
-  const toFormatYearIndex = function(a, b) {
-    const first = toFormat.indexOf(a);
-    const second = toFormat.indexOf(b);
-
-    return first === -1
-      ? second
-      : first;
-  };
-
-  const index = toFormatYearIndex('YYYY', 'YY');
+  const index = toFormat.includes('YYYY')
+    ? toFormat.indexOf('YYYY')
+    : toFormat.indexOf('YY');
 
   for (let i = 0; i <= fromFormat.length - 2; i++) {
     if (fromFormat[i][0] === 'Y') {
       const fromYearLength = fromFormat[i].length;
       const toYearLength = toFormat[index].length;
 
-      switch (true) {
-        case fromYearLength === toYearLength:
-          year = dateData[i];
-
-          break;
-
-        case fromYearLength > toYearLength:
-          year = dateData[i].slice(2);
-
-          break;
-
-        default:
-          year = dateData[i] < 30
-            ? '20' + dateData[i]
-            : '19' + dateData[i];
+      if (fromYearLength === toYearLength) {
+        year = dateData[i];
+      } else if (fromYearLength > toYearLength) {
+        year = dateData[i].slice(2);
+      } else {
+        year = dateData[i] < 30
+          ? '20' + dateData[i]
+          : '19' + dateData[i];
       }
 
       targetDateData[toFormat[index]] = year;
@@ -98,10 +84,10 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i <= toFormat.length - 2; i++) {
-    coolResult.push(targetDateData[toFormat[i]]);
+    resultDate.push(targetDateData[toFormat[i]]);
   }
 
-  return coolResult.join(toFormat[3]);
+  return resultDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
