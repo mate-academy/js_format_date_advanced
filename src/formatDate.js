@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateToChange = date.split(fromFormat[fromFormat.length - 1]);
+  const separator = toFormat[toFormat.length - 1];
+  let fromYearFormat;
+  let toYearFormat;
+  let fromYearIndex;
+  let toYearIndex;
+  const result = [];
+
+  if (fromFormat.includes('YY')) {
+    fromYearFormat = 2;
+    fromYearIndex = fromFormat.indexOf('YY');
+  } else {
+    fromYearFormat = 4;
+    fromYearIndex = fromFormat.indexOf('YYYY');
+  }
+
+  if (toFormat.includes('YY')) {
+    toYearFormat = 2;
+    toYearIndex = toFormat.indexOf('YY');
+  } else {
+    toYearFormat = 4;
+    toYearIndex = toFormat.indexOf('YYYY');
+  }
+
+  fromFormat[fromYearIndex] = 'Y';
+  toFormat[toYearIndex] = 'Y';
+
+  if (fromYearFormat === 4 && toYearFormat === 2) {
+    dateToChange[fromYearIndex] = dateToChange[fromYearIndex].slice(2);
+  } else if (fromYearFormat === 2 && toYearFormat === 4) {
+    if (Number(dateToChange[fromYearIndex]) < 30) {
+      dateToChange[fromYearIndex] = `20${dateToChange[fromYearIndex]}`;
+    } else {
+      dateToChange[fromYearIndex] = `19${dateToChange[fromYearIndex]}`;
+    }
+  }
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const index = fromFormat.indexOf(toFormat[i]);
+
+    result[result.length] = dateToChange[index];
+  }
+
+  return result.join(separator);
 }
 
 module.exports = formatDate;
