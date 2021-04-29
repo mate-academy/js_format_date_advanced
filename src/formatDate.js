@@ -66,13 +66,13 @@ function formatDate(date, fromFormat, toFormat) {
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     const yearIndex = fromFormat.indexOf('YYYY');
 
-    dateArr[yearIndex] = dateArr[yearIndex][2] + dateArr[yearIndex][3];
+    dateArr[yearIndex] = dateArr[yearIndex].slice(2);
   }
 
   for (let i = 0; i < dateArr.length; i++) {
-    const index = fromFormat.findIndex(el => {
-      return toFormat[i][0] === el[0];
-    });
+    const index = fromFormat.findIndex(
+      el => toFormat[i][0] === el[0]
+    );
 
     newFormatDate.push(dateArr[index]);
   }
