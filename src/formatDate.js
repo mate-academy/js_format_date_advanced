@@ -50,7 +50,167 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  let separator;
+  const newDate = date.split('');
 
+  for (let i = 0; i < newDate.length; i++) {
+    if (isNaN(newDate[i])) {
+      separator = newDate[i];
+    };
+  };
+
+  const tempFrom = fromFormat.join();
+  const tempTo = toFormat.join();
+  const fromSplit = tempFrom.split('');
+  const toSplit = tempTo.split('');
+  let countFrom = 0;
+  let countTo = 0;
+
+  for (let i = 0; i < fromSplit.length; i++) {
+    if (fromSplit[i] === 'Y') {
+      countFrom++;
+    };
+  };
+
+  for (let i = 0; i < toSplit.length; i++) {
+    if (toSplit[i] === 'Y') {
+      countTo++;
+    };
+  };
+
+  const fromDate = date.split(separator);
+  const oldFormat = fromDate.concat(separator);
+  const newSeparator = toFormat.pop();
+  let fromFormat1 = [];
+
+  if (countFrom === countTo) {
+    for (let i = 0; i < fromFormat.length; i++) {
+      if (fromFormat[i] !== toFormat[i]) {
+        fromFormat1 = fromDate.reverse();
+        break;
+      }
+
+      if (fromFormat[i] === toFormat[i]) {
+        fromFormat1 = fromDate;
+        break;
+      }
+    };
+  };
+
+  let firstItem;
+  let lastItem;
+  let year;
+  let yearPart;
+
+  if (countFrom < countTo) {
+    if (fromSplit[0] === 'Y') {
+      if (fromSplit[0] === toSplit[0]) {
+        if (+oldFormat[0] < 30) {
+          firstItem = fromDate.shift();
+          year = 20 + firstItem;
+          fromDate.unshift(year);
+          fromFormat1 = fromDate;
+        } else {
+          firstItem = fromDate.shift();
+          year = 19 + firstItem;
+          fromDate.unshift(year);
+          fromFormat1 = fromDate;
+        };
+      };
+    };
+
+    if (fromSplit[0] === 'Y') {
+      if (fromSplit[0] !== toSplit[0]) {
+        if (+oldFormat[0] < 30) {
+          firstItem = fromDate.shift();
+          year = 20 + firstItem;
+          fromDate.unshift(year);
+          fromFormat1 = fromDate.reverse();
+        } else {
+          firstItem = fromDate.shift();
+          year = 19 + firstItem;
+          fromDate.unshift(year);
+          fromFormat1 = fromDate.reverse();
+        };
+      };
+    };
+
+    if (fromSplit[6] === 'Y') {
+      if (fromSplit[6] === toSplit[6]) {
+        if (+oldFormat[0] < 30) {
+          lastItem = fromDate.pop();
+          year = 20 + lastItem;
+          fromDate.push(year);
+          fromFormat1 = fromDate;
+        } else {
+          lastItem = fromDate.pop();
+          year = 19 + lastItem;
+          fromDate.push(year);
+          fromFormat1 = fromDate;
+        }
+      };
+    };
+
+    if (fromSplit[6] === 'Y') {
+      if (fromSplit[6] !== toSplit[6]) {
+        if (+oldFormat[0] < 30) {
+          lastItem = fromDate.pop();
+          year = 20 + lastItem;
+          fromDate.push(year);
+          fromFormat1 = fromDate.reverse();
+        } else {
+          lastItem = fromDate.pop();
+          year = 19 + lastItem;
+          fromDate.push(year);
+          fromFormat1 = fromDate.reverse;
+        }
+      }
+    };
+  };
+
+  if (countFrom > countTo) {
+    if (fromSplit[0] === 'Y') {
+      if (fromSplit[0] === toSplit[0]) {
+        year = fromDate.shift();
+        yearPart = year.split('');
+        lastItem = yearPart[2] + yearPart[3];
+        fromDate.concat(lastItem);
+        fromFormat1 = fromDate;
+      }
+    }
+
+    if (fromSplit[0] === 'Y') {
+      if (fromSplit[0] !== toSplit[0]) {
+        year = fromDate.shift();
+        yearPart = year.split('');
+        lastItem = yearPart[2] + yearPart[3];
+        fromDate.concat(lastItem);
+        fromFormat1 = fromDate.reverse();
+      };
+    };
+
+    if (fromSplit[6] === 'Y') {
+      if (fromSplit[6] === toSplit[6]) {
+        year = fromDate.pop();
+        yearPart = year.split('');
+        lastItem = yearPart[2] + yearPart[3];
+        fromFormat1 = fromDate.concat(lastItem);
+      }
+    }
+
+    if (fromSplit[6] === 'Y') {
+      if (fromSplit[6] !== toSplit[6]) {
+        year = fromDate.pop();
+        yearPart = year.split('');
+        lastItem = yearPart[2] + yearPart[3];
+        fromDate.concat(lastItem);
+        fromFormat1 = fromDate.reverse();
+      }
+    }
+  };
+
+  const newDate1 = fromFormat1.join(newSeparator);
+
+  return newDate1;
+}
 module.exports = formatDate;
