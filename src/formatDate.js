@@ -51,7 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const result = [];
-  const vrema = {
+  const time = {
     DD: null,
     MM: null,
     YY: null,
@@ -60,28 +60,29 @@ function formatDate(date, fromFormat, toFormat) {
   const rev = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    vrema[fromFormat[i]] = rev[i];
+    time[fromFormat[i]] = rev[i];
   }
 
-  if (vrema.YY === null) {
-    const hard = vrema.YYYY;
-    const masiv = [];
+  switch (null) {
+    case time.YY:
+      const hard = time.YYYY;
+      const masiv = [];
 
-    masiv.push(hard[2]);
-    masiv.push(hard[3]);
-    vrema.YY = masiv.join('');
-  }
+      masiv.push(hard[2]);
+      masiv.push(hard[3]);
+      time.YY = masiv.join('');
+      break;
 
-  if (vrema.YYYY === null) {
-    if (vrema.YY < 30) {
-      vrema.YYYY = '20' + vrema.YY;
-    } else {
-      vrema.YYYY = '19' + vrema.YY;
-    }
+    case time.YYYY:
+      if (time.YY < 30) {
+        time.YYYY = '20' + time.YY;
+      } else {
+        time.YYYY = '19' + time.YY;
+      }
   }
 
   for (let j = 0; j < toFormat.length - 1; j++) {
-    result.push(vrema[toFormat[j]]);
+    result.push(time[toFormat[j]]);
   }
 
   return result.join(toFormat[3]);
