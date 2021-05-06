@@ -52,47 +52,48 @@
 function formatDate(date, fromFormat, toFormat) {
   const arrDate = date.split(fromFormat[3]);
   const update = [];
-  let yearIndex = 0;
-  let monthIndex = 0;
-  let dayIndex = 0;
+  const dateObj = {};
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      yearIndex = i;
-    }
+    switch (fromFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        dateObj.year = arrDate[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      monthIndex = i;
-    }
+      case 'MM':
+        dateObj.month = arrDate[i];
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      dayIndex = i;
+      case 'DD':
+        dateObj.day = arrDate[i];
     }
   }
 
+  if (dateObj.year < 30) {
+    dateObj.year = '20' + dateObj.year;
+  }
+
+  if (dateObj.year >= 30 && dateObj.year <= 99) {
+    dateObj.year = '19' + dateObj.year;
+  }
+
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'YY') {
-      update.push(arrDate[yearIndex].slice(2));
-    }
+    switch (toFormat[i]) {
+      case 'YY':
+        update.push(dateObj.year.slice(2));
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      if (fromFormat.includes('YY')) {
-        if (arrDate[yearIndex] < 30) {
-          update.push('20' + arrDate[yearIndex]);
-        } else {
-          update.push('19' + arrDate[yearIndex]);
-        }
-      } else {
-        update.push(arrDate[yearIndex]);
-      }
-    }
+      case 'YYYY':
+        update.push(dateObj.year);
+        break;
 
-    if (toFormat[i] === 'MM') {
-      update.push(arrDate[monthIndex]);
-    }
+      case 'MM':
+        update.push(dateObj.month);
+        break;
 
-    if (toFormat[i] === 'DD') {
-      update.push(arrDate[dayIndex]);
+      case 'DD':
+        update.push(dateObj.day);
     }
   }
 
