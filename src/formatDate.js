@@ -51,38 +51,38 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const fromFormatObj = {};
-  const fromF = fromFormat[3];
-  const toF = toFormat[3];
-  const dateArr = date.split(fromF);
-  const res = [];
+  const oldFormat = {};
+  const newFromFormat = fromFormat[3];
+  const newToFormat = toFormat[3];
+  const dateParts = date.split(newFromFormat);
+  const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    fromFormatObj[fromFormat[i][0]] = dateArr[i];
+    oldFormat[fromFormat[i][0]] = dateParts[i];
   }
 
   if (fromFormat.find(el => el.startsWith('Y')).length === 2) {
-    if (fromFormatObj['Y'] > 20) {
-      fromFormatObj['Y'] = (+fromFormatObj['Y'] + 1900).toString();
+    if (oldFormat['Y'] > 20) {
+      oldFormat['Y'] = (+oldFormat['Y'] + 1900).toString();
     } else {
-      fromFormatObj['Y'] = (+fromFormatObj['Y'] + 2000).toString();
+      oldFormat['Y'] = (+oldFormat['Y'] + 2000).toString();
     }
   }
 
   if (toFormat.find(el => el.startsWith('Y')).length === 2) {
-    if (fromFormatObj['Y'] > 2000) {
-      fromFormatObj['Y'] = (+fromFormatObj['Y'] - 2000).toString();
+    if (oldFormat['Y'] > 2000) {
+      oldFormat['Y'] = (+oldFormat['Y'] - 2000).toString();
     } else {
-      fromFormatObj['Y'] = (+fromFormatObj['Y'] - 1900).toString();
+      oldFormat['Y'] = (+oldFormat['Y'] - 1900).toString();
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    toFormat[i] = fromFormatObj[toFormat[i][0]];
-    res.push(toFormat[i]);
+    toFormat[i] = oldFormat[toFormat[i][0]];
+    result.push(toFormat[i]);
   }
 
-  return res.join(toF);
+  return result.join(newToFormat);
 }
 
 module.exports = formatDate;
