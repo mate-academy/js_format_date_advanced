@@ -50,38 +50,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const input = {};
-  const oldArr = fromFormat[3];
-  const newArr = toFormat[3];
-  const newDate = date.split(oldArr);
-  const str = [];
+  const dateArr = date.split(fromFormat[3]);
+  const newArr = [];
+  const dateObj = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    input[fromFormat[i][0]] = newDate[i];
-  }
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        dateObj.year = dateArr[i];
+        break;
 
-  if (fromFormat.find(el => el.startsWith('Y')).length === 2) {
-    if (input['Y'] > 20) {
-      input['Y'] = +input['Y'] + 1900;
-    } else {
-      input['Y'] = +input['Y'] + 2000;
+      case 'MM':
+        dateObj.month = dateArr[i];
+        break;
+
+      case 'DD':
+        dateObj.day = dateArr[i];
     }
   }
 
-  if (toFormat.find(el => el.startsWith('Y')).length === 2) {
-    if (input['Y'] > 2000) {
-      input['Y'] = +input['Y'] - 2000;
-    } else {
-      input['Y'] = +input['Y'] - 1900;
+  if (dateObj.year < 30) {
+    dateObj.year = '20' + dateObj.year;
+  }
+
+  if (dateObj.year >= 30 && dateObj.year <= 99) {
+    dateObj.year = '19' + dateObj.year;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        newArr.push(dateObj.year);
+        break;
+
+      case 'YY':
+        newArr.push(dateObj.year.slice(2));
+        break;
+
+      case 'MM':
+        newArr.push(dateObj.month);
+        break;
+
+      case 'DD':
+        newArr.push(dateObj.day);
     }
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    toFormat[i] = input[toFormat[i][0]];
-    str.push(toFormat[i]);
-  }
-
-  return str.join(newArr);
+  return newArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
