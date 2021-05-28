@@ -51,6 +51,52 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const currentSeparator = fromFormat.splice(-1, 1).join('');
+  const actualSeparator = toFormat.splice(-1, 1).join('');
+  const dateArray = date.split(currentSeparator);
+  const yearLetter = 'Y';
+  const resultDate = [];
+  const toCentury = 30;
+  const prevCenturyYears = '19';
+  const currentCenturyYears = '20';
+  let yearLengthFromFormat = 0;
+  let yearLengthToFormat = 0;
+  let indexOfYear = 0;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    for (let j = 0; j < toFormat.length; j++) {
+      if (fromFormat[i][0].includes(toFormat[j][0])) {
+        resultDate[j] = dateArray[i];
+      }
+    }
+  }
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i].includes(yearLetter)) {
+      yearLengthFromFormat = fromFormat[i].length;
+    }
+
+    if (toFormat[i].includes(yearLetter)) {
+      yearLengthToFormat = toFormat[i].length;
+      indexOfYear = i;
+    }
+  }
+
+  if (yearLengthFromFormat < yearLengthToFormat) {
+    if (resultDate[indexOfYear] < toCentury) {
+      resultDate[indexOfYear] = currentCenturyYears + resultDate[indexOfYear];
+    } else {
+      resultDate[indexOfYear] = prevCenturyYears + resultDate[indexOfYear];
+    }
+  }
+
+  if (yearLengthFromFormat > yearLengthToFormat) {
+    const splicedYear = resultDate[indexOfYear].slice(2);
+
+    resultDate[indexOfYear] = splicedYear;
+  }
+
+  return resultDate.join(actualSeparator);
 }
 
 module.exports = formatDate;
