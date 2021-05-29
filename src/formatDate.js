@@ -50,7 +50,77 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromFormatSeparator = fromFormat[3]; // разделитель в fromFormat
+  const toFormatSeparator = toFormat[3]; // разделитель в toFormat
+  const dateArr = date.split(fromFormatSeparator); // массив из чисел даты
+  let year = '';
+  const res = [...toFormat];
+
+  res.pop();
+
+  // позиционирование промежутков времени в fromFormat
+  let yearFromPosition = '';
+  let monthFromPosition = '';
+  let dayFromPosition = '';
+
+  // позиционирование промежутков времени в toFormat
+  let yearToPosition = '';
+  let monthToPosition = '';
+  let dayToPosition = '';
+
+  // определение позиций в fromFormat
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i].includes('Y')) {
+      yearFromPosition = i;
+    }
+
+    if (fromFormat[i].includes('M')) {
+      monthFromPosition = i;
+    }
+
+    if (fromFormat[i].includes('D')) {
+      dayFromPosition = i;
+    }
+  }
+
+  // определение позиций в toFormat
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i].includes('Y')) {
+      yearToPosition = i;
+    }
+
+    if (toFormat[i].includes('M')) {
+      monthToPosition = i;
+    }
+
+    if (toFormat[i].includes('D')) {
+      dayToPosition = i;
+    }
+  }
+
+  // определение того, как будет отображаться год
+  const yearToFormat = toFormat[yearToPosition].length;
+  const yearFromFormat = fromFormat[yearFromPosition].length;
+
+  if (yearToFormat === 4) {
+    if (yearFromFormat === 4) {
+      year = dateArr[yearFromPosition];
+    } else {
+      if (dateArr[yearFromPosition] < 30) {
+        year = `20${dateArr[yearFromPosition]}`;
+      } else {
+        year = `19${dateArr[yearFromPosition]}`;
+      }
+    }
+  } else {
+    year = `${dateArr[yearFromPosition][2]}${dateArr[yearFromPosition][3]}`;
+  }
+
+  res[yearToPosition] = year;
+  res[monthToPosition] = dateArr[monthFromPosition];
+  res[dayToPosition] = dateArr[dayFromPosition];
+
+  return res.join(toFormatSeparator);
 }
 
 module.exports = formatDate;
