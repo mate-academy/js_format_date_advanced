@@ -53,74 +53,32 @@ function formatDate(date, fromFormat, toFormat) {
   const fromFormatSeparator = fromFormat[3]; // разделитель в fromFormat
   const toFormatSeparator = toFormat[3]; // разделитель в toFormat
   const dateArr = date.split(fromFormatSeparator); // массив из чисел даты
-  let year = '';
-  const res = [...toFormat];
+  const fromFormatObj = {};
+  const toFormatObj = {};
 
-  res.pop();
-
-  // позиционирование промежутков времени в fromFormat
-  let yearFromPosition = '';
-  let monthFromPosition = '';
-  let dayFromPosition = '';
-
-  // позиционирование промежутков времени в toFormat
-  let yearToPosition = '';
-  let monthToPosition = '';
-  let dayToPosition = '';
-
-  // определение позиций в fromFormat
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i].includes('Y')) {
-      yearFromPosition = i;
-    }
-
-    if (fromFormat[i].includes('M')) {
-      monthFromPosition = i;
-    }
-
-    if (fromFormat[i].includes('D')) {
-      dayFromPosition = i;
-    }
+  for (let i = 0; i < 3; i++) {
+    fromFormatObj[fromFormat[i]] = dateArr[i];
   }
 
-  // определение позиций в toFormat
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i].includes('Y')) {
-      yearToPosition = i;
-    }
-
-    if (toFormat[i].includes('M')) {
-      monthToPosition = i;
-    }
-
-    if (toFormat[i].includes('D')) {
-      dayToPosition = i;
-    }
+  for (let i = 0; i < 3; i++) {
+    toFormatObj[toFormat[i]] = fromFormatObj[toFormat[i]];
   }
 
-  // определение того, как будет отображаться год
-  const yearToFormat = toFormat[yearToPosition].length;
-  const yearFromFormat = fromFormat[yearFromPosition].length;
-
-  if (yearToFormat === 4) {
-    if (yearFromFormat === 4) {
-      year = dateArr[yearFromPosition];
+  if (toFormatObj.hasOwnProperty('YYYY')) {
+    if (fromFormatObj.hasOwnProperty('YYYY')) {
+      toFormatObj.YYYY = fromFormatObj.YYYY;
     } else {
-      if (dateArr[yearFromPosition] < 30) {
-        year = `20${dateArr[yearFromPosition]}`;
-      } else {
-        year = `19${dateArr[yearFromPosition]}`;
-      }
+      toFormatObj.YYYY = fromFormatObj.YY < 30
+        ? `20${fromFormatObj.YY}`
+        : `19${fromFormatObj.YY}`;
     }
   } else {
-    year = `${dateArr[yearFromPosition][2]}${dateArr[yearFromPosition][3]}`;
+    toFormatObj.YY = fromFormatObj.YY
+      ? fromFormatObj.YY
+      : `${fromFormatObj.YYYY[2]}${fromFormatObj.YYYY[3]}`;
   }
 
-  res[yearToPosition] = year;
-  res[monthToPosition] = dateArr[monthFromPosition];
-  res[dayToPosition] = dateArr[dayFromPosition];
-
-  return res.join(toFormatSeparator);
+  return Object.values(toFormatObj).join(toFormatSeparator);
 }
 
 module.exports = formatDate;
