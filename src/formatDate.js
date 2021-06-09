@@ -49,8 +49,35 @@
  * @returns {string}
  */
 
+const formatYear = (date) => {
+  const threshold = 30;
+
+  if ('YYYY' in date) {
+    date['YY'] = date['YYYY'].slice(-2);
+  } else {
+    date['YYYY'] = date['YY'].padStart(
+      4, date['YY'] < threshold ? '20' : '19'
+    );
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateUnits = {};
+  const splitDate = date.split(fromFormat.slice(-1));
+
+  for (let i = 0; i < splitDate.length; i++) {
+    dateUnits[fromFormat[i]] = splitDate[i];
+  }
+
+  formatYear(dateUnits);
+
+  const formattedDate = [];
+
+  for (const format of toFormat.slice(0, -1)) {
+    formattedDate.push(dateUnits[format]);
+  }
+
+  return formattedDate.join(toFormat.slice(-1));
 }
 
 module.exports = formatDate;
