@@ -52,6 +52,9 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateSplitted = date.match(/\d+/g);
   const correctDate = [];
+  const currentCentury = 2000;
+  const previousCentury = 1900;
+  const minYearsForCurrentCentury = 30;
 
   for (let j = 0; j < toFormat.length; j++) {
     for (let i = 0; i < fromFormat.length; i++) {
@@ -79,10 +82,10 @@ function formatDate(date, fromFormat, toFormat) {
           };
 
           if (toFormat[j].length > fromFormat[i].length) {
-            if (dateSplitted[i] < 30) {
-              correctDate.push(+dateSplitted[i] + 2000);
+            if (dateSplitted[i] < minYearsForCurrentCentury) {
+              correctDate.push(+dateSplitted[i] + currentCentury);
             } else {
-              correctDate.push(+dateSplitted[i] + 1900);
+              correctDate.push(+dateSplitted[i] + previousCentury);
             }
           }
         };
