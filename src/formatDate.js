@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateSplitted = date.match(/\d+/g);
+  const correctDate = [];
+
+  for (let j = 0; j < toFormat.length; j++) {
+    for (let i = 0; i < fromFormat.length; i++) {
+      if (toFormat[j] === 'DD' && fromFormat[i] === 'DD') {
+        correctDate.push(dateSplitted[i]);
+      };
+
+      if (toFormat[j] === 'MM' && fromFormat[i] === 'MM') {
+        correctDate.push(dateSplitted[i]);
+      };
+
+      if (toFormat[j] === 'YYYY' || toFormat[j] === 'YY') {
+        if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+          if (toFormat[j].length === fromFormat[i].length) {
+            correctDate.push(dateSplitted[i]);
+          }
+
+          if (toFormat[j].length < fromFormat[i].length) {
+            dateSplitted[i] = dateSplitted[i].split('');
+            dateSplitted[i].shift();
+            dateSplitted[i].shift();
+            dateSplitted[i] = dateSplitted[i].join('');
+
+            correctDate.push(dateSplitted[i]);
+          };
+
+          if (toFormat[j].length > fromFormat[i].length) {
+            if (dateSplitted[i] < 30) {
+              correctDate.push(+dateSplitted[i] + 2000);
+            } else {
+              correctDate.push(+dateSplitted[i] + 1900);
+            }
+          }
+        };
+      }
+    };
+  };
+
+  return correctDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
