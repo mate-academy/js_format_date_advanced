@@ -51,6 +51,28 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const splitedDate = date.split(fromFormat[3]);
+  const dateParameters = {};
+  const parametersForNewFormat = [];
+
+  for (let i = 0; i < 3; i++) {
+    dateParameters[fromFormat[i]] = splitedDate[i];
+  }
+
+  if (toFormat.includes('YY') & fromFormat.includes('YYYY')) {
+    dateParameters.YY = dateParameters.YYYY[2] + dateParameters.YYYY[3];
+  }
+
+  if (toFormat.includes('YYYY') & fromFormat.includes('YY')) {
+    dateParameters.YYYY
+= dateParameters.YY >= 30 ? '19' + dateParameters.YY : '20' + dateParameters.YY;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    parametersForNewFormat.push(dateParameters[toFormat[i]]);
+  }
+
+  return parametersForNewFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
