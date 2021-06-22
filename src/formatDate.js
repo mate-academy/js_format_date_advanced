@@ -38,7 +38,7 @@
  *
  * formatDate(
  *   '97/02/18',
- *   ['YY', 'MM', 'DD', '/'],
+ *   ['YY', 'MM', '/' 'DD'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
@@ -63,9 +63,13 @@ function formatDate(date, fromFormat, toFormat) {
     dateParameters.YY = dateParameters.YYYY[2] + dateParameters.YYYY[3];
   }
 
-  if (toFormat.includes('YYYY') & fromFormat.includes('YY')) {
+  function changeDate() {
     dateParameters.YYYY
 = dateParameters.YY >= 30 ? '19' + dateParameters.YY : '20' + dateParameters.YY;
+  };
+
+  if (toFormat.includes('YYYY') & fromFormat.includes('YY')) {
+    changeDate();
   }
 
   for (let i = 0; i < 3; i++) {
