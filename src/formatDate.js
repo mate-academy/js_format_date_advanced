@@ -64,8 +64,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (fromFormat[j] === 'YY' && toFormat.includes('YYYY')) {
-      fromFormatObject['YYYY']
-      = splitedData[j] >= 30 ? '19' + splitedData[j] : '20' + splitedData[j];
+      fromFormatObject['YYYY'] = addFullNameYear(fromFormatObject.YY);
     }
   }
 
@@ -76,6 +75,10 @@ function formatDate(date, fromFormat, toFormat) {
   const modifiedString = Object.values(toFormatObject).join(separator);
 
   return modifiedString;
+}
+
+function addFullNameYear(year) {
+  return year >= 30 ? '19' + year : '20' + year;
 }
 
 module.exports = formatDate;
