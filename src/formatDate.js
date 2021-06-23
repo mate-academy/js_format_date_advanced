@@ -49,8 +49,13 @@
  * @returns {string}
  */
 function formatedYear(year) {
-  const newYear
-= year >= 30 ? '19' + year : '20' + year;
+  let newYear = '';
+
+  if (year >= 30) {
+    newYear = '19' + year;
+  } else {
+    newYear = '20' + year;
+  }
 
   return newYear;
 };
