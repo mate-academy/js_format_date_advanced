@@ -48,6 +48,12 @@
  *
  * @returns {string}
  */
+function formatedYear(year) {
+  const newYear
+= year >= 30 ? '19' + year : '20' + year;
+
+  return newYear;
+};
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
@@ -63,13 +69,8 @@ function formatDate(date, fromFormat, toFormat) {
     dateParameters.YY = dateParameters.YYYY[2] + dateParameters.YYYY[3];
   }
 
-  function changeDate() {
-    dateParameters.YYYY
-= dateParameters.YY >= 30 ? '19' + dateParameters.YY : '20' + dateParameters.YY;
-  };
-
   if (toFormat.includes('YYYY') & fromFormat.includes('YY')) {
-    changeDate();
+    dateParameters.YYYY = formatedYear(dateParameters.YY);
   }
 
   for (let i = 0; i < 3; i++) {
