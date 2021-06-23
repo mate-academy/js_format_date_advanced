@@ -52,7 +52,6 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
   const formatedDate = [];
-  const extendLimit = 30;
   let indexOfPart;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
@@ -63,36 +62,28 @@ function formatDate(date, fromFormat, toFormat) {
         formatedDate[i] = dateParts[indexOfPart];
         break;
       case 'YY':
+      case 'YYYY':
         indexOfPart = fromFormat.indexOf('YY');
 
-        if (indexOfPart === -1) {
-          indexOfPart = fromFormat.indexOf('YYYY');
-          formatedDate[i] = dateParts[indexOfPart].slice(2);
-          break;
-        }
-
-        formatedDate[i] = dateParts[indexOfPart];
-        break;
-      case 'YYYY':
-        indexOfPart = fromFormat.indexOf('YYYY');
-
-        if (indexOfPart === -1) {
-          indexOfPart = fromFormat.indexOf('YY');
-
-          if (+dateParts[indexOfPart] < extendLimit) {
-            formatedDate[i] = '20' + dateParts[indexOfPart];
-          } else {
-            formatedDate[i] = '19' + dateParts[indexOfPart];
-          }
-          break;
-        }
-
-        formatedDate[i] = dateParts[indexOfPart];
+        indexOfPart = indexOfPart === -1
+          ? fromFormat.indexOf('YYYY')
+          : indexOfPart;
+        formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
         break;
     }
   }
 
   return formatedDate.join(toFormat[toFormat.length - 1]);
+}
+
+function formatYear(year, format) {
+  if (year.length === 2 && format === 'YYYY') {
+    return +year < 30 ? `20${year}` : `19${year}`;
+  } else if (year.length === 4 && format === 'YY') {
+    return year.slice(2);
+  } else {
+    return year;
+  }
 }
 
 module.exports = formatDate;
