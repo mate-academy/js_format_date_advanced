@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const currentDate = date.split(fromFormat[3]);
+
+  let year;
+  let month;
+  let day;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      year = currentDate[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = currentDate[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = currentDate[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'MM') {
+      currentDate[i] = month;
+    }
+
+    if (toFormat[i] === 'DD') {
+      currentDate[i] = day;
+    }
+
+    if (toFormat[i] === 'YYYY' && year.length > 2) {
+      currentDate[i] = year;
+    }
+
+    if (toFormat[i] === 'YYYY' && year.length < 4) {
+      if (year < 30) {
+        year = '20' + year;
+      } else {
+        year = '19' + year;
+      }
+
+      currentDate[i] = year;
+    }
+
+    if (toFormat[i] === 'YY' && year.length > 2) {
+      year = year.slice(2, 4);
+      currentDate[i] = year;
+    }
+  }
+
+  return currentDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
