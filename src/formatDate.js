@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const splitedData = date.split(fromFormat[3]);
   const newFormat = [];
-  const addElToArr = (param, sliceIdx = 0, yearFormat = '') =>
+  const elToNewFormat = (param, sliceIdx = 0, yearFormat = '') =>
     newFormat.push(
       yearFormat + splitedData[fromFormat.indexOf(param)].slice(sliceIdx)
     );
@@ -60,27 +60,27 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < splitedData.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        addElToArr('DD');
+        elToNewFormat('DD');
         break;
       case 'MM':
-        addElToArr('MM');
+        elToNewFormat('MM');
         break;
       case 'YY':
         if (fromFormat.includes('YY')) {
           newFormat.push(splitedData[fromFormat.indexOf('YY')]);
-          addElToArr('YY');
+          elToNewFormat('YY');
         } else {
-          addElToArr('YYYY', 2);
+          elToNewFormat('YYYY', 2);
         }
         break;
       case 'YYYY':
         if (fromFormat.includes('YYYY')) {
-          addElToArr('YYYY');
+          elToNewFormat('YYYY');
         } else {
           if (+splitedData[fromFormat.indexOf('YY')] > 20) {
-            addElToArr('YY', 0, '19');
+            elToNewFormat('YY', 0, '19');
           } else {
-            addElToArr('YY', 0, '20');
+            elToNewFormat('YY', 0, '20');
           }
         }
         break;
