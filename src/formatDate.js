@@ -50,14 +50,14 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateToArr = date.split(fromFormat[3]);
-  const toFormatArray = [];
+  const splitedData = date.split(fromFormat[3]);
+  const newFormat = [];
   const addElToArr = (param, sliceIdx = 0, yearFormat = '') =>
-    toFormatArray.push(
-      yearFormat + dateToArr[fromFormat.indexOf(param)].slice(sliceIdx)
+    newFormat.push(
+      yearFormat + splitedData[fromFormat.indexOf(param)].slice(sliceIdx)
     );
 
-  for (let i = 0; i < dateToArr.length; i++) {
+  for (let i = 0; i < splitedData.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
         addElToArr('DD');
@@ -67,7 +67,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case 'YY':
         if (fromFormat.includes('YY')) {
-          toFormatArray.push(dateToArr[fromFormat.indexOf('YY')]);
+          newFormat.push(splitedData[fromFormat.indexOf('YY')]);
           addElToArr('YY');
         } else {
           addElToArr('YYYY', 2);
@@ -77,7 +77,7 @@ function formatDate(date, fromFormat, toFormat) {
         if (fromFormat.includes('YYYY')) {
           addElToArr('YYYY');
         } else {
-          if (+dateToArr[fromFormat.indexOf('YY')] > 20) {
+          if (+splitedData[fromFormat.indexOf('YY')] > 20) {
             addElToArr('YY', 0, '19');
           } else {
             addElToArr('YY', 0, '20');
@@ -87,7 +87,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return toFormatArray.join(toFormat[3]);
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
