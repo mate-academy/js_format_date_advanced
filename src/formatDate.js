@@ -52,24 +52,20 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
   const formatedDate = [];
-  let indexOfPart;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-      case 'MM':
-        indexOfPart = fromFormat.indexOf(toFormat[i]);
-        formatedDate[i] = dateParts[indexOfPart];
-        break;
-      case 'YY':
-      case 'YYYY':
-        indexOfPart = fromFormat.indexOf('YY');
+    let indexOfPart = fromFormat.indexOf(toFormat[i]);
 
-        indexOfPart = indexOfPart === -1
-          ? fromFormat.indexOf('YYYY')
-          : indexOfPart;
-        formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
-        break;
+    if (indexOfPart === -1) {
+      indexOfPart = fromFormat.indexOf('YYYY') === -1
+        ? fromFormat.indexOf('YY')
+        : fromFormat.indexOf('YYYY');
+    }
+
+    if (toFormat[i] === 'DD' || toFormat[i] === 'MM') {
+      formatedDate[i] = dateParts[indexOfPart];
+    } else {
+      formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
     }
   }
 
