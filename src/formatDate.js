@@ -49,39 +49,49 @@
  * @returns {string}
  */
 
+const elToNewFormat = (
+  param,
+  sliceIdx = 0,
+  yearFormat = '',
+  newFormat,
+  splitedData,
+  fromFormat
+) =>
+  newFormat.push(
+    yearFormat + splitedData[fromFormat.indexOf(param)].slice(sliceIdx)
+  );
+
+const yearsFormat = (splitedData, fromFormat, newFormat) => {
+  if (+splitedData[fromFormat.indexOf('YY')] > 20) {
+    elToNewFormat('YY', 0, '19', newFormat, splitedData, fromFormat);
+  } else {
+    elToNewFormat('YY', 0, '20', newFormat, splitedData, fromFormat);
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
   const splitedData = date.split(fromFormat[3]);
   const newFormat = [];
-  const elToNewFormat = (param, sliceIdx = 0, yearFormat = '') =>
-    newFormat.push(
-      yearFormat + splitedData[fromFormat.indexOf(param)].slice(sliceIdx)
-    );
 
   for (let i = 0; i < splitedData.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        elToNewFormat('DD');
-        break;
       case 'MM':
-        elToNewFormat('MM');
+        elToNewFormat(toFormat[i], 0, '', newFormat, splitedData, fromFormat);
         break;
       case 'YY':
         if (fromFormat.includes('YY')) {
           newFormat.push(splitedData[fromFormat.indexOf('YY')]);
-          elToNewFormat('YY');
+          elToNewFormat('YY', 0, '', newFormat, splitedData, fromFormat);
         } else {
-          elToNewFormat('YYYY', 2);
+          elToNewFormat('YYYY', 2, '', newFormat, splitedData, fromFormat);
         }
         break;
       case 'YYYY':
         if (fromFormat.includes('YYYY')) {
-          elToNewFormat('YYYY');
+          elToNewFormat('YYYY', 0, '', newFormat, splitedData, fromFormat);
         } else {
-          if (+splitedData[fromFormat.indexOf('YY')] > 20) {
-            elToNewFormat('YY', 0, '19');
-          } else {
-            elToNewFormat('YY', 0, '20');
-          }
+          yearsFormat(splitedData, fromFormat, newFormat);
         }
         break;
     }
