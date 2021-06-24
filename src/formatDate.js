@@ -65,20 +65,9 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YYYY':
-        if (
-          fromFormat.includes('YY')
-          && splitDate[i] < 30
-          && splitDate[i] >= 0
-        ) {
-          newDate[toFormat.indexOf(toFormat[i])] = `20${splitDate[i]}`;
-          break;
-        }
-
-        if (
-          fromFormat.includes('YY')
-          && splitDate[i] >= 30
-        ) {
-          newDate[toFormat.indexOf(toFormat[i])] = `19${splitDate[i]}`;
+        if (!fromFormat.includes(toFormat[i])) {
+          newDate[toFormat.indexOf(toFormat[i])]
+            = fromShortToLongYear(splitDate[i]);
           break;
         }
         newDate[toFormat.indexOf(fromFormat[i])] = splitDate[i];
@@ -87,6 +76,10 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newDate.join(toFormat[toFormat.length - 1]);
+}
+
+function fromShortToLongYear(year) {
+  return year >= 0 && year < 30 ? `20${year}` : `19${year}`;
 }
 
 module.exports = formatDate;
