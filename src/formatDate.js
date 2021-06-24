@@ -56,16 +56,34 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     let indexOfPart = fromFormat.indexOf(toFormat[i]);
 
-    if (indexOfPart === -1) {
-      indexOfPart = fromFormat.indexOf('YYYY') === -1
-        ? fromFormat.indexOf('YY')
-        : fromFormat.indexOf('YYYY');
-    }
+    switch (toFormat[i]) {
+      case 'MM': {
+        formatedDate[i] = dateParts[indexOfPart];
+        break;
+      }
 
-    if (toFormat[i] === 'DD' || toFormat[i] === 'MM') {
-      formatedDate[i] = dateParts[indexOfPart];
-    } else {
-      formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
+      case 'DD': {
+        formatedDate[i] = dateParts[indexOfPart];
+        break;
+      }
+
+      case 'YY': {
+        if (indexOfPart === -1) {
+          indexOfPart = fromFormat.indexOf('YYYY');
+        }
+
+        formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
+        break;
+      }
+
+      case 'YYYY': {
+        if (indexOfPart === -1) {
+          indexOfPart = fromFormat.indexOf('YY');
+        }
+
+        formatedDate[i] = formatYear(dateParts[indexOfPart], toFormat[i]);
+        break;
+      }
     }
   }
 
