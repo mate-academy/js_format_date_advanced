@@ -50,34 +50,51 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const strData = date.split(fromFormat[3]);
-  const infoFromFormat = {};
-  const infoToFormat = {};
+  const splitData = date.split(fromFormat[3]);
+  const informationFromFormat = {};
+  const informationToFormat = {};
   let toFormatResault = '';
 
-  for (let i = 0; i < strData.length; i++) {
-    infoFromFormat[fromFormat[i]] = strData[i];
-    infoToFormat[toFormat[i]] = '';
+  for (let i = 0; i < splitData.length; i++) {
+    informationFromFormat[fromFormat[i]] = splitData[i];
+    informationToFormat[toFormat[i]] = '';
   }
 
-  for (const keyOld in infoFromFormat) {
-    for (const keyNew in infoToFormat) {
-      if (keyOld === keyNew) {
-        infoToFormat[keyOld] = infoFromFormat[keyNew];
-      } else if (keyNew === 'YYYY' && keyOld !== 'YYYY') {
-        if (infoFromFormat['YY'] < 21 && infoFromFormat['YY'] >= 0) {
-          infoToFormat[keyNew] = '20' + infoFromFormat['YY'];
-        } else if (infoFromFormat['YY'] > 21 && infoFromFormat['YY'] < 100) {
-          infoToFormat[keyNew] = '19' + infoFromFormat['YY'];
-        }
-      } else if (keyNew === 'YY' && keyOld === 'YYYY') {
-        infoToFormat[keyNew] = infoFromFormat[keyOld].slice(2, 4);
+  for (const keyOld in informationFromFormat) {
+    for (const keyNew in informationToFormat) {
+      switch (keyOld === keyNew) {
+        case true :
+          informationToFormat[keyOld] = informationFromFormat[keyNew];
+      }
+
+      switch (keyNew === 'YYYY' && keyOld !== 'YYYY') {
+        case true:
+          switch (informationFromFormat['YY'] < 21
+          && informationFromFormat['YY'] >= 0) {
+            case true :
+              informationToFormat[keyNew] = '20' + informationFromFormat['YY'];
+              break;
+          }
+
+          switch (informationFromFormat['YY'] > 21
+          && informationFromFormat['YY'] < 100) {
+            case true :
+              informationToFormat[keyNew] = '19' + informationFromFormat['YY'];
+              break;
+          }
+      }
+
+      switch (keyNew === 'YY' && keyOld === 'YYYY') {
+        case true :
+          informationToFormat[keyNew]
+          = informationFromFormat[keyOld].slice(2, 4);
+          break;
       }
     }
   }
 
-  for (const i in infoToFormat) {
-    toFormatResault += infoToFormat[i];
+  for (const i in informationToFormat) {
+    toFormatResault += informationToFormat[i];
     toFormatResault += toFormat[3];
   }
 
