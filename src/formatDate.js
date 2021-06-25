@@ -50,7 +50,58 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const before = date.split(`${fromFormat[fromFormat.length - 1]}`);
+  const newSeperator = toFormat[toFormat.length - 1];
+  let result = '';
+
+  for (let i = 0; i < before.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD' :
+        result += before[fromFormat.indexOf('DD')];
+
+        if (toFormat[i] !== toFormat[toFormat.length - 2]) {
+          result += newSeperator;
+        }
+        break;
+
+      case 'MM' :
+        result += before[fromFormat.indexOf('MM')];
+
+        if (toFormat[i] !== toFormat[toFormat.length - 2]) {
+          result += newSeperator;
+        }
+        break;
+
+      case 'YY' :
+        if (fromFormat[fromFormat.indexOf('YY')] === 'YY') {
+          result += before[fromFormat.indexOf('YY')];
+        } else {
+          result += before[fromFormat.indexOf('YYYY')].slice(-2);
+        }
+
+        if (toFormat[i] !== toFormat[toFormat.length - 2]) {
+          result += newSeperator;
+        }
+        break;
+
+      case 'YYYY' :
+        if (fromFormat[fromFormat.indexOf('YYYY')] === 'YYYY') {
+          result += before[fromFormat.indexOf('YYYY')];
+        } else if (before[fromFormat.indexOf('YY')] < 30) {
+          result += 20 + before[fromFormat.indexOf('YY')];
+        } else {
+          result += 19 + before[fromFormat.indexOf('YY')];
+        }
+
+        if (toFormat[i] !== toFormat[toFormat.length - 2]) {
+          result += newSeperator;
+        }
+
+        break;
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
