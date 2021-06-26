@@ -51,6 +51,49 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldFormat = date.split(fromFormat[3]);
+  const newFormat = [];
+  const currentDate = {
+    [fromFormat[0]]: oldFormat[0],
+    [fromFormat[1]]: oldFormat[1],
+    [fromFormat[2]]: oldFormat[2],
+    separator: toFormat[3],
+  };
+  const yearOfPastCentury = 30;
+  let yearIndex;
+
+  for (const element of fromFormat) {
+    if (element.includes('Y')) {
+      yearIndex = fromFormat.indexOf(element);
+      break;
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (toFormat[i].includes('Y')) {
+      switch (true) {
+        case (toFormat[i] === fromFormat[yearIndex]):
+          newFormat.push(currentDate[fromFormat[yearIndex]]);
+          break;
+
+        case (toFormat[i] === 'YY'):
+          newFormat.push(currentDate['YYYY'].slice(2));
+          break;
+
+        case (toFormat[i] === 'YYYY'):
+          if (currentDate['YY'] >= yearOfPastCentury) {
+            newFormat.push(`19${currentDate['YY']}`);
+          } else {
+            newFormat.push(`20${currentDate['YY']}`);
+          }
+          break;
+      }
+    } else {
+      newFormat.push(`${currentDate[toFormat[i]]}`);
+    }
+  }
+
+  return newFormat.join(currentDate.separator);
 }
 
 module.exports = formatDate;
