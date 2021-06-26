@@ -50,7 +50,61 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const x = fromFormat[3];
+  const y = toFormat[3];
+
+  const dateArr = date.split(x);
+  const startDate = [];
+  const res = [];
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'DD') {
+      startDate.push(dateArr[i]);
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'MM') {
+      startDate.push(dateArr[i]);
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      startDate.push(dateArr[i]);
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'DD': res.push(startDate[0]);
+        break;
+      case 'MM': res.push(startDate[1]);
+        break;
+      case 'YY': if (startDate[2].length > 2) {
+        res.push(startDate[2].substring(2));
+      } else {
+        res.push(startDate[2]);
+      };
+        break;
+
+      case 'YYYY': if (startDate[2].length > 2) {
+        res.push(startDate[2]);
+      } else {
+        if (parseInt(startDate[2]) < 30) {
+          startDate[2] = '20' + startDate[2];
+          res.push(startDate[2]);
+        } else {
+          startDate[2] = '19' + startDate[2];
+          res.push(startDate[2]);
+        }
+      }
+    }
+  }
+
+  const str = res.join(y);
+
+  return str;
 }
 
 module.exports = formatDate;
