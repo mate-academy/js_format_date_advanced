@@ -50,7 +50,37 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // Більше варіантів крім if, або switch/case не бачу(
+  const arrayDate = date.split(fromFormat[3]);
+
+  if (fromFormat[0] === toFormat[2]) {
+    return arrayDate.reverse().join(toFormat[3]);
+  }
+
+  if (fromFormat[0] === toFormat[1]) {
+    const value = arrayDate.pop();
+
+    arrayDate.unshift(value);
+  }
+
+  if (fromFormat[2] === 'YYYY') {
+    const arrayYear = arrayDate[2].split('');
+
+    arrayYear.shift();
+    arrayYear.shift();
+
+    arrayDate[2] = arrayYear.join('');
+  }
+
+  if (fromFormat[0] === 'YY' && +arrayDate[0] >= 30) {
+    arrayDate[0] = `19${arrayDate[0]}`;
+  }
+
+  if (fromFormat[0] === 'YY' && (+arrayDate[0] < 30 || +arrayDate === 0)) {
+    arrayDate[0] = `20${arrayDate[0]}`;
+  }
+
+  return arrayDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
