@@ -59,7 +59,6 @@ function formatDate(date, fromFormat, toFormat) {
     [fromFormat[2]]: oldFormat[2],
     separator: toFormat[3],
   };
-  const yearOfPastCentury = 30;
   let yearIndex;
 
   for (const element of fromFormat) {
@@ -71,22 +70,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < 3; i++) {
     if (toFormat[i].includes('Y')) {
-      switch (true) {
-        case (toFormat[i] === fromFormat[yearIndex]):
-          newFormat.push(currentDate[fromFormat[yearIndex]]);
-          break;
+      const oldYearFormat = fromFormat[yearIndex];
+      const year = currentDate[oldYearFormat];
 
-        case (toFormat[i] === 'YY'):
-          newFormat.push(currentDate['YYYY'].slice(2));
-          break;
-
-        case (toFormat[i] === 'YYYY'):
-          if (currentDate['YY'] >= yearOfPastCentury) {
-            newFormat.push(`19${currentDate['YY']}`);
-          } else {
-            newFormat.push(`20${currentDate['YY']}`);
-          }
-          break;
+      if (toFormat[i] === oldYearFormat) {
+        newFormat.push(year);
+      } else {
+        newFormat.push(convertYearFormat(year, toFormat[i]));
       }
     } else {
       newFormat.push(`${currentDate[toFormat[i]]}`);
@@ -94,6 +84,22 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newFormat.join(currentDate.separator);
+}
+
+function convertYearFormat(year, yearFormat) {
+  const yearOfPastCentury = 30;
+
+  switch (true) {
+    case (yearFormat === 'YY'):
+      return year.slice(2);
+
+    case (yearFormat === 'YYYY'):
+      if (year >= yearOfPastCentury) {
+        return `19${year}`;
+      } else {
+        return `20${year}`;
+      }
+  }
 }
 
 module.exports = formatDate;
