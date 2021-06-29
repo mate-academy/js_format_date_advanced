@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *   Time flies, standards change. Let's get rid of the routine of changing the
+ *   obj flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
@@ -51,6 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldFormat = fromFormat.pop();
+  const newFormat = toFormat.pop();
+  const arrDate = date.split(oldFormat);
+  const toDate = [];
+
+  const obj = {
+    YYYY: null,
+    YY: null,
+  };
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    obj[fromFormat[i]] = arrDate[i];
+  }
+
+  switch (null) {
+    case obj.YY:
+      const smallYy = obj.YYYY;
+      const arr = [];
+
+      arr.push(smallYy[2]);
+      arr.push(smallYy[3]);
+      obj.YY = arr.join('');
+      break;
+
+    case obj.YYYY:
+      if (obj.YY < 30) {
+        obj.YYYY = '20' + obj.YY;
+      } else {
+        obj.YYYY = '19' + obj.YY;
+      }
+  }
+
+  for (let k = 0; k < toFormat.length; k++) {
+    toDate.push(obj[toFormat[k]]);
+  }
+
+  return toDate.join(newFormat);
 }
 
 module.exports = formatDate;
