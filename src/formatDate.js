@@ -51,43 +51,55 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateSet = {};
-  const fromDatelist = date.split(fromFormat[3]);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const fromDateList = date.split(oldSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      dateSet.year = String(fromDatelist[i]);
+      dateSet.year = String(fromDateList[i]);
     } else if (fromFormat[i] === 'MM') {
-      dateSet.month = String(fromDatelist[i]);
+      dateSet.month = String(fromDateList[i]);
     } else if (fromFormat[i] === 'DD') {
-      dateSet.day = String(fromDatelist[i]);
+      dateSet.day = String(fromDateList[i]);
     }
   }
 
   let upDate = '';
 
   for (let j = 0; j < toFormat.length; j++) {
-    if (toFormat[j] === 'YY' || toFormat[j] === 'YYYY') {
-      if (toFormat[j].length === dateSet.year.length) {
-        upDate += dateSet.year;
-      } else if (toFormat[j].length > dateSet.year.length) {
-        if (+dateSet.year < 30 && +dateSet.year > 0) {
-          upDate = upDate + '20' + dateSet.year;
-        } else if (+dateSet.year >= 30) {
-          upDate = upDate + '19' + dateSet.year;
-        } else if (dateSet.year === '00') {
-          upDate = upDate + '20' + dateSet.year;
-        }
-      } else if (toFormat[j].length < dateSet.year.length) {
-        upDate = upDate + dateSet.year.slice(2);
-      }
-    } else if (toFormat[j] === 'MM') {
-      upDate += dateSet.month;
-    } else if (toFormat[j] === 'DD') {
-      upDate += dateSet.day;
+    switch (toFormat[j]) {
+      case 'YY':
+        if (dateSet.year.length === 2) {
+          upDate += dateSet.year;
+        } else {
+          upDate = upDate + dateSet.year.slice(2);
+        } break;
+
+      case 'YYYY':
+        if (dateSet.year.length === 4) {
+          upDate += dateSet.year;
+        } else {
+          if (+dateSet.year < 30 && +dateSet.year > 0) {
+            upDate = upDate + '20' + dateSet.year;
+          } else if (+dateSet.year >= 30) {
+            upDate = upDate + '19' + dateSet.year;
+          } else if (dateSet.year === '00') {
+            upDate = upDate + '20' + dateSet.year;
+          }
+        } break;
+
+      case 'MM':
+        upDate += dateSet.month;
+        break;
+
+      case 'DD':
+        upDate += dateSet.day;
+        break;
     }
 
     if (j < toFormat.length - 2) {
-      upDate += toFormat[3];
+      upDate += newSeparator;
     }
   }
 
