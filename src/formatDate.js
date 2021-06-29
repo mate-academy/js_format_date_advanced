@@ -49,51 +49,44 @@
  * @returns {string}
  */
 
+function formatYear(year, format) {
+  if (year.length === 2 && format.length === 4) {
+    return +year < 30 ? `20${year}` : `19${year}`;
+  } else if (year.length === 4 && format.length === 2) {
+    return year.slice(2);
+  } else {
+    return year;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  const dateSplitted = date.match(/\d+/g);
-  const correctDate = [];
-  const currentCentury = 2000;
-  const previousCentury = 1900;
-  const minYearsForCurrentCentury = 30;
+  const splitedDate = date.split(fromFormat[3]);
+  let month = '';
+  let day = '';
+  let year = '';
+  const result = [];
 
-  for (let j = 0; j < toFormat.length; j++) {
-    for (let i = 0; i < fromFormat.length; i++) {
-      if (toFormat[j] === 'DD' && fromFormat[i] === 'DD') {
-        correctDate.push(dateSplitted[i]);
-      };
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'DD') {
+      day = splitedDate[i];
+    } else if (fromFormat[i] === 'MM') {
+      month = splitedDate[i];
+    } else {
+      year = splitedDate[i];
+    }
+  }
 
-      if (toFormat[j] === 'MM' && fromFormat[i] === 'MM') {
-        correctDate.push(dateSplitted[i]);
-      };
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'DD') {
+      result.push(day);
+    } else if (toFormat[i] === 'MM') {
+      result.push(month);
+    } else {
+      result.push(formatYear(year, toFormat[i]));
+    }
+  }
 
-      if (toFormat[j] === 'YYYY' || toFormat[j] === 'YY') {
-        if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-          if (toFormat[j].length === fromFormat[i].length) {
-            correctDate.push(dateSplitted[i]);
-          }
-
-          if (toFormat[j].length < fromFormat[i].length) {
-            dateSplitted[i] = dateSplitted[i].split('');
-            dateSplitted[i].shift();
-            dateSplitted[i].shift();
-            dateSplitted[i] = dateSplitted[i].join('');
-
-            correctDate.push(dateSplitted[i]);
-          };
-
-          if (toFormat[j].length > fromFormat[i].length) {
-            if (dateSplitted[i] < minYearsForCurrentCentury) {
-              correctDate.push(+dateSplitted[i] + currentCentury);
-            } else {
-              correctDate.push(+dateSplitted[i] + previousCentury);
-            }
-          }
-        };
-      }
-    };
-  };
-
-  return correctDate.join(toFormat[3]);
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
