@@ -86,7 +86,11 @@ function yearFormatter(year, format) {
   const longerFormat = 4;
 
   if (year.length === shorterFormat && format.length === longerFormat) {
-    return +year < futureBoundary ? '20' + year : '19' + year;
+    if (+year < futureBoundary) {
+      return '20' + year;
+    } else {
+      return '19' + year;
+    }
   } else if (year.length === longerFormat && format.length === shorterFormat) {
     return year.slice(shorterFormat);
   } else {
