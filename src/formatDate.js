@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[3]);
+  const editableFF = [...fromFormat];
+  const result = [];
+
+  for (let i = 0; i < editableFF.length - 1; i++) {
+    editableFF[i] = dateArr[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (let j = 0; j < fromFormat.length - 1; j++) {
+      if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
+        if (+editableFF[i] >= 2000) {
+          result.push(editableFF[i].slice(2));
+          break;
+        } else {
+          result.push(editableFF[i].slice(2));
+          break;
+        }
+      }
+
+      if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY') {
+        if (+editableFF[i] < 30) {
+          result.push(20 + editableFF[i]);
+          break;
+        } else {
+          result.push(19 + editableFF[i]);
+          break;
+        }
+      }
+
+      if (toFormat[i] === fromFormat[j]) {
+        result.push(editableFF[i]);
+        break;
+      }
+    }
+  }
+
+  // console.log('result', result);
+
+  // console.log('editableFF', editableFF);
+
+  return result.join(toFormat[3]);
 }
 
+// console.log(formatDate(
+//   '2020-02-18',
+//      ['YYYY', 'MM', 'DD', '-'],
+//      ['DD', 'MM', 'YYYY', '.'],
+//    ));
 module.exports = formatDate;
