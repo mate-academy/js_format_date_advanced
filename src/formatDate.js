@@ -65,9 +65,11 @@ function formatDate(date, fromFormat, toFormat) {
       if (element === 'YYYY' && index < 0) {
         index = fromFormat.indexOf('YY');
 
-        const dateYY = newDate[index] >= 30 ? '19' : '20';
+        const dateFull = newDate[index] >= 30
+          ? '19' + newDate[index]
+          : '20' + newDate[index];
 
-        newFormat.push(dateYY + newDate[index]);
+        newFormat.push(dateFull);
       }
 
       if (element === 'YY' && index < 0) {
