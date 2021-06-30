@@ -57,43 +57,42 @@ function formatDate(date, fromFormat, toFormat) {
   let day = '';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (true) {
-      case fromFormat[i] === 'MM':
+    switch (fromFormat[i]) {
+      case 'MM':
         month = oldDateArray[i];
         break;
-      case fromFormat[i] === 'DD':
+      case 'DD':
         day = oldDateArray[i];
         break;
-      default:
+      case 'YYYY':
+      case 'YY':
         year = oldDateArray[i];
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (true) {
-      case toFormat[i] === 'MM':
+    switch (toFormat[i]) {
+      case 'MM':
         newDateArray.push(month);
         break;
-      case toFormat[i] === 'DD':
+      case 'DD':
         newDateArray.push(day);
         break;
-      case toFormat[i] === 'YY':
+      case 'YY':
         if (year.length === 4) {
           year = year.slice(2);
         }
 
         newDateArray.push(year);
         break;
-      case toFormat[i] === 'YYYY':
-        if (year.length === 2 && +year < 30) {
-          year = `20${year}`;
+      case 'YYYY':
+        if (year.length === 2) {
+          newDateArray.push(+year < 30 ? `20${year}` : `19${year}`);
+        } else {
+          newDateArray.push(year);
         }
 
-        if (year.length === 2 && +year >= 30) {
-          year = `19${year}`;
-        }
-
-        newDateArray.push(year);
         break;
     }
   }
