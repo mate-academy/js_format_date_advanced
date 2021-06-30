@@ -57,15 +57,15 @@ function formatDate(date, fromFormat, toFormat) {
   for (const dateItem of toFormat) {
     switch (dateItem[0]) {
       case 'Y':
-        const year = dateItems[fromFormatItems.indexOf('Y')];
+        const year = dateItems[fromFormatItems.indexOf('Y')].slice(-2);
 
         if (dateItem.length === 2) {
-          newDateItems.push(year.slice(-2));
+          newDateItems.push(year);
         } else {
-          if (year.slice(-2) < 30) {
-            newDateItems.push('20' + year.slice(-2));
+          if (year < 30) {
+            newDateItems.push('20' + year);
           } else {
-            newDateItems.push('19' + year.slice(-2));
+            newDateItems.push('19' + year);
           }
         }
         break;
@@ -78,6 +78,8 @@ function formatDate(date, fromFormat, toFormat) {
         const day = dateItems[fromFormatItems.indexOf('D')];
 
         newDateItems.push(day);
+        break;
+      default:
         break;
     }
   }
