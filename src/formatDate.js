@@ -74,7 +74,8 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   toFormat.splice(0, 3)
-    .map(a => result.push(splitedData[fromFormat.indexOf(a)]));
+    .map(currentValue =>
+      result.push(splitedData[fromFormat.indexOf(currentValue)]));
 
   return result.join(separator);
 }
