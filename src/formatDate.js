@@ -50,10 +50,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const futureBoundary = 30;
-  const shorterFormat = 2;
-  const longerFormat = 4;
-
   const inputDate = date.split(fromFormat[3]);
   const outputDate = [];
 
@@ -77,27 +73,25 @@ function formatDate(date, fromFormat, toFormat) {
     } else if (fromFormat[i] === 'MM') {
       outputDate.push(month);
     } else {
-      if (
-        year.length === shorterFormat
-        && toFormat[i].length === longerFormat
-      ) {
-        if (+year < futureBoundary) {
-          year = '20' + year;
-        } else {
-          year = '19' + year;
-        }
-      } else if (
-        year.length === longerFormat
-        && toFormat[i].length === shorterFormat
-      ) {
-        year = year.slice(shorterFormat);
-      }
-
-      outputDate.push(year);
+      outputDate.push(yearFormatter(year, toFormat[i]));
     }
   }
 
   return outputDate.join(toFormat[3]);
+}
+
+function yearFormatter(year, format) {
+  const futureBoundary = 30;
+  const shorterFormat = 2;
+  const longerFormat = 4;
+
+  if (year.length === shorterFormat && format.length === longerFormat) {
+    return +year < futureBoundary ? '20' + year : '19' + year;
+  } else if (year.length === longerFormat && format.length === shorterFormat) {
+    return year.slice(shorterFormat);
+  } else {
+    return year;
+  }
 }
 
 module.exports = formatDate;
