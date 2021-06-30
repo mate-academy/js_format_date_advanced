@@ -71,6 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YY':
       case 'YYYY':
         year = dateNumbers[i];
+        break;
     }
   }
 
@@ -90,14 +91,11 @@ function formatDate(date, fromFormat, toFormat) {
 
       case 'YYYY':
         if (year.length < 4) {
-          if (year < 30) {
-            changedDate.push(`20${year}`);
-          } else {
-            changedDate.push(`19${year}`);
-          }
+          changedDate.push((year < 30) ? `20${year}` : `19${year}`);
         } else {
           changedDate.push(year);
         }
+        break;
     }
   }
 
