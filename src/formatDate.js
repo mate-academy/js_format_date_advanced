@@ -61,42 +61,28 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     for (let j = 0; j < fromFormat.length - 1; j++) {
       if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
-        if (+editableFF[i] >= 2000) {
-          result.push(editableFF[i].slice(2));
-          break;
-        } else {
-          result.push(editableFF[i].slice(2));
-          break;
-        }
+        result.push(editableFF[j].slice(2));
+        break;
       }
 
       if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY') {
-        if (+editableFF[i] < 30) {
-          result.push(20 + editableFF[i]);
+        if (+editableFF[j] < 30) {
+          result.push(20 + editableFF[j]);
           break;
         } else {
-          result.push(19 + editableFF[i]);
+          result.push(19 + editableFF[j]);
           break;
         }
       }
 
       if (toFormat[i] === fromFormat[j]) {
-        result.push(editableFF[i]);
+        result.push(editableFF[j]);
         break;
       }
     }
   }
 
-  // console.log('result', result);
-
-  // console.log('editableFF', editableFF);
-
   return result.join(toFormat[3]);
 }
 
-// console.log(formatDate(
-//   '2020-02-18',
-//      ['YYYY', 'MM', 'DD', '-'],
-//      ['DD', 'MM', 'YYYY', '.'],
-//    ));
 module.exports = formatDate;
