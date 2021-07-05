@@ -50,7 +50,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorSymbol = fromFormat[3];
+  const replacementSymbol = toFormat[3];
+  const dateArr = date.split(`${separatorSymbol}`);
+
+  let oldYear = fromFormat.indexOf('YYYY');
+  let newYear = toFormat.indexOf('YYYY');
+  const oldMonth = fromFormat.indexOf('MM');
+  const newMonth = toFormat.indexOf('MM');
+  const oldDay = fromFormat.indexOf('DD');
+  const newDay = toFormat.indexOf('DD');
+
+  // if the old format is short
+
+  if (oldYear === -1) {
+    oldYear = fromFormat.indexOf('YY');
+
+    if (toFormat[newYear].length > 2
+      && dateArr[oldYear] >= 30) {
+      const str1900 = '19';
+
+      dateArr[oldYear] = str1900.concat(dateArr[oldYear]);
+    }
+
+    if (toFormat[newYear].length > 2
+      && dateArr[oldYear] < 30
+      && dateArr[oldYear] >= 0) {
+      const str2000 = '20';
+
+      dateArr[oldYear] = str2000.concat(dateArr[oldYear]);
+    }
+  }
+
+  // if the new format is short
+  if (newYear === -1) {
+    newYear = toFormat.indexOf('YY');
+
+    if (fromFormat[oldYear].length === 4) {
+      dateArr[oldYear] = dateArr[oldYear].substr(2, 2);
+    }
+  }
+
+  const newArr = [];
+
+  newArr[newYear] = dateArr[oldYear];
+  newArr[newMonth] = dateArr[oldMonth];
+  newArr[newDay] = dateArr[oldDay];
+
+  return newArr.join(`${replacementSymbol}`);
 }
 
 module.exports = formatDate;
