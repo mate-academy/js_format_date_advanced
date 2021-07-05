@@ -48,9 +48,67 @@
  *
  * @returns {string}
  */
+function convertFromFourToTwo(year) {
+  return year.substr(2);
+}
+
+function convertFromTwoToFour(year) {
+  if (+year < 30) {
+    return '20' + year;
+  }
+
+  return '19' + year;
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let yearInFourDigit;
+  let yearInTwoDigit;
+  let month;
+  let day;
+  const arrOldDate = date.split(fromFormat[3]);
+  const arrNewDate = [];
+
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i]) {
+      case 'YY': { yearInTwoDigit = arrOldDate[i]; break; }
+
+      case 'YYYY': { yearInFourDigit = arrOldDate[i]; break; }
+
+      case 'MM': { month = arrOldDate[i]; break; }
+
+      case 'DD': { day = arrOldDate[i]; break; }
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'YY': {
+        if (yearInTwoDigit) {
+          arrNewDate.push(yearInTwoDigit);
+        } else {
+          arrNewDate.push(convertFromFourToTwo(yearInFourDigit));
+        }
+
+        break;
+      }
+
+      case 'YYYY': {
+        if (yearInFourDigit) {
+          arrNewDate.push(yearInFourDigit);
+        } else {
+          arrNewDate.push(convertFromTwoToFour(yearInTwoDigit));
+        }
+
+        break;
+      }
+
+      case 'MM': { arrNewDate.push(month); break; }
+
+      case 'DD': { arrNewDate.push(day); break; }
+    }
+  }
+
+  return arrNewDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
