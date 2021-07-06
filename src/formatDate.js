@@ -50,7 +50,76 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let copyDate = date;
+
+  const [
+    fromFirstItem,
+    fromSecondItem,
+    fromThirdItem,
+    fromSeparator,
+  ] = fromFormat;
+  const [
+    toFirstItem,
+    toSecondItem,
+    toThirdItem,
+    toSeparator,
+  ] = toFormat;
+
+  copyDate = copyDate.split(fromSeparator);
+
+  const fromDateList = {};
+
+  fromDateList[fromFirstItem] = copyDate[0];
+  fromDateList[fromSecondItem] = copyDate[1];
+  fromDateList[fromThirdItem] = copyDate[2];
+
+  const year = fromDateList['YY'] ? fromDateList['YY'] : fromDateList['YYYY'];
+
+  const toDateList = {};
+
+  if (fromDateList[toFirstItem]) {
+    toDateList[toFirstItem] = fromDateList[toFirstItem];
+  } else if (year.length === 2) {
+    if (year < 30) {
+      toDateList[toFirstItem] = '20' + year;
+    } else {
+      toDateList[toFirstItem] = '19' + year;
+    }
+  } else {
+    toDateList[toFirstItem] = year.slice(2);
+  }
+
+  if (fromDateList[toSecondItem]) {
+    toDateList[toSecondItem] = fromDateList[toSecondItem];
+  } else if (year.length === 2) {
+    if (year < 30) {
+      toDateList[toSecondItem] = '20' + year;
+    } else {
+      toDateList[toSecondItem] = '19' + year;
+    }
+  } else {
+    toDateList[toSecondItem] = year.slice(2);
+  }
+
+  if (fromDateList[toThirdItem]) {
+    toDateList[toThirdItem] = fromDateList[toThirdItem];
+  } else if (year.length === 2) {
+    if (year < 30) {
+      toDateList[toThirdItem] = '20' + year;
+    } else {
+      toDateList[toThirdItem] = '19' + year;
+    }
+  } else {
+    toDateList[toThirdItem] = year.slice(2);
+  }
+
+  copyDate = [];
+
+  for (const key in toDateList) {
+    copyDate.push(toDateList[key]);
+  }
+
+  return copyDate.join(toSeparator);
 }
 
 module.exports = formatDate;
