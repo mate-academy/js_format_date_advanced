@@ -51,6 +51,50 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const newDayIndex = toFormat.indexOf('DD');
+  const newMounthIndex = toFormat.indexOf('MM');
+  const newSeparator = toFormat[toFormat.length - 1];
+  let newYearIndex;
+  let year = '';
+
+  const separator = fromFormat[fromFormat.length - 1];
+  let yearIndex;
+
+  const arrDate = date.split(separator);
+
+  const day = arrDate[fromFormat.indexOf('DD')];
+  const mouth = arrDate[fromFormat.indexOf('MM')];
+
+  (toFormat.includes('YY'))
+    ? newYearIndex = toFormat.indexOf('YY')
+    : newYearIndex = toFormat.indexOf('YYYY');
+
+  (fromFormat.includes('YY'))
+    ? yearIndex = fromFormat.indexOf('YY')
+    : yearIndex = fromFormat.indexOf('YYYY');
+
+  const yearLength = fromFormat[yearIndex].length;
+  const newYearLength = toFormat[newYearIndex].length;
+
+  if (newYearLength === yearLength) {
+    year = arrDate[yearIndex];
+  } else if (newYearLength < yearLength) {
+    year = '' + arrDate[yearIndex][2] + arrDate[yearIndex][3];
+  } else if (newYearLength > yearLength) {
+    (+arrDate[yearIndex] >= 30)
+      ? year = '19' + arrDate[yearIndex]
+      : year = '20' + arrDate[yearIndex];
+  }
+
+  const newArrDate = [];
+
+  newArrDate[newYearIndex] = year;
+  newArrDate[newDayIndex] = day;
+  newArrDate[newMounthIndex] = mouth;
+
+  const newDate = newArrDate.join(newSeparator);
+
+  return newDate;
 }
 
 module.exports = formatDate;
