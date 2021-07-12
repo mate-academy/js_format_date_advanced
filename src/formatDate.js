@@ -62,32 +62,34 @@ function formatDate(date, fromFormat, toFormat) {
     return result;
   }
 
-  if (splittedDate[0].length === toFormat[0].length
-    && splittedDate[2].length !== toFormat[2].length
-    && toFormat[2].length === 4) {
-    splittedDate.reverse();
-  }
+  const newDateFormat = {
+    [fromFormat[0]]: splittedDate[0],
+    [fromFormat[1]]: splittedDate[1],
+    [fromFormat[2]]: splittedDate[2],
+  };
 
-  for (let i = 0; i < splittedDate.length; i++) {
-    for (let j = i; j < fromFormat.length; j++) {
-      for (let k = i; k < toFormat.length; k++) {
-        if (toFormat[k].length === fromFormat[j].length) {
-          arr.push(splittedDate[i]);
+  for (let i = 0; i < toFormat.length; i++) {
+    for (const key in newDateFormat) {
+      if (key === toFormat[i]) {
+        arr.push(newDateFormat[key]);
+        break;
+      }
+
+      if (toFormat[i].length === 4 && key.length === 2) {
+        if (+newDateFormat[key] < 30) {
+          arr.push('20' + newDateFormat[key]);
           break;
-        } else if (toFormat[k].length < fromFormat[j].length) {
-          arr.push(splittedDate[i].slice(2));
-          break;
-        } else if (toFormat[k].length > fromFormat[j].length
-          && +splittedDate[i] >= 30) {
-          arr.push('19' + splittedDate[i]);
-          break;
-        } else if (toFormat[k].length > fromFormat[j].length
-          && +splittedDate[i] < 30) {
-          arr.push('20' + splittedDate[i]);
+        } else {
+          arr.push('19' + newDateFormat[key]);
           break;
         }
       }
-      break;
+
+      if (toFormat[i].length === 2
+        && key.length === 4 && key.slice(2) === toFormat[i]) {
+        arr.push(newDateFormat[key].slice(2));
+        break;
+      }
     }
   }
 
