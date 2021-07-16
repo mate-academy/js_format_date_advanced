@@ -50,7 +50,27 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[3]);
+  const result = [];
+  const config = {};
+
+  for (let i = 0; i < 3; i++) {
+    config[fromFormat[i]] = dateArr[i];
+  }
+
+  if (config.hasOwnProperty('YYYY')) {
+    config.YY = config.YYYY.slice(-2);
+  }
+
+  if (config.hasOwnProperty('YY')) {
+    config.YYYY = (config.YY < 30 ? '20' : '19') + config.YY;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    result.push(config[toFormat[i]]);
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
