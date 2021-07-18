@@ -50,45 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
-  const dateFormatted = [];
-  const dateObj = {
-    year: '',
-    month: '',
-    day: '',
-  };
+  const fromFormatDate = date.split(fromFormat[3]);
+  const toFormatDate = [];
+  const dateParts = {};
 
   // get the date
-  dateObj.year = dateArray[fromFormat.indexOf('YYYY')]
-    || dateArray[fromFormat.indexOf('YY')];
-  dateObj.month = dateArray[fromFormat.indexOf('MM')];
-  dateObj.day = dateArray[fromFormat.indexOf('DD')];
-
-  // create date in new format
-  for (let i = 0; i < 3; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-        dateFormatted[i] = dateObj.year;
-
-        if (dateObj.year.length === 2) {
-          dateFormatted[i] = (dateObj.year < 30 ? 20 : 19) + dateObj.year;
-        }
-        break;
-      case 'YY':
-        dateFormatted[i] = dateObj.year.slice(-2);
-        break;
-      case 'MM':
-        dateFormatted[i] = dateObj.month;
-        break;
-      case 'DD':
-        dateFormatted[i] = dateObj.day;
-        break;
-      default:
-        dateFormatted[i] = '';
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YY') {
+      dateParts['YYYY'] = (fromFormatDate[i] < 30 ? 20 : 19)
+        + fromFormatDate[i];
     }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateParts['YY'] = fromFormatDate[i].slice(-2);
+    }
+
+    dateParts[fromFormat[i]] = fromFormatDate[i];
   }
 
-  return dateFormatted.join(toFormat[3]);
+  // format the date
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    toFormatDate[i] = dateParts[toFormat[i]];
+  }
+
+  return toFormatDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
