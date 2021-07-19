@@ -51,69 +51,34 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
-  let year;
-  let year2;
-  let mounth;
-  let day;
+  const fromDate = {
+    DD: '',
+    MM: '',
+    YYYY: '',
+    YY: '',
+  };
+
   let result = '';
 
   for (let i = 0; i <= 2; i++) {
-    switch (fromFormat[i]) {
-      case 'YYYY':
-        year = dateArr[i];
-        break;
+    fromDate[fromFormat[i]] = dateArr[i];
+  };
 
-      case 'YY':
-        year2 = dateArr[i];
+  if (fromDate.YYYY === '') {
+    fromDate.YYYY = (Number(fromDate.YY) < 30)
+      ? fromDate.YYYY = '20' + fromDate.YY
+      : fromDate.YYYY = '19' + fromDate.YY;
+  };
 
-        if (Number(year2) < 30) {
-          year = '20' + year2;
-        } else {
-          year = '19' + year2;
-        }
-        break;
-
-      case 'MM':
-        mounth = dateArr[i];
-        break;
-
-      case 'DD':
-        day = dateArr[i];
-    }
+  if (fromDate.YY === '') {
+    fromDate.YY = fromDate.YYYY.substr(2, 2);
   }
 
   for (let i = 0; i <= 2; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-        result += year;
+    result += fromDate[toFormat[i]];
 
-        if (i !== 2) {
-          result += toFormat[3];
-        }
-        break;
-
-      case 'YY':
-        result += year.substr(2, 2);
-
-        if (i !== 2) {
-          result += toFormat[3];
-        }
-        break;
-
-      case 'MM':
-        result += mounth;
-
-        if (i !== 2) {
-          result += toFormat[3];
-        }
-        break;
-
-      case 'DD':
-        result += day;
-
-        if (i !== 2) {
-          result += toFormat[3];
-        }
+    if (i !== 2) {
+      result += toFormat[3];
     }
   }
 
