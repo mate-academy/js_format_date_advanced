@@ -54,54 +54,22 @@ function formatDate(date, fromFormat, toFormat) {
   const dateParts = {};
   const arrModifiedDate = [];
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    switch (fromFormat[i]) {
-      case 'DD':
-        dateParts.day = arrDate[i];
-        break;
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const index = toFormat.indexOf(fromFormat[i]);
 
-      case 'MM':
-        dateParts.month = arrDate[i];
-        break;
-
-      case 'YY':
-        dateParts.year = arrDate[i];
-        break;
-
-      case 'YYYY':
-        dateParts.year = arrDate[i];
-        break;
+    if (toFormat.includes(fromFormat[i])) {
+      dateParts[toFormat[index]] = arrDate[i];
+    } else if (fromFormat[i] === 'YY' && arrDate[i] < 30) {
+      dateParts['YYYY'] = '20' + arrDate[i];
+    } else if (fromFormat[i] === 'YY' && arrDate[i] >= 30) {
+      dateParts['YYYY'] = '19' + arrDate[i];
+    } else {
+      dateParts['YY'] = arrDate[i].slice(2);
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'DD') {
-      arrModifiedDate[i] = dateParts.day;
-    }
-
-    if (toFormat[i] === 'MM') {
-      arrModifiedDate[i] = dateParts.month;
-    }
-
-    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      if (toFormat[i].length === dateParts.year.length) {
-        arrModifiedDate[i] = dateParts.year;
-      }
-
-      if (toFormat[i].length > dateParts.year.length) {
-        if (dateParts.year < 30) {
-          arrModifiedDate[i] = '20' + dateParts.year;
-        }
-
-        if (dateParts.year >= 30) {
-          arrModifiedDate[i] = '19' + dateParts.year;
-        }
-      }
-
-      if (toFormat[i].length < dateParts.year.length) {
-        arrModifiedDate[i] = dateParts.year.slice(2);
-      }
-    }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    arrModifiedDate[i] = dateParts[toFormat[i]];
   }
 
   return arrModifiedDate.join(toFormat[3]);
