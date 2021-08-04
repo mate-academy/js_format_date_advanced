@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const tempDate = date.split(fromFormat[fromFormat.length - 1], 3);
+  const tempDate = date.split(fromFormat.pop());
   const newDate = Array(3);
 
   for (let i = 0; i < tempDate.length; i++) {
@@ -67,7 +67,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return newDate.join(toFormat[toFormat.length - 1]);
+  return newDate.join(toFormat.pop());
 }
 
 module.exports = formatDate;
