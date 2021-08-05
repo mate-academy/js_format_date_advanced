@@ -53,7 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat.pop();
   const newSeparator = toFormat.pop();
   const oldDate = date.split(oldSeparator);
-  const newDate = Array(3);
+  const newDate = Array(oldDate.length);
 
   for (let i = 0; i < oldDate.length; i++) {
     if (fromFormat[i][0] === 'Y' && toFormat.indexOf(fromFormat[i]) < 0) {
