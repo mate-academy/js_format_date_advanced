@@ -52,25 +52,16 @@
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
-  let year, month, day;
   const oldDateSplit = date.split(oldSeparator);
   const newDate = [];
+  const month = oldDateSplit[fromFormat.indexOf('MM')];
+  const day = oldDateSplit[fromFormat.indexOf('DD')];
+  let year;
 
-  for (let oldOrder = 0; oldOrder < fromFormat.length - 1; oldOrder++) {
-    switch (fromFormat[oldOrder]) {
-      case 'YY':
-      case 'YYYY':
-        year = oldDateSplit[oldOrder].slice(-2);
-        break;
-
-      case 'MM':
-        month = oldDateSplit[oldOrder];
-        break;
-
-      case 'DD':
-        day = oldDateSplit[oldOrder];
-        break;
-    }
+  if (fromFormat.includes('YYYY')) {
+    year = oldDateSplit[fromFormat.indexOf('YYYY')].slice(-2);
+  } else {
+    year = oldDateSplit[fromFormat.indexOf('YY')];
   }
 
   for (let newOrder = 0; newOrder < toFormat.length - 1; newOrder++) {
