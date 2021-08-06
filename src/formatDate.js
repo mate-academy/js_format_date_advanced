@@ -68,8 +68,8 @@ function formatDate(date, fromFormat, toFormat) {
         continue;
       }
 
-      dateObject[normalizedYearKey] = +normalizedDate[+item] < 30
-        ? '20' + normalizedDate[+item] : '19' + normalizedDate[+item];
+      dateObject[normalizedYearKey] = (+normalizedDate[+item] < 30
+        ? '20' : '19') + normalizedDate[+item];
       continue;
     }
     dateObject[fromFormat[+item]] = normalizedDate[+item];
