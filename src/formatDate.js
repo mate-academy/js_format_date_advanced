@@ -53,6 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const initialSeparator = fromFormat[formatDate.length];
   const newSeparator = toFormat[formatDate.length];
   const normalizedDate = date.split(initialSeparator);
+  const newFormat = toFormat.slice(0, -1);
 
   const dateObject = {};
 
@@ -74,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject[fromFormat[+item]] = normalizedDate[+item];
   }
 
-  return toFormat.map(x => dateObject[x]).slice(0, -1).join(newSeparator);
+  return newFormat.map(x => dateObject[x]).join(newSeparator);
 }
 
 module.exports = formatDate;
