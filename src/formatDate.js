@@ -65,11 +65,10 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (oldDate['YY']) {
-      if (oldDate['YY'] >= 30) {
-        resultDate.push('19' + oldDate['YY']);
-        continue;
-      }
-      resultDate.push('20' + oldDate['YY']);
+      const normalizedYear
+        = (oldDate['YY'] >= 30 ? '19' : '20') + oldDate['YY'];
+
+      resultDate.push(normalizedYear);
     } else if (oldDate['YYYY']) {
       const shortened = oldDate['YYYY'].slice(-2);
 
