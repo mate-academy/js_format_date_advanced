@@ -59,18 +59,21 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const key of toFormat) {
-    if (!oldDate[key] && oldDate['YY']) {
+    if (oldDate[key]) {
+      resultDate.push(oldDate[key]);
+      continue;
+    }
+
+    if (oldDate['YY']) {
       if (oldDate['YY'] >= 30) {
         resultDate.push('19' + oldDate['YY']);
-      } else {
-        resultDate.push('20' + oldDate['YY']);
+        continue;
       }
-    } else if (!oldDate[key] && oldDate['YYYY']) {
+      resultDate.push('20' + oldDate['YY']);
+    } else if (oldDate['YYYY']) {
       const shortened = oldDate['YYYY'].slice(-2);
 
       resultDate.push(shortened);
-    } else {
-      resultDate.push(oldDate[key]);
     }
   }
   resultDate.length = 3;
