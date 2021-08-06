@@ -58,16 +58,14 @@ function formatDate(date, fromFormat, toFormat) {
     oldDate[fromFormat[i]] = dateSplitted[i];
   }
 
-  for (let key of toFormat) {
-    if (!oldDate[key] && oldDate.hasOwnProperty('YY')) {
-      key = 'YY';
-
-      if (oldDate[key] >= 30) {
-        resultDate.push('19' + oldDate[key]);
+  for (const key of toFormat) {
+    if (!oldDate[key] && oldDate['YY']) {
+      if (oldDate['YY'] >= 30) {
+        resultDate.push('19' + oldDate['YY']);
       } else {
-        resultDate.push('20' + oldDate[key]);
+        resultDate.push('20' + oldDate['YY']);
       }
-    } else if (!oldDate[key] && oldDate.hasOwnProperty('YYYY')) {
+    } else if (!oldDate[key] && oldDate['YYYY']) {
       const shortened = oldDate['YYYY'].slice(-2);
 
       resultDate.push(shortened);
