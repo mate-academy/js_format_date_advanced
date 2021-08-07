@@ -58,7 +58,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (index === -1 && fromFormat[i] === 'YYYY') {
       index = toFormat.indexOf('YY');
-      resultArray[index] = [...dateArray[i]][2] + [...dateArray[i]][3];
+      resultArray[index] = dateArray[i].slice(-2);
       continue;
     }
 
