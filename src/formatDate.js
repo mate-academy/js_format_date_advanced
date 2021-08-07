@@ -51,56 +51,32 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
-  let day;
-  let month;
-  let year;
-  let smallYear;
+  const resultArray = Array(3);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (fromFormat[i]) {
-      case 'DD': day = dateArray[i];
-        break;
-      case 'MM': month = dateArray[i];
-        break;
-      case 'YYYY': year = dateArray[i];
-        break;
-      case 'YY': smallYear = dateArray[i];
-        break;
+    let index = toFormat.indexOf(fromFormat[i]);
 
-      default:
-        break;
+    if (index === -1 && fromFormat[i] === 'YYYY') {
+      index = toFormat.indexOf('YY');
+      resultArray[index] = [...dateArray[i]][2] + [...dateArray[i]][3];
+      continue;
     }
-  }
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (+smallYear < 30) {
-      year = '20' + smallYear;
-    } else {
-      year = '19' + smallYear;
+    if (index === -1 && fromFormat[i] === 'YY') {
+      index = toFormat.indexOf('YYYY');
+
+      if (+dateArray[i] < 30) {
+        resultArray[index] = '20' + dateArray[i];
+      } else {
+        resultArray[index] = '19' + dateArray[i];
+      }
+      continue;
     }
+
+    resultArray[index] = dateArray[i];
   }
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    smallYear = [...year][2] + [...year][3];
-  }
-
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (toFormat[i]) {
-      case 'DD': dateArray[i] = day;
-        break;
-      case 'MM': dateArray[i] = month;
-        break;
-      case 'YYYY': dateArray[i] = year;
-        break;
-      case 'YY': dateArray[i] = smallYear;
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  return dateArray.join(toFormat[3]);
+  return resultArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
