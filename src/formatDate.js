@@ -55,20 +55,14 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat.pop();
   const oldDate = date.split(oldSeparator);
   const newDate = new Array(3);
-  let newYearIndex;
-  let oldYearIndex;
 
-  if (toFormat.includes('YY')) {
-    newYearIndex = toFormat.indexOf('YY');
-  } else if (toFormat.includes('YYYY')) {
-    newYearIndex = toFormat.indexOf('YYYY');
-  }
+  const newYearIndex = toFormat.includes('YY')
+    ? toFormat.indexOf('YY')
+    : toFormat.indexOf('YYYY');
 
-  if (fromFormat.includes('YY')) {
-    oldYearIndex = fromFormat.indexOf('YY');
-  } else if (fromFormat.includes('YYYY')) {
-    oldYearIndex = fromFormat.indexOf('YYYY');
-  }
+  const oldYearIndex = fromFormat.includes('YY')
+    ? fromFormat.indexOf('YY')
+    : fromFormat.indexOf('YYYY');
 
   newDate[toFormat.indexOf('DD')] = oldDate[fromFormat.indexOf('DD')];
   newDate[toFormat.indexOf('MM')] = oldDate[fromFormat.indexOf('MM')];
