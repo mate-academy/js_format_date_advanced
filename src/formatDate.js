@@ -50,33 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromDayId = fromFormat.indexOf('DD');
-  const fromMonId = fromFormat.indexOf('MM');
-  const fromYearId = fromFormat.indexOf('YYYY');
-  const fromShortYearId = fromFormat.indexOf('YY');
+  const fromObject = {
+    dayId: fromFormat.indexOf('DD'),
+    monthId: fromFormat.indexOf('MM'),
+    yearId: fromFormat.indexOf('YYYY'),
+    shortYearId: fromFormat.indexOf('YY'),
+  };
 
-  const toDayId = toFormat.indexOf('DD');
-  const toMonId = toFormat.indexOf('MM');
-  const toYearId = toFormat.indexOf('YYYY');
-  const toShortYearId = toFormat.indexOf('YY');
+  const toObject = {
+    dayId: toFormat.indexOf('DD'),
+    monthId: toFormat.indexOf('MM'),
+    yearId: toFormat.indexOf('YYYY'),
+    shortYearId: toFormat.indexOf('YY'),
+  };
 
   const fromDateArray = date.split(fromFormat[3]);
   const toDateArray = [];
 
-  toDateArray[toDayId] = fromDateArray[fromDayId];
-  toDateArray[toMonId] = fromDateArray[fromMonId];
-  toDateArray[toYearId] = fromDateArray[fromYearId];
+  toDateArray[toObject.dayId] = fromDateArray[fromObject.dayId];
+  toDateArray[toObject.monthId] = fromDateArray[fromObject.monthId];
+  toDateArray[toObject.yearId] = fromDateArray[fromObject.yearId];
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (fromDateArray[fromShortYearId] >= 30) {
-      toDateArray[toYearId] = '19' + fromDateArray[fromShortYearId];
+    if (fromDateArray[fromObject.shortYearId] >= 30) {
+      toDateArray[toObject.yearId] = '19'
+      + fromDateArray[fromObject.shortYearId];
     } else {
-      toDateArray[toYearId] = '20' + fromDateArray[fromShortYearId];
+      toDateArray[toObject.yearId] = '20'
+      + fromDateArray[fromObject.shortYearId];
     }
   }
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    toDateArray[toShortYearId] = fromDateArray[fromYearId].slice(2);
+    toDateArray[toObject.shortYearId]
+    = fromDateArray[fromObject.yearId].slice(2);
   }
 
   return toDateArray.join(toFormat[3]);
