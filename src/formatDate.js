@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = fromFormat[3];
+  const upgradeSeparator = toFormat[3];
+  const dateArray = date.split(separator);
+  let yearYYYY;
+  let yearYY;
+  let month;
+  let day;
+  const upgradeDate = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YYYY') {
+      yearYYYY = dateArray[i];
+    }
+
+    if (fromFormat[i] === 'YY') {
+      yearYY = dateArray[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = dateArray[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = dateArray[i];
+    }
+  }
+
+  if (yearYYYY === undefined) {
+    if (yearYY < 30) {
+      yearYYYY = `20${yearYY}`;
+    }
+
+    if (yearYY >= 30) {
+      yearYYYY = `19${yearYY}`;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYYY') {
+      upgradeDate.push(yearYYYY);
+    }
+
+    if (toFormat[i] === 'YY' && yearYY !== undefined) {
+      upgradeDate.push(yearYY);
+    }
+
+    if (toFormat[i] === 'YY' && yearYY === undefined) {
+      upgradeDate.push(`${yearYYYY[2]}${yearYYYY[3]}`);
+    }
+
+    if (toFormat[i] === 'MM') {
+      upgradeDate.push(month);
+    }
+
+    if (toFormat[i] === 'DD') {
+      upgradeDate.push(day);
+    }
+  }
+
+  return upgradeDate.join(upgradeSeparator);
 }
 
 module.exports = formatDate;
