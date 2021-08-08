@@ -62,7 +62,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   let indYear = 0;
 
-  cloneFromFormat.map((ell, i, arr) => {
+  cloneFromFormat.map((ell, i) => {
     if (ell === 'YY' || ell === 'YYYY') {
       indYear += i;
     }
@@ -77,7 +77,7 @@ function formatDate(date, fromFormat, toFormat) {
       : '19' + dateArray[indYear];
   }
 
-  cloneToFormat = cloneToFormat.map((ell, i, arr) => {
+  cloneToFormat = cloneToFormat.map(ell => {
     if (dateFormatStorage[ell] === undefined) {
       return newData;
     }
@@ -85,6 +85,8 @@ function formatDate(date, fromFormat, toFormat) {
     return dateFormatStorage[ell];
   });
 
-  return cloneToFormat.join(`${toFormatSeparator}`);
+  const newFormat = cloneToFormat.join(`${toFormatSeparator}`);
+
+  return newFormat;
 }
 module.exports = formatDate;
