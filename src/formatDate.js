@@ -50,43 +50,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const oldFormat = getArray(fromFormat).slice(0, -1);
+  const newFormat = getArray(toFormat).slice(0, -1);
   const fromSeparator = fromFormat[3];
   const toSeparator = toFormat[3];
-  const fromDate = date.split(fromSeparator);
-  const toDate = [];
-  let yearFormat;
+  const oldDate = date.split(fromSeparator);
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
-      toDate[toFormat.indexOf('YY')] = fromDate[i];
-      yearFormat = ['YY', fromDate[i], i];
-    } else if (fromFormat[i] === 'YY' && toFormat.includes('YYYY')) {
-      toDate[toFormat.indexOf('YYYY')] = fromDate[i];
-      yearFormat = ['YYYY', fromDate[i], i];
-    }
+  const inputDate = {};
 
-    if (toFormat.includes(fromFormat[i])) {
-      toDate[toFormat.indexOf(fromFormat[i])] = fromDate[i];
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (oldDate[i].length > 2) {
+      inputDate[oldFormat[i]] = oldDate[i].slice(2);
+    } else {
+      inputDate[oldFormat[i]] = oldDate[i];
     }
   }
 
-  if (yearFormat && +yearFormat[1] < 22) {
-    toDate[yearFormat[2]] = '20' + toDate[yearFormat[2]];
-
-    return toDate.join(toSeparator);
-  } else if (yearFormat && +yearFormat[1] < 100) {
-    toDate[yearFormat[2]] = '19' + toDate[yearFormat[2]];
-
-    return toDate.join(toSeparator);
+  if (toFormat.includes('YYYY')) {
+    inputDate['YY'] = +inputDate['YY'] < 30
+      ? `20${inputDate['YY']}`
+      : `19${inputDate['YY']}`;
   }
 
-  if (yearFormat && +yearFormat[1] < 2000) {
-    toDate[yearFormat[2]] = toDate[yearFormat[2]].slice(2);
+  const newDate = [
+    inputDate[newFormat[0]],
+    inputDate[newFormat[1]],
+    inputDate[newFormat[2]],
+  ];
 
-    return toDate.join(toSeparator);
+  return newDate.join(toSeparator);
+}
+
+function getArray(value) {
+  const newArray = [];
+
+  for (const item of value) {
+    if (item.length > 2) {
+      newArray.push(item.slice(2));
+    } else {
+      newArray.push(item);
+    }
   }
 
-  return toDate.join(toSeparator);
+  return newArray;
 }
 
 module.exports = formatDate;
