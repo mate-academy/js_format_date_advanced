@@ -67,7 +67,8 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   dateObject['YY'] = dateObject['YY'] === 0
-    ? dateObject['YYYY'].slice(-2) : dateObject['YY'];
+    ? dateObject['YYYY'].slice(-2)
+    : dateObject['YY'];
 
   const longDate = (dateObject['YY'] >= 30 ? '19' : '20') + dateObject['YY'];
 
