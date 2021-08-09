@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat.pop();
-  const newSeparator = toFormat.pop();
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
   const oldDate = date.split(oldSeparator);
   const newDate = Array(oldDate.length);
 
@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
       let yearWithoutCentury = oldDate[i];
 
       if (oldYearFormat === 'YYYY') {
-        yearWithoutCentury = oldDate[i].slice(-2);
+        yearWithoutCentury = yearWithoutCentury.slice(-2);
 
         newDate[toFormat.indexOf('YY')] = yearWithoutCentury;
       } else if (oldYearFormat === 'YY') {
