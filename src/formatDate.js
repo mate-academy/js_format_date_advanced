@@ -87,6 +87,8 @@ function formatDate(date, fromFormat, toFormat) {
       case yearFormat[0]:
         newDate[i] = dateFrom[yearIndex].slice(2);
         break;
+      default:
+        break;
     }
   }
 
