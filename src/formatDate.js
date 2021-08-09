@@ -57,9 +57,9 @@ function formatDate(date, fromFormat, toFormat) {
   const dateForm = {};
 
   for (let i = 0; i < dateOld.length; i++) {
-    if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
+    if (fromFormat[i] === 'YYYY') {
       dateForm['YY'] = dateOld[i].slice(-2);
-    } else if (fromFormat[i] === 'YY' && toFormat.includes('YYYY')) {
+    } else if (fromFormat[i] === 'YY') {
       if (dateOld[i] < 30) {
         dateForm['YYYY'] = `20${dateOld[i]}`;
       } else {
