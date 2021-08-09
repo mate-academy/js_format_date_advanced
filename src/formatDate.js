@@ -50,30 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const initialSeparator = fromFormat[formatDate.length];
-  const newSeparator = toFormat[formatDate.length];
+  const initialSeparator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
   const normalizedDate = date.split(initialSeparator);
-  const newFormat = toFormat.slice(0, -1);
+  const newFormat = toFormat;
 
-  const dateObject = {};
+  const dateObject = {
+    'DD': 0,
+    'MM': 0,
+    'YY': 0,
+    'YYYY': 0,
+  };
 
-  for (const item in normalizedDate) {
-    if (!toFormat.includes(fromFormat[+item])) {
-      const normalizedYearKey = toFormat
-        .filter(x => x[0] === fromFormat[+item][0])
-        .join('');
-
-      if (normalizedYearKey.length < normalizedDate[+item].length) {
-        dateObject[normalizedYearKey] = normalizedDate[+item].slice(-2);
-        continue;
-      }
-
-      dateObject[normalizedYearKey] = (+normalizedDate[+item] < 30
-        ? '20' : '19') + normalizedDate[+item];
-      continue;
-    }
-    dateObject[fromFormat[+item]] = normalizedDate[+item];
+  for (let item = 0; item < 3; item++) {
+    dateObject[fromFormat[item]] = normalizedDate[item];
   }
+
+  dateObject['YY'] = dateObject['YY'] === 0
+    ? dateObject['YYYY'].slice(-2) : dateObject['YY'];
+
+  const longDate = (dateObject['YY'] >= 30 ? '19' : '20') + dateObject['YY'];
+
+  dateObject['YYYY'] = dateObject['YYYY'] === 0
+    ? longDate : dateObject['YYYY'];
 
   return newFormat.map(x => dateObject[x]).join(newSeparator);
 }
