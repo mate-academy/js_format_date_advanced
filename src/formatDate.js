@@ -55,27 +55,31 @@ function formatDate(date, fromFormat, toFormat) {
   let year = '';
   const sepOldDate = fromFormat[fromFormat.length - 1];
   const sepNewDate = toFormat[toFormat.length - 1];
-  const dateSeparetArray = date.split(sepOldDate);
+  const dateSeparetedArray = date.split(sepOldDate);
   const newDateArray = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day += dateSeparetArray[i];
-      continue;
-    } else if (fromFormat[i] === 'MM') {
-      month += dateSeparetArray[i];
-      continue;
-    } else if (fromFormat[i] === 'YY') {
-      year += dateSeparetArray[i];
-    } else if (fromFormat[i] === 'YYYY') {
-      year += dateSeparetArray[i];
+    switch (fromFormat[i]) {
+      case 'DD':
+        day += dateSeparetedArray[i];
+
+        break;
+
+      case 'MM':
+        month += dateSeparetedArray[i];
+
+        break;
+
+      case 'YY':
+      case 'YYYY':
+        year += dateSeparetedArray[i];
+
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YYYY' && year.length === 4) {
-      newDateArray[i] = year;
-    } else if (toFormat[i] === 'YY' && year.length === 2) {
+    if (toFormat[i].includes('Y') && toFormat[i].length === year.length) {
       newDateArray[i] = year;
     } else if (toFormat[i] === 'YY' && year.length === 4) {
       newDateArray[i] = year.slice(-2);
