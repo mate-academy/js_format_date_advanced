@@ -50,42 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateFrom = date.split(fromFormat[3]);
+  const separator = 3;
+  const dateFrom = date.split(fromFormat[separator]);
   const newDate = [];
 
   const dayFormat = 'DD';
   const monthFormat = 'MM';
   const yearFormat = ['YY', 'YYYY'];
 
-  const day = fromFormat.indexOf(dayFormat);
-  const month = fromFormat.indexOf(monthFormat);
-  let year = fromFormat.indexOf(yearFormat[0]);
+  const dayIndex = fromFormat.indexOf(dayFormat);
+  const monthIndex = fromFormat.indexOf(monthFormat);
+  let yearIndex = fromFormat.indexOf(yearFormat[0]);
 
-  if (year < 0) {
-    year = fromFormat.indexOf(yearFormat[1]);
+  if (yearIndex < 0) {
+    yearIndex = fromFormat.indexOf(yearFormat[1]);
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === dayFormat) {
-      newDate[i] = dateFrom[day];
-    } else if (toFormat[i] === monthFormat) {
-      newDate[i] = (dateFrom[month]);
-    } else if (toFormat[i] === fromFormat[year]) {
-      newDate[i] = dateFrom[year];
-    } else {
-      if (toFormat[i] === yearFormat[1]) {
-        if (Number(dateFrom[year]) < 30) {
-          newDate[i] = (`20${dateFrom[year]}`);
+    switch (toFormat[i]) {
+      case dayFormat:
+        newDate[i] = dateFrom[dayIndex];
+        break;
+      case monthFormat:
+        newDate[i] = dateFrom[monthIndex];
+        break;
+      case fromFormat[yearIndex]:
+        newDate[i] = dateFrom[yearIndex];
+        break;
+      case yearFormat[1]:
+        if (Number(dateFrom[yearIndex]) < 30) {
+          newDate[i] = (`20${dateFrom[yearIndex]}`);
         } else {
-          newDate[i] = (`19${dateFrom[year]}`);
+          newDate[i] = (`19${dateFrom[yearIndex]}`);
         }
-      } else {
-        newDate[i] = dateFrom[year].slice(2);
-      }
+        break;
+      case yearFormat[0]:
+        newDate[i] = dateFrom[yearIndex].slice(2);
+        break;
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return newDate.join(toFormat[separator]);
 }
 
 module.exports = formatDate;
