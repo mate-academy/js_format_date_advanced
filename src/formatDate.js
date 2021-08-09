@@ -63,35 +63,35 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   const actualDate = {
-    DD: initialFormatDate[indexOfDay],
-    MM: initialFormatDate[indexOfMonth],
-    YY: initialFormatDate[indexOfYear],
+    day: initialFormatDate[indexOfDay],
+    month: initialFormatDate[indexOfMonth],
+    year: initialFormatDate[indexOfYear],
   };
 
-  const { YY } = actualDate;
+  const { day, month, year } = actualDate;
 
   for (const key of toFormat) {
     switch (key) {
       case 'DD':
-        newFormatDate.push(actualDate.DD);
+        newFormatDate.push(day);
         break;
       case 'MM':
-        newFormatDate.push(actualDate.MM);
+        newFormatDate.push(month);
         break;
       case 'YY':
-        if (YY.length === 4) {
-          newFormatDate.push(actualDate.YY[2] + actualDate.YY[1]);
+        if (year.length === 4) {
+          newFormatDate.push(year.slice(2));
         } else {
-          newFormatDate.push(actualDate.YY);
+          newFormatDate.push(year);
         }
         break;
       case 'YYYY':
-        if (YY.length === 2 && actualDate.YY >= 30) {
-          newFormatDate.push('19' + actualDate.YY);
-        } else if (YY.length === 2 && actualDate.YY < 30) {
-          newFormatDate.push('20' + actualDate.YY);
+        if (year.length === 2 && year >= 30) {
+          newFormatDate.push('19' + year);
+        } else if (year.length === 2 && year < 30) {
+          newFormatDate.push('20' + year);
         } else {
-          newFormatDate.push(actualDate.YY);
+          newFormatDate.push(year);
         }
         break;
       default:
