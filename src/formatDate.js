@@ -51,6 +51,40 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-}
+  const dateArray = date.match(/\d+/gi);
+  const cloneFromFormat = [...fromFormat];
+  const toFormatSeparator = toFormat[toFormat.length - 1];
+  let cloneToFormat = [...toFormat];
+  const dateFormatStorage = {};
 
+  cloneFromFormat.length = cloneFromFormat.length - 1;
+  cloneToFormat.length = cloneToFormat.length - 1;
+
+  let indYear = 0;
+
+  cloneFromFormat.map((ell, i) => {
+    if (ell === 'YY' || ell === 'YYYY') {
+      indYear += i;
+    }
+    dateFormatStorage[ell] = dateArray[i];
+  });
+
+  let newData = dateArray[indYear].slice(-2);
+
+  if (dateArray[indYear].length === 2) {
+    newData = dateArray[indYear] < 30
+      ? '20' + dateArray[indYear]
+      : '19' + dateArray[indYear];
+  }
+
+  cloneToFormat = cloneToFormat.map(ell => {
+    if (dateFormatStorage[ell] === undefined) {
+      return newData;
+    }
+
+    return dateFormatStorage[ell];
+  });
+
+  return cloneToFormat.join(toFormatSeparator);
+}
 module.exports = formatDate;
