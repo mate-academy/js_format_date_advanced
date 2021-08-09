@@ -63,9 +63,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     oldDateObj['YYYY'] = century + oldDateObj['YY'];
   } else if (oldDateObj['YYYY'] && toFormat.includes('YY')) {
-    const shortYear = oldDateObj['YYYY'].slice(2);
-
-    oldDateObj['YY'] = shortYear;
+    oldDateObj['YY'] = oldDateObj['YYYY'].slice(2);
   }
 
   for (let i = 0; i < newFormatDate.length; i++) {
