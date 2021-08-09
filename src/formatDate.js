@@ -56,7 +56,7 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = new Array(oldDate.length);
 
   for (let i = 0; i < oldDate.length; i++) {
-    if (fromFormat[i][0] === 'Y' && toFormat.indexOf(fromFormat[i]) < 0) {
+    if (toFormat.indexOf(fromFormat[i]) < 0) {
       const oldYearFormat = fromFormat[i];
       let century = +oldDate[i];
       let onlyLastYears = oldDate[i];
