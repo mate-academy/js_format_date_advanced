@@ -85,8 +85,6 @@ function formatDate(date, fromFormat, toFormat) {
     return dateFormatStorage[ell];
   });
 
-  const newFormat = cloneToFormat.join(`${toFormatSeparator}`);
-
-  return newFormat;
+  return cloneToFormat.join(toFormatSeparator);
 }
 module.exports = formatDate;
