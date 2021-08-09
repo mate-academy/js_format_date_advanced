@@ -80,6 +80,10 @@ function formatDate(date, fromFormat, toFormat) {
 
       case 'DD':
         newDate[newOrder] = day;
+        break;
+
+      default:
+        return 'Invalid date format!';
     }
   }
 
