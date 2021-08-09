@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDateSeparator = fromFormat.pop();
-  const newDateSeparator = toFormat.pop();
+  const oldDateSeparator = fromFormat[fromFormat.length - 1];
+  const newDateSeparator = toFormat[toFormat.length - 1];
   const splitDate = date.split(oldDateSeparator);
   const newDate = new Array(3);
   let oldYearFormat;
@@ -89,7 +89,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   newDate[newYearIndex] = splitDate[oldYearIndex];
 
-  for (let i = 0; i < fromFormat.length; i++) {
+  for (let i = 0; i < newDate.length; i++) {
     const datePart = splitDate[i];
     const newIndex = toFormat.indexOf(fromFormat[i]);
 
