@@ -57,7 +57,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < oldDate.length; i++) {
     const oldYearInFromFormat = fromFormat[i];
-    const indexOfYearsInNewDate = toFormat.indexOf(fromFormat[i]);
+    const indexOfYearsInNewDate = toFormat.indexOf(oldYearInFromFormat);
     let yearsWithoutCentury = oldDate[i];
 
     if (oldYearInFromFormat === 'YYYY') {
