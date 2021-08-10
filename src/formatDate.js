@@ -85,7 +85,7 @@ function formatDate(date, fromFormat, toFormat) {
   } else {
     if (+oldDateArray[indexYearOld] < 30) {
       newDateArray[indexYearNew] = `20${oldDateArray[indexYearOld]}`;
-    } else if (+oldDateArray[indexYearOld] >= 30) {
+    } else {
       newDateArray[indexYearNew] = `19${oldDateArray[indexYearOld]}`;
     }
   }
