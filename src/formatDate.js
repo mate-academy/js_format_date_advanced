@@ -80,13 +80,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (toFormat[indexYearNew].length === fromFormat[indexYearOld].length) {
     newDateArray[indexYearNew] = oldDateArray[indexYearOld];
-  }
-
-  if (toFormat[indexYearNew].length < fromFormat[indexYearOld].length) {
+  } else if (toFormat[indexYearNew].length < fromFormat[indexYearOld].length) {
     newDateArray[indexYearNew] = oldDateArray[indexYearOld].slice(2);
-  }
-
-  if (toFormat[indexYearNew].length > fromFormat[indexYearOld].length) {
+  } else {
     if (+oldDateArray[indexYearOld] < 30) {
       newDateArray[indexYearNew] = `20${oldDateArray[indexYearOld]}`;
     } else if (+oldDateArray[indexYearOld] >= 30) {
