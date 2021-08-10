@@ -51,7 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dataTimeElements = date.split(`${fromFormat[fromFormat.length - 1]}`);
-  let newFormat = [];
+  const newFormat = [];
   const timeData = {
     'DD': 0,
     'MM': 0,
@@ -67,7 +67,7 @@ function formatDate(date, fromFormat, toFormat) {
       return this.years.slice(2);
     },
     set YY(value) {
-      if (+value > 30 || +value === 30) {
+      if (+value >= 30) {
         this.years = '19' + value;
       } else {
         this.years = '20' + value;
@@ -88,8 +88,6 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
-  newFormat = newFormat.join('');
-
-  return newFormat;
+  return newFormat.join('');
 }
 module.exports = formatDate;
