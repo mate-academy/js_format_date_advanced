@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separateFromFormat = fromFormat[3];
+  const separateToFormat = toFormat[3];
+  const dateSplit = date.split(separateFromFormat);
+  let oldIndexYY;
+  let oldIndexDD;
+  let oldIndexMM;
+  let newIndexYY;
+  let newIndexDD;
+  let newIndexMM;
+  let expectedYYLength = 0;
+  const newTime = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'DD') {
+      oldIndexDD = i;
+    }
+
+    if (fromFormat[i] === 'MM') {
+      oldIndexMM = i;
+    }
+
+    if (fromFormat[i].includes('Y')) {
+      oldIndexYY = i;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'DD') {
+      newIndexDD = i;
+    }
+
+    if (toFormat[i] === 'MM') {
+      newIndexMM = i;
+    }
+
+    if (toFormat[i].includes('Y')) {
+      newIndexYY = i;
+      expectedYYLength = toFormat[i].length;
+    }
+  }
+
+  newTime[newIndexDD] = dateSplit[oldIndexDD];
+  newTime[newIndexMM] = dateSplit[oldIndexMM];
+  newTime[newIndexYY] = dateSplit[oldIndexYY];
+
+  if (expectedYYLength === 2) {
+    newTime[newIndexYY] = newTime[newIndexYY] % 100;
+
+    return newTime.join(separateToFormat);
+  }
+
+  if (newTime[newIndexYY] >= 30 && newTime[newIndexYY].length === 2) {
+    newTime[newIndexYY] = '19' + newTime[newIndexYY];
+  }
+
+  if (newTime[newIndexYY] < 30 && newTime[newIndexYY].length === 2) {
+    newTime[newIndexYY] = '20' + newTime[newIndexYY];
+  }
+
+  return newTime.join(separateToFormat);
 }
 
 module.exports = formatDate;
