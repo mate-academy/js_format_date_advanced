@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -50,7 +51,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newDate = date;
+
+  if (toFormat[2] === 'YY' && fromFormat[2] === 'YYYY') {
+    newDate = newDate.split(toFormat[3]);
+
+    newDate[2] = newDate[2].substr(2, 3);
+
+    newDate = newDate.join(toFormat[3]);
+  }
+
+  if (fromFormat[3] !== toFormat[3]) {
+    newDate = newDate.replace(fromFormat[3], toFormat[3]);
+    newDate = newDate.replace(fromFormat[3], toFormat[3]);
+  }
+
+  if (fromFormat[0] === 'YY' && toFormat[0] === 'YYYY') {
+    newDate = newDate.split(toFormat[3]);
+
+    if (+newDate[0] >= 30) {
+      newDate[0] = '19' + newDate[0];
+    } else if (+newDate[0] < 30) {
+      newDate[0] = '20' + newDate[0];
+    }
+
+    newDate = newDate.join(toFormat[3]);
+  }
+
+  if (fromFormat[0] === toFormat[2]) {
+    newDate = newDate.split(toFormat[3]).reverse().join(toFormat[3]);
+  }
+
+  if (fromFormat[0] === toFormat[1]) {
+    newDate = newDate.split(toFormat[3]);
+
+    const box = newDate[0];
+
+    newDate[0] = newDate[2];
+    newDate[2] = newDate[1];
+    newDate[1] = box;
+
+    newDate = newDate.join(toFormat[3]);
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
