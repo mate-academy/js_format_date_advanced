@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorOld = fromFormat[3];
+  const indexDayOld = fromFormat.indexOf('DD');
+  const indexMonthOld = fromFormat.indexOf('MM');
+  let indexYearOld = 0;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      indexYearOld = i;
+    }
+  };
+
+  const separatorNew = toFormat[3];
+  const indexDayNew = toFormat.indexOf('DD');
+  const indexMonthNew = toFormat.indexOf('MM');
+  let indexYearNew = 0;
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      indexYearNew = i;
+    }
+  }
+
+  const oldDateArray = date.split(separatorOld);
+  const newDateArray = [];
+
+  newDateArray[indexDayNew] = oldDateArray[indexDayOld];
+  newDateArray[indexMonthNew] = oldDateArray[indexMonthOld];
+
+  if (toFormat[indexYearNew].length === fromFormat[indexYearOld].length) {
+    newDateArray[indexYearNew] = oldDateArray[indexYearOld];
+  } else if (toFormat[indexYearNew].length < fromFormat[indexYearOld].length) {
+    newDateArray[indexYearNew] = oldDateArray[indexYearOld].slice(2);
+  } else {
+    if (+oldDateArray[indexYearOld] < 30) {
+      newDateArray[indexYearNew] = `20${oldDateArray[indexYearOld]}`;
+    } else {
+      newDateArray[indexYearNew] = `19${oldDateArray[indexYearOld]}`;
+    }
+  }
+
+  return newDateArray.join(separatorNew);
 }
 
 module.exports = formatDate;
