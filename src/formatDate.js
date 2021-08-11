@@ -57,8 +57,6 @@ function formatDate(date, fromFormat, toFormat) {
     newDate = newDate.split(toFormat[3]);
 
     newDate[2] = newDate[2].substr(2, 3);
-
-    newDate = newDate.join(toFormat[3]);
   }
 
   if (fromFormat[3] !== toFormat[3]) {
@@ -74,12 +72,10 @@ function formatDate(date, fromFormat, toFormat) {
     } else if (+newDate[0] < 30) {
       newDate[0] = '20' + newDate[0];
     }
-
-    newDate = newDate.join(toFormat[3]);
   }
 
   if (fromFormat[0] === toFormat[2]) {
-    newDate = newDate.split(toFormat[3]).reverse().join(toFormat[3]);
+    newDate = newDate.split(toFormat[3]).reverse();
   }
 
   if (fromFormat[0] === toFormat[1]) {
@@ -90,11 +86,13 @@ function formatDate(date, fromFormat, toFormat) {
     newDate[0] = newDate[2];
     newDate[2] = newDate[1];
     newDate[1] = box;
-
-    newDate = newDate.join(toFormat[3]);
   }
 
-  return newDate;
+  if (typeof newDate === 'string') {
+    return newDate;
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
