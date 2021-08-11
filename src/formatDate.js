@@ -56,7 +56,9 @@ function formatDate(date, fromFormat, toFormat) {
   const newIndex = new Array(3);
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i].startsWith('YY') && toFormat.indexOf(fromFormat[i]) < 0) {
+    const idx = toFormat.indexOf(fromFormat[i]);
+
+    if (fromFormat[i].startsWith('YY') && idx < 0) {
       const oldYear = fromFormat[i];
       let notCentury = oldIndex[i];
 
@@ -70,8 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
         newIndex[toFormat.indexOf('YY')] = notCentury;
       }
     } else {
-      newIndex[toFormat.indexOf(fromFormat[i])]
-      = oldIndex[i];
+      newIndex[idx] = oldIndex[i];
     }
   }
 
