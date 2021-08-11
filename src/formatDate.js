@@ -89,6 +89,9 @@ function formatDate(date, fromFormat, toFormat) {
       case 'DD':
         newFormatOfDate[i] = day;
         break;
+
+      default:
+        return 'Get wrong date format';
     }
   }
 
