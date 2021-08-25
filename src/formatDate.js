@@ -7,8 +7,7 @@
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
- *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
- *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
+ *  c
  *
  * Examples:
  *
@@ -50,74 +49,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const newFormat = toFormat;
-  const oldFormat = fromFormat;
-  const newSeparator = newFormat.pop();
-  const oldSeparator = oldFormat.pop();
+  const newSeparator = toFormat.pop();
+  const oldSeparator = fromFormat.pop();
   const oldVersionDate = date.split(oldSeparator);
-  const newVersionDate = [];
-  let day = '';
-  let yearYY = '';
-  let yearYYYY = '';
-  let month = '';
+  const format = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
 
-  for (let i = 0; i < oldFormat.length; i++) {
-    switch (oldFormat[i]) {
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
       case 'DD':
-        day = oldVersionDate[i];
+        format['DD'] = oldVersionDate[i];
         break;
 
       case 'MM':
-        month = oldVersionDate[i];
+        format['MM'] = oldVersionDate[i];
         break;
 
       case 'YY':
-        yearYY = oldVersionDate[i];
+        format['YY'] = oldVersionDate[i];
+
+        const formatYYYY = oldVersionDate[i] < 30
+          ? `20${oldVersionDate[i]}`
+          : `19${oldVersionDate[i]}`;
+
+        format['YYYY'] = formatYYYY;
         break;
 
       case 'YYYY':
-        yearYYYY = oldVersionDate[i];
+        format['YYYY'] = oldVersionDate[i];
+        format['YY'] = oldVersionDate[i].slice(2);
         break;
     }
   };
 
-  for (let i = 0; i < newFormat.length; i++) {
-    switch (newFormat[i]) {
-      case 'DD':
-        newVersionDate[i] = day;
-        break;
-
-      case 'MM':
-        newVersionDate[i] = month;
-        break;
-
-      case 'YY':
-        if (yearYY) {
-          newVersionDate[i] = yearYY;
-        };
-
-        if (yearYYYY) {
-          newVersionDate[i] = yearYYYY.slice(2);
-        };
-
-        break;
-
-      case 'YYYY':
-        if (yearYY) {
-          if (yearYY < 30) {
-            newVersionDate[i] = `20${yearYY}`;
-          } else {
-            newVersionDate[i] = `19${yearYY}`;
-          }
-        };
-
-        if (yearYYYY) {
-          newVersionDate[i] = yearYYYY;
-        };
-
-        break;
-    }
-  };
+  const newVersionDate = toFormat.map(el => format[el]);
 
   return newVersionDate.join(newSeparator);
 }
