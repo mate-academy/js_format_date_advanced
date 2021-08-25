@@ -51,6 +51,25 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dateNumbers = date.split(fromFormat[3]);
+  let year;
+  let result = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    for (let j = 0; j < toFormat.length; j++) {
+      if (toFormat[i] === fromFormat[j]) {
+        result.push(dateNumbers[j]);
+        break;
+      }
+      if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
+        year = dateNumbers[j].slice(2);
+        result.push(year);
+      }
+    }
+  }
+  result = result.join(toFormat[3]);
+
+  return result;
 }
 
 module.exports = formatDate;
