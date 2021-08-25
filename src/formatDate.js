@@ -7,8 +7,7 @@
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
- *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
- *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
+ *  c
  *
  * Examples:
  *
@@ -50,7 +49,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newSeparator = toFormat.pop();
+  const oldSeparator = fromFormat.pop();
+  const oldVersionDate = date.split(oldSeparator);
+  const format = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        format['DD'] = oldVersionDate[i];
+        break;
+
+      case 'MM':
+        format['MM'] = oldVersionDate[i];
+        break;
+
+      case 'YY':
+        format['YY'] = oldVersionDate[i];
+
+        const formatYYYY = oldVersionDate[i] < 30
+          ? `20${oldVersionDate[i]}`
+          : `19${oldVersionDate[i]}`;
+
+        format['YYYY'] = formatYYYY;
+        break;
+
+      case 'YYYY':
+        format['YYYY'] = oldVersionDate[i];
+        format['YY'] = oldVersionDate[i].slice(2);
+        break;
+    }
+  };
+
+  const newVersionDate = toFormat.map(el => format[el]);
+
+  return newVersionDate.join(newSeparator);
 }
 
 module.exports = formatDate;
