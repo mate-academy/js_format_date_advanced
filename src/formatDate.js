@@ -68,17 +68,17 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const key in newDateObj) {
-    if (key === 'YY' && newDateObj.YY === undefined) {
-      newDateObj.YY = (dateObj.YYYY / 100).toString().split('.')[1];
+    if (key === 'YY') {
+      newDateObj.YY = dateObj.YYYY.slice(2);
     }
 
-    if (key === 'YYYY' && newDateObj.YYYY === undefined) {
+    if (key === 'YYYY') {
       if (dateObj.YY < 30) {
-        newDateObj.YYYY = 2000 + +(dateObj.YY);
+        newDateObj.YYYY = '20' + dateObj.YY;
       }
 
       if (dateObj.YY >= 30) {
-        newDateObj.YYYY = 1900 + +(dateObj.YY);
+        newDateObj.YYYY = '19' + dateObj.YY;
       }
     }
   }
