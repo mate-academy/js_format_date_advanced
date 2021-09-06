@@ -1,3 +1,4 @@
+
 'use strict';
 
 /**
@@ -50,7 +51,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[3]);
+
+  function yearLong(year) {
+    if (year > 21) {
+      return `19${year}`;
+    } else {
+      return `20${year}`;
+    }
+  }
+
+  function yearShort(year) {
+    let res = '';
+
+    for (let i = 2; i < year.length; i++) {
+      res += year[i];
+    }
+
+    return res;
+  }
+
+  let result = '';
+
+  const objDate = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YY') {
+      objDate[fromFormat[i]] = arrDate[i];
+      objDate.YYYY = yearLong(arrDate[i]);
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      objDate[fromFormat[i]] = arrDate[i];
+      objDate.YY = yearShort(arrDate[i]);
+    }
+    objDate[fromFormat[i]] = arrDate[i];
+  }
+
+  for (const item of toFormat) {
+    for (const char in objDate) {
+      if (item === char) {
+        result += objDate[char];
+        result += toFormat[3];
+      }
+    }
+  }
+
+  let finalResult = '';
+
+  for (let i = 0; i < result.length - 1; i++) {
+    finalResult += result[i];
+  }
+
+  return finalResult;
 }
 
 module.exports = formatDate;
