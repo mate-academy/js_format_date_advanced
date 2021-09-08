@@ -73,28 +73,23 @@ function formatDate(date, fromFormat, toFormat) {
 
   let result = '';
 
-  const objDate = {};
+  const dateParts = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YY') {
-      objDate[fromFormat[i]] = arrDate[i];
-      objDate.YYYY = yearLong(arrDate[i]);
-    }
-
-    if (fromFormat[i] === 'YYYY') {
-      objDate[fromFormat[i]] = arrDate[i];
-      objDate.YY = yearShort(arrDate[i]);
-    }
-    objDate[fromFormat[i]] = arrDate[i];
+    dateParts[fromFormat[i]] = arrDate[i];
   }
 
-  for (const item of toFormat) {
-    for (const char in objDate) {
-      if (item === char) {
-        result += objDate[char];
-        result += toFormat[3];
-      }
-    }
+  if (dateParts.YY) {
+    dateParts.YYYY = yearLong(dateParts.YY);
+  }
+
+  if (dateParts.YYYY) {
+    dateParts.YY = yearShort(dateParts.YYYY);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result += dateParts[toFormat[i]];
+    result += toFormat[3];
   }
 
   let finalResult = '';
