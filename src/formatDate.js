@@ -49,8 +49,58 @@
  * @returns {string}
  */
 
+const twentyCentury = '20';
+const nineteenCentury = '19';
+const maxYearRestriction = 30;
+const shortYearFormat = 'YY';
+const longYearFormat = 'YYYY';
+const delimiterIndex = 3;
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldDelimiter = fromFormat[delimiterIndex];
+  const newDelimiter = toFormat[delimiterIndex];
+  const collectedResultArr = [];
+  const splitedDate = date.split(oldDelimiter);
+
+  const yearIndex = fromFormat.includes(shortYearFormat)
+    ? fromFormat.indexOf(shortYearFormat)
+    : fromFormat.indexOf(longYearFormat);
+
+  for (const datePart of toFormat) {
+    if (datePart === newDelimiter) {
+      break;
+    }
+
+    if (datePart.includes(shortYearFormat)) {
+      collectedResultArr.push(formatYear(splitedDate[yearIndex],
+        fromFormat[yearIndex], datePart));
+      continue;
+    }
+
+    collectedResultArr.push(splitedDate[fromFormat.indexOf(datePart)]);
+  }
+
+  return collectedResultArr.join(newDelimiter);
+}
+
+function formatYear(year, fromFormat, toFormat) {
+  if (fromFormat.length === toFormat.length) {
+    return year;
+  }
+
+  const extractedYear = toFormat.length < fromFormat.length
+    ? Number(year.substr(longYearFormat.length - shortYearFormat.length,
+      shortYearFormat.length))
+    : Number(year);
+  const century = extractedYear < maxYearRestriction
+    ? twentyCentury
+    : nineteenCentury;
+
+  return fromFormat.length > toFormat.length
+    ? year.substr(longYearFormat.length - shortYearFormat.length,
+      shortYearFormat.length)
+    : `${century}${year}`;
 }
 
 module.exports = formatDate;
