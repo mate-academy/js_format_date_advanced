@@ -51,66 +51,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
-  let resultDate;
-  let longYear;
-  const resultArr = [];
-  const yearMinOld = fromFormat.indexOf('YY');
-  const yearMinNew = toFormat.indexOf('YY');
-  const yearMaxOld = fromFormat.indexOf('YYYY');
-  const yearMaxNew = toFormat.indexOf('YYYY');
-  const dayOld = fromFormat.indexOf('DD');
-  const dayNew = toFormat.indexOf('DD');
-  const monthOld = fromFormat.indexOf('MM');
-  const monthNew = toFormat.indexOf('MM');
+  const dateObj = {};
 
-  if (yearMinOld >= 0 & yearMinNew >= 0) {
-    if (yearMinOld !== yearMinNew) {
-      resultArr[dayNew] = dateArr[dayOld];
-      resultArr[monthNew] = dateArr[monthOld];
-      resultArr[yearMinNew] = dateArr[yearMinOld];
-      resultDate = resultArr.join(toFormat[3]);
-    } else {
-      resultDate = dateArr.join(toFormat[3]);
-    }
-  } else if (yearMaxOld >= 0 & yearMaxNew >= 0) {
-    if (yearMaxOld !== yearMaxNew) {
-      resultArr[dayNew] = dateArr[dayOld];
-      resultArr[monthNew] = dateArr[monthOld];
-      resultArr[yearMaxNew] = dateArr[yearMaxOld];
-      resultDate = resultArr.join(toFormat[3]);
-    } else {
-      resultDate = dateArr.join(toFormat[3]);
-    }
-  } else if (yearMinNew >= 0 & yearMaxOld >= 0) {
-    dateArr[yearMaxOld] = dateArr[yearMaxOld].slice(2, 5);
-
-    if (yearMinNew !== yearMaxOld) {
-      resultArr[dayNew] = dateArr[dayOld];
-      resultArr[monthNew] = dateArr[monthOld];
-      resultArr[yearMinNew] = dateArr[yearMaxOld];
-      resultDate = resultArr.join(toFormat[3]);
-    } else {
-      resultDate = dateArr.join(toFormat[3]);
-    }
-  } else if (yearMaxNew >= 0 & yearMinOld >= 0) {
-    if (dateArr[yearMinOld] < 30) {
-      longYear = `20${dateArr[yearMinOld]}`;
-    } else {
-      longYear = `19${dateArr[yearMinOld]}`;
-    }
-
-    if (yearMaxNew !== yearMinOld) {
-      resultArr[dayNew] = dateArr[dayOld];
-      resultArr[monthNew] = dateArr[monthOld];
-      resultArr[yearMaxNew] = longYear;
-      resultDate = resultArr.join(toFormat[3]);
-    } else {
-      dateArr[yearMaxNew] = longYear;
-      resultDate = dateArr.join(toFormat[3]);
-    }
+  for (let i = 0; i < 3; i++) {
+    dateObj[fromFormat[i]] = dateArr[i];
   }
 
-  return resultDate;
+  const dateArrResult = [];
+
+  for (let i = 0; i < 3; i++) {
+    let element = dateObj[toFormat[i]];
+
+    if (toFormat[i] === 'YYYY' & fromFormat.includes('YY')) {
+      element = (dateObj['YY'] < 30) ? `20${dateObj['YY']}`
+        : `19${dateObj['YY']}`;
+    } else if (toFormat[i] === 'YY' & fromFormat.includes('YYYY')) {
+      element = dateObj['YYYY'].slice(2, 5);
+    }
+    dateArrResult.push(element);
+  }
+
+  const result = dateArrResult.join((toFormat[3]));
+
+  return result;
 }
 
 module.exports = formatDate;
