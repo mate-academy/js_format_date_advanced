@@ -50,7 +50,51 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const result = [];
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  let oldYearPosition;
+  let newYearPosition;
+  let newYear;
+  let oldYear;
+  const oldMonthPosition = fromFormat.indexOf('MM');
+  const month = date.split(oldSeparator)[oldMonthPosition];
+  const newMonthPosition = toFormat.indexOf('MM');
+  const oldDayPosition = fromFormat.indexOf('DD');
+  const day = date.split(oldSeparator)[oldDayPosition];
+
+  if (fromFormat.includes('YYYY')) {
+    oldYearPosition = fromFormat.indexOf('YYYY');
+    oldYear = date.split(oldSeparator)[oldYearPosition].slice(2);
+  } else {
+    oldYearPosition = fromFormat.indexOf('YY');
+    oldYear = date.split(oldSeparator)[oldYearPosition];
+  }
+
+  if (toFormat.includes('YYYY')) {
+    newYearPosition = toFormat.indexOf('YYYY');
+
+    if (oldYear < 30) {
+      newYear = '20' + oldYear;
+    } else {
+      newYear = '19' + oldYear;
+    }
+  } else {
+    newYearPosition = toFormat.indexOf('YY');
+    newYear = oldYear;
+  }
+
+  for (let i = 0; i <= 2; i++) {
+    if (i === newYearPosition) {
+      result.push(newYear);
+    } else if (i === newMonthPosition) {
+      result.push(month);
+    } else {
+      result.push(day);
+    }
+  }
+
+  return result.join(newSeparator);
 }
 
 module.exports = formatDate;
