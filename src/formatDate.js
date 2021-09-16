@@ -52,32 +52,23 @@
 function formatDate(date, fromFormat, toFormat) {
   const result = [];
   const toSeparator = toFormat[3];
-  const fromSeparator = fromFormat[3];
-  const dateSplit = date.split(fromSeparator);
+  const dateSplit = date.split(fromFormat[3]);
+  const dateObj = {};
 
   for (let i = 0; i < 3; i++) {
-    let formatIndex = fromFormat.indexOf(toFormat[i]);
-    let subResult = dateSplit[formatIndex];
+    dateObj[fromFormat[i]] = dateSplit[i];
+  }
 
-    if (formatIndex === -1) {
-      formatIndex = fromFormat.includes('YY')
-        ? fromFormat.indexOf('YY')
-        : fromFormat.indexOf('YYYY');
-    }
+  if (dateObj.hasOwnProperty('YY')) {
+    dateObj.YYYY = dateObj.YY < 30
+      ? `20${dateObj.YY}`
+      : `19${dateObj.YY}`;
+  } else {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
 
-    if (toFormat[i] === 'YY' && fromFormat[formatIndex] === 'YYYY') {
-      subResult = dateSplit[formatIndex].slice(2);
-    }
-
-    if (toFormat[i] === 'YYYY' && fromFormat[formatIndex] === 'YY') {
-      if (dateSplit[formatIndex] < 30) {
-        subResult = `20${dateSplit[formatIndex]}`;
-      } else {
-        subResult = `19${dateSplit[formatIndex]}`;
-      }
-    };
-
-    result.push(subResult);
+  for (let i = 0; i < 3; i++) {
+    result.push(dateObj[toFormat[i]]);
   }
 
   return result.join(toSeparator);
