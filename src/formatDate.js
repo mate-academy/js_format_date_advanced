@@ -74,6 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       result[indexYear] = splitDate[i];
+      continue;
     }
 
     const index = toFormat.indexOf(fromFormat[i]);
