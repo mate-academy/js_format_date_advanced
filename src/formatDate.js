@@ -60,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < sliceToFormat.length; i++) {
     if (sliceFromFormat[i].startsWith('Y')) {
       const fromYear = sliceFromFormat[i];
-      const toYear = sliceToFormat.filter(word => word.startsWith('Y')) + '';
+      const toYear = sliceToFormat.filter(year => year.startsWith('Y')) + '';
       const indexYear = sliceToFormat.indexOf(toYear);
 
       if (fromYear.length > toYear.length) {
