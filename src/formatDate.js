@@ -55,51 +55,39 @@ function formatDate(date, fromFormat, toFormat) {
 
   const dayOldIndex = fromFormat.indexOf('DD');
   const dayNewIndex = toFormat.indexOf('DD');
-
   const monthOldIndex = fromFormat.indexOf('MM');
   const monthNewIndex = toFormat.indexOf('MM');
 
-  dateConverted[monthNewIndex] = dateArr[monthOldIndex];
   dateConverted[dayNewIndex] = dateArr[dayOldIndex];
+  dateConverted[monthNewIndex] = dateArr[monthOldIndex];
+
+  let yearOldIndex = 0;
+  let yearNewIndex = 0;
+
+  for (const element of fromFormat) {
+    if (element.startsWith('Y')) {
+      yearOldIndex = fromFormat.indexOf(element);
+    }
+  }
+
+  for (const element of toFormat) {
+    if (element.startsWith('Y')) {
+      yearNewIndex = toFormat.indexOf(element);
+    }
+  }
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const yearOldIndex = fromFormat.indexOf('YYYY');
-    const yearNewIndex = toFormat.indexOf('YY');
-
     dateConverted[yearNewIndex] = dateArr[yearOldIndex].slice(-2);
   } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const yearOldIndex = fromFormat.indexOf('YY');
-    const yearNewIndex = toFormat.indexOf('YYYY');
-
     if (dateArr[yearOldIndex].slice(-2) < 30) {
       dateConverted[yearNewIndex] = `20${dateArr[yearOldIndex].slice(-2)}`;
     } else {
       dateConverted[yearNewIndex] = `19${dateArr[yearOldIndex].slice(-2)}`;
     }
   } else {
-    let yearOldIndex = 0;
-    let yearNewIndex = 0;
-
-    for (const element of fromFormat) {
-      if (element.startsWith('Y')) {
-        yearOldIndex = fromFormat.indexOf(element);
-
-        break;
-      }
-    }
-
-    for (const element of toFormat) {
-      if (element.startsWith('Y')) {
-        yearNewIndex = toFormat.indexOf(element);
-
-        break;
-      }
-    }
-
     dateConverted[yearNewIndex] = dateArr[yearOldIndex];
   }
 
   return dateConverted.join(toFormat[3]);
 }
-
 module.exports = formatDate;
