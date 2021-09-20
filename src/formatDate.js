@@ -57,50 +57,56 @@ function formatDate(date, fromFormat, toFormat) {
   const inputData = date.split(inputSeparator);
   const result = [];
 
-  for (const i in outputFormat) {
-    switch (outputFormat[i]) {
+  for (const formatPosition of outputFormat) {
+    switch (formatPosition) {
       case 'MM':
-        for (const j in inputFormat) {
-          if (inputFormat[j] === 'MM') {
-            result[i] = inputData[j];
+        for (const position in inputFormat) {
+          if (inputFormat[position] === 'MM') {
+            result.push(inputData[position]);
           }
         }
         break;
 
       case 'DD':
-        for (const j in inputFormat) {
-          if (inputFormat[j] === 'DD') {
-            result[i] = inputData[j];
+        for (const position in inputFormat) {
+          if (inputFormat[position] === 'DD') {
+            result.push(inputData[position]);
           }
         }
         break;
 
       case 'YY':
-        for (const j in inputFormat) {
-          if (inputFormat[j] === 'YY' || inputFormat[j] === 'YYYY') {
-            if (inputFormat[j] === 'YY') {
-              result[i] = inputData[j];
+        for (const position in inputFormat) {
+          if (inputFormat[position] === 'YY'
+            || inputFormat[position] === 'YYYY') {
+            if (inputFormat[position] === 'YY') {
+              result.push(inputData[position]);
             } else {
-              result[i] = inputData[j][2] + inputData[j][3];
+              result.push(inputData[position][2] + inputData[position][3]);
             }
           }
         }
         break;
 
       case 'YYYY':
-        for (const j in inputFormat) {
-          if (inputFormat[j] === 'YY' || inputFormat[j] === 'YYYY') {
-            if (inputFormat[j] === 'YYYY') {
-              result[i] = inputData[j];
+        for (const position in inputFormat) {
+          if (inputFormat[position] === 'YY'
+            || inputFormat[position] === 'YYYY') {
+            if (inputFormat[position] === 'YYYY') {
+              result.push(inputData[position]);
             } else {
-              if (+inputData[j] > 25) {
-                result[i] = '19' + inputData[j];
+              if (+inputData[position] >= 30) {
+                result.push('19' + inputData[position]);
               } else {
-                result[i] = '20' + inputData[j];
+                result.push('20' + inputData[position]);
               }
             }
           }
         }
+        break;
+
+      default:
+        break;
     }
   }
 
