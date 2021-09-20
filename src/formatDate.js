@@ -50,7 +50,24 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+  const year = dateArray[fromFormat.indexOf('YYYY')]
+        || (parseInt(dateArray[fromFormat.indexOf('YY')]) >= 30 ? '19' : '20')
+        + dateArray[fromFormat.indexOf('YY')];
+
+  const passedDate = {
+    'DD': dateArray[fromFormat.indexOf('DD')],
+    'MM': dateArray[fromFormat.indexOf('MM')],
+    'YYYY': year,
+    'YY': year.slice(2),
+  };
+
+  const result = [passedDate[toFormat[0]],
+    passedDate[toFormat[1]],
+    passedDate[toFormat[2]],
+  ];
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
