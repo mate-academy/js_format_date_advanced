@@ -50,7 +50,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let result = '';
+  const arr = date.split(fromFormat[3]);
+  let year = '';
+  let month = '';
+  let day = '';
+
+  for (let i = 0; i < 3; i++) {
+    year = (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY')
+      ? arr[i] : year;
+
+    year = (fromFormat[i] === 'YY' && arr[i] * 1 < 30)
+      ? '' + 20 + arr[i] : year;
+
+    year = (fromFormat[i] === 'YY' && arr[i] * 1 >= 30)
+      ? '' + 19 + arr[i] : year;
+
+    month = (fromFormat[i] === 'MM')
+      ? arr[i] : month;
+
+    day = (fromFormat[i] === 'DD')
+      ? arr[i] : day;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    result += (toFormat[i] === 'DD')
+      ? day : '';
+
+    result += (toFormat[i] === 'MM')
+      ? month : '';
+
+    result += (toFormat[i] === 'YYYY')
+      ? year : '';
+
+    result += (toFormat[i] === 'YY')
+      ? ('' + year[2] + year[3]) : '';
+
+    result += (i === 2) ? '' : toFormat[3];
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
