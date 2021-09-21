@@ -50,7 +50,72 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const curCenturyFigures = 20;
+  const prevCenturyFigures = 19;
+
+  let year = '';
+  let month = '';
+  let day = '';
+
+  const separator = fromFormat[fromFormat.length - 1];
+  const separatorNew = toFormat[toFormat.length - 1];
+  const dateItems = date.split(separator);
+  const dateItemsNew = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        year = dateItems[i];
+        break;
+
+      case 'MM':
+        month = dateItems[i];
+        break;
+
+      case 'DD':
+        day = dateItems[i];
+        break;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        const yearLength = toFormat[i].length;
+
+        if (yearLength === 2) {
+          if (year.length === yearLength) {
+            dateItemsNew.push(year);
+          } else {
+            dateItemsNew.push(year.slice(2));
+          }
+        } else if (yearLength === 4) {
+          if (year.length === yearLength) {
+            dateItemsNew.push(year);
+          } else {
+            const currentYear = `${new Date().getFullYear()}`.slice(2);
+            const currentCentury = +year < +currentYear
+              ? `${curCenturyFigures}`
+              : `${prevCenturyFigures}`;
+
+            dateItemsNew.push(`${currentCentury}${year}`);
+          }
+        }
+        break;
+
+      case 'MM':
+        dateItemsNew.push(month);
+        break;
+
+      case 'DD':
+        dateItemsNew.push(day);
+        break;
+    }
+  }
+
+  return dateItemsNew.join(separatorNew);
 }
 
 module.exports = formatDate;
