@@ -50,62 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day = 0;
-  let month = 0;
-  let year = 0;
-  const dateArr = date.split(`${fromFormat[3]}`);
-  const separator = toFormat[3];
-  let result = '';
+  const dateArr = date.split(fromFormat[3]);
+  const result = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = dateArr[i];
-    }
+  for (const format of toFormat) {
+    switch (format) {
+      case 'DD':
+        result.push(dateArr[fromFormat.indexOf('DD')]);
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateArr[i];
-    }
+      case 'MM':
+        result.push(dateArr[fromFormat.indexOf('MM')]);
+        break;
 
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = dateArr[i];
-    }
-  }
+      case 'YY':
+        if (fromFormat.includes('YYYY')) {
+          const num1 = dateArr[fromFormat.indexOf('YYYY')][2];
+          const num2 = dateArr[fromFormat.indexOf('YYYY')][3];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      result += day;
-    }
-
-    if (toFormat[i] === 'MM') {
-      result += month;
-    }
-
-    if (toFormat[i] === 'YY') {
-      if (year.toString().length === 4) {
-        result += `${year.toString()[2]}${year.toString()[3]}`;
-      } else {
-        result += year;
-      }
-    }
-
-    if (toFormat[i] === 'YYYY') {
-      if (year.toString().length === 2) {
-        if (year < 30) {
-          result += `20${year}`;
+          result.push(`${num1}${num2}`);
         } else {
-          result += `19${year}`;
+          result.push(dateArr[fromFormat.indexOf('YY')]);
         }
-      } else {
-        result += year;
-      }
-    }
+        break;
 
-    if (i < toFormat.length - 2) {
-      result += separator;
+      case 'YYYY':
+        if (fromFormat.includes('YY')) {
+          if (dateArr[fromFormat.indexOf('YY')] < 30) {
+            result.push(`20${dateArr[fromFormat.indexOf('YY')]}`);
+          } else {
+            result.push(`19${dateArr[fromFormat.indexOf('YY')]}`);
+          }
+        } else {
+          result.push(dateArr[fromFormat.indexOf('YYYY')]);
+        }
+        break;
     }
   }
 
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
