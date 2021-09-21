@@ -74,18 +74,20 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < 3; i++) {
-    result += (toFormat[i] === 'DD')
-      ? day : '';
-
-    result += (toFormat[i] === 'MM')
-      ? month : '';
-
-    result += (toFormat[i] === 'YYYY')
-      ? year : '';
-
-    result += (toFormat[i] === 'YY')
-      ? ('' + year[2] + year[3]) : '';
-
+    switch (toFormat[i]) {
+      case 'DD' :
+        result += day;
+        break;
+      case 'MM' :
+        result += month;
+        break;
+      case 'YY' :
+        result += '' + year[2] + year[3];
+        break;
+      case 'YYYY' :
+        result += year;
+        break;
+    }
     result += (i === 2) ? '' : toFormat[3];
   }
 
