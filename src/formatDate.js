@@ -52,29 +52,30 @@
 function formatDate(date, fromFormat, toFormat) {
   const separatedDate = date.split(fromFormat[3]);
   const formattedDate = [];
-  const dateObject = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YY') {
-      if (+separatedDate[i] < 30) {
-        dateObject['YYYY'] = +separatedDate[i] + 2000;
-      } else {
-        dateObject['YYYY'] = +separatedDate[i] + 1900;
-      }
-    } else {
-      dateObject[fromFormat[i]] = separatedDate[i];
-    }
-  }
+    let index = toFormat.indexOf(fromFormat[i]);
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YY') {
-      if (dateObject['YYYY'] >= 2000) {
-        formattedDate.push(dateObject['YYYY'] - 2000);
+    if (index === -1) {
+      if (fromFormat[i] === 'YYYY') {
+        index = toFormat.indexOf('YY');
+
+        if (+separatedDate[i] >= 2000) {
+          formattedDate[index] = +separatedDate[i] - 2000;
+        } else {
+          formattedDate[index] = +separatedDate[i] - 1900;
+        }
       } else {
-        formattedDate.push(dateObject['YYYY'] - 1900);
+        index = toFormat.indexOf('YYYY');
+
+        if (+separatedDate[i] < 30) {
+          formattedDate[index] = +separatedDate[i] + 2000;
+        } else {
+          formattedDate[index] = +separatedDate[i] + 1900;
+        }
       }
     } else {
-      formattedDate.push(dateObject[toFormat[i]]);
+      formattedDate[index] = separatedDate[i];
     }
   }
 
