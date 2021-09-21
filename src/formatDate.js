@@ -52,17 +52,17 @@
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
-  const tempObj = {};
+  const intermediateFormat = {};
   const dateValues = date.split(oldSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    tempObj[fromFormat[i]] = dateValues[i];
+    intermediateFormat[fromFormat[i]] = dateValues[i];
   }
 
   for (let n = 0; n < toFormat.length - 1; n++) {
     if (toFormat[n] === 'YYYY') {
       toFormat[n] = 'YY';
-      toFormat[n] = tempObj[toFormat[n]];
+      toFormat[n] = intermediateFormat[toFormat[n]];
 
       if (toFormat[n]) {
         if (toFormat[n] >= 30) {
@@ -72,13 +72,13 @@ function formatDate(date, fromFormat, toFormat) {
         }
       } else {
         toFormat[n] = 'YYYY';
-        toFormat[n] = tempObj[toFormat[n]];
+        toFormat[n] = intermediateFormat[toFormat[n]];
       }
     } else if (toFormat[n] === 'YY') {
       toFormat[n] = 'YYYY';
-      toFormat[n] = tempObj[toFormat[n]].slice(2);
+      toFormat[n] = intermediateFormat[toFormat[n]].slice(2);
     } else {
-      toFormat[n] = tempObj[toFormat[n]];
+      toFormat[n] = intermediateFormat[toFormat[n]];
     }
   }
 
