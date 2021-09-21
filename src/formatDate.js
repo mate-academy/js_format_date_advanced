@@ -51,26 +51,26 @@
 
 function formatDate(date, fromFormat, toFormat) {
   let result = '';
-  const arr = date.split(fromFormat[3]);
+  const arrayFromFormat = date.split(fromFormat[3]);
   let year = '';
   let month = '';
   let day = '';
 
   for (let i = 0; i < 3; i++) {
     year = (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY')
-      ? arr[i] : year;
+      ? arrayFromFormat[i] : year;
 
-    year = (fromFormat[i] === 'YY' && arr[i] * 1 < 30)
-      ? '' + 20 + arr[i] : year;
+    year = (fromFormat[i] === 'YY' && arrayFromFormat[i] * 1 < 30)
+      ? '' + 20 + arrayFromFormat[i] : year;
 
-    year = (fromFormat[i] === 'YY' && arr[i] * 1 >= 30)
-      ? '' + 19 + arr[i] : year;
+    year = (fromFormat[i] === 'YY' && arrayFromFormat[i] * 1 >= 30)
+      ? '' + 19 + arrayFromFormat[i] : year;
 
     month = (fromFormat[i] === 'MM')
-      ? arr[i] : month;
+      ? arrayFromFormat[i] : month;
 
     day = (fromFormat[i] === 'DD')
-      ? arr[i] : day;
+      ? arrayFromFormat[i] : day;
   }
 
   for (let i = 0; i < 3; i++) {
