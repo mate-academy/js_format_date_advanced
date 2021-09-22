@@ -50,7 +50,80 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let result = '';
+  const arrayFromFormat = date.split(fromFormat[3]);
+  // let year = '';
+  // let month = '';
+  // let day = '';
+
+  // for (let i = 0; i < 3; i++) {
+  //   year = (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY')
+  //     ? arrayFromFormat[i] : year;
+
+  //   year = (fromFormat[i] === 'YY' && arrayFromFormat[i] * 1 < 30)
+  //     ? '' + 20 + arrayFromFormat[i] : year;
+
+  //   year = (fromFormat[i] === 'YY' && arrayFromFormat[i] * 1 >= 30)
+  //     ? '' + 19 + arrayFromFormat[i] : year;
+
+  //   month = (fromFormat[i] === 'MM')
+  //     ? arrayFromFormat[i] : month;
+
+  //   day = (fromFormat[i] === 'DD')
+  //     ? arrayFromFormat[i] : day;
+  // }
+
+  // for (let i = 0; i < 3; i++) {
+  //   switch (toFormat[i]) {
+  //     case 'DD' :
+  //       result += day;
+  //       break;
+  //     case 'MM' :
+  //       result += month;
+  //       break;
+  //     case 'YY' :
+  //       result += '' + year[2] + year[3];
+  //       break;
+  //     case 'YYYY' :
+  //       result += year;
+  //       break;
+  //   }
+  //   result += (i === 2) ? '' : toFormat[3];
+  // }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'DD' :
+        result += arrayFromFormat[fromFormat.indexOf('DD')];
+        break;
+      case 'MM' :
+        result += arrayFromFormat[fromFormat.indexOf('MM')];
+        break;
+      case 'YY' :
+        if (arrayFromFormat[fromFormat.indexOf('YYYY')]) {
+          result
+            += arrayFromFormat[fromFormat.indexOf('YYYY')][2]
+            + arrayFromFormat[fromFormat.indexOf('YYYY')][3];
+        } else {
+          result += arrayFromFormat[fromFormat.indexOf('YY')];
+        }
+        break;
+      case 'YYYY' :
+        if (arrayFromFormat[fromFormat.indexOf('YY')]) {
+          if (arrayFromFormat[fromFormat.indexOf('YY')] * 1 < 30) {
+            result += '20' + arrayFromFormat[fromFormat.indexOf('YY')];
+          } else {
+            result += '19' + arrayFromFormat[fromFormat.indexOf('YY')];
+          }
+        } else {
+          result += arrayFromFormat[fromFormat.indexOf('YYYY')];
+        }
+        break;
+    }
+    result += (i === 2) ? '' : toFormat[3];
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
