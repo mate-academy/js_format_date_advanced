@@ -50,42 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const beforeStep = fromFormat[fromFormat.length - 1];
+  const fromStep = fromFormat[fromFormat.length - 1];
   const toStep = toFormat[toFormat.length - 1];
-  const arr = date.split(beforeStep);
-  const obj = {};
+  const splitDate = date.split(fromStep);
+  const objData = {};
   const result = {};
 
-  for (let i = 0; i < arr.length; i++) {
-    obj[fromFormat[i]] = arr[i];
+  for (let i = 0; i < splitDate.length; i++) {
+    objData[fromFormat[i]] = splitDate[i];
   }
 
   for (const key of toFormat) {
-    for (const value in obj) {
-      if (value === key) {
-        result[value] = obj[key];
-      }
+    for (const value in objData) {
+      switch (true) {
+        case value === key:
+          result[value] = objData[key];
+          break;
+        case (value === 'YYYY' && key === 'YY'):
+          result[value] = +objData[value].slice(-2);
+          break;
+        case (value === 'YY' && key === 'YYYY'):
+          const partYear = objData[value].slice(-2);
+          const year = (partYear >= 30) ? '19' + partYear : '20' + partYear;
 
-      if (value === 'YYYY' && key === 'YY') {
-        const year = +obj[value].slice(-2);
-
-        result[value] = year;
-      }
-
-      if (value === 'YY' && key === 'YYYY') {
-        let year = obj[value].slice(-2);
-
-        if (year === 0) {
-          year = '2000';
-        }
-
-        if (year >= 30) {
-          year = '19' + year;
-        } else {
-          year = '20' + year;
-        }
-
-        result[value] = year;
+          result[value] = year;
       }
     }
   }
