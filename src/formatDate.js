@@ -68,28 +68,28 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        if (inputFormat.indexOf('YY') >= 0) {
+        if (inputFormat.includes('YY')) {
           result.push(inputData[inputFormat.indexOf('YY')]);
         }
 
-        if (inputFormat.indexOf('YYYY') >= 0) {
+        if (inputFormat.includes('YYYY')) {
           result.push(inputData[inputFormat.indexOf('YYYY')][2]
             + inputData[inputFormat.indexOf('YYYY')][3]);
         }
         break;
 
       case 'YYYY':
-        if (inputFormat.indexOf('YYYY') >= 0) {
+        if (inputFormat.includes('YYYY')) {
           result.push(inputData[inputFormat.indexOf('YYYY')]);
         }
 
-        if (inputFormat.indexOf('YY') >= 0
+        if (inputFormat.includes('YY')
           && +inputData[inputFormat.indexOf('YY')] >= 30) {
           result.push('19' + inputData[inputFormat.indexOf('YY')]);
         }
 
-        if (inputFormat.indexOf('YY') >= 0
-          && +inputData[inputFormat.indexOf('YY')] < 30) {
+        if (inputFormat.includes('YY')
+        && +inputData[inputFormat.indexOf('YY')] < 30) {
           result.push('20' + inputData[inputFormat.indexOf('YY')]);
         }
         break;
