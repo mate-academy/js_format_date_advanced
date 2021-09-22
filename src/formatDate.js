@@ -60,48 +60,37 @@ function formatDate(date, fromFormat, toFormat) {
   for (const formatPosition of outputFormat) {
     switch (formatPosition) {
       case 'MM':
-        for (const position in inputFormat) {
-          if (inputFormat[position] === 'MM') {
-            result.push(inputData[position]);
-          }
-        }
+        result.push(inputData[inputFormat.indexOf('MM')]);
         break;
 
       case 'DD':
-        for (const position in inputFormat) {
-          if (inputFormat[position] === 'DD') {
-            result.push(inputData[position]);
-          }
-        }
+        result.push(inputData[inputFormat.indexOf('DD')]);
         break;
 
       case 'YY':
-        for (const position in inputFormat) {
-          if (inputFormat[position] === 'YY'
-            || inputFormat[position] === 'YYYY') {
-            if (inputFormat[position] === 'YY') {
-              result.push(inputData[position]);
-            } else {
-              result.push(inputData[position][2] + inputData[position][3]);
-            }
-          }
+        if (inputFormat.indexOf('YY') >= 0) {
+          result.push(inputData[inputFormat.indexOf('YY')]);
+        }
+
+        if (inputFormat.indexOf('YYYY') >= 0) {
+          result.push(inputData[inputFormat.indexOf('YYYY')][2]
+            + inputData[inputFormat.indexOf('YYYY')][3]);
         }
         break;
 
       case 'YYYY':
-        for (const position in inputFormat) {
-          if (inputFormat[position] === 'YY'
-            || inputFormat[position] === 'YYYY') {
-            if (inputFormat[position] === 'YYYY') {
-              result.push(inputData[position]);
-            } else {
-              if (+inputData[position] >= 30) {
-                result.push('19' + inputData[position]);
-              } else {
-                result.push('20' + inputData[position]);
-              }
-            }
-          }
+        if (inputFormat.indexOf('YYYY') >= 0) {
+          result.push(inputData[inputFormat.indexOf('YYYY')]);
+        }
+
+        if (inputFormat.indexOf('YY') >= 0
+          && +inputData[inputFormat.indexOf('YY')] >= 30) {
+          result.push('19' + inputData[inputFormat.indexOf('YY')]);
+        }
+
+        if (inputFormat.indexOf('YY') >= 0
+          && +inputData[inputFormat.indexOf('YY')] < 30) {
+          result.push('20' + inputData[inputFormat.indexOf('YY')]);
         }
         break;
 
