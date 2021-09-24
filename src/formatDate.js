@@ -52,35 +52,24 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dateArr = date.split(fromFormat[3]);
-  const newDataArr = [];
-  const oldMM = fromFormat.indexOf('MM');
-  const oldDD = fromFormat.indexOf('DD');
-  const oldYY = fromFormat.indexOf(fromFormat.find(el => el.includes('YY')));
-  const newMM = toFormat.indexOf('MM');
-  const newDD = toFormat.indexOf('DD');
-  const newYY = toFormat.indexOf(toFormat.find(el => el.includes('YY')));
+  const dateObj = {};
+  const newDateArr = [];
 
-  newDataArr[newDD] = dateArr[oldDD];
-  newDataArr[newMM] = dateArr[oldMM];
-
-  if (toFormat[newYY].length === 4 && fromFormat[oldYY].length === 2) {
-    switch (true) {
-      case dateArr[oldYY] < 30:
-        newDataArr[newYY] = '20' + dateArr[oldYY];
-        break;
-
-      case dateArr[oldYY] >= 30:
-      default:
-        newDataArr[newYY] = '19' + dateArr[oldYY];
-        break;
-    }
-  } else if (toFormat[newYY].length === 2 && fromFormat[oldYY].length === 4) {
-    newDataArr[newYY] = dateArr[oldYY].slice(2, 4);
-  } else {
-    newDataArr[newYY] = dateArr[oldYY];
+  for (let i = 0; i < 3; i++) {
+    dateObj[fromFormat[i]] = dateArr[i];
   }
 
-  return newDataArr.join(toFormat[3]);
+  if (dateObj.hasOwnProperty('YY')) {
+    dateObj.YYYY = (+dateObj.YY < 30) ? '20' + dateObj.YY : '19' + dateObj.YY;
+  } else {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    newDateArr.push(dateObj[toFormat[i]]);
+  }
+
+  return newDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
