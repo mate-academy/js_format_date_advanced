@@ -50,7 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newArr = [];
+  let finishYY = 0;
+  const separatortoFormat = toFormat.pop();
+  const separatorfromFormat = fromFormat.pop();
+  const arrDate = date.split(separatorfromFormat);
+
+  const indexDDtoFormat = toFormat.indexOf('DD');
+  const indexMMtoFormat = toFormat.indexOf('MM');
+  const indexDDfromFormat = fromFormat.indexOf('DD');
+  const indexMMfromFormat = fromFormat.indexOf('MM');
+  // eslint-disable-next-line max-len
+  const fromYY = arrDate[arrDate.length - indexDDfromFormat - indexMMfromFormat];
+
+  toFormat.length = 3;
+
+  const toYY = toFormat[toFormat.length - indexDDtoFormat - indexMMtoFormat];
+
+  if (fromYY.length === toYY.length) {
+    finishYY = fromYY;
+  }
+
+  if (fromYY.length > toYY.length) {
+    finishYY = fromYY.slice(-2);
+  }
+
+  if (fromYY.length < toYY.length && +fromYY < 30) {
+    finishYY = '20' + fromYY;
+  }
+
+  if (fromYY.length < toYY.length && +fromYY >= 30) {
+    finishYY = '19' + fromYY;
+  }
+
+  if (indexDDtoFormat === 2 && indexMMtoFormat === 1) {
+    newArr = [finishYY, arrDate[indexMMfromFormat], arrDate[indexDDfromFormat]];
+  }
+
+  if (indexDDtoFormat === 1 && indexMMtoFormat === 0) {
+    newArr = [arrDate[indexMMfromFormat], arrDate[indexDDfromFormat], finishYY];
+  }
+
+  if (indexDDtoFormat === 0 && indexMMtoFormat === 1) {
+    newArr = [arrDate[indexDDfromFormat], arrDate[indexMMfromFormat], finishYY];
+  }
+
+  return (newArr.join(separatortoFormat));
 }
 
 module.exports = formatDate;
