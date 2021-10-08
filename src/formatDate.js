@@ -49,7 +49,7 @@
  * @returns {string}
  */
 
- function formatDate(date, fromFormat, toFormat) {
+function formatDate(date, fromFormat, toFormat) {
   const arrayDate = date.split(fromFormat[3]);
   const dataFromObj = {};
 
