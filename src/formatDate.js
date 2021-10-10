@@ -67,12 +67,12 @@ function formatDate(date, fromFormat, toFormat) {
     if (!dateParts[name]) {
       const yearFrom = Object.keys(dateParts).filter(x => x.startsWith('Y'))[0];
       const yearTo = name;
-      const yearDate = dateParts[yearFrom];
+      const year = dateParts[yearFrom];
 
       if (yearTo.length < yearFrom.length) {
-        partFormat = yearDate.split('').slice(-2).join('');
+        partFormat = year.split('').slice(-2).join('');
       } else if (yearTo.length > yearFrom.length) {
-        partFormat = yearDate < 30 ? `20${yearDate}` : `19${yearDate}`;
+        partFormat = year < 30 ? '20' + year : '19' + year;
       }
     } else {
       partFormat = dateParts[name];
