@@ -50,34 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const objOfDate = {};
-  const arrayOfNewDate = [];
+  const dateFormat = {};
+  const newDate = [];
   const newSeparator = toFormat[3];
-  const oldSeparator = fromFormat[3];
-  const arrayOfDate = date.split(oldSeparator);
+  const previousSeparator = fromFormat[3];
+  const previousDate = date.split(previousSeparator);
+  const yearFormat1 = 4;
+  const yearFormat2 = 2;
+  const conditionForYearFormatConverting = 30;
+  const century21 = '20';
+  const century20 = '19';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (!objOfDate.hasOwnProperty(fromFormat[i])) {
-      objOfDate[fromFormat[i]] = arrayOfDate[i];
+    if (!dateFormat.hasOwnProperty(fromFormat[i])) {
+      dateFormat[fromFormat[i]] = previousDate[i];
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (objOfDate.hasOwnProperty(toFormat[i])) {
-      arrayOfNewDate.push(objOfDate[toFormat[i]]);
-    } else if (objOfDate[fromFormat[i]].length === 4) {
-      arrayOfNewDate.push(objOfDate[fromFormat[i]].slice(2));
-    } else if (objOfDate[fromFormat[i]].length === 2
-               && objOfDate[fromFormat[i]] < 30) {
-      arrayOfNewDate.push('20' + objOfDate[fromFormat[i]]);
+    if (dateFormat.hasOwnProperty(toFormat[i])) {
+      newDate.push(dateFormat[toFormat[i]]);
+    } else if (dateFormat[fromFormat[i]].length === yearFormat1) {
+      newDate.push(dateFormat[fromFormat[i]].slice(yearFormat2));
+    } else if (dateFormat[fromFormat[i]].length === yearFormat2
+              && dateFormat[fromFormat[i]] < conditionForYearFormatConverting) {
+      newDate.push(century21 + dateFormat[fromFormat[i]]);
     } else {
-      arrayOfNewDate.push('19' + objOfDate[fromFormat[i]]);
+      newDate.push(century20 + dateFormat[fromFormat[i]]);
     }
   }
 
-  const newDate = arrayOfNewDate.join(newSeparator);
+  const newDateFormat = newDate.join(newSeparator);
 
-  return newDate;
+  return newDateFormat;
 }
 
 module.exports = formatDate;
