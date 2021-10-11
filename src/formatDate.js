@@ -38,19 +38,72 @@
  *
  * formatDate(
  *   '97/02/18',
- *   ['YY', 'MM', 'DD', '/'],
- *   ['DD', 'MM', 'YYYY', '.'],
- * ) // '18.02.1997'
+ *   fromFormat['YY', 'MM', 'DD', '/'],
+ *   toFormat['DD', 'MM', 'YYYY', '.'],
+ * ) // return '18.02.1997'
  *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
  *
- * @returns {string}
+ * @returns {string[]}
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  if (fromFormat[0] === toFormat[0] && fromFormat[2] === toFormat[2]) {
+    return date.split(`${fromFormat[3]}`).join(`${toFormat[3]}`);
+  }
+
+  if (fromFormat[0] === toFormat[2] && fromFormat[2] === toFormat[0]) {
+    return date
+      .split(`${fromFormat[3]}`)
+      .reverse()
+      .join(`${toFormat[3]}`);
+  }
+
+  const splitDate = date.split(`${fromFormat[3]}`);
+
+  if (fromFormat[2] !== toFormat[2] && fromFormat[2] === 'YYYY') {
+    if (splitDate[2].slice(2) >= 30) {
+      splitDate[2] = splitDate[2].slice(2);
+
+      return splitDate.join(`${toFormat[3]}`);
+    }
+
+    if (splitDate[0].slice(2) < 30) {
+      splitDate[2] = splitDate[2].slice(2);
+
+      return splitDate.join(`${toFormat[3]}`);
+    }
+  }
+
+  if (fromFormat[0] !== toFormat[0]) {
+    if (fromFormat[0] === 'YY' && toFormat[0] === 'YYYY') {
+      if (splitDate[0] >= 30) {
+        splitDate[0] = '19' + splitDate[0];
+
+        return splitDate.join(`${toFormat[3]}`);
+      }
+
+      if (splitDate[0] < 30) {
+        splitDate[0] = '20' + splitDate[0];
+
+        return splitDate.join(`${toFormat[3]}`);
+      }
+    }
+  }
+
+  if (fromFormat[1] === 'YYYY' && toFormat[1] === 'MM') {
+    const anotherVariant = [];
+
+    anotherVariant[0] = splitDate[2];
+    anotherVariant[1] = splitDate[0];
+    anotherVariant[2] = splitDate[1];
+
+    return anotherVariant.join(`${toFormat[3]}`);
+  }
+
+  return '';
 }
 
 module.exports = formatDate;
