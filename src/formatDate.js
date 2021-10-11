@@ -80,14 +80,20 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YY':
       case 'YYYY':
         if (fromFormat[i] === 'YYYY' && toFormat[i] === 'YY') {
-          year = year.slice(2);
+          const secondHalfIndex = 2;
+
+          year = year.slice(secondHalfIndex);
         }
 
         if (fromFormat[i] === 'YY' && toFormat[i] === 'YYYY') {
-          if (year >= 30) {
-            year = '19' + year;
+          const secondHalfYear = 30;
+          const previousPrefixYear = '19';
+          const currentPrefixYear = '20';
+
+          if (year >= secondHalfYear) {
+            year = `${previousPrefixYear}${year}`;
           } else {
-            year = '20' + year;
+            year = `${currentPrefixYear}${year}`;
           }
         }
         formattedDate.push(year);
