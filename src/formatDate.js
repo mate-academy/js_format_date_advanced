@@ -59,9 +59,9 @@ function formatDate(date, fromFormat, toFormat) {
   }, {});
 
   const connector = toFormat[3];
-  const format = toFormat.slice(0, -1);
+  const pattern = toFormat.slice(0, -1);
 
-  return format.reduce((dateFormat, name) => {
+  return pattern.reduce((dateFormat, name) => {
     let partFormat;
 
     if (!dateParts[name]) {
