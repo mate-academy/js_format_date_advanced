@@ -64,18 +64,16 @@ function formatDate(date, fromFormat, toFormat) {
   const splitDate = date.split(`${fromFormat[3]}`);
 
   if (fromFormat[2] !== toFormat[2] && fromFormat[2] === 'YYYY') {
-    if (fromFormat[2] === 'YYYY' && toFormat[2] === 'YY') {
-      if (splitDate[2].slice(2) >= 30) {
-        splitDate[2] = splitDate[2].slice(2);
+    if (splitDate[2].slice(2) >= 30) {
+      splitDate[2] = splitDate[2].slice(2);
 
-        return splitDate.join(`${toFormat[3]}`);
-      }
+      return splitDate.join(`${toFormat[3]}`);
+    }
 
-      if (splitDate[0].slice(2) < 30) {
-        splitDate[2] = splitDate[2].slice(2);
+    if (splitDate[0].slice(2) < 30) {
+      splitDate[2] = splitDate[2].slice(2);
 
-        return splitDate.join(`${toFormat[3]}`);
-      }
+      return splitDate.join(`${toFormat[3]}`);
     }
   }
 
@@ -92,20 +90,6 @@ function formatDate(date, fromFormat, toFormat) {
 
         return splitDate.join(`${toFormat[3]}`);
       }
-    }
-  }
-
-  if (fromFormat[0] === 'YY' && toFormat[2] === 'YYYY') {
-    if (splitDate[0] >= 30) {
-      splitDate[0] = '19' + splitDate[0];
-
-      return splitDate.reverse().join(`${toFormat[3]}`);
-    }
-
-    if (splitDate[0] < 30) {
-      splitDate[0] = '20' + splitDate[0];
-
-      return splitDate.reverse().join(`${toFormat[3]}`);
     }
   }
 
