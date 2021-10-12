@@ -64,7 +64,7 @@ function formatDate(date, fromFormat, toFormat) {
   return pattern.reduce((dateFormat, name) => {
     let partFormat;
 
-    if (!dateParts[name]) {
+    if (!dateParts.hasOwnProperty(name)) {
       const yearFrom = Object.keys(dateParts).filter(x => x.startsWith('Y'))[0];
       const yearTo = name;
       const year = dateParts[yearFrom];
