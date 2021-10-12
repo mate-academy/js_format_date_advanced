@@ -50,7 +50,41 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateFormat = {};
+  const newDate = [];
+  const newSeparator = toFormat[3];
+  const previousSeparator = fromFormat[3];
+  const previousDate = date.split(previousSeparator);
+  const fourDigitsYearFormat = 'YYYY';
+  const twoDigitsYearFormat = 'YY';
+  const conditionForYearFormatConverting = 30;
+  const century21 = '20';
+  const century20 = '19';
+  const lengthOfTwoDigitsYearFormat = twoDigitsYearFormat.length;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (!dateFormat.hasOwnProperty(fromFormat[i])) {
+      dateFormat[fromFormat[i]] = previousDate[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (dateFormat.hasOwnProperty(toFormat[i])) {
+      newDate.push(dateFormat[toFormat[i]]);
+    } else if (fromFormat[i] === fourDigitsYearFormat) {
+      newDate.push(dateFormat[fromFormat[i]]
+        .slice(lengthOfTwoDigitsYearFormat));
+    } else if (fromFormat[i] === twoDigitsYearFormat
+              && dateFormat[fromFormat[i]] < conditionForYearFormatConverting) {
+      newDate.push(century21 + dateFormat[fromFormat[i]]);
+    } else {
+      newDate.push(century20 + dateFormat[fromFormat[i]]);
+    }
+  }
+
+  const newDateFormat = newDate.join(newSeparator);
+
+  return newDateFormat;
 }
 
 module.exports = formatDate;
