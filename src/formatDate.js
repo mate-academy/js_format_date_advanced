@@ -50,32 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separatorNew = toFormat[3];
-  const separatorOld = fromFormat[3];
-  const dateArray = date.split(separatorOld);
-  const oldFromatObject = {};
+  const separatorNew = toFormat[toFormat.length - 1];
+  const separatorOld = fromFormat[fromFormat.length - 1];
+  const dateSplited = date.split(separatorOld);
+  const oldFormat = {};
   const newFormatDate = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    oldFromatObject[fromFormat[i]] = dateArray[i];
+    oldFormat[fromFormat[i]] = dateSplited[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (oldFromatObject[toFormat[i]]) {
-      newFormatDate.push(oldFromatObject[toFormat[i]]);
+    if (oldFormat[toFormat[i]]) {
+      newFormatDate.push(oldFormat[toFormat[i]]);
     }
 
     if (toFormat[i] === 'YYYY' && fromFormat[i] === 'YY') {
-      newFormatDate.push(oldFromatObject['YY'] < 30 ? 20 + oldFromatObject['YY']
-        : 19 + oldFromatObject['YY']);
+      newFormatDate.push(formatYears(oldFormat['YY']))
     }
 
     if (toFormat[i] === 'YY' && fromFormat[i] === 'YYYY') {
-      newFormatDate.push(oldFromatObject['YYYY'].split('').slice(-2).join(''));
+      newFormatDate.push(oldFormat['YYYY'].slice(-2));
     }
   }
 
   return newFormatDate.join(separatorNew);
+}
+
+function formatYears(string) {
+  return string < 30 ? 20 + string : 19 + string;
 }
 
 module.exports = formatDate;
