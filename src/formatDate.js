@@ -13,7 +13,8 @@
 */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[fromFormat.length - 1]);
+  const separator = fromFormat[fromFormat.length - 1];
+  const dateArray = date.split(separator);
   let year = '';
   let month = '';
   let day = '';
@@ -23,21 +24,37 @@ function formatDate(date, fromFormat, toFormat) {
   let newDayIndex;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i].startsWith('Y')) {
-      year = dateArray[i];
-    } else if (fromFormat[i].startsWith('M')) {
-      month = dateArray[i];
-    } else if (fromFormat[i].startsWith('D')) {
-      day = dateArray[i];
+    const firstSymbolOldFormat = fromFormat[i].slice(0, 1);
+
+    switch (firstSymbolOldFormat) {
+      case 'Y':
+        year = dateArray[i];
+        break;
+
+      case 'M':
+        month = dateArray[i];
+        break;
+
+      case 'D':
+        day = dateArray[i];
+        break;
     }
 
-    if (toFormat[i].startsWith('Y')) {
-      newYearIndex = i;
-      newYear = toFormat[i];
-    } else if (toFormat[i].startsWith('M')) {
-      newMonthIndex = i;
-    } else if (toFormat[i].startsWith('D')) {
-      newDayIndex = i;
+    const firstSymbolNewFormat = toFormat[i].slice(0, 1);
+
+    switch (firstSymbolNewFormat) {
+      case 'Y':
+        newYearIndex = i;
+        newYear = toFormat[i];
+        break;
+
+      case 'M':
+        newMonthIndex = i;
+        break;
+
+      case 'D':
+        newDayIndex = i;
+        break;
     }
   }
 
@@ -62,7 +79,9 @@ function formatDate(date, fromFormat, toFormat) {
   newDate[newMonthIndex] = month;
   newDate[newDayIndex] = day;
 
-  return newDate.join(toFormat[toFormat.length - 1]);
+  const joiner = toFormat[toFormat.length - 1];
+
+  return newDate.join(joiner);
 }
 
 module.exports = formatDate;
