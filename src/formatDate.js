@@ -60,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
   const conditionForYearFormatConverting = 30;
   const century21 = '20';
   const century20 = '19';
-  const lengthOftwoDigitsYearFormat = twoDigitsYearFormat.length;
+  const lengthOfTwoDigitsYearFormat = twoDigitsYearFormat.length;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (!dateFormat.hasOwnProperty(fromFormat[i])) {
@@ -73,7 +73,7 @@ function formatDate(date, fromFormat, toFormat) {
       newDate.push(dateFormat[toFormat[i]]);
     } else if (fromFormat[i] === fourDigitsYearFormat) {
       newDate.push(dateFormat[fromFormat[i]]
-        .slice(lengthOftwoDigitsYearFormat));
+        .slice(lengthOfTwoDigitsYearFormat));
     } else if (fromFormat[i] === twoDigitsYearFormat
               && dateFormat[fromFormat[i]] < conditionForYearFormatConverting) {
       newDate.push(century21 + dateFormat[fromFormat[i]]);
