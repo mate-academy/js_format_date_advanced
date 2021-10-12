@@ -49,6 +49,16 @@
  * @returns {string}
  */
 
+function formatYear(year, yearFrom, yearTo) {
+  if (yearTo.length < yearFrom.length) {
+    return year.slice(-2);
+  }
+
+  if (yearTo.length > yearFrom.length) {
+    return year < 30 ? '20' + year : '19' + year;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const separator = fromFormat[3];
@@ -69,11 +79,7 @@ function formatDate(date, fromFormat, toFormat) {
       const yearTo = name;
       const year = dateParts[yearFrom];
 
-      if (yearTo.length < yearFrom.length) {
-        partFormat = year.split('').slice(-2).join('');
-      } else if (yearTo.length > yearFrom.length) {
-        partFormat = year < 30 ? '20' + year : '19' + year;
-      }
+      partFormat = formatYear(year, yearFrom, yearTo);
     } else {
       partFormat = dateParts[name];
     }
