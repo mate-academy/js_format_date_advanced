@@ -49,8 +49,43 @@
  * @returns {string}
  */
 
+function formatYear(year, yearFrom, yearTo) {
+  if (yearTo.length < yearFrom.length) {
+    return year.slice(-2);
+  }
+
+  if (yearTo.length > yearFrom.length) {
+    return year < 30 ? '20' + year : '19' + year;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const separator = fromFormat[3];
+  const dateParts = date.split(separator).reduce((dateFormat, part, i) => {
+    dateFormat[fromFormat[i]] = part;
+
+    return dateFormat;
+  }, {});
+
+  const connector = toFormat[3];
+  const pattern = toFormat.slice(0, -1);
+
+  return pattern.reduce((dateFormat, name) => {
+    let partFormat;
+
+    if (!dateParts.hasOwnProperty(name)) {
+      const yearFrom = Object.keys(dateParts).filter(x => x.startsWith('Y'))[0];
+      const yearTo = name;
+      const year = dateParts[yearFrom];
+
+      partFormat = formatYear(year, yearFrom, yearTo);
+    } else {
+      partFormat = dateParts[name];
+    }
+
+    return dateFormat.concat(partFormat);
+  }, []).join(connector);
 }
 
 module.exports = formatDate;
