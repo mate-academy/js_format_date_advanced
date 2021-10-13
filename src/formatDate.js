@@ -56,25 +56,26 @@ function formatDate(date, fromFormat, toFormat) {
   const dataParts = date.split(separator);
   const dateFomat = {};
   const newDataFormat = [];
-  const yearFormat1 = 'YY';
-  const yearFormat2 = 'YYYY';
   const yearsForChangingFormat = 30;
 
   for (let i = 0; i < fromFormat.length - 1; ++i) {
-    if ((fromFormat[i] === yearFormat1 || fromFormat[i] === yearFormat2)
-          && !toFormat.includes(fromFormat[i])) {
+    const isDifferentYearFormat = (fromFormat[i] === 'YY'
+      || fromFormat[i] === 'YYYY')
+        && !toFormat.includes(fromFormat[i]);
+
+    if (isDifferentYearFormat) {
       let newYearFormat = '';
       let year = dataParts[i];
 
-      if (fromFormat[i].length === yearFormat1.length) {
-        newYearFormat = yearFormat2;
+      if (fromFormat[i] === 'YY') {
+        newYearFormat = 'YYYY';
 
         year = (year >= yearsForChangingFormat)
           ? `${19}${year}`
           : `${20}${year}`;
       } else {
-        newYearFormat = yearFormat1;
-        year = year.slice(yearFormat1.length);
+        newYearFormat = 'YY';
+        year = year.slice(-2);
       }
 
       dateFomat[newYearFormat] = year;
