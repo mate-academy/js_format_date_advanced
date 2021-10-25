@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const arrResult = [];
 
-  const getIndex = arr =>
+  const getYearIndex = arr =>
     arr.indexOf('YYYY') === -1
       ? arr.indexOf('YY')
       : arr.indexOf('YYYY');
