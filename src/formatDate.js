@@ -77,7 +77,7 @@ function formatDate(date, fromFormat, toFormat) {
     .slice(0, 3)
     .forEach((el, index) => {
       if (toFormat.indexOf(el) === -1) {
-        const newIndex = getIndex(toFormat);
+        const newIndex = getYearIndex(toFormat);
 
         arrResult[newIndex] = getValue(el, toFormat[newIndex], splited[index]);
       } else {
