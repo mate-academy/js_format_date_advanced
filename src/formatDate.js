@@ -50,7 +50,61 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = fromFormat[fromFormat.length - 1];
+  const joiner = toFormat[toFormat.length - 1];
+  const splitedDate = date.split(separator);
+  const dateFromFormat = getDateFromFormat(splitedDate, fromFormat);
+  const formatedDate = setDateToFormat(dateFromFormat, toFormat);
+
+  return formatedDate.join(joiner);
+}
+
+function getDateFromFormat(date, format) {
+  const datesMapping = {};
+
+  for (let i = 0; i < format.length - 1; i += 1) {
+    datesMapping[format[i]] = date[i];
+  }
+
+  return datesMapping;
+}
+
+function setDateToFormat(date, format) {
+  const datesMapping = {};
+
+  for (let i = 0; i < format.length; i += 1) {
+    switch (format[i]) {
+      case 'DD': {
+        datesMapping[format[i]] = date[format[i]];
+        continue;
+      }
+
+      case 'MM': {
+        datesMapping[format[i]] = date[format[i]];
+        continue;
+      }
+
+      case 'YY': {
+        datesMapping[format[i]] = date['YY'] || date['YYYY'].slice(-2);
+        continue;
+      }
+
+      case 'YYYY': {
+        datesMapping[format[i]] = date['YYYY'] || getProperCentury(date['YY']);
+        continue;
+      }
+    }
+  }
+
+  return format.slice(0, -1).map(element => datesMapping[element]);
+}
+
+function getProperCentury(centuryDate) {
+  const isSmaller30 = Number(centuryDate) < 30;
+
+  const prefix = isSmaller30 ? '20' : '19';
+
+  return prefix + centuryDate;
 }
 
 module.exports = formatDate;
