@@ -49,8 +49,34 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+function formatDate(d, fromFormat, toFormat) {
+  const date = d.split(fromFormat[fromFormat.length - 1]);
 
+  const data = {
+    DD: date[fromFormat.indexOf('DD')],
+    MM: date[fromFormat.indexOf('MM')],
+    YYYY: '',
+    YY: '',
+  };
+
+  if (fromFormat.includes('YYYY')) {
+    data.YYYY = date[fromFormat.indexOf('YYYY')];
+    data.YY = date[fromFormat.indexOf('YYYY')].slice(2, 4);
+  } else {
+    let century = '';
+
+    if (date[fromFormat.indexOf('YY')] < 30) {
+      century = '20';
+    } else {
+      century = '19';
+    }
+
+    data.YY = date[fromFormat.indexOf('YY')];
+    data.YYYY = century + date[fromFormat.indexOf('YY')];
+  }
+
+  return toFormat.map(x => data[x])
+    .filter(Boolean)
+    .join(toFormat[toFormat.length - 1]);
+}
 module.exports = formatDate;
