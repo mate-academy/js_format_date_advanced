@@ -50,7 +50,60 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // const newFormat = '';
+  const result = [];
+  const newDate = date.split(fromFormat[3]);
+
+  // new arrays without separators
+  const fromFormatWithoutSeparator = fromFormat.slice(0, 3);
+  const toFormatWithoutSeparator = toFormat.slice(0, 3);
+
+  // if arrays are equal, than return the same format, only with a new separator
+  if (JSON.stringify(fromFormatWithoutSeparator)
+  === JSON.stringify(toFormatWithoutSeparator)) {
+    return date.split(fromFormat[3]).join(toFormat[3]);
+  }
+
+  // if YYYY is reduced to YY
+  if (fromFormat[2][0]
+  === toFormat[2][0]
+  && fromFormat[2].length
+  !== toFormat[2].length) {
+    const year = newDate[2].slice(2);
+
+    newDate[2] = year;
+
+    return newDate.join(toFormat[3]);
+  }
+
+  // a non-standard format, if YYYY is in the middle
+  if (fromFormat[1] === 'YYYY') {
+    result[0] = newDate[2];
+    result[1] = newDate[0];
+    result[2] = newDate[1];
+
+    return result.join(toFormat[3]);
+  }
+
+  // add 20 or 19 to the year
+  if (fromFormat[0][0]
+    === toFormat[0][0]
+    && fromFormat[0].length
+    !== toFormat[0].length) {
+    if (+newDate[0] >= 30) {
+      newDate[0] = '19' + newDate[0];
+
+      return newDate.join(toFormat[3]);
+    }
+
+    if (+newDate[0].slice(2) < 30) {
+      newDate[0] = '20' + newDate[0];
+
+      return newDate.join(toFormat[3]);
+    }
+  }
+
+  return newDate.reverse().join(toFormat[3]);
 }
 
 module.exports = formatDate;
