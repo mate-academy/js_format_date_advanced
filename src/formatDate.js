@@ -49,8 +49,49 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+
+ function formatDate(date, fromFormat, toFormat) {
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const stringDate = date.split(fromSeparator);
+  let newYearString;
+  let newDate = [];
+  let oldYear = 2;
+  let newYear = 2;
+  
+  if (fromFormat.includes('YYYY')) {
+    oldYear = 4;
+  }
+
+  if (toFormat.includes('YYYY')) {
+    newYear = 4;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if ((toFormat[i].includes('Y')) && (oldYear !== newYear)) {
+      if (oldYear > newYear) { // YYYY -> YY
+        let where = fromFormat.indexOf('YYYY');
+        let oldYearString = stringDate[where];
+        let newYearString = oldYearString[2] + oldYearString[3];
+        newDate[i] = newYearString;
+      } else { // YY -> YYYY
+        let where = fromFormat.indexOf('YY');
+        let oldYearString = stringDate[where];
+  
+        if (Number(oldYearString) < 30) {
+          newYearString = '20' + oldYearString;  
+        } else {
+          newYearString = '19' + oldYearString;
+        }
+          newDate[i] = newYearString;
+      }
+    } else {
+      let where = fromFormat.indexOf(toFormat[i]);
+      newDate[i] = stringDate[where];
+    }
+  }
+
+  return newDate.join(toSeparator);
 }
 
 module.exports = formatDate;
