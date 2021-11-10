@@ -58,23 +58,19 @@ function formatDate(date, fromFormat, toFormat) {
       return dateInfo;
     }, {});
 
-  let newDate = '';
+  const newDate = [];
   const separator = toFormat.slice(-1);
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     const dateFormat = toFormat[i];
     const datePart = data[dateFormat[0]];
 
-    newDate += dateFormat[0] === 'Y'
+    newDate.push(dateFormat[0] === 'Y'
       ? handleYears(dateFormat, datePart, fromFormat)
-      : datePart;
-
-    if (i !== toFormat.length - 2) {
-      newDate += separator;
-    }
+      : datePart);
   }
 
-  return newDate;
+  return newDate.join(separator);
 }
 
 /**
