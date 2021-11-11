@@ -70,9 +70,9 @@ function formatDate(date, fromFormat, toFormat) {
 
       const newFormatArr = [];
 
-      newFormatArr.push(this[toFormat[0]]);
-      newFormatArr.push(this[toFormat[1]]);
-      newFormatArr.push(this[toFormat[2]]);
+      for (let i = 0; i < 3; i++) {
+        newFormatArr.push(this[toFormat[i]]);
+      }
 
       return newFormatArr.join(toFormat[3]);
     },
