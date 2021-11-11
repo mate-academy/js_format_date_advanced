@@ -50,39 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // const newFormat = '';
-  const result = [];
+  // transformation of str into array
   const newDate = date.split(fromFormat[3]);
+  let day = '';
+  let month = '';
+  let year = '';
+  const newFormat = [];
 
-  // new arrays without separators
-  const fromFormatWithoutSeparator = fromFormat.slice(0, 3);
-  const toFormatWithoutSeparator = toFormat.slice(0, 3);
+  const objData = {};
 
-  // if arrays are equal, than return the same format, only with a new separator
-  if (JSON.stringify(fromFormatWithoutSeparator)
-  === JSON.stringify(toFormatWithoutSeparator)) {
-    return date.split(fromFormat[3]).join(toFormat[3]);
+  for (let i = 0; i < fromFormat.length; i++) {
+    // assign correct index and value to the object key
+    if (fromFormat[i] === 'DD') {
+      objData['DD'] = newDate[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      objData['MM'] = newDate[i];
+    }
+
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      objData['YY'] = newDate[i];
+    }
   }
 
   // if YYYY is reduced to YY
   if (fromFormat[2][0]
-  === toFormat[2][0]
-  && fromFormat[2].length
-  !== toFormat[2].length) {
-    const year = newDate[2].slice(2);
+    === toFormat[2][0]
+    && fromFormat[2].length
+    !== toFormat[2].length) {
+    year = newDate[2].slice(2);
 
     newDate[2] = year;
 
     return newDate.join(toFormat[3]);
   }
 
-  // a non-standard format, if YYYY is in the middle
-  if (fromFormat[1] === 'YYYY') {
-    result[0] = newDate[2];
-    result[1] = newDate[0];
-    result[2] = newDate[1];
+  // when only separator is changed
+  if (fromFormat.join(fromFormat[3]).substr(0, 3)
+  === toFormat.join(toFormat[3]).substr(0, 3)) {
+    return Object.values(objData).join(toFormat[3]);
+  }
 
-    return result.join(toFormat[3]);
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'DD') {
+      day += objData.DD;
+      objData.DD = day;
+      newFormat.push(objData.DD);
+    }
+
+    if (toFormat[i] === 'MM') {
+      month += objData.MM;
+      objData.MM = month;
+      newFormat.push(objData.MM);
+    }
+
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      year += objData.YY;
+      objData.YY = year;
+      newFormat.push(objData.YY);
+    }
   }
 
   // add 20 or 19 to the year
@@ -103,7 +130,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return newDate.reverse().join(toFormat[3]);
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
