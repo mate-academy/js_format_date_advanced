@@ -50,7 +50,87 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // transformation of str into array
+  const newDate = date.split(fromFormat[3]);
+  let day = '';
+  let month = '';
+  let year = '';
+  const newFormat = [];
+
+  const objData = {};
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    // assign correct index and value to the object key
+    if (fromFormat[i] === 'DD') {
+      objData['DD'] = newDate[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      objData['MM'] = newDate[i];
+    }
+
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      objData['YY'] = newDate[i];
+    }
+  }
+
+  // if YYYY is reduced to YY
+  if (fromFormat[2][0]
+    === toFormat[2][0]
+    && fromFormat[2].length
+    !== toFormat[2].length) {
+    year = newDate[2].slice(2);
+
+    newDate[2] = year;
+
+    return newDate.join(toFormat[3]);
+  }
+
+  // when only separator is changed
+  if (fromFormat.join(fromFormat[3]).substr(0, 3)
+  === toFormat.join(toFormat[3]).substr(0, 3)) {
+    return Object.values(objData).join(toFormat[3]);
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'DD') {
+      day += objData.DD;
+      objData.DD = day;
+      newFormat.push(objData.DD);
+    }
+
+    if (toFormat[i] === 'MM') {
+      month += objData.MM;
+      objData.MM = month;
+      newFormat.push(objData.MM);
+    }
+
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      year += objData.YY;
+      objData.YY = year;
+      newFormat.push(objData.YY);
+    }
+  }
+
+  // add 20 or 19 to the year
+  if (fromFormat[0][0]
+    === toFormat[0][0]
+    && fromFormat[0].length
+    !== toFormat[0].length) {
+    if (+newDate[0] >= 30) {
+      newDate[0] = '19' + newDate[0];
+
+      return newDate.join(toFormat[3]);
+    }
+
+    if (+newDate[0].slice(2) < 30) {
+      newDate[0] = '20' + newDate[0];
+
+      return newDate.join(toFormat[3]);
+    }
+  }
+
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
