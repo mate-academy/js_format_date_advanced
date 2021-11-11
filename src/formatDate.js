@@ -63,11 +63,11 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     const dateFormat = toFormat[i];
-    const datePart = data[dateFormat[0]];
+    const datePart = dateFormat[0] === 'Y'
+      ? handleYears(dateFormat, data[dateFormat[0]], fromFormat)
+      : data[dateFormat[0]];
 
-    newDate.push(dateFormat[0] === 'Y'
-      ? handleYears(dateFormat, datePart, fromFormat)
-      : datePart);
+    newDate.push(datePart);
   }
 
   return newDate.join(separator);
@@ -87,7 +87,9 @@ function handleYears(dateFormat, years, fromFormat) {
   }
 
   if (fromFormat.includes('YY')) {
-    return (+years < 30 ? '20' : '19') + years;
+    const century = +years < 30 ? '20' : '19';
+
+    return century + years;
   }
 
   return years;
