@@ -58,23 +58,23 @@ function formatDate(date, fromFormat, toFormat) {
       for (const datePart of toFormat) {
         switch (datePart) {
           case 'YYYY':
-            if (this.Y.slice(-2) < 30) {
-              this.Y = '20' + this.Y.slice(-2);
-            } else {
-              this.Y = '19' + this.Y.slice(-2);
-            }
+            this.Y = ((this.Y.slice(-2) < 30) ? '20' : '19') + this.Y.slice(-2);
             break;
           case 'YY':
-            this['Y'] = this.Y.slice(-2);
+            this.Y = this.Y.slice(-2);
         }
       }
+
+      return this.Y;
     },
 
     get formattedDate() {
-      this.getYear();
-
       for (let i = 0; i < 3; i++) {
-        dateInfo.formattedDateArr.push(this[toFormat[i][0]]);
+        const elementData = toFormat[i][0] === 'Y'
+          ? this.getYear()
+          : this[toFormat[i][0]];
+
+        dateInfo.formattedDateArr.push(elementData);
       }
 
       return dateInfo.formattedDateArr.join(toFormat[3]);
