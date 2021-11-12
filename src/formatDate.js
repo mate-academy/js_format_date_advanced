@@ -50,7 +50,78 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldFormatDelimeter = fromFormat[3];
+  const newFormatDelimeter = toFormat[3];
+  const newDate = date.split(oldFormatDelimeter);
+  const newDateArray = [];
+  
+  let oldYearLength;
+  let oldYearPosition;
+  let oldMonthPostion;
+  let oldDayPosition;
+
+  let newYearLength;
+  let newYearPosition;
+  let newMonthPosition;
+  let newDayPosition;
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i][0] === 'Y') {
+      newYearPosition = i;
+
+      if (toFormat[i].length > 2) {
+        newYearLength = 4;
+      } else {
+        newYearLength = 2;
+      }
+    }
+
+    if (toFormat[i][0] === 'M') {
+      newMonthPosition = i;
+    }
+
+    if (toFormat[i][0] === 'D') {
+      newDayPosition = i;
+    }
+  }
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i][0] === 'Y') {
+      oldYearPosition = i;
+
+      if (fromFormat[i].length > 2) {
+        oldYearLength = 4;
+      } else {
+        oldYearLength = 2;
+      }
+    }
+
+    if (fromFormat[i][0] === 'M') {
+      oldMonthPostion = i;
+    }
+
+    if (fromFormat[i][0] === 'D') {
+      oldDayPosition = i;
+    }
+  }
+
+  newDateArray[newYearPosition] = newDate[oldYearPosition];
+  newDateArray[newMonthPosition] = newDate[oldMonthPostion];
+  newDateArray[newDayPosition] = newDate[oldDayPosition];
+
+  if (newYearLength > oldYearLength) {
+    if (newDateArray[newYearPosition] < 30) {
+      newDateArray[newYearPosition] = '20' + newDateArray[newYearPosition];
+    } else {
+      newDateArray[newYearPosition] = '19' + newDateArray[newYearPosition];
+    }
+  }
+
+  if (newYearLength < oldYearLength) {
+    newDateArray[newYearPosition] = newDateArray[newYearPosition].slice(-2);
+  }
+
+  return newDateArray.join(newFormatDelimeter);
 }
 
 module.exports = formatDate;
