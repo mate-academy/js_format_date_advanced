@@ -50,45 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
-  const newFormat = [];
-  let yearShort, yearLong, month, day;
+  const oldDateFormat = date.split(fromFormat[3]);
+  const newDateFormat = [];
+  const lastCentury = 20;
+  const beforeLastCentury = 19;
+  const years = 30;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY') {
-      yearLong = oldDate[i];
-    } else if (fromFormat[i] === 'YY') {
-      yearShort = oldDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      month = oldDate[i];
-    } else if (fromFormat[i] === 'DD') {
-      day = oldDate[i];
+    for (let j = 0; j < toFormat.length - 1; j++) {
+      switch (true) {
+        case (fromFormat[i] === toFormat[j]): {
+          newDateFormat[j] = oldDateFormat[i];
+
+          break;
+        }
+
+        case (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY'): {
+          newDateFormat[j] = oldDateFormat[i].slice(2);
+
+          break;
+        }
+
+        case (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY'): {
+          if (oldDateFormat[i] < years) {
+            newDateFormat[j] = lastCentury + oldDateFormat[i];
+          } else {
+            newDateFormat[j] = beforeLastCentury + oldDateFormat[i];
+          }
+        }
+      }
     }
   }
 
-  for (let j = 0; j < fromFormat.length - 1; j++) {
-    if (toFormat[j] === 'YYYY' && yearShort < 30) {
-      newFormat.push(yearLong !== undefined ? yearLong : 20 + yearShort);
-    } else if (toFormat[j] === 'YYYY' && yearShort >= 30) {
-      newFormat.push(yearLong !== undefined ? yearLong : 19 + yearShort);
-    } else if (toFormat[j] === 'YYYY') {
-      newFormat.push(yearLong);
-    } else if (toFormat[j] === 'YY') {
-      newFormat.push(
-        yearShort !== undefined
-          ? yearShort
-          : yearLong.split('').splice(2, 2).join('')
-      );
-    } else if (toFormat[j] === 'YY') {
-      newFormat.push(yearShort);
-    } else if (toFormat[j] === 'MM') {
-      newFormat.push(month);
-    } else if (toFormat[j] === 'DD') {
-      newFormat.push(day);
-    }
-  }
-
-  return newFormat.join(toFormat[3]);
+  return newDateFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
