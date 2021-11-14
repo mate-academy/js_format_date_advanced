@@ -52,45 +52,45 @@
 function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[3];
   const oldSeparator = fromFormat[3];
-  const newFormate = toFormat.slice(0, 3);
-  const oldFormate = fromFormat.slice(0, 3);
+  const newFormat = toFormat.slice(0, 3);
+  const oldFormat = fromFormat.slice(0, 3);
   const oldDate = date.split(oldSeparator);
   const newDate = [];
 
-  for (const formatPositions of newFormate) {
+  for (const formatPositions of newFormat) {
     switch (formatPositions) {
       case 'MM':
-        newDate.push(oldDate[oldFormate.indexOf('MM')]);
+        newDate.push(oldDate[oldFormat.indexOf('MM')]);
         break;
 
       case 'DD':
-        newDate.push(oldDate[oldFormate.indexOf('DD')]);
+        newDate.push(oldDate[oldFormat.indexOf('DD')]);
         break;
 
       case 'YY':
-        if (oldFormate.includes('YY')) {
-          newDate.push(oldDate[oldFormate.indexOf('YY')]);
+        if (oldFormat.includes('YY')) {
+          newDate.push(oldDate[oldFormat.indexOf('YY')]);
         }
 
-        if (oldFormate.includes('YYYY')) {
-          newDate.push(oldDate[oldFormate.indexOf('YYYY')][2]
-            + oldDate[oldFormate.indexOf('YYYY')][3]);
+        if (oldFormat.includes('YYYY')) {
+          newDate.push(oldDate[oldFormat.indexOf('YYYY')][2]
+            + oldDate[oldFormat.indexOf('YYYY')][3]);
         }
         break;
 
       case 'YYYY':
-        if (oldFormate.includes('YYYY')) {
-          newDate.push(oldDate[oldFormate.indexOf('YYYY')]);
+        if (oldFormat.includes('YYYY')) {
+          newDate.push(oldDate[oldFormat.indexOf('YYYY')]);
         }
 
-        if (oldFormate.includes('YY')
-          && +oldDate[oldFormate.indexOf('YY')] >= 30) {
-          newDate.push('19' + oldDate[oldFormate.indexOf('YY')]);
+        if (oldFormat.includes('YY')
+          && +oldDate[oldFormat.indexOf('YY')] >= 30) {
+          newDate.push('19' + oldDate[oldFormat.indexOf('YY')]);
         }
 
-        if (oldFormate.includes('YY')
-        && +oldDate[oldFormate.indexOf('YY')] < 30) {
-          newDate.push('20' + oldDate[oldFormate.indexOf('YY')]);
+        if (oldFormat.includes('YY')
+        && +oldDate[oldFormat.indexOf('YY')] < 30) {
+          newDate.push('20' + oldDate[oldFormat.indexOf('YY')]);
         }
         break;
 
