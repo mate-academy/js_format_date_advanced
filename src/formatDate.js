@@ -50,35 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDateFormat = date.split(fromFormat[3]);
-  const newDateFormat = [];
   const lastCentury = 20;
   const beforeLastCentury = 19;
   const years = 30;
+  const newDateFormat = [];
+  const oldDateFormat = date.split(fromFormat[3]);
+  let yearShort, yearLong, month, day;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let j = 0; j < toFormat.length - 1; j++) {
-      switch (true) {
-        case (fromFormat[i] === toFormat[j]): {
-          newDateFormat[j] = oldDateFormat[i];
+    if (fromFormat[i] === 'YYYY') {
+      yearLong = oldDateFormat[i];
+    } else if (fromFormat[i] === 'YY') {
+      yearShort = oldDateFormat[i];
+    } else if (fromFormat[i] === 'MM') {
+      month = oldDateFormat[i];
+    } else if (fromFormat[i] === 'DD') {
+      day = oldDateFormat[i];
+    }
+  }
 
-          break;
-        }
-
-        case (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY'): {
-          newDateFormat[j] = oldDateFormat[i].slice(2);
-
-          break;
-        }
-
-        case (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY'): {
-          if (oldDateFormat[i] < years) {
-            newDateFormat[j] = lastCentury + oldDateFormat[i];
-          } else {
-            newDateFormat[j] = beforeLastCentury + oldDateFormat[i];
-          }
-        }
-      }
+  for (let j = 0; j < fromFormat.length - 1; j++) {
+    if (toFormat[j] === 'YYYY' && yearShort < years) {
+      newDateFormat.push(lastCentury + yearShort);
+    } else if (toFormat[j] === 'YYYY' && yearShort >= years) {
+      newDateFormat.push(beforeLastCentury + yearShort);
+    } else if (toFormat[j] === 'YYYY') {
+      newDateFormat.push(yearLong);
+    } else if (toFormat[j] === 'YY') {
+      newDateFormat.push(
+        yearShort !== undefined
+          ? yearShort
+          : yearLong.split('').splice(2, 2).join('')
+      );
+    } else if (toFormat[j] === 'MM') {
+      newDateFormat.push(month);
+    } else if (toFormat[j] === 'DD') {
+      newDateFormat.push(day);
     }
   }
 
