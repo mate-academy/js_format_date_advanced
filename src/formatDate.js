@@ -84,32 +84,6 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  // for (let i = 0; i < fromFormat.length - 1; i++) {
-  //   for (let j = 0; j < toFormat.length - 1; j++) {
-  //     switch (true) {
-  //       case (fromFormat[i] === toFormat[j]): {
-  //         newDateArr[j] = dateArr[i];
-
-  //         break;
-  //       }
-
-  //       case (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY'): {
-  //         newDateArr[j] = dateArr[i].slice(2);
-
-  //         break;
-  //       }
-
-  //       case (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY'): {
-  //         if (+dateArr[i] < 30) {
-  //           newDateArr[j] = '20' + dateArr[i];
-  //         } else {
-  //           newDateArr[j] = '19' + dateArr[i];
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
   return newDateArr.join(toFormat[3]);
 }
 
