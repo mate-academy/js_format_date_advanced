@@ -60,21 +60,21 @@ function formatDate(date, fromFormat, toFormat) {
       index = toFormat.indexOf(fromFormat[i]);
     }
 
-    switch (true) {
-      case (fromFormat[i] === toFormat[index]): {
+    switch (fromFormat[i]) {
+      case toFormat[index]: {
         newDateArr[index] = dateArr[i];
 
         break;
       }
 
-      case (fromFormat[i] === 'YYYY'): {
+      case 'YYYY': {
         index = toFormat.indexOf('YY');
         newDateArr[index] = dateArr[i].slice(2);
 
         break;
       }
 
-      case (fromFormat[i] === 'YY'): {
+      case 'YY': {
         if (+dateArr[i] < 30) {
           newDateArr[index] = '20' + dateArr[i];
         } else {
