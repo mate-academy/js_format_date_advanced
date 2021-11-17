@@ -1,5 +1,7 @@
 'use strict';
 
+//const { Console } = require("jest-util");
+
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
@@ -49,49 +51,31 @@
  * @returns {string}
  */
 
-
  function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat[3];
-  const toSeparator = toFormat[3];
-  const stringDate = date.split(fromSeparator);
-  let newYearString;
+
+  const dateObj = {};
+  const dateArr = date.split(fromFormat[3]);
   let newDate = [];
-  let oldYear = 2;
-  let newYear = 2;
   
-  if (fromFormat.includes('YYYY')) {
-    oldYear = 4;
+  for (let i = 0; i < dateArr.length; i++) {
+    dateObj[fromFormat[i]] = dateArr[i]; 
   }
 
-  if (toFormat.includes('YYYY')) {
-    newYear = 4;
-  }
-
-  for (let i = 0; i < 3; i++) {
-    if ((toFormat[i].includes('Y')) && (oldYear !== newYear)) {
-      if (oldYear > newYear) { // YYYY -> YY
-        let where = fromFormat.indexOf('YYYY');
-        let oldYearString = stringDate[where];
-        let newYearString = oldYearString[2] + oldYearString[3];
-        newDate[i] = newYearString;
-      } else { // YY -> YYYY
-        let where = fromFormat.indexOf('YY');
-        let oldYearString = stringDate[where];
-  
-        if (Number(oldYearString) < 30) {
-          newYearString = '20' + oldYearString;  
-        } else {
-          newYearString = '19' + oldYearString;
-        }
-          newDate[i] = newYearString;
+  for (let i = 0; i < dateArr.length; i++) {
+    if (toFormat[i] === 'YYYY' && dateObj['YY']) { 
+      let newYearString;
+      if (Number(dateObj.YY) < 30) { 
+        newDate[i] = '20' + dateObj.YY;  
+      } else {
+        newDate[i] = '19' + dateObj.YY;
       }
+    } else if (toFormat[i] === 'YY' && dateObj['YYYY']) {
+        newDate[i] = dateObj.YYYY[2]+dateObj.YYYY[3];
     } else {
-      let where = fromFormat.indexOf(toFormat[i]);
-      newDate[i] = stringDate[where];
-    }
-  }
-
-  return newDate.join(toSeparator);
+      newDate[i] = dateObj[toFormat[i]];
+  } 
+}
+return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
