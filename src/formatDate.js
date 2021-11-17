@@ -1,5 +1,7 @@
 'use strict';
 
+//const { Console } = require("jest-util");
+
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
@@ -49,8 +51,31 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+ function formatDate(date, fromFormat, toFormat) {
+
+  const dateObj = {};
+  const dateArr = date.split(fromFormat[3]);
+  let newDate = [];
+  
+  for (let i = 0; i < dateArr.length; i++) {
+    dateObj[fromFormat[i]] = dateArr[i]; 
+  }
+
+  for (let i = 0; i < dateArr.length; i++) {
+    if (toFormat[i] === 'YYYY' && dateObj['YY']) { 
+      let newYearString;
+      if (Number(dateObj.YY) < 30) { 
+        newDate[i] = '20' + dateObj.YY;  
+      } else {
+        newDate[i] = '19' + dateObj.YY;
+      }
+    } else if (toFormat[i] === 'YY' && dateObj['YYYY']) {
+        newDate[i] = dateObj.YYYY[2]+dateObj.YYYY[3];
+    } else {
+      newDate[i] = dateObj[toFormat[i]];
+  } 
+}
+return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
