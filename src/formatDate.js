@@ -50,7 +50,32 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let y, m, d;
+
+  const objFrom = {
+    YY: (x) => {
+      y = x;
+    },
+    YYYY: (x) => {
+      y = x;
+    },
+    MM: (x) => {
+      m = x;
+    },
+    DD: (x) => {
+      d = x;
+    },
+  };
+  const objTo = {
+    YY: () => y.slice(-2),
+    YYYY: () => +y < 30 ? '20' + y : (y.length > 2 ? y : '19' + y),
+    MM: () => m,
+    DD: () => d,
+  };
+
+  date.split(fromFormat[3]).forEach((item, i) => objFrom[fromFormat[i]](item));
+
+  return toFormat.slice(0, -1).map(item => objTo[item]()).join(toFormat[3]);
 }
 
 module.exports = formatDate;
