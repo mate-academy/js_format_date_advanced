@@ -95,14 +95,14 @@ function formatDate(date, fromFormat, toFormat) {
           }
         }
         /*
-        If there are more than one symbol in the anwser array
+        If there are more than one symbol in the anwser string
         I add the new sepparator.
         */
 
         if (anwser.length > 0) {
           anwser += toFormat[3];
         }
-        // Here I add variables in the new order to the anwser array.
+        // Here I add variables in the new order to the anwser string.
         anwser += dateArray[e];
       }
     }
