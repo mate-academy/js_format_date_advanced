@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 describe('formatDate', () => {
   const formatDate = require('./formatDate');
