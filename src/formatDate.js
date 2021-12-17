@@ -55,20 +55,20 @@ function formatDate(date, fromFormat, toFormat) {
   const [ firstPartTo, secondPartTo, thirdPartTo ] = toFormat;
   const newDateParts = [firstPartTo, secondPartTo, thirdPartTo].sort();
 
-  let dateObj = {};
+  let dateValues = {};
 
   for (let i = 0; i < dateParts.length; i++) {
-    dateObj[fromFormat[i]] = dateParts[i];
+    dateValues[fromFormat[i]] = dateParts[i];
   }
 
-  dateObj = formatYears(dateObj, oldDateParts, newDateParts);
+  dateValues = formatYears(dateValues, oldDateParts, newDateParts);
 
-  dateObj[newDateParts[2]] = dateObj[oldDateParts[2]];
+  dateValues[newDateParts[2]] = dateValues[oldDateParts[2]];
 
   const finalDateParts = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    finalDateParts.push(dateObj[toFormat[i]]);
+    finalDateParts.push(dateValues[toFormat[i]]);
   }
 
   return finalDateParts.join(toFormat[3]);
