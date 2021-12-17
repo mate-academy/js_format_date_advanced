@@ -48,9 +48,52 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(fromFormat[fromFormat.length - 1]);
+  const [ firstPartFrom, secondPartFrom, thirdPartFrom ] = fromFormat;
+  const oldDateParts = [firstPartFrom, secondPartFrom, thirdPartFrom].sort();
+  const [ firstPartTo, secondPartTo, thirdPartTo ] = toFormat;
+  const newDateParts = [firstPartTo, secondPartTo, thirdPartTo].sort();
+
+  let dateValues = {};
+
+  for (let i = 0; i < dateParts.length; i++) {
+    dateValues[fromFormat[i]] = dateParts[i];
+  }
+
+  dateValues = formatYears(dateValues, oldDateParts, newDateParts);
+
+  dateValues[newDateParts[2]] = dateValues[oldDateParts[2]];
+
+  const finalDateParts = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    finalDateParts.push(dateValues[toFormat[i]]);
+  }
+
+  return finalDateParts.join(toFormat[3]);
+}
+
+function formatYears(inputOb, oldParts, newParts) {
+  const date = { ...inputOb };
+
+  if (newParts[2].length > oldParts[2].length) {
+    if (date[oldParts[2]] < 30) {
+      const val = '20' + date[oldParts[2]];
+
+      date[oldParts[2]] = val;
+    } else {
+      const val = '19' + date[oldParts[2]];
+
+      date[oldParts[2]] = val;
+    }
+  }
+
+  if (newParts[2].length < oldParts[2].length) {
+    date[oldParts[2]] = date[oldParts[2]].slice(-2);
+  }
+
+  return date;
 }
 
 module.exports = formatDate;
