@@ -64,17 +64,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (objFrom.hasOwnProperty('YYYY') && objTo.hasOwnProperty('YY')) {
-    objTo['YY'] = objFrom['YYYY'];
-    objTo['YY'] = objTo['YY'].slice(-2);
+    objTo['YY'] = objFrom['YYYY'].slice(-2);
   }
 
   if (objFrom.hasOwnProperty('YY') && objTo.hasOwnProperty('YYYY')) {
-    objTo['YYYY'] = objFrom['YY'];
-
-    if (+objTo['YYYY'] < 30) {
-      objTo['YYYY'] = '20' + objTo['YYYY'];
+    if (+objFrom['YY'] < 30) {
+      objTo['YYYY'] = '20' + objFrom['YY'];
     } else {
-      objTo['YYYY'] = '19' + objTo['YYYY'];
+      objTo['YYYY'] = '19' + objFrom['YY'];
     }
   }
 
