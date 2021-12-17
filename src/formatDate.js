@@ -49,43 +49,51 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const arr = date.split(fromFormat[fromFormat.length - 1]);
-  const [ a, b, c ] = fromFormat;
-  const fromArr = [a, b, c].sort();
-  const [ d, e, f ] = toFormat;
-  const toArr = [d, e, f].sort();
+  const dateParts = date.split(fromFormat[fromFormat.length - 1]);
+  const [ firstPartFrom, secondPartFrom, thirdPartFrom ] = fromFormat;
+  const oldDateParts = [firstPartFrom, secondPartFrom, thirdPartFrom].sort();
+  const [ firstPartTo, secondPartTo, thirdPartTo ] = toFormat;
+  const newDateParts = [firstPartTo, secondPartTo, thirdPartTo].sort();
 
-  const dateObj = {};
+  let dateObj = {};
 
-  for (let i = 0; i < arr.length; i++) {
-    dateObj[fromFormat[i]] = arr[i];
+  for (let i = 0; i < dateParts.length; i++) {
+    dateObj[fromFormat[i]] = dateParts[i];
   }
 
-  if (toArr[2].length > fromArr[2].length) {
-    if (dateObj[fromArr[2]] < 30) {
-      const val = '20' + dateObj[fromArr[2]];
+  dateObj = formatYears(dateObj, oldDateParts, newDateParts);
 
-      dateObj[fromArr[2]] = val;
+  dateObj[newDateParts[2]] = dateObj[oldDateParts[2]];
+
+  const finalDateParts = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    finalDateParts.push(dateObj[toFormat[i]]);
+  }
+
+  return finalDateParts.join(toFormat[3]);
+}
+
+function formatYears(inputOb, oldParts, newParts) {
+  const date = { ...inputOb };
+
+  if (newParts[2].length > oldParts[2].length) {
+    if (date[oldParts[2]] < 30) {
+      const val = '20' + date[oldParts[2]];
+
+      date[oldParts[2]] = val;
     } else {
-      const val = '19' + dateObj[fromArr[2]];
+      const val = '19' + date[oldParts[2]];
 
-      dateObj[fromArr[2]] = val;
+      date[oldParts[2]] = val;
     }
   }
 
-  if (toArr[2].length < fromArr[2].length) {
-    dateObj[fromArr[2]] = dateObj[fromArr[2]].slice(-2);
+  if (newParts[2].length < oldParts[2].length) {
+    date[oldParts[2]] = date[oldParts[2]].slice(-2);
   }
 
-  dateObj[toArr[2]] = dateObj[fromArr[2]];
-
-  const res = [];
-
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    res.push(dateObj[toFormat[i]]);
-  }
-
-  return res.join(toFormat[3]);
+  return date;
 }
 
 module.exports = formatDate;
