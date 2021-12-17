@@ -50,7 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDateArr = date.split(fromFormat[3]);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const oldDateArr = date.split(oldSeparator);
   const newDateArr = [];
   const bufferObj = {
     DD: 0,
@@ -79,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
     newDateArr.push(bufferObj[toFormat[i]]);
   }
 
-  return newDateArr.join(toFormat[3]);
+  return newDateArr.join(newSeparator);
 }
 
 module.exports = formatDate;
