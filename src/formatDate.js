@@ -51,35 +51,32 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateAfterFormat = [];
-
   const arrayDate = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
+    const indexOld = fromFormat.indexOf(fromFormat[i]);
+    const indexNew = toFormat.indexOf(fromFormat[i]);
+
     if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
-      arrayDate[fromFormat.indexOf(fromFormat[i])]
-        = arrayDate[fromFormat.indexOf(fromFormat[i])].slice(2);
-      dateAfterFormat.push(arrayDate[toFormat.indexOf('YY')]);
-      continue;
+      arrayDate[i] = arrayDate[i].slice(2);
+      dateAfterFormat[toFormat.indexOf('YY')] = arrayDate[i];
     }
 
     if (fromFormat[i] === 'YY'
-      && arrayDate[fromFormat.indexOf(fromFormat[i])] < '30') {
-      arrayDate[fromFormat.indexOf(fromFormat[i])] = `20${arrayDate[fromFormat.indexOf(fromFormat[i])]}`;
-
-      dateAfterFormat.push(arrayDate[toFormat.indexOf('YYYY')]);
-      continue;
+      && toFormat.includes('YYYY')
+      && arrayDate[indexOld] < '30') {
+      arrayDate[indexOld] = `20${arrayDate[indexOld]}`;
+      dateAfterFormat[toFormat.indexOf('YYYY')] = arrayDate[i];
     }
 
     if (fromFormat[i] === 'YY'
-      && arrayDate[fromFormat.indexOf(fromFormat[i])] >= '30') {
-      arrayDate[fromFormat.indexOf(fromFormat[i])] = `19${arrayDate[fromFormat.indexOf(fromFormat[i])]}`;
-
-      dateAfterFormat.push(arrayDate[toFormat.indexOf('YYYY')]);
-      continue;
+      && toFormat.includes('YYYY')
+      && arrayDate[indexOld] >= '30') {
+      arrayDate[indexOld] = `19${arrayDate[indexOld]}`;
+      dateAfterFormat[toFormat.indexOf('YYYY')] = arrayDate[i];
     }
 
-    dateAfterFormat[toFormat.indexOf(fromFormat[i])]
-      = arrayDate[fromFormat.indexOf(fromFormat[i])];
+    dateAfterFormat[indexNew] = arrayDate[indexOld];
   }
 
   return dateAfterFormat.join((toFormat[3]));
