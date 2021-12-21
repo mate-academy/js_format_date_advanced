@@ -54,10 +54,12 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
       if (year < 30) {
         return '20' + year;
-      } else {
-        return '19' + year;
       }
-    } else if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+
+      return '19' + year;
+    }
+
+    if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
       return year.slice(-2);
     }
 
@@ -67,11 +69,11 @@ function formatDate(date, fromFormat, toFormat) {
   const separatorBefore = fromFormat[3];
   const separatorAfter = toFormat[3];
   const dateInArray = date.split(separatorBefore);
-  const correctDate = [];
+  const newDate = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i].includes('Y')) {
-      dateInArray[i] = formatYear(dateInArray[i]);
+      const year = formatYear(dateInArray[i]);
 
       let positionY = toFormat.indexOf('YY');
 
@@ -79,13 +81,13 @@ function formatDate(date, fromFormat, toFormat) {
         positionY = toFormat.indexOf('YYYY');
       }
 
-      correctDate[positionY] = dateInArray[i];
+      newDate[positionY] = year;
     } else {
-      correctDate[toFormat.indexOf(fromFormat[i])] = dateInArray[i];
+      newDate[toFormat.indexOf(fromFormat[i])] = dateInArray[i];
     }
   }
 
-  return correctDate.join(separatorAfter);
+  return newDate.join(separatorAfter);
 }
 
 module.exports = formatDate;
