@@ -53,41 +53,57 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
   const newDate = [...toFormat];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let n = 0; n < toFormat.length - 1; n++) {
-      if (fromFormat[i] === 'DD' && toFormat[n] === 'DD') {
-        newDate[n] = dateArray[i];
-      }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === fromFormat[0]) {
+      newDate[i] = dateArray[0];
+    }
 
-      if (fromFormat[i] === 'MM' && toFormat[n] === 'MM') {
-        newDate[n] = dateArray[i];
-      }
+    if (toFormat[i] === fromFormat[1]) {
+      newDate[i] = dateArray[1];
+    }
 
-      if (fromFormat[i].includes('Y') && toFormat[n].includes('Y')) {
-        if (toFormat[n] === 'YYYY') {
-          if (fromFormat[i] === 'YY') {
-            if (+dateArray[i] < 30) {
-              newDate[n] = `20${dateArray[i]}`;
-            }
+    if (toFormat[i] === fromFormat[2]) {
+      newDate[i] = dateArray[2];
+    }
 
-            if (+dateArray[i] >= 30) {
-              newDate[n] = `19${dateArray[i]}`;
-            }
-          } else {
-            newDate[n] = dateArray[i];
-          }
-        }
+    if (toFormat[i] === 'YYYY' && fromFormat[0] === 'YY') {
+      years(dateArray, newDate, 0, i);
+    }
 
-        if (toFormat[n] === 'YY') {
-          newDate[n] = dateArray[i].slice(2, 4);
-        }
-      }
+    if (toFormat[i] === 'YYYY' && fromFormat[1] === 'YY') {
+      years(dateArray, newDate, 1, i);
+    }
+
+    if (toFormat[i] === 'YYYY' && fromFormat[2] === 'YY') {
+      years(dateArray, newDate, 2, i);
+    }
+
+    if (toFormat[i] === 'YY' && fromFormat[0] === 'YYYY') {
+      newDate[i] = dateArray[0].slice(2, 4);
+    }
+
+    if (toFormat[i] === 'YY' && fromFormat[1] === 'YYYY') {
+      newDate[i] = dateArray[1].slice(2, 4);
+    }
+
+    if (toFormat[i] === 'YY' && fromFormat[2] === 'YYYY') {
+      newDate[i] = dateArray[2].slice(2, 4);
     }
   }
 
   newDate.splice(3, 1);
 
   return newDate.join(toFormat[3]);
+}
+
+function years(date, dateNew, indexOld, indexNew) {
+  if (+date[indexOld] < 30) {
+    dateNew[indexNew] = `20${date[indexOld]}`;
+  }
+
+  if (+date[indexOld] >= 30) {
+    dateNew[indexNew] = `19${date[indexOld]}`;
+  }
 }
 
 module.exports = formatDate;
