@@ -74,27 +74,31 @@ function formatDate(date, fromFormat, toFormat) {
     dateYear = dateYear.slice(2);
   }
 
-  if (fromYearFormat.length < toYearFormat.length
-    && dateYearShortened < 30) {
-    dateYear = '20' + dateYear;
+  if (fromYearFormat.length < toYearFormat.length) {
+    if (dateYearShortened < 30) {
+      dateYear = '20' + dateYear;
+    } else {
+      dateYear = '19' + dateYear;
+    }
   }
 
-  if (fromYearFormat.length < toYearFormat.length
-    && dateYearShortened >= 30) {
-    dateYear = '19' + dateYear;
-  }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        result.push(dateDay);
+        break;
 
-  for (const item of toFormat) {
-    if (item === 'DD') {
-      result.push(dateDay);
-    }
+      case 'MM':
+        result.push(dateMonth);
+        break;
 
-    if (item === 'MM') {
-      result.push(dateMonth);
-    }
+      case 'YY':
+      case 'YYYY':
+        result.push(dateYear);
+        break;
 
-    if (item === 'YY' || item === 'YYYY') {
-      result.push(dateYear);
+      default:
+        throw new Error('Enter valid date format');
     }
   }
 
