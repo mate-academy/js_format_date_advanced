@@ -62,12 +62,16 @@ function formatDate(date, fromFormat, toFormat) {
     tempDate['YY'] = tempDate['YYYY'].slice(2);
   }
 
-  const fullYear = tempDate.YY < 30
-    ? 2000 + Number(tempDate.YY)
-    : 1900 + Number(tempDate.YY);
+  const getFullYear = function(year) {
+    if (year < 30) {
+      return 2000 + Number(year);
+    } else {
+      return 1900 + Number(year);
+    }
+  };
 
   if (tempDate.hasOwnProperty('YY') && !tempDate.hasOwnProperty('YYYY')) {
-    tempDate['YYYY'] = fullYear;
+    tempDate['YYYY'] = getFullYear(tempDate['YY']);
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
