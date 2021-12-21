@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[fromFormat.length - 1]);
+  const resultArr = [];
+  const tempDate = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    tempDate[fromFormat[i]] = dateArr[i];
+  }
+
+  if (tempDate.hasOwnProperty('YYYY')) {
+    tempDate['YY'] = tempDate['YYYY'].slice(2);
+  }
+
+  const getFullYear = function(year) {
+    if (year < 30) {
+      return 2000 + Number(year);
+    } else {
+      return 1900 + Number(year);
+    }
+  };
+
+  if (tempDate.hasOwnProperty('YY') && !tempDate.hasOwnProperty('YYYY')) {
+    tempDate['YYYY'] = getFullYear(tempDate['YY']);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    resultArr.push(tempDate[toFormat[i]]);
+  }
+
+  return resultArr.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
