@@ -59,7 +59,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (tempDate.hasOwnProperty('YYYY')) {
-    tempDate['YY'] = tempDate['YYYY'].toString().split('').slice(2).join('');
+    tempDate['YY'] = tempDate['YYYY'].slice(2);
   }
 
   const fullYear = tempDate.YY < 30
