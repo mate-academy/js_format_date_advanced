@@ -50,38 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const temp = date.split(fromFormat[3]);
-  const transform = [];
+  const newDate = Array(3);
+  const checkMonthPosition = element => element === 'MM';
+  const checkDayPosition = element => element === 'DD';
+  const checkYear = element => element === 'YYYY' || element === 'YY';
+  const checkYearPosition = element => element === undefined;
+  const oldDate = date.split(fromFormat[3]);
+  const oldMonthPosition = fromFormat.findIndex(checkMonthPosition);
+  const oldDayPosition = fromFormat.findIndex(checkDayPosition);
+  const oldYearFormat = fromFormat.find(checkYear);
+  const oldYearPosition = fromFormat.findIndex(checkYear);
+  const newMonthPosition = toFormat.findIndex(checkMonthPosition);
+  const newDayPosition = toFormat.findIndex(checkDayPosition);
 
-  for (let i = 0; i < 3; i++) {
-    for (let y = 0; y < 3; y++) {
-      if (toFormat[i][0] === fromFormat[y][0]) {
-        if (toFormat[i][0] === 'Y') {
-          if (toFormat[i].length === 4) {
-            if (fromFormat[y].length === 2) {
-              if (+temp[y] - 30 < 0) {
-                transform.push('20' + temp[y]);
-              } else {
-                transform.push('19' + temp[y]);
-              }
-            } else {
-              transform.push(temp[y]);
-            }
-          } else {
-            if (fromFormat[y].length === 2) {
-              transform.push(temp[y]);
-            } else {
-              transform.push(temp[y][2] + temp[y][3]);
-            }
-          }
-        } else {
-          transform.push(temp[y]);
-        }
-      }
+  newDate[newDayPosition] = oldDate[oldDayPosition];
+  newDate[newMonthPosition] = oldDate[oldMonthPosition];
+
+  const newYearFormat = toFormat.find(checkYear);
+  const newYearPosition = newDate.findIndex(checkYearPosition);
+
+  if (oldYearFormat.length === newYearFormat.length) {
+    newDate[newYearPosition] = oldDate[oldYearPosition];
+  };
+
+  if (oldYearFormat.length > newYearFormat.length) {
+    newDate[newYearPosition] = oldDate[oldYearPosition].slice(-2);
+  };
+
+  if (oldYearFormat.length < newYearFormat.length) {
+    if (+oldDate[oldYearPosition] < 30) {
+      newDate[newYearPosition] = '20' + oldDate[oldYearPosition];
+    } else {
+      newDate[newYearPosition] = '19' + oldDate[oldYearPosition];
     }
   };
 
-  return transform.join(toFormat[3]);
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
