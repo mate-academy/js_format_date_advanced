@@ -51,11 +51,10 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
-  let result = '';
-  let index = 0;
+  const result = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    index = fromFormat.indexOf(toFormat[i]);
+    let index = fromFormat.indexOf(toFormat[i]);
 
     if (index === -1 && toFormat[i] === 'YYYY') {
       index = fromFormat.indexOf('YY');
@@ -72,14 +71,10 @@ function formatDate(date, fromFormat, toFormat) {
       newDate[index] = newDate[i].slice(2);
     }
 
-    result += newDate[index];
-
-    if (i !== toFormat.length - 2) {
-      result += toFormat[3];
-    }
+    result.push(newDate[index]);
   }
 
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
