@@ -52,42 +52,29 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
   const newDate = [...toFormat];
+  const dayIndex = fromFormat.indexOf('DD');
+  const monthIndex = fromFormat.indexOf('MM');
+  const yearIndex = 3 - dayIndex - monthIndex;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === fromFormat[0]) {
-      newDate[i] = dateArray[0];
+    if (toFormat[i] === fromFormat[dayIndex]) {
+      newDate[i] = dateArray[dayIndex];
     }
 
-    if (toFormat[i] === fromFormat[1]) {
-      newDate[i] = dateArray[1];
+    if (toFormat[i] === fromFormat[monthIndex]) {
+      newDate[i] = dateArray[monthIndex];
     }
 
-    if (toFormat[i] === fromFormat[2]) {
-      newDate[i] = dateArray[2];
+    if (toFormat[i] === fromFormat[yearIndex]) {
+      newDate[i] = dateArray[yearIndex];
     }
 
-    if (toFormat[i] === 'YYYY' && fromFormat[0] === 'YY') {
-      years(dateArray, newDate, 0, i);
+    if (toFormat[i] === 'YYYY' && fromFormat[yearIndex] === 'YY') {
+      years(dateArray, newDate, yearIndex, i);
     }
 
-    if (toFormat[i] === 'YYYY' && fromFormat[1] === 'YY') {
-      years(dateArray, newDate, 1, i);
-    }
-
-    if (toFormat[i] === 'YYYY' && fromFormat[2] === 'YY') {
-      years(dateArray, newDate, 2, i);
-    }
-
-    if (toFormat[i] === 'YY' && fromFormat[0] === 'YYYY') {
-      newDate[i] = dateArray[0].slice(2, 4);
-    }
-
-    if (toFormat[i] === 'YY' && fromFormat[1] === 'YYYY') {
-      newDate[i] = dateArray[1].slice(2, 4);
-    }
-
-    if (toFormat[i] === 'YY' && fromFormat[2] === 'YYYY') {
-      newDate[i] = dateArray[2].slice(2, 4);
+    if (toFormat[i] === 'YY' && fromFormat[yearIndex] === 'YYYY') {
+      newDate[i] = dateArray[yearIndex].slice(2, 4);
     }
   }
 
