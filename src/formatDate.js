@@ -50,7 +50,51 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateObject = {};
+  const dateParts = date.split(fromFormat.pop());
+  const newSeparator = toFormat.pop();
+
+  fromFormat.forEach((part, index) => {
+    dateObject[getDatePartName(part)] = dateParts[index];
+  });
+
+  const newDate = toFormat
+    .map(part => {
+      const partName = getDatePartName(part);
+
+      if (partName === 'year') {
+        return part.length === 2
+          ? dateObject[partName].slice(-2)
+          : toFourDigitsYear(dateObject[partName]);
+      }
+
+      return dateObject[partName];
+    })
+    .join(newSeparator);
+
+  return newDate;
+}
+
+function getDatePartName(datePartPattern) {
+  switch (datePartPattern) {
+    case 'YY':
+    case 'YYYY':
+      return 'year';
+    case 'MM':
+      return 'month';
+    case 'DD':
+      return 'day';
+    default:
+      return undefined;
+  }
+}
+
+function toFourDigitsYear(year) {
+  if (year.length === 4) {
+    return year;
+  }
+
+  return +year < 30 ? `20${year}` : `19${year}`;
 }
 
 module.exports = formatDate;
