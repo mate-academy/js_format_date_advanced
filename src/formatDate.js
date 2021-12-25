@@ -51,32 +51,13 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateFromFormat = date.split(`${fromFormat[3]}`);
-  // console.log('dateFromFormat = ', dateFromFormat);
-
   const dateToFormat = toFormat.map((item) => {
-    // console.log('item = ', item);
-    // console.log('index item from', fromFormat.indexOf(item));
-    // console.log('index item to ', toFormat.indexOf(item));
-
     if (item.includes('Y')) {
       if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-        // console.log(
-        // 'index of YYYY in fromFormat',
-        // fromFormat.indexOf('YYYY')
-        // );
-        // console.log('index of YY in toFormat', toFormat.indexOf('YY'));
-        // console.log(
-        //   'YYYY => YY',
-        //   dateFromFormat[fromFormat.indexOf('YYYY')].slice(2)
-        // );
-
         return dateFromFormat[fromFormat.indexOf('YYYY')].slice(2);
       }
 
       if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-        // console.log('index of YY in fromFormat', fromFormat.indexOf('YY'));
-        // console.log('index of YYYY in toFormat', toFormat.indexOf('YYYY'));
-        // console.log('YY => YYYY ', dateFromFormat[fromFormat.indexOf('YY')]);
         if (dateFromFormat[fromFormat.indexOf('YY')] >= 30) {
           return '19' + dateFromFormat[fromFormat.indexOf('YY')];
         } else {
@@ -84,7 +65,6 @@ function formatDate(date, fromFormat, toFormat) {
         }
       }
 
-      // console.log(dateFromFormat[fromFormat.indexOf(item)]);
       return dateFromFormat[fromFormat.indexOf(item)];
     }
 
@@ -92,8 +72,6 @@ function formatDate(date, fromFormat, toFormat) {
   });
 
   dateToFormat.length = 3;
-  // console.log('dateToFormat = ', dateToFormat);
-  // console.log(dateToFormat.join(`${fromFormat[3]}`));
 
   return dateToFormat.join(`${toFormat[3]}`);
 }
