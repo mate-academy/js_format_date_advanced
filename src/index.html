@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/formatDate.js"></script>
+</head>
+<body>
+    <br>   Time flies, standards change. Let's get rid of the routine of changing the
+    <br> date format. Create a `formatDate` function that accepts the `date` string,
+    <br> the old `fromFormat` array and the new `toFormat` array. Function returns
+    <br> given date in new format.
+    <br>   The function can change a separator, reorder the date parts of convert a
+    <br> year from 4 digits to 2 digits and back.
+    <br>   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
+    <br>   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
+    <br>
+    <br> Examples:
+    <br>
+    <br> formatDate(
+    <br>   '2020-02-18',
+    <br>   ['YYYY', 'MM', 'DD', '-'],
+    <br>   ['YYYY', 'MM', 'DD', '.'],
+    <br> ) // '2020.02.18'
+    <br>
+    <br> formatDate(
+    <br>   '2020-02-18',
+    <br>   ['YYYY', 'MM', 'DD', '-'],
+    <br>   ['DD', 'MM', 'YYYY', '.'],
+    <br> ) // '18.02.2020'
+    <br>
+    <br> formatDate(
+    <br>   '18-02-2020',
+    <br>   ['DD', 'MM', 'YYYY', '-'],
+    <br>   ['DD', 'MM', 'YY', '/'],
+    <br> ) // '18/02/20'
+    <br>
+    <br> formatDate(
+    <br>   '20/02/18',
+    <br>   ['YY', 'MM', 'DD', '/'],
+    <br>   ['YYYY', 'MM', 'DD', '.'],
+    <br> ) // '2020.02.18'
+    <br>
+    <br> formatDate(
+    <br>   '97/02/18',
+    <br>   ['YY', 'MM', 'DD', '/'],
+    <br>   ['DD', 'MM', 'YYYY', '.'],
+    <br> ) // '18.02.1997'
+</body>
+</html>
