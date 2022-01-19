@@ -90,6 +90,8 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  /* console.log(year); */
+
   for (let i = 0; i < 4; i++) {
     if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
       newdate[i] = year;
