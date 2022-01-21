@@ -49,8 +49,91 @@
  * @returns {string}
  */
 
+// #region functions form making good data
+function getFormatType(formatThatWeLookingFor, arrayOfFormats) {
+  for (let i = 0; i < arrayOfFormats.length; i++) {
+    const format = arrayOfFormats[i];
+
+    if (formatThatWeLookingFor.includes(format)) {
+      return format;
+    }
+  }
+
+  return -1;
+}
+
+function getingDateOrder(dateInArrayMode, dateformat, originalYearForm) {
+  const yearPosition = dateformat.indexOf(originalYearForm);
+  const monthPosition = dateformat.indexOf('MM');
+  const dayPosition = dateformat.indexOf('DD');
+
+  return {
+    year: dateInArrayMode[yearPosition],
+    month: dateInArrayMode[monthPosition],
+    day: dateInArrayMode[dayPosition],
+  };
+}
+
+function yearFormating(formatedYear, originalYearForm, desiredYearFormat) {
+  const yearInput = formatedYear;
+
+  switch (true) {
+    case originalYearForm === desiredYearFormat:
+      return yearInput;
+
+    case desiredYearFormat === 'YY':
+      return formatedYear.toString().split('').slice(2, 4).join('');
+
+    case desiredYearFormat === 'YYYY' && formatedYear >= 30:
+      return '19' + formatedYear;
+
+    case desiredYearFormat === 'YYYY' && formatedYear < 30:
+      return '20' + formatedYear;
+
+    default:
+      return formatedYear;
+  }
+}
+
+// #endregion
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formatedData = [];
+  const originalDateSeparator = fromFormat[3];
+  const newDateSeparator = toFormat[3];
+  const originalYearForm = getFormatType(fromFormat, ['YY', 'YYYY']);
+  const desiredYearFormat = getFormatType(toFormat, ['YY', 'YYYY']);
+  const dateInArrayMode = date.split(`${originalDateSeparator}`);
+  const dateInObject = getingDateOrder(
+    dateInArrayMode,
+    fromFormat,
+    originalYearForm
+  );
+
+  const year = yearFormating(
+    dateInObject.year,
+    originalYearForm,
+    desiredYearFormat
+  );
+
+  for (const typeOfDate of toFormat) {
+    switch (typeOfDate) {
+      case desiredYearFormat:
+        formatedData.push(year.toString());
+        break;
+      case 'DD':
+        formatedData.push(dateInObject.day.toString());
+        break;
+      case 'MM':
+        formatedData.push(dateInObject.month.toString());
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  return formatedData.join(newDateSeparator);
 }
 
 module.exports = formatDate;
