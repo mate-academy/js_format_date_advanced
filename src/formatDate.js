@@ -50,7 +50,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromFormatAdapted = [ ...fromFormat ];
   const dateParts = date.split(fromFormat[3]);
   const newDateParts = [];
 
@@ -61,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
     const yearFromFormatIndex = fromFormat.indexOf(yearFromFormat);
     const year = dateParts[yearFromFormatIndex];
 
-    fromFormatAdapted[yearFromFormatIndex] = yearToFormat;
+    fromFormat[yearFromFormatIndex] = yearToFormat;
 
     if (yearFromFormat.length > yearToFormat.length) {
       dateParts[yearFromFormatIndex] = year.slice(2);
@@ -71,7 +70,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < dateParts.length; i++) {
-    newDateParts.push(dateParts[fromFormatAdapted.indexOf(toFormat[i])]);
+    newDateParts.push(dateParts[fromFormat.indexOf(toFormat[i])]);
   }
 
   return newDateParts.join(toFormat[3]);
