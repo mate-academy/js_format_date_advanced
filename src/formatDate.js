@@ -50,65 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day = '';
-  let month = '';
-  let year = '';
-  const newdate = [];
-  const oldFormat = fromFormat.join();
-  const newFormat = toFormat.join();
+  const oldDataMass = date.split(fromFormat[3]);
+  let result = '';
 
-  const currentDate = date.split(fromFormat[3]);
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
 
-  for (let i = 0; i < 5; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      year = currentDate[i];
+  for (let i = 0; i < 4; i++) {
+    if (fromFormat[i] === 'YY') {
+      dateObj.YY = oldDataMass[i];
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateObj.YYYY = oldDataMass[i];
     }
 
     if (fromFormat[i] === 'DD') {
-      day = currentDate[i];
+      dateObj.DD = oldDataMass[i];
     }
 
     if (fromFormat[i] === 'MM') {
-      month = currentDate[i];
+      dateObj.MM = oldDataMass[i];
     }
   }
 
-  const shortYear = year.slice(2);
+  const longyear = (dateObj.YY >= 30) ? 19 : 20;
+  const shortyear = (dateObj.YYYY.slice(2));
 
-  if (oldFormat.length > newFormat.length) {
-    year = shortYear;
-  }
-
-  const longNewYear = `20${year}`;
-  const longOldYear = `19${year}`;
-
-  if (oldFormat.length < newFormat.length) {
-    if (parseInt(year) < 30) {
-      year = longNewYear;
-    } else {
-      year = longOldYear;
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YY') {
+      if (dateObj.YYYY === '') {
+        result += dateObj.YY + toFormat[3];
+      } else {
+        result += shortyear + toFormat[3];
+      }
     }
-  }
 
-  /* console.log(year); */
-
-  for (let i = 0; i < 4; i++) {
-    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
-      newdate[i] = year;
+    if (toFormat[i] === 'YYYY') {
+      if (dateObj.YYYY === '') {
+        result += longyear + dateObj.YY + toFormat[3];
+      } else {
+        result += dateObj.YYYY + toFormat[3];
+      }
     }
 
     if (toFormat[i] === 'DD') {
-      newdate[i] = day;
+      result += dateObj.DD + toFormat[3];
     }
 
     if (toFormat[i] === 'MM') {
-      newdate[i] = month;
+      result += dateObj.MM + toFormat[3];
     }
   }
 
-  const answer = `${newdate[0]}${toFormat[3]}${newdate[1]}${toFormat[3]}${newdate[2]}`;
-
-  return answer;
+  return result.slice(0, -1);
 }
 
 module.exports = formatDate;
