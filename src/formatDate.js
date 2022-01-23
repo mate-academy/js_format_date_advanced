@@ -49,8 +49,44 @@
  * @returns {string}
  */
 
+function positionFinder(format, parametr) {
+  for (let i = 0; i < format.length - 1; i++) {
+    if (format[i].includes(`${parametr}`)) {
+      return i;
+    }
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorOld = fromFormat[3];
+  const separatorNew = toFormat[3];
+  const dateArray = date.split(separatorOld);
+
+  // finding days, years and month positions in new format;
+  const oldYearsIndex = positionFinder(fromFormat, 'Y');
+  const oldDaysIndex = positionFinder(fromFormat, 'D');
+  const oldMonthIndex = positionFinder(fromFormat, 'M');
+  const newDaysIndex = positionFinder(toFormat, 'D');
+  const newMonthIndex = positionFinder(toFormat, 'M');
+  const newYearsIndex = positionFinder(toFormat, 'Y');
+
+  const newDate = new Array(3);
+
+  newDate[newDaysIndex] = dateArray[oldDaysIndex];
+  newDate[newMonthIndex] = dateArray[oldMonthIndex];
+  newDate[newYearsIndex] = dateArray[oldYearsIndex];
+
+  const newYearsVlaue = newDate[newYearsIndex];
+
+  if (fromFormat[oldYearsIndex].length < toFormat[newYearsIndex].length) {
+    newDate[newYearsIndex] = newDate[newYearsIndex] < 30 ? `20${newYearsVlaue}` : `19${newYearsVlaue}`;
+  }
+
+  if (fromFormat[oldYearsIndex].length > toFormat[newYearsIndex].length) {
+    newDate[newYearsIndex] = newYearsVlaue.slice(-2);
+  }
+
+  return newDate.join(separatorNew);
 }
 
 module.exports = formatDate;
