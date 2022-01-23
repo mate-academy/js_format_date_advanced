@@ -50,7 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDataMass = date.split(fromFormat[3]);
+  let result = '';
+
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
+
+  for (let i = 0; i < 4; i++) {
+    if (fromFormat[i] === 'YY') {
+      dateObj.YY = oldDataMass[i];
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateObj.YYYY = oldDataMass[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      dateObj.DD = oldDataMass[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      dateObj.MM = oldDataMass[i];
+    }
+  }
+
+  const longyear = (dateObj.YY >= 30) ? 19 : 20;
+  const shortyear = (dateObj.YYYY.slice(2));
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YY') {
+      if (dateObj.YYYY === '') {
+        result += dateObj.YY + toFormat[3];
+      } else {
+        result += shortyear + toFormat[3];
+      }
+    }
+
+    if (toFormat[i] === 'YYYY') {
+      if (dateObj.YYYY === '') {
+        result += longyear + dateObj.YY + toFormat[3];
+      } else {
+        result += dateObj.YYYY + toFormat[3];
+      }
+    }
+
+    if (toFormat[i] === 'DD') {
+      result += dateObj.DD + toFormat[3];
+    }
+
+    if (toFormat[i] === 'MM') {
+      result += dateObj.MM + toFormat[3];
+    }
+  }
+
+  return result.slice(0, -1);
 }
 
 module.exports = formatDate;
