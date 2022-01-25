@@ -51,34 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const splitedDate = date.split(fromFormat[3]);
-  const arrayReturnedDate = [];
+  const spliterFrom = fromFormat[3];
+  const spliterTo = toFormat[3];
+  const splitedInputString = date.split(spliterFrom);
+  const toFormatArray = [];
 
   for (let i = 0; i < 3; i++) {
     let indexOldDate = fromFormat.indexOf(toFormat[i]);
 
-    if (toFormat[i] === 'YY' && (indexOldDate === -1)) {
-      indexOldDate = fromFormat.indexOf('YYYY');
+    if (indexOldDate === -1) {
+      switch (toFormat[i]) {
+        case 'YY':
+          indexOldDate = fromFormat.indexOf('YYYY');
 
-      arrayReturnedDate.push(splitedDate[indexOldDate].slice(-2));
+          toFormatArray.push(splitedInputString[indexOldDate].slice(-2));
 
+          break;
+
+        case 'YYYY':
+          indexOldDate = fromFormat.indexOf('YY');
+
+          const centuryOfYear
+            = +splitedInputString[indexOldDate] < 30 ? '20' : '19';
+
+          toFormatArray.push(centuryOfYear + splitedInputString[indexOldDate]);
+
+          break;
+
+        default:
+          break;
+      }
       continue;
     }
 
-    if (toFormat[i] === 'YYYY' && (indexOldDate === -1)) {
-      indexOldDate = fromFormat.indexOf('YY');
-
-      const centuryOfYear = +splitedDate[indexOldDate] < 30 ? '20' : '19';
-
-      arrayReturnedDate.push(centuryOfYear + splitedDate[indexOldDate]);
-
-      continue;
-    }
-
-    arrayReturnedDate.push(splitedDate[indexOldDate]);
+    toFormatArray.push(splitedInputString[indexOldDate]);
   }
 
-  return arrayReturnedDate.join(toFormat[3]);
+  return toFormatArray.join(spliterTo);
 }
 
 module.exports = formatDate;
