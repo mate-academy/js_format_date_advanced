@@ -50,18 +50,18 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateLength = 3;
+  const dateLength = fromFormat.length - 1;
   const fromDate = {};
   const toDate = [];
   let yearStart = '20';
 
-  date.split(`${fromFormat[3]}`).forEach((number, i) => {
+  date.split(fromFormat[3]).forEach((number, i) => {
     fromDate[fromFormat[i]] = number;
   });
 
   const year = fromDate.YYYY || fromDate.YY;
 
-  if (year.slice(-2) > 22) {
+  if (year.slice(-2) >= 30) {
     yearStart = '19';
   }
 
@@ -77,7 +77,7 @@ function formatDate(date, fromFormat, toFormat) {
     toDate.push(fromDate[toFormat[i]]);
   }
 
-  return toDate.join(`${toFormat[3]}`);
+  return toDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
