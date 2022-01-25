@@ -48,9 +48,48 @@
  *
  * @returns {string}
  */
+/**
+ *
+ * '2020-02-18',
+ *   ['YYYY', 'MM', 'DD', '-'],
+ *   ['YYYY', 'MM', 'DD', '.'],
+ */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+
+  const dateOld = date.split(oldSeparator);
+  const dateNow = {};
+
+  for (let i = 0; i < 3; i++) {
+    dateNow[fromFormat[i]] = dateOld[i];
+  }
+
+  const newYear = toFormat
+    .find(yearForm => yearForm === 'YY' || yearForm === 'YYYY');
+  const oldYear = fromFormat
+    .find(yearForm => yearForm === 'YY' || yearForm === 'YYYY');
+
+  if (newYear !== oldYear) {
+    const year = dateNow[oldYear];
+
+    delete dateNow[oldYear];
+
+    if (newYear === 'YYYY') {
+      dateNow[newYear] = ((year >= 30) ? '19' : '20') + year;
+    } else {
+      dateNow[newYear] = year.slice(2);
+    }
+  }
+
+  const newDateForm = [];
+
+  for (let i = 0; i < 3; i++) {
+    newDateForm.push(dateNow[toFormat[i]]);
+  }
+
+  return newDateForm.join(newSeparator);
 }
 
 module.exports = formatDate;
