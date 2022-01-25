@@ -48,41 +48,48 @@
  *
  * @returns {string}
  */
+/**
+ *
+ * '2020-02-18',
+ *   ['YYYY', 'MM', 'DD', '-'],
+ *   ['YYYY', 'MM', 'DD', '.'],
+ */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
-  const dateObj = {};
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+
+  const dateOld = date.split(oldSeparator);
+  const dateNow = {};
 
   for (let i = 0; i < 3; i++) {
-    dateObj[fromFormat[i]] = dateArr[i];
+    dateNow[fromFormat[i]] = dateOld[i];
   }
 
-  const newYear = toFormat.find(x => x === 'YY' || x === 'YYYY');
-  const oldYear = fromFormat.find(x => x === 'YY' || x === 'YYYY');
+  const newYear = toFormat
+    .find(yearForm => yearForm === 'YY' || yearForm === 'YYYY');
+  const oldYear = fromFormat
+    .find(yearForm => yearForm === 'YY' || yearForm === 'YYYY');
 
   if (newYear !== oldYear) {
-    const x = dateObj[oldYear];
+    const year = dateNow[oldYear];
 
-    delete dateObj[oldYear];
+    delete dateNow[oldYear];
 
     if (newYear === 'YYYY') {
-      if (x >= 30) {
-        dateObj[newYear] = '19' + x;
-      } else {
-        dateObj[newYear] = '20' + x;
-      }
+      dateNow[newYear] = ((year >= 30) ? '19' : '20') + year;
     } else {
-      dateObj[newYear] = x.slice(2);
+      dateNow[newYear] = year.slice(2);
     }
   }
 
   const newDateForm = [];
 
   for (let i = 0; i < 3; i++) {
-    newDateForm.push(dateObj[toFormat[i]]);
+    newDateForm.push(dateNow[toFormat[i]]);
   }
 
-  return newDateForm.join(toFormat[3]);
+  return newDateForm.join(newSeparator);
 }
 
 module.exports = formatDate;
