@@ -55,35 +55,34 @@ function formatDate(date, fromFormat, toFormat) {
   const fromMonthIndex = fromFormat.indexOf('MM');
   const fromDayIndex = fromFormat.indexOf('DD');
 
-  const resultFormat = [ ...toFormat ];
+  const newSeparator = toFormat[3];
+  const oldSeparator = fromFormat[3];
 
-  const splittedDate = date.split(fromFormat[3]);
+  const splittedDate = date.split(oldSeparator);
 
   for (let i = 0; i < splittedDate.length; i++) {
-    switch (resultFormat[i]) {
+    switch (toFormat[i]) {
       case ('DD'): {
-        resultFormat[i] = splittedDate[fromDayIndex];
+        toFormat[i] = splittedDate[fromDayIndex];
         break;
       }
 
       case ('MM'): {
-        resultFormat[i] = splittedDate[fromMonthIndex];
+        toFormat[i] = splittedDate[fromMonthIndex];
         break;
       }
 
       case ('YY'): {
-        resultFormat[i] = splittedDate[fromYearIndex].length === 2
+        toFormat[i] = splittedDate[fromYearIndex].length === 2
           ? splittedDate[fromYearIndex]
           : splittedDate[fromYearIndex].slice(2);
         break;
       }
 
       case ('YYYY'): {
-        resultFormat[i] = splittedDate[fromYearIndex].length === 4
-          ? splittedDate[fromYearIndex]
-          : splittedDate[fromYearIndex].slice(0, 2) < 30
-            ? 20 + splittedDate[fromYearIndex]
-            : 19 + splittedDate[fromYearIndex];
+        toFormat[i] = getYear(fromFormat[fromYearIndex],
+          toFormat[i],
+          splittedDate[fromYearIndex]);
         break;
       }
 
@@ -93,7 +92,23 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return resultFormat.slice(0, 3).join(resultFormat[3]);
+  return toFormat.slice(0, 3).join(newSeparator);
+}
+
+function getYear(oldYearFormat, newYearFormat, oldYear) {
+  if (oldYearFormat === newYearFormat) {
+    return oldYear;
+  }
+
+  if (newYearFormat.length === 2) {
+    return oldYear.slice(2);
+  }
+
+  if (oldYear >= 30) {
+    return 19 + oldYear;
+  } else {
+    return 20 + oldYear;
+  }
 }
 
 module.exports = formatDate;
