@@ -66,11 +66,11 @@ function formatDate(date, fromFormat, toFormat) {
 
     fromFormatAdapted[yearFromFormatIndex] = yearToFormat;
 
-    if (yearFromFormat.length > yearToFormat.length) {
-      dateParts[yearFromFormatIndex] = year.slice(2);
-    } else {
-      dateParts[yearFromFormatIndex] = year < 30 ? '20' + year : '19' + year;
-    }
+    dateParts[yearFromFormatIndex] = formatYear(
+      year,
+      yearFromFormat,
+      yearToFormat
+    );
   }
 
   for (let i = 0; i < dateParts.length; i++) {
@@ -78,6 +78,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newDateParts.join(toSeparator);
+}
+
+function formatYear(year, fromFormat, toFormat) {
+  if (fromFormat.length > toFormat.length) {
+    return year.slice(2);
+  } else {
+    return year < 30 ? '20' + year : '19' + year;
+  }
 }
 
 module.exports = formatDate;
