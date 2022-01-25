@@ -49,9 +49,9 @@
  * @returns {string}
  */
 
-function positionFinder(format, parametr) {
+function positionFinder(format, parameter) {
   for (let i = 0; i < format.length - 1; i++) {
-    if (format[i].includes(`${parametr}`)) {
+    if (format[i].includes(`${parameter}`)) {
       return i;
     }
   }
