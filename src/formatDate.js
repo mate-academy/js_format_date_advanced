@@ -49,6 +49,18 @@
  * @returns {string}
  */
 
+function addToYear(date) {
+  let k = date;
+
+  if (k < 30) {
+    k = '20' + k;
+  } else {
+    k = '19' + k;
+  }
+
+  return k;
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dateToArray = date.split(fromFormat[3]);
@@ -75,13 +87,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if ('YYYY' in toFormatWithDate) {
-    if (toFormatWithDate['YYYY'] === undefined) {
-      if (fromFormatWithDate['YY'] < 30) {
-        toFormatWithDate['YYYY'] = '20' + fromFormatWithDate['YY'];
-      } else {
-        toFormatWithDate['YYYY'] = '19' + fromFormatWithDate['YY'];
-      }
-    }
+    addToYear(toFormatWithDate['YYYY']);
   }
 
   const dateWithSeparator = Object.values(toFormatWithDate).join(separator);
