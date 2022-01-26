@@ -53,9 +53,11 @@ function formatDate(date, fromFormat, toFormat) {
   const dateLength = fromFormat.length - 1;
   const fromDate = {};
   const toDate = [];
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
   let yearStart = '20';
 
-  date.split(fromFormat[3]).forEach((number, i) => {
+  date.split(fromSeparator).forEach((number, i) => {
     fromDate[fromFormat[i]] = number;
   });
 
@@ -67,17 +69,21 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < dateLength; i++) {
     if (!fromDate[toFormat[i]]) {
-      if (toFormat[i].length === 4) {
-        fromDate[toFormat[i]] = yearStart + fromDate[toFormat[i].slice(2)];
-      } else {
-        fromDate[toFormat[i]] = fromDate[toFormat[i] + 'YY'].substr(2);
-      }
+      fromDate[toFormat[i]] = formatYear(toFormat[i], fromDate, yearStart);
     }
 
     toDate.push(fromDate[toFormat[i]]);
   }
 
-  return toDate.join(toFormat[3]);
+  return toDate.join(toSeparator);
+}
+
+function formatYear(year, date, yearStart) {
+  if (year.length === 4) {
+    return yearStart + date[year.slice(2)];
+  }
+
+  return date[year + 'YY'].substr(2);
 }
 
 module.exports = formatDate;
