@@ -84,9 +84,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const finalArray = Object.values(toFormatWithDate).join(separator);
+  const dateWithSeparator = Object.values(toFormatWithDate).join(separator);
 
-  return finalArray;
+  return dateWithSeparator;
 }
 
 module.exports = formatDate;
