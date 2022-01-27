@@ -49,16 +49,16 @@
  * @returns {string}
  */
 
-function addToYear(date) {
-  let k = date;
+function addToYear(dateFrom, dateTo) {
+  let a;
 
-  if (k < 30) {
-    k = '20' + k;
+  if (dateFrom < 30) {
+    a = '20' + dateFrom;
   } else {
-    k = '19' + k;
+    a = '19' + dateFrom;
   }
 
-  return k;
+  return a;
 }
 
 function formatDate(date, fromFormat, toFormat) {
@@ -87,7 +87,12 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if ('YYYY' in toFormatWithDate) {
-    addToYear(toFormatWithDate['YYYY']);
+    if (toFormatWithDate['YYYY'] === undefined) {
+      toFormatWithDate['YYYY'] = addToYear(
+        fromFormatWithDate['YY'],
+        toFormatWithDate['YYYY']
+      );
+    }
   }
 
   const dateWithSeparator = Object.values(toFormatWithDate).join(separator);
