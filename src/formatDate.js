@@ -51,21 +51,27 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const formatedDate = [];
-  const copyDate = date.split(fromFormat[3]);
+
+  const fromSpacer = fromFormat[3];
+  const toSpacer = toFormat[3];
+
+  const dateCopy = date.split(fromSpacer);
+
+  const dateIndex = (value) => dateCopy[fromFormat.indexOf(value)];
+
+  const dateYYYY = +dateIndex('YY') < 30
+    ? '20' + dateIndex('YY')
+    : '19' + dateIndex('YY');
+
+  const dateYY = () => dateIndex('YYYY').slice(2);
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === fromFormat[fromFormat.indexOf(toFormat[i])]) {
-      formatedDate[i] = copyDate[fromFormat.indexOf(toFormat[i])];
-    } else if (toFormat[i].length !== 2) {
-      formatedDate[i] = (+copyDate[fromFormat.indexOf('YY')] < 30)
-        ? '20' + copyDate[fromFormat.indexOf('YY')]
-        : '19' + copyDate[fromFormat.indexOf('YY')];
-    } else {
-      formatedDate[i] = copyDate[fromFormat.indexOf('YYYY')].slice(2);
-    }
+    formatedDate[i] = (fromFormat.indexOf(toFormat[i]) === -1)
+      ? (toFormat[i] === 'YYYY') ? dateYYYY : dateYY()
+      : dateIndex(toFormat[i]);
   }
 
-  return formatedDate.join(toFormat[3]);
+  return formatedDate.join(toSpacer);
 }
 
 module.exports = formatDate;
