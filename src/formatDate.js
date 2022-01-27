@@ -51,46 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const separator1 = fromFormat[3];
-  const separator2 = toFormat[3];
-  const oldFormatDate = date.split([separator1]);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const oldFormatDate = date.split(oldSeparator);
   const compliteDate = [];
 
-  for (const element of toFormat) {
-    if (element === 'YYYY') {
-      for (let i = 0; i < 3; i++) {
-        if (fromFormat[i] === element) {
-          compliteDate.push(oldFormatDate[i]);
-        } else if (fromFormat[i] === 'YY') {
-          if (oldFormatDate[i] >= 30) {
-            compliteDate.push(19 + oldFormatDate[i]);
-          } else if (oldFormatDate[i] < 30) {
-            compliteDate.push(20 + oldFormatDate[i]);
-          }
-        }
+  for (let i = 0; i < 3; i++) {
+    let indexOldDate = fromFormat.indexOf(toFormat[i]);
+
+    if (indexOldDate === -1) {
+      switch (toFormat[i]) {
+        case 'YY':
+          indexOldDate = fromFormat.indexOf('YYYY');
+
+          compliteDate.push(oldFormatDate[indexOldDate].slice(-2));
+
+          break;
+
+        case 'YYYY':
+          indexOldDate = fromFormat.indexOf('YY');
+
+          const centuryOfYear
+            = +oldFormatDate[indexOldDate] < 30 ? '20' : '19';
+
+          compliteDate.push(centuryOfYear + oldFormatDate[indexOldDate]);
+
+          break;
+
+        default:
+          break;
       }
-    } else if (element === 'YY') {
-      for (let i = 0; i < 3; i++) {
-        if (fromFormat[i] === element) {
-          compliteDate.push(oldFormatDate[i]);
-        } else if (fromFormat[i] === 'YYYY') {
-          if (oldFormatDate[i] < 2000) {
-            compliteDate.push(oldFormatDate[i] - 1900);
-          } else if (oldFormatDate[i] >= 2000) {
-            compliteDate.push(oldFormatDate[i] - 2000);
-          }
-        }
-      }
-    } else {
-      for (let i = 0; i < 3; i++) {
-        if (fromFormat[i] === element) {
-          compliteDate.push(oldFormatDate[i]);
-        }
-      }
+      continue;
     }
+
+    compliteDate.push(oldFormatDate[indexOldDate]);
   }
 
-  return compliteDate.join(separator2);
+  return compliteDate.join(newSeparator);
 }
 
 module.exports = formatDate;
