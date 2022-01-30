@@ -54,29 +54,26 @@ function formatDate(date, fromFormat, toFormat) {
   const endSeparator = toFormat[3];
   const arrDate = date.split(startSeparator);
 
-  let YY = 0;
-  let YYYY = 0;
-  let MM = 0;
-  let DD = 0;
-
+  const dateObject = {
+  };
   const result = [];
 
   for (let x = 0; x < fromFormat.length; x++) {
     switch (fromFormat[x]) {
       case 'YY':
-        YY = arrDate[x];
+        dateObject.YY = arrDate[x];
         break;
 
       case 'YYYY':
-        YYYY = arrDate[x];
+        dateObject.YYYY = arrDate[x];
         break;
 
       case 'DD':
-        DD = arrDate[x];
+        dateObject.DD = arrDate[x];
         break;
 
       case 'MM':
-        MM = arrDate[x];
+        dateObject.MM = arrDate[x];
         break;
 
       default:
@@ -84,34 +81,28 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (YY === 0) {
-    YY = YYYY.slice(2);
-  }
-
-  if (YYYY === 0) {
-    if (+YY < 30) {
-      YYYY = `20${YY}`;
-    } else {
-      YYYY = `19${YY}`;
-    }
-  }
-
   for (let x = 0; x < toFormat.length; x++) {
     switch (toFormat[x]) {
       case 'YYYY':
-        result.push(YYYY);
+        if (!('YYYY' in dateObject)) {
+          reformate(dateObject);
+        }
+        result.push(dateObject.YYYY);
         break;
 
       case 'YY':
-        result.push(YY);
+        if (!('YY' in dateObject)) {
+          dateObject.YY = dateObject.YYYY.slice(2);
+        }
+        result.push(dateObject.YY);
         break;
 
       case 'DD':
-        result.push(DD);
+        result.push(dateObject.DD);
         break;
 
       case 'MM':
-        result.push(MM);
+        result.push(dateObject.MM);
         break;
 
       default:
@@ -120,6 +111,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return result.join(endSeparator);
+}
+
+function reformate(dateObject) {
+  if (Number(dateObject.YY) < 30) {
+    dateObject.YYYY = `20${dateObject.YY}`;
+  } else {
+    dateObject.YYYY = `19${dateObject.YY}`;
+  }
 }
 
 module.exports = formatDate;
