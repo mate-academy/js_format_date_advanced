@@ -52,74 +52,42 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[fromFormat.length - 1]);
   const separator = toFormat[toFormat.length - 1];
-  let year;
-  let month;
-  let day;
-  let receivedYearFormat;
-  let resultYearFormat;
-  let resultYearIndex;
-  let resultMonthIndex;
-  let resultDayIndex;
+  let resultDate = '';
 
-  for (const elem of toFormat) {
-    if (elem === 'YY' || elem === 'YYYY') {
-      resultYearFormat = elem;
-
-      resultYearIndex = toFormat.indexOf(elem);
-    }
-
-    if (elem === 'MM') {
-      resultMonthIndex = toFormat.indexOf(elem);
-    }
-
-    if (elem === 'DD') {
-      resultDayIndex = toFormat.indexOf(elem);
-    }
-  }
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
 
   for (const elem of fromFormat) {
-    if (elem === 'YY' || elem === 'YYYY') {
-      receivedYearFormat = elem;
-
-      year = dateArray[fromFormat.indexOf(elem)];
-    }
-
-    if (elem === 'MM') {
-      month = dateArray[fromFormat.indexOf(elem)];
-    }
-
-    if (elem === 'DD') {
-      day = dateArray[fromFormat.indexOf(elem)];
+    if (elem in dateObj) {
+      dateObj[elem] = dateArray[fromFormat.indexOf(elem)];
     }
   }
 
-  switch (resultYearFormat) {
-    case 'YYYY':
-      if (receivedYearFormat === 'YY') {
-        switch (parseInt(year) < 30) {
-          case true:
-            year = '20' + year;
-            break;
-
-          case false:
-            year = '19' + year;
-            break;
-        }
+  switch (dateObj['YY'] === '') {
+    case false:
+      if (parseInt(dateObj['YY']) < 30) {
+        dateObj['YYYY'] = '20' + dateObj['YY'];
+      } else {
+        dateObj['YYYY'] = '19' + dateObj['YY'];
       }
       break;
 
-    case 'YY':
-      if (receivedYearFormat === 'YYYY') {
-        year = year.slice(2);
-      }
+    case true:
+      dateObj['YY'] = dateObj['YYYY'].slice(2);
       break;
   }
 
-  dateArray[resultYearIndex] = year;
-  dateArray[resultMonthIndex] = month;
-  dateArray[resultDayIndex] = day;
-
-  const resultDate = dateArray.join(separator);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (i !== toFormat.length - 2) {
+      resultDate += dateObj[toFormat[i]] + separator;
+    } else {
+      resultDate += dateObj[toFormat[i]];
+    }
+  }
 
   return resultDate;
 }
