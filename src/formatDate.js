@@ -50,7 +50,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateValue = date.split(fromFormat[3]);
+  const isLongYearFromFormat = fromFormat.includes('YYYY');
+  const isLongYearToFormat = toFormat.includes('YYYY');
+  const fromYearIndex = getYearIndex(fromFormat);
+  const toYearIndex = getYearIndex(toFormat);
+  const fromMonthIndex = fromFormat.indexOf('MM');
+  const toMonthIndex = toFormat.indexOf('MM');
+  const toDayIndex = 3 - toYearIndex - toMonthIndex;
+  const fromDayIndex = 3 - fromYearIndex - fromMonthIndex;
+
+  switch (true) {
+    case (isLongYearFromFormat && !isLongYearToFormat):
+      dateValue[fromYearIndex] = dateValue[fromYearIndex].slice(-2);
+      break;
+    case (!isLongYearFromFormat && isLongYearToFormat):
+      const century = (+dateValue[fromYearIndex] < 30) ? '20' : '19';
+
+      dateValue[fromYearIndex] = century + dateValue[fromYearIndex];
+      break;
+    default:
+      break;
+  }
+
+  const result = Array(3);
+
+  result[toYearIndex] = dateValue[fromYearIndex];
+  result[toMonthIndex] = dateValue[fromMonthIndex];
+  result[toDayIndex] = dateValue[fromDayIndex];
+
+  return result.join(toFormat[3]);
+}
+
+function getYearIndex(format) {
+  if (format.includes('YYYY')) {
+    return format.indexOf('YYYY');
+  } else {
+    return format.indexOf('YY');
+  }
 }
 
 module.exports = formatDate;
