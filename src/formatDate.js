@@ -48,9 +48,50 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitDate = date.split(fromFormat[3]);
+  const dateReport = { // meant to help recognize format element
+    [fromFormat[0][0]]: splitDate[0],
+    [fromFormat[1][0]]: splitDate[1],
+    [fromFormat[2][0]]: splitDate[2],
+  };
+  const formattedDate = [];
+
+  for (let index = 0; index < toFormat.length - 1; index++) {
+    const formatElement = toFormat[index];
+    const key = formatElement.charAt(0);
+
+    if (key === 'Y') {
+      switch (formatElement.length - getYearFormat(fromFormat)) {
+        case -2: // prev - YYYY, now - YY
+          formattedDate.push(dateReport[key].slice(2));
+          break;
+
+        case 2: // prev - YY, now - YYYY
+          const prefix = +dateReport[key] < 30 ? 20 : 19;
+
+          formattedDate.push(prefix + dateReport[key]);
+          break;
+
+        default: // prev === now
+          formattedDate.push(dateReport[key]);
+      }
+    } else {
+      formattedDate.push(dateReport[key]);
+    }
+  }
+
+  return formattedDate.join(toFormat[3]);
+}
+
+function getYearFormat(format) {
+  for (const element of format) {
+    if (element.startsWith('Y')) {
+      return element.length;
+    }
+  }
+
+  return undefined;
 }
 
 module.exports = formatDate;
