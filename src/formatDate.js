@@ -82,14 +82,6 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (found === false) {
       indexTo = i;
-
-      if (dateSplit[indexFrom] < 30 && toFormat[indexTo].length > 2) {
-        result[indexTo] = 20 + `${dateSplit[indexFrom]}`;
-      } else if (fromFormat[indexFrom].length > toFormat[indexTo].length) {
-        result[indexTo] = dateSplit[indexFrom].slice(2);
-      } else if (dateSplit[indexFrom] >= 30 && toFormat[indexTo].length > 2) {
-        result[indexTo] = 19 + `${dateSplit[indexFrom]}`;
-      }
     }
   }
 
