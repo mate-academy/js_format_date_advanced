@@ -70,41 +70,33 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    let found = false;
+  const indexFunc = function(a, b) {
+    for (let i = 0; i < a.length - 1; i++) {
+      let found = false;
 
-    for (let j = 0; j < fromFormat.length - 1; j++) {
-      if (toFormat[i] === fromFormat[j]) {
-        found = true;
-        break;
+      for (let j = 0; j < b.length - 1; j++) {
+        if (a[i] === b[j]) {
+          found = true;
+          break;
+        }
+      }
+
+      if (found === false) {
+        return i;
       }
     }
+  };
 
-    if (found === false) {
-      indexTo = i;
-    }
-  }
+  indexTo = indexFunc(toFormat, fromFormat);
+  indexFrom = indexFunc(fromFormat, toFormat);
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    let found = false;
-
-    for (let j = 0; j < toFormat.length - 1; j++) {
-      if (fromFormat[i] === toFormat[j]) {
-        found = true;
-        break;
-      }
-    }
-
-    if (found === false) {
-      indexFrom = i;
-
-      if (dateSplit[indexFrom] < 30 && toFormat[indexTo].length > 2) {
-        result[indexTo] = 20 + `${dateSplit[indexFrom]}`;
-      } else if (fromFormat[indexFrom].length > toFormat[indexTo].length) {
-        result[indexTo] = dateSplit[indexFrom].slice(2);
-      } else if (dateSplit[indexFrom] >= 30 && toFormat[indexTo].length > 2) {
-        result[indexTo] = 19 + `${dateSplit[indexFrom]}`;
-      }
+  if (indexFrom !== undefined && indexTo !== undefined) {
+    if (dateSplit[indexFrom] < 30 && toFormat[indexTo].length > 2) {
+      result[indexTo] = 20 + `${dateSplit[indexFrom]}`;
+    } else if (fromFormat[indexFrom].length > toFormat[indexTo].length) {
+      result[indexTo] = dateSplit[indexFrom].slice(2);
+    } else if (dateSplit[indexFrom] >= 30 && toFormat[indexTo].length > 2) {
+      result[indexTo] = 19 + `${dateSplit[indexFrom]}`;
     }
   }
 
