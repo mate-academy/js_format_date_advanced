@@ -49,63 +49,6 @@
  * @returns {string}
  */
 
-// function formatDate(date, fromFormat, toFormat) {
-//   // write code here
-//   const j = fromFormat.slice();
-//   const k = toFormat.slice();
-
-//   const [a1, , , d1] = j.sort();
-//   const [a2, , , d2] = k.sort();
-//   let [a, b, c] = date.split(a1);
-
-//   if (d1.length > d2.length) {
-//     if (a.length === 4) {
-//       a = a.slice(2, 4);
-//     } else if (c.length === 4) {
-//       c = c.slice(2, 4);
-//     } else if (b.length === 4) {
-//       b = b.slice(2, 4);
-//     }
-//   }
-
-//   if (d1.length < d2.length) {
-//     if (j[0][0] === k[0][0] || j[0][0] === k[2][0]
-//        || j[2][0] === k[0][0] || j[2][0] === k[2][0]) {
-//       if (a <= 22) {
-//         a = `20${a}`;
-//       } else if (a > 22) {
-//         a = `19${a}`;
-//       }
-//     }
-//   }
-
-//   if (fromFormat[0][0] === toFormat[1][0] && fromFormat[0][0] === 'Y') {
-//     return [b, a, c].join(a2);
-//   }
-
-//   if (fromFormat[0][0] === toFormat[2][0] && fromFormat[0][0] === 'Y') {
-//     return [c, b, a].join(a2);
-//   }
-
-//   if (fromFormat[1][0] === toFormat[0][0] && fromFormat[1][0] === 'Y') {
-//     return [a, c, b].join(a2);
-//   }
-
-//   if (fromFormat[1][0] === toFormat[2][0] && fromFormat[1][0] === 'Y') {
-//     return [c, a, b].join(a2);
-//   }
-
-//   if (fromFormat[2][0] === toFormat[0][0] && fromFormat[2][0] === 'Y') {
-//     return [c, b, a].join(a2);
-//   }
-
-//   if (fromFormat[2][0] === toFormat[1][0] && fromFormat[2][0] === 'Y') {
-//     return [c, b, a].join(a2);
-//   }
-
-//   return [a, b, c].join(a2);
-// }
-
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const j = fromFormat.slice();
