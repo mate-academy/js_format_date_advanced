@@ -51,60 +51,36 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const j = fromFormat.slice();
-  const j1 = fromFormat.slice();
-  const k = toFormat.slice();
-  const k1 = toFormat.slice();
+  const separator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+  const dateArr = date.split(separator);
+  const obj = {};
+  const objNew = {};
+  let result = '';
 
-  const [a1, , , d1] = j.sort();
-  const [a2, , , d2] = k.sort();
+  for (let i = 0; i < dateArr.length; i++) {
+    obj[fromFormat[i]] = dateArr[i];
 
-  const dateArr = date.split(a1);
-  const result = [];
+    for (const key of toFormat) {
+      objNew[key] = obj[key];
 
-  for (let i = 0; i < 3; i++) {
-    if (k1[0].slice(0, 1) === j1[i].slice(0, 1)) {
-      result.push(dateArr[i]);
-    }
-  }
+      if (key === 'YYYY' && !obj.YYYY) {
+        if (obj.YY <= 22) {
+          objNew[key] = `20${obj.YY}`;
+        } else {
+          objNew[key] = `19${obj['YY']}`;
+        }
+      }
 
-  for (let i = 0; i < 3; i++) {
-    if (k1[1].slice(0, 1) === j1[i].slice(0, 1)) {
-      result.push(dateArr[i]);
-    }
-  }
-
-  for (let i = 0; i < 3; i++) {
-    if (k1[2].slice(0, 1) === j1[i].slice(0, 1)) {
-      result.push(dateArr[i]);
-    }
-  }
-
-  let [a, b, c] = result;
-
-  if (d1.length > d2.length) {
-    if (a.length === 4) {
-      a = a.slice(2, 4);
-    } else if (c.length === 4) {
-      c = c.slice(2, 4);
-    } else if (b.length === 4) {
-      b = b.slice(2, 4);
-    }
-  }
-
-  if (d1.length < d2.length) {
-    if (j[0][0] === k[0][0] || j[0][0] === k[1][0] || j[0][0] === k[2][0]
-       || j[1][0] === k[0][0] || j[0][0] === k[1][0] || j[0][0] === k[2][0]
-       || j[2][0] === k[0][0] || j[2][0] === k[1][0] || j[2][0] === k[2][0]) {
-      if (a <= 22) {
-        a = `20${a}`;
-      } else if (a > 22) {
-        a = `19${a}`;
+      if (key === 'YY') {
+        objNew[key] = (obj['YYYY'] / 100).toString().slice(3);
       }
     }
+
+    result = Object.values(objNew).join(newSeparator);
   }
 
-  return [a, b, c].join(a2);
+  return result;
 }
 
 module.exports = formatDate;
