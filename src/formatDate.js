@@ -48,18 +48,15 @@
  *
  * @returns {string}
  */
-function normalizeNumber(num) {
+function normalizedateNumber(num) {
   const slicedNum = num.slice(-2);
+  const limit = 30;
 
-  if (+slicedNum < 30) {
-    return `20${num}`;
-  } else {
-    return `19${num}`;
-  }
+  return (+slicedNum < limit) ? `20${num}` : `19${num}`;
 }
 
 function formatDate(date, fromFormat, toFormat) {
-  const holder = {}; // type as key & number as value
+  const holder = {}; // type as key & dateNumber as value
   const dateFormat = [];
   const dateSplit = date.split(fromFormat[3]);
 
@@ -68,25 +65,25 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    const number = holder[toFormat[i].slice(-2)];
+    const dateNumber = holder[toFormat[i].slice(-2)];
 
-    if (toFormat[i].slice(-2) !== 'YY') {
-      dateFormat.push(number);
+    if (toFormat[i] !== 'YY' || toFormat[i] !== 'YYYY') {
+      dateFormat.push(dateNumber);
     } else {
-      switch (number.length) {
+      switch (dateNumber.length) {
         case 2:
           if (toFormat[i].length === 4) {
-            dateFormat.push(normalizeNumber(number));
+            dateFormat.push(normalizedateNumber(dateNumber));
           } else {
-            dateFormat.push(number);
+            dateFormat.push(dateNumber);
           }
           break;
 
         case 4:
           if (toFormat[i].length === 2) {
-            dateFormat.push(number.slice(-2));
+            dateFormat.push(dateNumber.slice(-2));
           } else {
-            dateFormat.push(number);
+            dateFormat.push(dateNumber);
           }
       }
     }
