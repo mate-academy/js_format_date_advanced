@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const transformDate = date.split(fromFormat[3]);
+  const componentDate = {};
+  const formatedDate = [];
+
+  const shortYear = transformDate[fromFormat.indexOf('YY')];
+  const longYear = transformDate[fromFormat.indexOf('YYYY')];
+
+  for (let i = 0; i < transformDate.length; i++) {
+    componentDate[fromFormat[i]] = transformDate[i];
+  }
+
+  getChangePartOfYear(componentDate, toFormat, 'YYYY', shortYear);
+
+  if (toFormat.includes('YY') && longYear) {
+    componentDate['YY'] = longYear.slice(2);
+  }
+
+  for (const part of toFormat) {
+    if (componentDate.hasOwnProperty(part)) {
+      formatedDate.push(componentDate[part]);
+    }
+  }
+
+  return formatedDate.join(toFormat[3]);
+}
+
+function getChangePartOfYear(changingObj, checkingArray, value, year) {
+  if (checkingArray.includes(`${value}`) && year) {
+    changingObj[`${value}`] = `${year >= 30
+      ? '19'
+      : '20'}${year}`;
+  }
 }
 
 module.exports = formatDate;
