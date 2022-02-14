@@ -48,46 +48,51 @@
  *
  * @returns {string}
  */
+function normalizeNumber(num) {
+  const slicedNum = num.slice(-2);
+
+  if (+slicedNum < 30) {
+    return `20${num}`;
+  } else {
+    return `19${num}`;
+  }
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  const obj = {}; // type as key & number as value
-  const arrForJoin = [];
-  const dateSplit = date.split(`${fromFormat[3]}`);
+  const holder = {}; // type as key & number as value
+  const dateFormat = [];
+  const dateSplit = date.split(fromFormat[3]);
 
   for (let i = 0; i < dateSplit.length; i++) {
-    obj[fromFormat[i].slice(-2)] = dateSplit[i];
+    holder[fromFormat[i].slice(-2)] = dateSplit[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    const number = obj[toFormat[i].slice(-2)];
+    const number = holder[toFormat[i].slice(-2)];
 
     if (toFormat[i].slice(-2) !== 'YY') {
-      arrForJoin.push(number);
+      dateFormat.push(number);
     } else {
       switch (number.length) {
         case 2:
           if (toFormat[i].length === 4) {
-            if (+number.slice(-2) < 30) {
-              arrForJoin.push(`20${number}`);
-            } else {
-              arrForJoin.push(`19${number}`);
-            }
+            dateFormat.push(normalizeNumber(number));
           } else {
-            arrForJoin.push(number);
+            dateFormat.push(number);
           }
           break;
 
         case 4:
           if (toFormat[i].length === 2) {
-            arrForJoin.push(number.slice(-2));
+            dateFormat.push(number.slice(-2));
           } else {
-            arrForJoin.push(number);
+            dateFormat.push(number);
           }
       }
     }
   }
 
-  return arrForJoin.join(`${toFormat[3]}`);
+  return dateFormat.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
