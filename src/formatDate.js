@@ -48,29 +48,41 @@
  *
  * @returns {string}
  */
+const convertYear = year => {
+  if (year < 30) {
+    return `20${year}`;
+  }
+
+  if (year <= 99) {
+    return `19${year}`;
+  }
+
+  return year.slice(2);
+};
+
+const getYearIndex = format => {
+  const shortYearIndex = format.indexOf('YY');
+
+  if (shortYearIndex !== -1) {
+    return shortYearIndex;
+  }
+
+  return format.indexOf('YYYY');
+};
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
+  const dateSplited = date.split(fromFormat[3]);
   const dateFormated = [];
 
-  const shortYear = dateArr[fromFormat.indexOf('YY')];
-  const longYear = dateArr[fromFormat.indexOf('YYYY')];
+  const fromFormatYear = dateSplited[getYearIndex(fromFormat)];
 
-  if (toFormat.includes('YYYY')) {
-    dateFormated[toFormat.indexOf('YYYY')] = `${shortYear >= 30
-      ? '19'
-      : '20'}${shortYear}`;
-  }
+  dateFormated[getYearIndex(toFormat)] = convertYear(fromFormatYear);
 
-  if (toFormat.includes('YY') && longYear) {
-    dateFormated[toFormat.indexOf('YY')] = longYear.slice(2);
-  }
-
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < dateSplited.length; i++) {
     const index = toFormat.indexOf(fromFormat[i]);
 
     if (index !== -1) {
-      dateFormated[index] = dateArr[i];
+      dateFormated[index] = dateSplited[i];
     }
   }
 
