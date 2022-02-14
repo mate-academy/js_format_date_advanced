@@ -50,17 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [firstType, secondType, thirdType, fromSeparator] = fromFormat;
+  const fromSeparator = fromFormat[3];
   const toSeparator = toFormat[3];
-  const givenDate = date.split(fromSeparator);
-  const dateNow = {
-    [firstType[0]]: givenDate[0],
-    [secondType[0]]: givenDate[1],
-    [thirdType[0]]: givenDate[2],
+  const dateArray = date.split(fromSeparator);
+  const givenDate = {
+    [fromFormat[0][0]]: dateArray[0],
+    [fromFormat[1][0]]: dateArray[1],
+    [fromFormat[2][0]]: dateArray[2],
   };
 
+  const fixedDate = centuryChecker(toFormat, givenDate);
+
+  let dateToReturn = [];
+
+  for (let i = 0; i < 3; i++) {
+    dateToReturn.push(fixedDate[toFormat[i][0]]);
+  }
+  dateToReturn = dateToReturn.join(toSeparator);
+
+  return dateToReturn;
+}
+
+function centuryChecker(toFormat, dateNow) {
   for (const dateType of toFormat) {
-    if (dateType[0] === 'Y') {
+    if (dateType.startsWith('Y')) {
       switch (dateType.length - dateNow.Y.length) {
         case 2:
           if (dateNow.Y < 30) {
@@ -76,14 +89,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  let dateToReturn = [];
-
-  for (let i = 0; i < 3; i++) {
-    dateToReturn.push(dateNow[toFormat[i][0]]);
-  }
-  dateToReturn = dateToReturn.join(toSeparator);
-
-  return dateToReturn;
+  return dateNow;
 }
 
 module.exports = formatDate;
