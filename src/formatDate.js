@@ -50,34 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
-  const objectDate = {};
+  const transformDate = date.split(fromFormat[3]);
+  const componentDate = {};
   const formatedDate = [];
 
-  const shortYear = dateArray[fromFormat.indexOf('YY')];
-  const longYear = dateArray[fromFormat.indexOf('YYYY')];
+  const shortYear = transformDate[fromFormat.indexOf('YY')];
+  const longYear = transformDate[fromFormat.indexOf('YYYY')];
 
-  for (let i = 0; i < dateArray.length; i++) {
-    objectDate[fromFormat[i]] = dateArray[i];
+  for (let i = 0; i < transformDate.length; i++) {
+    componentDate[fromFormat[i]] = transformDate[i];
   }
 
-  if (toFormat.includes('YYYY') && shortYear) {
-    objectDate['YYYY'] = `${shortYear >= 30
-      ? '19'
-      : '20'}${shortYear}`;
-  }
+  changePartOfYear(componentDate, toFormat, 'YYYY', shortYear);
 
   if (toFormat.includes('YY') && longYear) {
-    objectDate['YY'] = longYear.slice(2);
+    componentDate['YY'] = longYear.slice(2);
   }
 
   for (const part of toFormat) {
-    if (objectDate[part] !== undefined) {
-      formatedDate.push(objectDate[part]);
+    if (componentDate.hasOwnProperty(part)) {
+      formatedDate.push(componentDate[part]);
     }
   }
 
   return formatedDate.join(toFormat[3]);
+}
+
+function changePartOfYear(changingObj, checkingArray, value, year) {
+  if (checkingArray.includes(`${value}`) && year) {
+    changingObj[`${value}`] = `${year >= 30
+      ? '19'
+      : '20'}${year}`;
+  }
 }
 
 module.exports = formatDate;
