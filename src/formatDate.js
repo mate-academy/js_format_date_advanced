@@ -59,14 +59,17 @@ function formatDate(date, fromFormat, toFormat) {
   const shortYear = thisDate[fromFormat.indexOf('YY')];
   const longYear = thisDate[fromFormat.indexOf('YYYY')];
 
+  const getCentury = (year) => year >= 30
+    ? '19'
+    : '20';
+
   if (toFormat.includes('YYYY')) {
-    formatted[toFormat.indexOf('YYYY')] = `${
-      shortYear >= 30 ? '19' : '20'}${shortYear}`;
+    formatted[toFormat.indexOf('YYYY')] = `${getCentury(shortYear)}${shortYear}`;
   } else if (toFormat.includes('YY') && longYear) {
     formatted[toFormat.indexOf('YY')] = longYear.slice(2);
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     const index = toFormat.indexOf(fromFormat[i]);
 
     if (index !== -1) {
