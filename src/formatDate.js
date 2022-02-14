@@ -63,8 +63,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (key === 'YYYY') {
       bufferObject['YY'] = bufferObject[key].slice(2);
     } else if (key === 'YY') {
-      bufferObject['YYYY'] = centuryChecker(bufferObject,
-        bufferObject[key], currentYear);
+      bufferObject['YYYY'] = centuryChecker(bufferObject[key], currentYear);
     }
   }
 
@@ -77,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
   return replacedItems.slice(0, (replacedItems.length - 1)).join(newFormat);
 }
 
-function centuryChecker(bufferObject, key, year) {
+function centuryChecker(key, year) {
   let fullYear = 0;
 
   if (key <= year) {
