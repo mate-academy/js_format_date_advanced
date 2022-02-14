@@ -51,9 +51,10 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateFixed = [];
-  const dateArray = date.split(fromFormat[3]);
-  const fullYear = dateArray[fromFormat.indexOf('YYYY')];
-  const shortYear = dateArray[fromFormat.indexOf('YY')];
+  const dateBefore = date.split(fromFormat[3]);
+  const fullYear = dateBefore[fromFormat.indexOf('YYYY')];
+  const shortYear = dateBefore[fromFormat.indexOf('YY')];
+  const checkCentury = 30;
 
   if (toFormat.includes('YY') && fullYear) {
     dateFixed[toFormat.indexOf('YY')] = fullYear.slice(2);
@@ -61,15 +62,15 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (toFormat.includes('YYYY')) {
     dateFixed[toFormat.indexOf('YYYY')]
-    = `${shortYear >= 30
+    = `${shortYear >= checkCentury
         ? '19' : '20'}${shortYear}`;
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     const index = toFormat.indexOf(fromFormat[i]);
 
     if (index !== -1) {
-      dateFixed[index] = dateArray[i];
+      dateFixed[index] = dateBefore[i];
     }
   }
 
