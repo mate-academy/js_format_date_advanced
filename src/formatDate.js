@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
     objectDate[fromFormat[i]] = dateArray[i];
   }
 
-  if (toFormat.includes('YYYY') && shortYear !== undefined) {
+  if (toFormat.includes('YYYY') && shortYear) {
     objectDate['YYYY'] = `${shortYear >= 30
       ? '19'
       : '20'}${shortYear}`;
