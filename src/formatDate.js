@@ -48,9 +48,48 @@
  *
  * @returns {string}
  */
+function normalizedateNumber(num) {
+  const slicedNum = num.slice(-2);
+  const limit = 30;
+
+  return (+slicedNum < limit) ? `20${num}` : `19${num}`;
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const holder = {}; // type as key & dateNumber as value
+  const dateFormat = [];
+  const dateSplit = date.split(fromFormat[3]);
+
+  for (let i = 0; i < dateSplit.length; i++) {
+    holder[fromFormat[i].slice(-2)] = dateSplit[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const dateNumber = holder[toFormat[i].slice(-2)];
+
+    if (toFormat[i] !== 'YY' || toFormat[i] !== 'YYYY') {
+      dateFormat.push(dateNumber);
+    } else {
+      switch (dateNumber.length) {
+        case 2:
+          if (toFormat[i].length === 4) {
+            dateFormat.push(normalizedateNumber(dateNumber));
+          } else {
+            dateFormat.push(dateNumber);
+          }
+          break;
+
+        case 4:
+          if (toFormat[i].length === 2) {
+            dateFormat.push(dateNumber.slice(-2));
+          } else {
+            dateFormat.push(dateNumber);
+          }
+      }
+    }
+  }
+
+  return dateFormat.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
