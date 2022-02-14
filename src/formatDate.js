@@ -51,8 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const fromDate = date.split(fromFormat[3]);
-
   const bufferObject = {};
+  const currentYear = 22;
+  const newFormat = toFormat[3];
 
   for (let i = 0; i < fromDate.length; i++) {
     bufferObject[fromFormat[i]] = fromDate[i];
@@ -62,11 +63,8 @@ function formatDate(date, fromFormat, toFormat) {
     if (key === 'YYYY') {
       bufferObject['YY'] = bufferObject[key].slice(2);
     } else if (key === 'YY') {
-      if (bufferObject[key] < 23) {
-        bufferObject['YYYY'] = '20' + bufferObject[key];
-      } else {
-        bufferObject['YYYY'] = '19' + bufferObject[key];
-      }
+      bufferObject['YYYY'] = centuryChecker(bufferObject,
+        bufferObject[key], currentYear);
     }
   }
 
@@ -76,7 +74,19 @@ function formatDate(date, fromFormat, toFormat) {
     replacedItems.push(bufferObject[item]);
   }
 
-  return replacedItems.slice(0, 3).join(toFormat[3]);
+  return replacedItems.slice(0, (replacedItems.length - 1)).join(newFormat);
+}
+
+function centuryChecker(bufferObject, key, year) {
+  let fullYear = 0;
+
+  if (key <= year) {
+    fullYear = '20' + key;
+  } else {
+    fullYear = '19' + key;
+  }
+
+  return fullYear;
 }
 
 module.exports = formatDate;
