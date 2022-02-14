@@ -53,8 +53,9 @@ function formatDate(date, fromFormat, toFormat) {
   const objFormatData = {};
   const splitData = date.split(fromFormat[3]);
   const arrToFormat = [];
+  const years = 30;
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < splitData.length; i++) {
     objFormatData[fromFormat[i]] = splitData[i];
   }
 
@@ -64,11 +65,11 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (value === 'YYYY') {
-      if (objFormatData['YY'] < 30) {
+      if (objFormatData['YY'] < years) {
         objFormatData['YYYY'] = `20${objFormatData['YY']}`;
       }
 
-      if (objFormatData['YY'] >= 30) {
+      if (objFormatData['YY'] >= years) {
         objFormatData['YYYY'] = `19${objFormatData['YY']}`;
       }
     }
