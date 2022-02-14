@@ -50,7 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateFixed = [];
+  const dateBefore = date.split(fromFormat[3]);
+  const fullYear = dateBefore[fromFormat.indexOf('YYYY')];
+  const shortYear = dateBefore[fromFormat.indexOf('YY')];
+  const checkCentury = 30;
+
+  if (toFormat.includes('YY') && fullYear) {
+    dateFixed[toFormat.indexOf('YY')] = fullYear.slice(2);
+  }
+
+  if (toFormat.includes('YYYY')) {
+    dateFixed[toFormat.indexOf('YYYY')]
+    = `${shortYear >= checkCentury
+        ? '19' : '20'}${shortYear}`;
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const index = toFormat.indexOf(fromFormat[i]);
+
+    if (index !== -1) {
+      dateFixed[index] = dateBefore[i];
+    }
+  }
+
+  return dateFixed.join(toFormat[3]);
 }
 
 module.exports = formatDate;
