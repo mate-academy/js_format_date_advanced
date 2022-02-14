@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
     componentDate[fromFormat[i]] = transformDate[i];
   }
 
-  changePartOfYear(componentDate, toFormat, 'YYYY', shortYear);
+  getChangePartOfYear(componentDate, toFormat, 'YYYY', shortYear);
 
   if (toFormat.includes('YY') && longYear) {
     componentDate['YY'] = longYear.slice(2);
@@ -76,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
   return formatedDate.join(toFormat[3]);
 }
 
-function changePartOfYear(changingObj, checkingArray, value, year) {
+function getChangePartOfYear(changingObj, checkingArray, value, year) {
   if (checkingArray.includes(`${value}`) && year) {
     changingObj[`${value}`] = `${year >= 30
       ? '19'
