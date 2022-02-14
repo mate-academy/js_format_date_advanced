@@ -50,7 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSep = fromFormat[fromFormat.length - 1];
+  const newSep = toFormat[toFormat.length - 1];
+
+  const thisDate = date.split(oldSep);
+  const formatted = [];
+
+  const shortYear = thisDate[fromFormat.indexOf('YY')];
+  const longYear = thisDate[fromFormat.indexOf('YYYY')];
+
+  if (toFormat.includes('YYYY')) {
+    formatted[toFormat.indexOf('YYYY')] = `${
+      shortYear >= 30 ? '19' : '20'}${shortYear}`;
+  } else if (toFormat.includes('YY') && longYear) {
+    formatted[toFormat.indexOf('YY')] = longYear.slice(2);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    const index = toFormat.indexOf(fromFormat[i]);
+
+    if (index !== -1) {
+      formatted[index] = thisDate[i];
+    }
+  }
+
+  return formatted.join(newSep);
 }
 
 module.exports = formatDate;
