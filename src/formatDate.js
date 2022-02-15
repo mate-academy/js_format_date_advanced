@@ -59,7 +59,8 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (oldDateObj['YY'] && toFormat.includes('YYYY')) {
-    const century = oldDateObj['YY'] >= 30 ? '19' : '20';
+    const maxCenturyCheck = 30;
+    const century = oldDateObj['YY'] >= maxCenturyCheck ? '19' : '20';
 
     oldDateObj['YYYY'] = century + oldDateObj['YY'];
   } else if (oldDateObj['YYYY'] && toFormat.includes('YY')) {
