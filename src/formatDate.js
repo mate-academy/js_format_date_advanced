@@ -52,44 +52,37 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat[3];
   const toSeparator = toFormat[3];
-  const dateArray = date.split(fromSeparator);
-  const givenDate = {
-    [fromFormat[0][0]]: dateArray[0],
-    [fromFormat[1][0]]: dateArray[1],
-    [fromFormat[2][0]]: dateArray[2],
-  };
+  const dateNumbers = date.split(fromSeparator);
+  const givenDate = {};
 
-  const fixedDate = centuryChecker(toFormat, givenDate);
+  for (let i = 0; i < dateNumbers.length; i++) {
+    givenDate[fromFormat[i]] = dateNumbers[i];
+  }
+
+  addYearType(givenDate);
 
   let dateToReturn = [];
 
-  for (let i = 0; i < 3; i++) {
-    dateToReturn.push(fixedDate[toFormat[i][0]]);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    dateToReturn.push(givenDate[toFormat[i]]);
   }
   dateToReturn = dateToReturn.join(toSeparator);
 
   return dateToReturn;
 }
 
-function centuryChecker(toFormat, dateNow) {
-  for (const dateType of toFormat) {
-    if (dateType.startsWith('Y')) {
-      switch (dateType.length - dateNow.Y.length) {
-        case 2:
-          if (dateNow.Y < 30) {
-            dateNow.Y = 20 + dateNow.Y;
-          } else {
-            dateNow.Y = 19 + dateNow.Y;
-          }
-          break;
-        case -2:
-          dateNow.Y = dateNow.Y.slice(2);
-          break;
+function addYearType(date) {
+  const shortYear = 2;
+
+  for (const el in date) {
+    if (el.startsWith('Y')) {
+      if (date[el].length === shortYear) {
+        date.YYYY = date.YY < 30 ? 20 + date.YY : 19 + date.YY;
+      } else {
+        date.YY = date.YYYY.slice(2);
       }
     }
   }
-
-  return dateNow;
 }
 
 module.exports = formatDate;
