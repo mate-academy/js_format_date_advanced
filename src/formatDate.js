@@ -52,23 +52,23 @@
 function formatDate(date, fromFormat, toFormat) {
   const newFormatDate = toFormat.slice(0, 3);
   const oldDate = date.split(fromFormat[3]);
-  const oldDateObj = {};
+  const dateContainer = {};
 
   for (let i = 0; i < oldDate.length; i++) {
-    oldDateObj[fromFormat[i]] = oldDate[i];
+    dateContainer[fromFormat[i]] = oldDate[i];
   }
 
-  if (oldDateObj['YY'] && toFormat.includes('YYYY')) {
+  if (dateContainer['YY'] && toFormat.includes('YYYY')) {
     const maxCenturyCheck = 30;
-    const century = oldDateObj['YY'] >= maxCenturyCheck ? '19' : '20';
+    const century = dateContainer['YY'] >= maxCenturyCheck ? '19' : '20';
 
-    oldDateObj['YYYY'] = century + oldDateObj['YY'];
-  } else if (oldDateObj['YYYY'] && toFormat.includes('YY')) {
-    oldDateObj['YY'] = oldDateObj['YYYY'].slice(2);
+    dateContainer['YYYY'] = century + dateContainer['YY'];
+  } else if (dateContainer['YYYY'] && toFormat.includes('YY')) {
+    dateContainer['YY'] = dateContainer['YYYY'].slice(2);
   }
 
   for (let i = 0; i < newFormatDate.length; i++) {
-    newFormatDate[i] = oldDateObj[newFormatDate[i]];
+    newFormatDate[i] = dateContainer[newFormatDate[i]];
   }
 
   return newFormatDate.join(toFormat[3]);
