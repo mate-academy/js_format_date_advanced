@@ -50,35 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const objFormatData = {};
+  const formatData = {};
   const splitData = date.split(fromFormat[3]);
-  const arrToFormat = [];
+  const result = [];
   const years = 30;
 
   for (let i = 0; i < splitData.length; i++) {
-    objFormatData[fromFormat[i]] = splitData[i];
+    formatData[fromFormat[i]] = splitData[i];
   }
 
   for (const value of toFormat) {
     if (value === 'YY') {
-      objFormatData['YY'] = objFormatData['YYYY'].slice(2, 4);
+      formatData['YY'] = formatData['YYYY'].slice(2, 4);
     }
 
     if (value === 'YYYY') {
-      if (objFormatData['YY'] < years) {
-        objFormatData['YYYY'] = `20${objFormatData['YY']}`;
-      }
-
-      if (objFormatData['YY'] >= years) {
-        objFormatData['YYYY'] = `19${objFormatData['YY']}`;
-      }
+      formatYear();
     }
   }
 
-  arrToFormat.push(objFormatData[toFormat[0]],
-    objFormatData[toFormat[1]], objFormatData[toFormat[2]]);
+  result.push(formatData[toFormat[0]],
+    formatData[toFormat[1]], formatData[toFormat[2]]);
 
-  return arrToFormat.join(toFormat[3]);
+  function formatYear() {
+    if (formatData['YY'] < years) {
+      formatData['YYYY'] = `20${formatData['YY']}`;
+    }
+
+    if (formatData['YY'] >= years) {
+      formatData['YYYY'] = `19${formatData['YY']}`;
+    }
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
