@@ -50,34 +50,37 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSep = fromFormat[fromFormat.length - 1];
-  const newSep = toFormat[toFormat.length - 1];
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
 
-  const thisDate = date.split(oldSep);
-  const formatted = [];
+  const thisDate = date.split(oldSeparator);
+  const formattedDate = [];
 
   const shortYear = thisDate[fromFormat.indexOf('YY')];
   const longYear = thisDate[fromFormat.indexOf('YYYY')];
 
-  const getCentury = (year) => year >= 30
-    ? '19'
-    : '20';
-
   if (toFormat.includes('YYYY')) {
-    formatted[toFormat.indexOf('YYYY')] = `${getCentury(shortYear)}${shortYear}`;
+    formattedDate[toFormat.indexOf('YYYY')] = `${getCentury(
+      shortYear
+    )}${shortYear}`;
   } else if (toFormat.includes('YY') && longYear) {
-    formatted[toFormat.indexOf('YY')] = longYear.slice(2);
+    formattedDate[toFormat.indexOf('YY')] = longYear.slice(2);
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     const index = toFormat.indexOf(fromFormat[i]);
 
     if (index !== -1) {
-      formatted[index] = thisDate[i];
+      formattedDate[index] = thisDate[i];
     }
   }
 
-  return formatted.join(newSep);
+  return formattedDate.join(newSeparator);
 }
+
+const getCentury = (year) => (year >= 30
+  ? '19'
+  : '20'
+);
 
 module.exports = formatDate;
