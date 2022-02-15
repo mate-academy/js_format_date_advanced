@@ -48,15 +48,13 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
   const formatData = {};
-  const splitData = date.split(fromFormat[3]);
+  const spliteData = date.split(fromFormat[3]);
   const result = [];
-  const years = 30;
 
-  for (let i = 0; i < splitData.length; i++) {
-    formatData[fromFormat[i]] = splitData[i];
+  for (let i = 0; i < spliteData.length; i++) {
+    formatData[fromFormat[i]] = spliteData[i];
   }
 
   for (const value of toFormat) {
@@ -65,24 +63,26 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (value === 'YYYY') {
-      formatYear();
+      formatYear(formatData);
     }
   }
 
   result.push(formatData[toFormat[0]],
     formatData[toFormat[1]], formatData[toFormat[2]]);
 
-  function formatYear() {
-    if (formatData['YY'] < years) {
-      formatData['YYYY'] = `20${formatData['YY']}`;
-    }
+  return result.join(toFormat[3]);
+}
 
-    if (formatData['YY'] >= years) {
-      formatData['YYYY'] = `19${formatData['YY']}`;
-    }
+function formatYear(format) {
+  const years = 30;
+
+  if (format['YY'] < years) {
+    format['YYYY'] = `20${format['YY']}`;
   }
 
-  return result.join(toFormat[3]);
+  if (format['YY'] >= years) {
+    format['YYYY'] = `19${format['YY']}`;
+  }
 }
 
 module.exports = formatDate;
