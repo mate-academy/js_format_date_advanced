@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldShortYearIndex = fromFormat.indexOf('YY');
+  const oldFullYearIndex = fromFormat.indexOf('YYYY');
+  const newShortYearIndex = toFormat.indexOf('YY');
+  const newFullYearIndex = toFormat.indexOf('YYYY');
+
+  const initialDateList = date.split(fromFormat[3]);
+  const newDateList = [];
+
+  const oldYearIndex = oldShortYearIndex === -1 ? oldFullYearIndex
+    : oldShortYearIndex;
+
+  const newYearIndex = newShortYearIndex === -1 ? newFullYearIndex
+    : newShortYearIndex;
+
+  const oldYearFormat = fromFormat[oldYearIndex];
+  const oldYearValue = initialDateList[oldYearIndex];
+
+  const newYearFormat = toFormat[newYearIndex];
+
+  const newYearValue = transformYearFormat(oldYearValue,
+    oldYearFormat, newYearFormat);
+
+  newDateList[newYearIndex] = newYearValue;
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const index = toFormat.indexOf(fromFormat[i]);
+
+    if (index !== -1) {
+      newDateList[index] = initialDateList[i];
+    }
+  }
+
+  return newDateList.join(toFormat[3]);
+}
+
+function transformYearFormat(oldValue, oldFormat, newFormat) {
+  const newCenturyLimit = 30;
+  let newValue = '';
+
+  if (oldFormat === 'YYYY' && newFormat === 'YY') {
+    newValue = oldValue.slice(2);
+  } else if (oldFormat === 'YY' && newFormat === 'YYYY') {
+    newValue = +oldValue < newCenturyLimit ? '20' + oldValue
+      : '19' + oldValue;
+  } else {
+    newValue = oldValue;
+  }
+
+  return newValue;
 }
 
 module.exports = formatDate;
