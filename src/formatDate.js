@@ -49,8 +49,41 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
+ function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldDate = date.split(`${fromFormat[3]}`);
+  const newDate = [];
+
+  for (let i = 0; i < oldDate.length; i++) {
+    if (toFormat[i].includes('DD')) {
+      newDate[i] = oldDate[fromFormat.indexOf('DD')];
+      continue;
+    }
+
+    if (toFormat[i].includes('MM')) {
+      newDate[i] = oldDate[fromFormat.indexOf('MM')];
+      continue;
+    }
+
+    if (toFormat[i].includes('YY')) {
+      newDate[i] = oldDate[fromFormat.indexOf('YY')]
+          || oldDate[fromFormat.indexOf('YYYY')];
+
+      if (newDate[i].length > toFormat[i].length) {
+        newDate[i] = newDate[i].slice(2);
+      }
+
+      if (newDate[i].length < toFormat[i].length) {
+        if (+(newDate[i]) < 30) {
+          newDate[i] = '20' + `${newDate[i]}`;
+        } else {
+          newDate[i] = '19' + `${newDate[i]}`;
+        }
+      }
+    }
+  }
+
+  return newDate.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
