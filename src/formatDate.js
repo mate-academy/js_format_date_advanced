@@ -48,9 +48,41 @@
  *
  * @returns {string}
  */
+function yearChecker(inputObject) {
+  const shortYear = 'YY';
+  const longYear = 'YYYY';
+
+  if (inputObject[longYear]) {
+    inputObject[shortYear] = inputObject[longYear].slice(-2);
+  } else if (inputObject[shortYear] < 30) {
+    inputObject[longYear] = 20 + inputObject[shortYear];
+  } else {
+    inputObject[longYear] = 19 + inputObject[shortYear];
+  }
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = fromFormat.pop();
+  const joiner = toFormat.pop();
+  const arrDate = date.split(separator);
+
+  // Create data object
+  const dataObj = {};
+
+  for (let i = 0; i < arrDate.length; i++) {
+    dataObj[fromFormat[i]] = arrDate[i];
+  }
+
+  yearChecker(dataObj);
+
+  // Create joined result
+  const resultArr = [];
+
+  for (const type of toFormat) {
+    resultArr.push(dataObj[type]);
+  }
+
+  return resultArr.join(joiner);
 }
 
 module.exports = formatDate;
