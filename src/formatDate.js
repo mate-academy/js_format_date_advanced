@@ -48,41 +48,33 @@
  *
  * @returns {string}
  */
-function yearChecker(inputObject) {
-  const shortYear = 'YY';
-  const longYear = 'YYYY';
-
-  if (inputObject[longYear]) {
-    inputObject[shortYear] = inputObject[longYear].slice(-2);
-  } else if (inputObject[shortYear] < 30) {
-    inputObject[longYear] = 20 + inputObject[shortYear];
-  } else {
-    inputObject[longYear] = 19 + inputObject[shortYear];
-  }
-}
 
 function formatDate(date, fromFormat, toFormat) {
-  const separator = fromFormat.pop();
-  const joiner = toFormat.pop();
-  const arrDate = date.split(separator);
-
-  // Create data object
+  const arrDate = date.split(fromFormat[3]);
   const dataObj = {};
 
-  for (let i = 0; i < arrDate.length; i++) {
+  for (let i = 0; i < 3; i++) {
     dataObj[fromFormat[i]] = arrDate[i];
   }
 
-  yearChecker(dataObj);
+  const shortYear = 'YY';
+  const longYear = 'YYYY';
 
-  // Create joined result
-  const resultArr = [];
-
-  for (const type of toFormat) {
-    resultArr.push(dataObj[type]);
+  if (dataObj[longYear]) {
+    dataObj[shortYear] = dataObj[longYear].slice(-2);
+  } else if (dataObj[shortYear] < 30) {
+    dataObj[longYear] = 20 + dataObj[shortYear];
+  } else {
+    dataObj[longYear] = 19 + dataObj[shortYear];
   }
 
-  return resultArr.join(joiner);
+  const resultArr = [];
+
+  for (let i = 0; i < 3; i++) {
+    resultArr.push(dataObj[toFormat[i]]);
+  }
+
+  return resultArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
