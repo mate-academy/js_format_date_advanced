@@ -76,9 +76,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   const resultArr = [];
 
-  for (const v of toFormat) {
+  for (const value of toFormat) {
     for (const key in elementsObj) {
-      if (key === v) {
+      if (key === value) {
         resultArr.push(elementsObj[key]);
       }
     }
