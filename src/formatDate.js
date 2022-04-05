@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        if (elementsObj[key] < 23) {
+        if (elementsObj[key] < 30) {
           elementsObj['YYYY'] = `20${elementsObj[key]}`;
         } else {
           elementsObj['YYYY'] = `19${elementsObj[key]}`;
