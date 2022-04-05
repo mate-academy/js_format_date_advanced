@@ -49,8 +49,57 @@
  * @returns {string}
  */
 
+// formatDate(
+//   '18-02-2015',
+//   ['DD', 'MM', 'YYYY', '-'],
+//   ['DD', 'MM', 'YY', '/'],
+// );
+
+// formatDate(
+//   '98/02/18',
+//   ['YY', 'MM', 'DD', '/'],
+//   ['DD', 'MM', 'YYYY', '.'],
+// );
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const baseDate = {};
+
+  const dateArray = date.split(fromFormat[3]);
+
+  for (let i = 0; i < 3; i++) {
+    const key = fromFormat[i];
+    const value = dateArray[i];
+
+    baseDate[key] = value;
+  }
+
+  let century = '';
+
+  if (baseDate.YY >= 30) {
+    century = '19';
+  } else {
+    century = '20';
+  }
+
+  if (baseDate.hasOwnProperty('YY')) {
+    baseDate['YYYY'] = century + baseDate.YY;
+  }
+
+  if (baseDate.hasOwnProperty('YYYY')) {
+    baseDate['YY'] = baseDate.YYYY.slice(2);
+  }
+
+  let result = '';
+
+  for (let i = 0; i < 3; i++) {
+    for (const key in baseDate) {
+      if (toFormat[i] === key) {
+        result += baseDate[key] + toFormat[3];
+      }
+    }
+  }
+
+  return result.slice(0, -1);
 }
 
 module.exports = formatDate;
