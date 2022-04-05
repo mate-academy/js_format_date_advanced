@@ -50,7 +50,146 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[3]);
+  const resArr = [];
+  let result = '';
+
+  if (toFormat[0] === 'DD') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'DD') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[0] === 'MM') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'MM') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[0] === 'YY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i].slice(2));
+      }
+    }
+  }
+
+  if (toFormat[0] === 'YYYY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] >= 30) {
+        resArr.push('19' + arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] < 30) {
+        resArr.push('20' + arrDate[i]);
+      }
+    }
+  }
+  // Second element
+
+  if (toFormat[1] === 'DD') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'DD') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[1] === 'MM') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'MM') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[1] === 'YY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i].slice(2));
+      }
+    }
+  }
+
+  if (toFormat[1] === 'YYYY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] >= 30) {
+        resArr.push('19' + arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] < 30) {
+        resArr.push('20' + arrDate[i]);
+      }
+    }
+  }
+  // 3-Th element
+
+  if (toFormat[2] === 'DD') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'DD') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[2] === 'MM') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'MM') {
+        resArr.push(arrDate[i]);
+      }
+    }
+  }
+
+  if (toFormat[2] === 'YY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i].slice(2));
+      }
+    }
+  }
+
+  if (toFormat[2] === 'YYYY') {
+    for (let i = 0; i <= 2; i++) {
+      if (fromFormat[i] === 'YYYY') {
+        resArr.push(arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] >= 30) {
+        resArr.push('19' + arrDate[i]);
+      }
+
+      if (fromFormat[i] === 'YY' && arrDate[i] < 30) {
+        resArr.push('20' + arrDate[i]);
+      }
+    }
+  }
+  result += resArr.join(toFormat[3]);
+
+  return result;
 }
 
 module.exports = formatDate;
