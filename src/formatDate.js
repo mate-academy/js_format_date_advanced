@@ -55,13 +55,13 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(oldSeparator);
   const dateObject = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     dateObject[fromFormat[i]] = dateArray[i];
   }
 
   normalizeYear(dateObject);
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
+  for (let i = 0; i < toFormat.length; i++) {
     dateArray[i] = dateObject[toFormat[i]];
   }
 
