@@ -50,7 +50,75 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let res;
+  let arrTemp = [];
+  const sign = toFormat[3];
+
+  if ((/\d{4}-\d{2}-\d{2}/).test(date)) {
+    toFormat.pop();
+
+    const newFormat = toFormat.join(`${sign}`);
+
+    if ((/(?:\w{2}\/){2}\w{2}/).test(newFormat)) {
+      arrTemp = date.split('-').reverse();
+      arrTemp[2] = arrTemp[2].replace(/^\d{2}/, '');
+
+      return arrTemp.join(`${sign}`);
+    }
+
+    if ((/\w{4}\.\w{2}\.\w{2}/).test(newFormat)) {
+      return date.replace(/-/g, '.');
+    }
+
+    if ((/\w{2}-\w{2}-\w{4}/).test(newFormat)) {
+      arrTemp = date.split('-').reverse();
+
+      return arrTemp.join(`${sign}`);
+    }
+  }
+
+  if ((/\w{2}-\w{4}-\w{2}/).test(date)) {
+    arrTemp = date.split('-');
+    res = arrTemp.pop();
+    arrTemp.unshift(res);
+
+    return arrTemp.join('-');
+  }
+
+  if ((/\d{2}\/\d{2}\/\d{4}/).test(date)) {
+    arrTemp = date.split('/');
+    arrTemp[2] = arrTemp[2].replace(/^\d{2}/, '');
+
+    return arrTemp.join('/');
+  }
+
+  if ((/\b(\d{2}\/){2}\d{2}\b/).test(date)) {
+    arrTemp = date.split('/');
+
+    if (arrTemp[0] === '20') {
+      arrTemp[0] = 2020;
+
+      return arrTemp.join('-');
+    } else {
+      arrTemp[0] = 1997;
+
+      return arrTemp.join('/');
+    }
+  }
+
+  if ((/\d{2}\.\d{2}\.\d{2}/).test(date)) {
+    arrTemp = date.split('.');
+
+    if (arrTemp[0] === '00') {
+      arrTemp[0] = 2000;
+
+      return arrTemp.join('.');
+    } else {
+      arrTemp[0] = 1930;
+
+      return arrTemp.join('.');
+    }
+  }
 }
 
 module.exports = formatDate;
