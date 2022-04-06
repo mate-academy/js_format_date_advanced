@@ -53,10 +53,11 @@ function formatDate(date, fromFormat, toFormat) {
   let year = '';
   let month = '';
   let day = '';
-  const separator = fromFormat[fromFormat.length - 1];
-  const arrDate = date.split(separator);
+  const oldSeparator = fromFormat.pop();
+  const newSeperator = toFormat.pop();
+  const arrDate = date.split(oldSeparator);
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YY':
       case 'YYYY':
@@ -73,9 +74,8 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   let result = '';
-  const newSeperator = toFormat[toFormat.length - 1];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
+  for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
         result += day;
@@ -102,7 +102,7 @@ function formatDate(date, fromFormat, toFormat) {
       default: throw new Error('Unknown step: ' + toFormat[i]);
     }
 
-    if (i >= 0 && i < 2) {
+    if (i < 2) {
       result += newSeperator;
     }
   }
