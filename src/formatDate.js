@@ -50,75 +50,34 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let res;
-  let arrTemp = [];
-  const sign = toFormat[3];
+  let string = '';
+  const arrDate = date.split(fromFormat[3]);
 
-  if ((/\d{4}-\d{2}-\d{2}/).test(date)) {
-    toFormat.pop();
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const a = fromFormat.indexOf(toFormat[i]);
 
-    const newFormat = toFormat.join(`${sign}`);
+    if (a === -1 && toFormat[i] === 'YY') {
+      const currentIndex = fromFormat.indexOf('YYYY');
 
-    if ((/(?:\w{2}\/){2}\w{2}/).test(newFormat)) {
-      arrTemp = date.split('-').reverse();
-      arrTemp[2] = arrTemp[2].replace(/^\d{2}/, '');
+      string += arrDate[currentIndex].slice(2, 4);
+    } else if (a === -1 && toFormat[i] === 'YYYY') {
+      const currentIndex = fromFormat.indexOf('YY');
 
-      return arrTemp.join(`${sign}`);
-    }
-
-    if ((/\w{4}\.\w{2}\.\w{2}/).test(newFormat)) {
-      return date.replace(/-/g, '.');
-    }
-
-    if ((/\w{2}-\w{2}-\w{4}/).test(newFormat)) {
-      arrTemp = date.split('-').reverse();
-
-      return arrTemp.join(`${sign}`);
-    }
-  }
-
-  if ((/\w{2}-\w{4}-\w{2}/).test(date)) {
-    arrTemp = date.split('-');
-    res = arrTemp.pop();
-    arrTemp.unshift(res);
-
-    return arrTemp.join('-');
-  }
-
-  if ((/\d{2}\/\d{2}\/\d{4}/).test(date)) {
-    arrTemp = date.split('/');
-    arrTemp[2] = arrTemp[2].replace(/^\d{2}/, '');
-
-    return arrTemp.join('/');
-  }
-
-  if ((/\b(\d{2}\/){2}\d{2}\b/).test(date)) {
-    arrTemp = date.split('/');
-
-    if (arrTemp[0] === '20') {
-      arrTemp[0] = 2020;
-
-      return arrTemp.join('-');
+      if (arrDate[currentIndex] < 30) {
+        string += `${20}${arrDate[currentIndex]}`;
+      } else if (arrDate[currentIndex] >= 30) {
+        string += `${19}${arrDate[currentIndex]}`;
+      }
     } else {
-      arrTemp[0] = 1997;
+      string += arrDate[a];
+    }
 
-      return arrTemp.join('/');
+    if (i !== 2) {
+      string += toFormat[3];
     }
   }
 
-  if ((/\d{2}\.\d{2}\.\d{2}/).test(date)) {
-    arrTemp = date.split('.');
-
-    if (arrTemp[0] === '00') {
-      arrTemp[0] = 2000;
-
-      return arrTemp.join('.');
-    } else {
-      arrTemp[0] = 1930;
-
-      return arrTemp.join('.');
-    }
-  }
+  return string;
 }
 
 module.exports = formatDate;
