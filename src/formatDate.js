@@ -37,10 +37,10 @@
  * ) // '2020.02.18'
  *
  * formatDate(
- *   '97/02/18',
- *   ['YY', 'MM', 'DD', '/'],
- *   ['DD', 'MM', 'YYYY', '.'],
- * ) // '18.02.1997'
+ *   '31/02/18',
+ *   ['YY', 'MM', 'DD', '/'], fromFormat
+ *   ['DD', 'MM', 'YY', '.'], toFormat
+ * ) // '18.02.31'
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -56,22 +56,32 @@ function formatDate(date, fromFormat, toFormat) {
   const dataArr = date.split(hasSeparator);
 
   const dataResultArr = [];
+  const dateObj = {
+    'DD': null,
+    'MM': null,
+    'YY': null,
+    'YYYY': null,
+  };
 
   for (let i = 0; i < 3; i++) {
     if (fromFormat.indexOf(toFormat[i]) !== -1) {
-      dataResultArr[toFormat.indexOf(fromFormat[i])] = dataArr[i];
+      dateObj[toFormat[i]] = dataArr[fromFormat.indexOf(toFormat[i])];
+      dataResultArr.push(dateObj[toFormat[i]]);
       continue;
     }
 
     if (fromFormat[i].length > 2) {
-      dataResultArr[toFormat.indexOf('YY')] = dataArr[i].slice(2);
+      dateObj['YY'] = dataArr[i].slice(2);
+      dataResultArr.push(dateObj['YY']);
       continue;
     }
 
     if (dataArr[i] >= 30) {
-      dataResultArr[toFormat.indexOf('YYYY')] = '19' + dataArr[i];
+      dateObj['YYYY'] = '19' + dataArr[i];
+      dataResultArr.push(dateObj['YYYY']);
     } else {
-      dataResultArr[toFormat.indexOf('YYYY')] = '20' + dataArr[i];
+      dateObj['YYYY'] = '20' + dataArr[i];
+      dataResultArr.push(dateObj['YYYY']);
     }
   }
 
