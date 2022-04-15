@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [,,, oldSeparator] = fromFormat;
-  const [,,, newSeparator] = toFormat;
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
   const newDateArr = new Array(3);
   let year = 0;
   let month = 0;
