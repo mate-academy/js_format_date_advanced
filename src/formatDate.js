@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const dataArray = date.split(fromFormat[fromFormat.length - 1]);
   const dateObject = {};
-  const resArray = [];
+  const resultArray = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY') {
@@ -70,10 +70,10 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    resArray[i] = dateObject[toFormat[i]];
+    resultArray[i] = dateObject[toFormat[i]];
   }
 
-  return resArray.join(toFormat[toFormat.length - 1]);
+  return resultArray.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
