@@ -37,10 +37,10 @@
  * ) // '2020.02.18'
  *
  * formatDate(
- *   '97/02/18',
- *   ['YY', 'MM', 'DD', '/'],
- *   ['DD', 'MM', 'YYYY', '.'],
- * ) // '18.02.1997'
+ *   '31/02/18',
+ *   ['YY', 'MM', 'DD', '/'], fromFormat
+ *   ['DD', 'MM', 'YY', '.'], toFormat
+ * ) // '18.02.31'
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -50,7 +50,58 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const hasSeparator = fromFormat[3];
+  const needSeparator = toFormat[3];
+
+  const dataArr = date.split(hasSeparator);
+
+  const dataResultArr = [];
+  const dateObj = {
+    'DD': null,
+    'MM': null,
+    'YY': null,
+    'YYYY': null,
+  };
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat.indexOf(toFormat[i]) !== -1) {
+      dateObj[toFormat[i]] = dataArr[fromFormat.indexOf(toFormat[i])];
+      continue;
+    }
+
+    if (fromFormat[i].length > 2) {
+      dateObj['YY'] = dataArr[i].slice(2);
+      continue;
+    }
+
+    if (dataArr[i] >= 30) {
+      dateObj['YYYY'] = '19' + dataArr[i];
+    } else {
+      dateObj['YYYY'] = '20' + dataArr[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        dataResultArr[i] = dateObj['DD'];
+        break;
+
+      case 'MM':
+        dataResultArr[i] = dateObj['MM'];
+        break;
+
+      case 'YY':
+        dataResultArr[i] = dateObj['YY'];
+        break;
+
+      case 'YYYY':
+        dataResultArr[i] = dateObj['YYYY'];
+        break;
+    }
+  }
+
+  return dataResultArr.join(needSeparator);
 }
 
 module.exports = formatDate;
