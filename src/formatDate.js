@@ -66,28 +66,42 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < 3; i++) {
     if (fromFormat.indexOf(toFormat[i]) !== -1) {
       dateObj[toFormat[i]] = dataArr[fromFormat.indexOf(toFormat[i])];
-      dataResultArr.push(dateObj[toFormat[i]]);
       continue;
     }
 
     if (fromFormat[i].length > 2) {
       dateObj['YY'] = dataArr[i].slice(2);
-      dataResultArr.push(dateObj['YY']);
       continue;
     }
 
     if (dataArr[i] >= 30) {
       dateObj['YYYY'] = '19' + dataArr[i];
-      dataResultArr.push(dateObj['YYYY']);
     } else {
       dateObj['YYYY'] = '20' + dataArr[i];
-      dataResultArr.push(dateObj['YYYY']);
     }
   }
 
-  const dataString = dataResultArr.join(needSeparator);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        dataResultArr[i] = dateObj['DD'];
+        break;
 
-  return dataString;
+      case 'MM':
+        dataResultArr[i] = dateObj['MM'];
+        break;
+
+      case 'YY':
+        dataResultArr[i] = dateObj['YY'];
+        break;
+
+      case 'YYYY':
+        dataResultArr[i] = dateObj['YYYY'];
+        break;
+    }
+  }
+
+  return dataResultArr.join(needSeparator);
 }
 
 module.exports = formatDate;
