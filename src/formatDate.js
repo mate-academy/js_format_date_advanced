@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const splitDate = date.split(fromFormat[3]);
+  let formatedOldDate = [...splitDate];
+  const obj = {};
 
+  switch (true) {
+    case fromFormat[0] === 'YY' || fromFormat[0] === 'YYYY':
+      formatedOldDate = splitDate.reverse();
+      break;
+    case fromFormat[0] === 'MM' && fromFormat[2] === 'DD':
+      formatedOldDate.length = 0;
+      formatedOldDate.push(splitDate[2], splitDate[0], splitDate[1]);
+      break;
+    case fromFormat[0] === 'MM':
+      formatedOldDate.length = 0;
+      formatedOldDate.push(splitDate[1], splitDate[0], splitDate[2]);
+      break;
+  }
+
+  if (formatedOldDate[2].length === 2) {
+    const year = formatedOldDate[2];
+
+    switch (true) {
+      case +year < 30:
+        formatedOldDate[2] = 20 + year;
+        break;
+      case +year >= 30:
+        formatedOldDate[2] = 19 + year;
+        break;
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    obj[toFormat[i]] = '';
+  }
+  obj.DD = formatedOldDate[0];
+  obj.MM = formatedOldDate[1];
+
+  if (obj.hasOwnProperty('YYYY')) {
+    obj.YYYY = formatedOldDate[2];
+  }
+
+  if (obj.hasOwnProperty('YY')) {
+    obj.YY = formatedOldDate[2].slice(2);
+  }
+
+  const newDate = [];
+
+  for (const value in obj) {
+    newDate.push(obj[value]);
+  }
+
+  return newDate.join(toFormat[3]);
+}
 module.exports = formatDate;
