@@ -50,11 +50,11 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const dateArray = date.split(fromFormat[fromFormat.length - 1]);
   const resultArray = Array(3);
   let month, day, year;
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'YY':
         if (+dateArray[i] < 30) {
@@ -81,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'YY':
         resultArray[i] = year.slice(2);
@@ -104,7 +104,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return resultArray.join(toFormat[3]);
+  return resultArray.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
