@@ -77,7 +77,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       default:
-        return 'Please enter valid format';
+        throw new Error('invalid data');
     }
   }
 
@@ -100,7 +100,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       default:
-        return 'Please enter valid format';
+        throw new Error('invalid data');
     }
   }
 
