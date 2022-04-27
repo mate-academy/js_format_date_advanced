@@ -50,105 +50,33 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const prevSep = fromFormat[3];
-  let num1, num3;
-  let newStr;
-  let num2;
-  const startDate = date.split(prevSep);
-  const [ s1, s2, s3 ] = fromFormat;
-  const [ t1, , t3 ] = toFormat;
 
-  if (s1[0] === 'Y' && t1[0] === 'Y') {
-    if (s1.length > t1.length) {
-      num1 = startDate[0].slice(2, 4);
-    } else if (s1.length < t1.length) {
-      if (startDate[0] < 30) {
-        num1 = `20${startDate[0]}`;
-      } else {
-        num1 = `19${startDate[0]}`;
-      }
-    } else {
-      num1 = startDate[0];
-      num3 = startDate[2];
-    }
-    num3 = startDate[2];
-  //   newStr.push(num1);
+  const arr = [];
+
+  const dataDate = date.split(fromFormat[3]);
+
+  const dateObj = {
+    'DD': null,
+    'MM': null,
+    'YY': null,
+    'YYYY': null,
+  };
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateObj[fromFormat[i]] = dataDate[fromFormat.indexOf(fromFormat[i])];
   }
 
-  if (s1[0] === 'Y' && t3[0] === 'Y') {
-    if (s1.length > t3.length) {
-      num3 = startDate[0].slice(2, 4);
-    } else if (s1.length < t3.length) {
-      if (startDate[0] < 30) {
-        num3 = `20${startDate[0]}`;
-      } else {
-        num3 = `19${startDate[0]}`;
-      }
-    } else {
-      num3 = startDate[0];
-    }
-    num1 = startDate[2];
-    // newStr.push(num3);
+  if (dateObj.YY) {
+    dateObj.YYYY = dateObj.YY < 30 ? '20' + dateObj.YY : '19' + dateObj.YY;
+  } else {
+    dateObj.YY = dateObj.YYYY.slice(2, 4);
   }
 
-  if (s3[0] === 'Y' && t1[0] === 'Y') {
-    if (s3.length > t1.length) {
-      num1 = startDate[2].slice(2, 4);
-    } else if (s3.length < t1.length) {
-      if (startDate[2] < 30) {
-        num1 = `20${startDate[2]}`;
-      } else {
-        num1 = `19${startDate[2]}`;
-      }
-    } else {
-      num1 = startDate[2];
-    }
-    num3 = startDate[0];
-    // newStr.push(num1);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    arr.push(dateObj[toFormat[i]]);
   }
 
-  if (s3[0] === 'Y' && t3[0] === 'Y') {
-    if (s3.length > t3.length) {
-      num3 = startDate[2].slice(2, 4);
-    } else if (s3.length < t3.length) {
-      if (startDate[2] < 30) {
-        num3 = `20${startDate[2]}`;
-      } else {
-        num3 = `19${startDate[2]}`;
-      }
-    } else {
-      num3 = startDate[2];
-    }
-    num1 = startDate[0];
-    // newStr.push(num3)
-  }
-
-  if (s2[0] === 'Y' && t3[0] === 'Y') {
-    if (s1.length > t1.length) {
-      num3 = startDate[0].slice(2, 4);
-    } else if (s1.length < t1.length) {
-      if (startDate[0] < 30) {
-        num3 = `20${startDate[0]}`;
-      } else {
-        num3 = `19${startDate[0]}`;
-      }
-    } else {
-      num3 = startDate[1];
-    }
-    num1 = startDate[2];
-
-    num2 = startDate[0];
-    newStr = [num1, num2, num3];
-
-    return newStr.join(toFormat[3]);
-    //   newStr.push(num1);
-  }
-
-  num2 = startDate[1];
-
-  newStr = [num1, num2, num3];
-
-  return newStr.join(toFormat[3]);
+  return arr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
