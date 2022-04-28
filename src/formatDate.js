@@ -49,7 +49,7 @@
  * @returns {string}
  */
 
- function formatDate(date, fromFormat, toFormat) {
+function formatDate(date, fromFormat, toFormat) {
   // happy checking
 
   const inputArray = date.split('');
