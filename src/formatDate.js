@@ -49,8 +49,56 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+ function formatDate(date, fromFormat, toFormat) {
+  // happy checking
+
+  const inputArray = date.split('');
+  const result = [];
+
+  for (let i = 0; i < inputArray.length; i++) {
+    if (isNaN(inputArray[i] / 2)) {
+      inputArray[i] = ' ';
+    }
+  }
+
+  const threeElements = inputArray.join('').split(' ');
+
+  const YYwanted = toFormat.indexOf('YY') !== -1;
+  const YYYYwanted = toFormat.indexOf('YYYY') !== -1;
+
+  if (YYwanted) {
+    // change current format to match the desired
+    fromFormat[fromFormat.indexOf('YYYY')] = 'YY';
+
+    // change current date to match the desired
+    threeElements[fromFormat.indexOf('YY')]
+    = threeElements[fromFormat.indexOf('YY')].slice(2);
+  }
+
+  if (YYYYwanted) {
+    // change current format to match the desired
+    fromFormat[fromFormat.indexOf('YY')] = 'YYYY';
+
+    // change the current date to integer
+    threeElements[fromFormat.indexOf('YYYY')]
+    = parseInt(threeElements[fromFormat.indexOf('YYYY')]);
+
+    const currentDate = threeElements[fromFormat.indexOf('YYYY')];
+
+    if (currentDate < 30) {
+      threeElements[fromFormat.indexOf('YYYY')] += 2000;
+    } else if (currentDate < 100) {
+      threeElements[fromFormat.indexOf('YYYY')] += 1900;
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+  /* arrange the current date depending on current
+  date format with indexes from the desired format */
+    result.push(threeElements[fromFormat.indexOf(toFormat[i])]);
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
