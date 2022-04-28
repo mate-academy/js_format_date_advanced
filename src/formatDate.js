@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const iconSplit = fromFormat[3];
-  const iconJoin = toFormat[3];
+  const iconSplit = fromFormat[fromFormat.length - 1];
+  const iconJoin = toFormat[fromFormat.length - 1];
   const dateArr = date.split(iconSplit);
 
   const result = [];
@@ -62,9 +62,14 @@ function formatDate(date, fromFormat, toFormat) {
       if (fromFormat[i] === toFormat[j]) {
         // if years don't change it directly writes the date
         result[j] = dateArr[i];
-      } else if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
+      }
+
+      // then checks the year format
+      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
         result[j] = dateArr[i].slice(-2);
-      } else if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
+      }
+
+      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
         if (dateArr[i] < 30) {
           result[j] = `20${dateArr[i]}`;
         } else {
