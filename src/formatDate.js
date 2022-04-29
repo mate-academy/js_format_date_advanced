@@ -50,7 +50,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorOld = fromFormat[3];
+  const separatorNew = toFormat[3];
+  const arrayDate = date.split(separatorOld);
+  const newArrayData = [];
+  const oldFormat = fromFormat.slice(0, -1);
+  const newFormat = toFormat.slice(0, -1);
+  const oldFormatSingle = [];
+  const newFormatSingle = [];
+  let indexYInOld = 0;
+  let indexYInNew = 0;
+
+  for (let i = 0; i < 3; i++) {
+    oldFormatSingle[i] = oldFormat[i].substr(0, 1);
+    newFormatSingle[i] = newFormat[i].substr(0, 1);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (oldFormatSingle[i] === newFormatSingle[j]) {
+        newArrayData[j] = arrayDate[i];
+      }
+
+      if (oldFormatSingle[i] === 'Y') {
+        indexYInOld = i;
+      }
+
+      if (newFormatSingle[i] === 'Y') {
+        indexYInNew = i;
+      }
+    }
+  }
+
+  if (oldFormat[indexYInOld].length < newFormat[indexYInNew].length) {
+    if (newArrayData[indexYInNew] < 30) {
+      newArrayData[indexYInNew] = 20 + newArrayData[indexYInNew];
+    } else {
+      newArrayData[indexYInNew] = 19 + newArrayData[indexYInNew];
+    }
+  } else if (oldFormat[indexYInOld].length > newFormat[indexYInNew].length) {
+    newArrayData[indexYInNew] = newArrayData[indexYInNew].slice(2);
+  }
+
+  return newArrayData.join(separatorNew);
 }
 
 module.exports = formatDate;
