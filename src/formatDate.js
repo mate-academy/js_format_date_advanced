@@ -51,6 +51,8 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+
+  return date.split(fromFormat[fromFormat.length - 1]).join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
