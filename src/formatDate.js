@@ -50,7 +50,65 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateObject = new Date(date);
+  const dte = Number(dateObject.getDate());
+  let month = Number(dateObject.getMonth() + 1);
+  let year = Number(dateObject.getFullYear());
+  let returnDate = '';
+  const twoDigitsYear = year.toString().slice(-2);
+
+  if (twoDigitsYear < 30) {
+    year = twoDigitsYear.padStart(4, '20');
+  } else {
+    year = Number(twoDigitsYear.padStart(4, '19'));
+  }
+
+  if (month < 10) {
+    month = `0${month}`;
+  }
+
+  if (fromFormat[0] === 'YYYY'
+    && toFormat[0] === 'YYYY') {
+    returnDate = `${year}.`;
+
+    return returnDate;
+  }
+
+  if (fromFormat[0] === 'YYYY'
+    && toFormat[0] === 'DD') {
+    returnDate = `.${year}`;
+
+    return returnDate;
+  }
+
+  if (fromFormat[0] === 'DD'
+    && toFormat[0] === 'DD') {
+    year = twoDigitsYear;
+    returnDate = `${dte}/${month}/${year}`;
+
+    return returnDate;
+  }
+
+  if (fromFormat[0] === 'YY'
+    && toFormat[0] === 'YYYY') {
+    returnDate = `${year}.${month}.${date}`;
+
+    return returnDate;
+  }
+
+  if (fromFormat[0] === 'YY'
+    && toFormat[0] === 'DD') {
+    returnDate = `${dte}.${month}.${year}`;
+
+    return returnDate;
+  }
+
+  if (fromFormat[0] === 'MM'
+  && toFormat[0] === 'DD') {
+    returnDate = `${dte}.${month}.${year}`;
+
+    return returnDate;
+  }
 }
 
 module.exports = formatDate;
