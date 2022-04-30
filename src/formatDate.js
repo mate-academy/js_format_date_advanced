@@ -50,7 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let res = '';
+  let separatorBefore = '';
+  let separatorAfter = '';
+
+  separatorAfter = toFormat[3];
+  separatorBefore = fromFormat[3];
+
+  const dateArr = date.split(separatorBefore);
+
+  switch (fromFormat[0]) {
+    case 'YYYY':
+      switch (toFormat[0]) {
+        case 'DD':
+          if (toFormat[2].length === 4) {
+            res += dateArr[2] + separatorAfter + dateArr[1]
+            + separatorAfter + dateArr[0];
+          }
+
+          break;
+
+        case 'YYYY':
+          res += dateArr[0] + separatorAfter + dateArr[1]
+           + separatorAfter + dateArr[2];
+      }
+
+      break;
+
+    case 'MM':
+      switch (toFormat[0]) {
+        case 'DD':
+          if (toFormat[2].length === 4) {
+            res += dateArr[2] + separatorAfter + dateArr[0]
+            + separatorAfter + dateArr[1];
+          }
+
+          break;
+
+        case 'MM':
+          if (toFormat[2].length === 2) {
+            res += dateArr[0] + separatorAfter + dateArr[1]
+           + separatorAfter + dateArr[2].slice(-2);
+          }
+
+          if (toFormat[2].length === 4) {
+            res += dateArr[0] + separatorAfter + dateArr[1]
+           + separatorAfter + dateArr[2];
+          }
+      }
+
+      break;
+
+    case 'YY':
+
+      if (+dateArr[0] < 30) {
+        res += '20' + dateArr[0] + separatorAfter + dateArr[1]
+        + separatorAfter + dateArr[2];
+      } else {
+        res += '19' + dateArr[0] + separatorAfter + dateArr[1]
+        + separatorAfter + dateArr[2];
+      }
+  }
+
+  return res;
 }
 
 module.exports = formatDate;
