@@ -50,7 +50,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromDate = date.split(fromFormat[3]);
+  const dates = {};
+
+  if (fromFormat[0] === 'YY'
+  && (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY')) {
+    if (fromDate[0].toString() < 30) {
+      fromDate[0] = '20' + fromDate[0];
+    } else {
+      fromDate[0] = '19' + fromDate[0];
+    }
+    fromFormat[0] = 'YYYY';
+  }
+
+  if (fromFormat[2] === 'YY'
+  && (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY')) {
+    if (fromDate[0].toString() > 31) {
+      fromDate[2] = '19' + fromDate[2];
+    } else {
+      fromDate[2] = '20' + fromDate[2];
+    }
+    fromFormat[2] = 'YYYY';
+  }
+
+  if (fromFormat[0] === 'YYYY'
+  && (toFormat[0] === 'YY' || toFormat[2] === 'YY')) {
+    fromDate[0] = fromDate[0].slice(-2);
+    fromFormat[0] = 'YY';
+  }
+
+  if (fromFormat[2] === 'YYYY'
+  && (toFormat[0] === 'YY' || toFormat[2] === 'YY')) {
+    fromDate[2] = fromDate[2].slice(-2);
+    fromFormat[2] = 'YY';
+  }
+
+  for (let i = 0; i < 3; i++) {
+    dates[fromFormat[i]] = fromDate[i];
+  }
+
+  const toArray = [];
+
+  for (let j = 0; j < 3; j++) {
+    toArray[j] = dates[toFormat[j]];
+  }
+
+  const result = toArray.join(toFormat[3]);
+
+  return result;
 }
 
 module.exports = formatDate;
