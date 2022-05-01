@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use strict';
 
 /**
@@ -50,7 +51,28 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[fromFormat.length - 1]);
+  let str = '';
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (let j = 0; j < fromFormat.length - 1; j++) {
+      if (toFormat[i] === fromFormat[j]) {
+        str += arrDate[j] + toFormat[toFormat.length - 1];
+      } else if (toFormat[i] === 'YY' && fromFormat[j] === 'YY') {
+        str += arrDate[j] + toFormat[toFormat.length - 1];
+      } else if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YYYY') {
+        str += arrDate[j] + toFormat[toFormat.length - 1];
+      } else if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
+        str += arrDate[j].slice(2) + toFormat[toFormat.length - 1];
+      } else if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY' && arrDate[j] < 30) {
+        str += 20 + arrDate[j] + toFormat[toFormat.length - 1];
+      } else if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY' && arrDate[j] >= 30) {
+        str += 19 + arrDate[j] + toFormat[toFormat.length - 1];
+      }
+    }
+  }
+
+  return str.slice(0, str.length - 1);
 }
 
 module.exports = formatDate;
