@@ -50,17 +50,18 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const iconSplit = fromFormat[fromFormat.length - 1];
-  const iconJoin = toFormat[toFormat.length - 1];
+  const dateLength = fromFormat.length - 1;
+  const iconSplit = fromFormat[dateLength];
+  const iconJoin = toFormat[dateLength];
   const dateArr = date.split(iconSplit);
   const dateObj = {};
   const result = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < dateLength; i++) {
     dateObj[fromFormat[i]] = dateArr[i];
   }
 
-  for (let j = 0; j < toFormat.length - 1; j++) {
+  for (let j = 0; j < dateLength; j++) {
     if (dateObj[toFormat[j]]) {
       result.push(dateObj[toFormat[j]]);
     } else {
