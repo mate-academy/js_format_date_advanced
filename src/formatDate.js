@@ -51,62 +51,31 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat.pop();
-  const dateArr = date.split(fromSeparator);
-  let year = '';
-  let month = '';
-  let day = '';
+  const dateArray = date.split(fromSeparator);
+  const dateObject = {};
 
   fromFormat.forEach((formatPart, i) => {
-    switch (formatPart) {
-      case 'YYYY':
-        year = dateArr[i];
-        break;
-
-      case 'YY':
-        if (dateArr[i] < 30) {
-          year = `20${dateArr[i]}`;
-          break;
-        }
-        year = `19${dateArr[i]}`;
-        break;
-
-      case 'MM':
-        month = dateArr[i];
-        break;
-
-      case 'DD':
-        day = dateArr[i];
-        break;
-
-      default:
-        throw new Error('invalid data');
+    if (formatPart === 'YYYY') {
+      dateObject.YY = dateArray[i].slice(2);
     }
+
+    if (formatPart === 'YY') {
+      if (dateArray[i] < 30) {
+        dateObject.YYYY = `20${dateArray[i]}`;
+
+        return;
+      }
+      dateObject.YYYY = `19${dateArray[i]}`;
+    }
+
+    dateObject[formatPart] = dateArray[i];
   });
 
   const toSeparator = toFormat.pop();
   const formattedDateArr = [];
 
-  toFormat.forEach(formatPart => {
-    switch (formatPart) {
-      case 'YYYY':
-        formattedDateArr.push(year);
-        break;
-
-      case 'YY':
-        formattedDateArr.push(year.slice(2));
-        break;
-
-      case 'MM':
-        formattedDateArr.push(month);
-        break;
-
-      case 'DD':
-        formattedDateArr.push(day);
-        break;
-
-      default:
-        throw new Error('invalid data');
-    }
+  toFormat.forEach((formatPart, i) => {
+    formattedDateArr[i] = dateObject[formatPart];
   });
 
   return formattedDateArr.join(toSeparator);
