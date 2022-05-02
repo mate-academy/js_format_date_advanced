@@ -54,45 +54,45 @@ function formatDate(date, fromFormat, toFormat) {
   const arr = [];
   const arrSplit = date.split(fromFormat.pop());
   const arrToFormat = toFormat.pop();
-  let year = '',
-    month = '',
-    day = '';
+  let year,
+    month,
+    day;
 
-  for (let idx = 0; idx < fromFormat.length; idx++) {
-    if (fromFormat[idx] === 'YY') {
-      if (+arrSplit[idx] < 30) {
-        year = `20${arrSplit[idx]}`
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YY') {
+      if (+arrSplit[i] < 30) {
+        year = `20${arrSplit[i]}`;
       } else {
-        year = `19${arrSplit[idx]}`
+        year = `19${arrSplit[i]}`;
       }
     }
 
-    if (fromFormat[idx] === 'YYYY') {
-      year = arrSplit[idx];
+    if (fromFormat[i] === 'YYYY') {
+      year = arrSplit[i];
     }
 
-    if (fromFormat[idx] === 'MM') {
-      month = arrSplit[idx];
+    if (fromFormat[i] === 'MM') {
+      month = arrSplit[i];
     }
 
-    if (fromFormat[idx] === 'DD') {
-      day = arrSplit[idx];
+    if (fromFormat[i] === 'DD') {
+      day = arrSplit[i];
     }
   }
 
-  for (let idx = 0; idx < toFormat.length; idx++) {
-    if (toFormat[idx] === 'YY') {
-        arr[idx] = year.slice(2)
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YY') {
+      arr[i] = year.slice(2);
     } else {
-      arr[idx] = year;
+      arr[i] = year;
     }
 
-    if (toFormat[idx] === 'MM') {
-      arr[idx] = month;
+    if (toFormat[i] === 'MM') {
+      arr[i] = month;
     }
 
-    if (toFormat[idx] === 'DD') {
-      arr[idx] = day;
+    if (toFormat[i] === 'DD') {
+      arr[i] = day;
     }
   }
 
