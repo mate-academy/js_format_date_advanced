@@ -53,27 +53,26 @@ function formatDate(date, fromFormat, toFormat) {
   const iconSplit = fromFormat[fromFormat.length - 1];
   const iconJoin = toFormat[toFormat.length - 1];
   const dateArr = date.split(iconSplit);
-
+  const dateObj = {};
   const result = [];
 
-  // everything is decreased to 3 index
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let j = 0; j < toFormat.length - 1; j++) {
-      if (fromFormat[i] === toFormat[j]) {
-        // if years don't change it directly writes the date
-        result[j] = dateArr[i];
+    dateObj[fromFormat[i]] = dateArr[i];
+  }
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    if (dateObj[toFormat[j]]) {
+      result.push(dateObj[toFormat[j]]);
+    } else {
+      if (toFormat[j] === 'YY') {
+        result.push(dateObj['YYYY'].slice(-2));
       }
 
-      // then checks the year format
-      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
-        result[j] = dateArr[i].slice(-2);
-      }
-
-      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
-        if (dateArr[i] < 30) {
-          result[j] = `20${dateArr[i]}`;
+      if (toFormat[j] === 'YYYY') {
+        if (dateObj['YY'] < 30) {
+          result.push(`20${dateObj['YY']}`);
         } else {
-          result[j] = `19${dateArr[i]}`;
+          result.push(`19${dateObj['YY']}`);
         }
       }
     }
