@@ -51,54 +51,40 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newFormat = [];
+  const dateObj = {};
   const fromSeperator = fromFormat.pop();
   const dateArray = date.split(fromSeperator);
   const toSeperator = toFormat.pop();
-  let year, month, day;
+  // let year, month, day;
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    switch (fromFormat[i]) {
-      case 'YY':
-        if (+dateArray[i] < 30) {
-          year = `20${dateArray[i]}`;
-        } else {
-          year = `19${dateArray[i]}`;
-        }
-        break;
-
-      case 'YYYY':
-        year = dateArray[i];
-        break;
-
-      case 'MM':
-        month = dateArray[i];
-        break;
-
-      case 'DD':
-        day = dateArray[i];
-        break;
-
-      default:
-        return 'Invalid Format!';
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'YY') {
+      if (+dateArray[i] < 30) {
+        dateObj['YYYY'] = `20${dateArray[i]}`;
+      } else {
+        dateObj['YYYY'] = `19${dateArray[i]}`;
+      }
+    } else {
+      dateObj[fromFormat[i]] = dateArray[i];
     }
   }
 
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'YY':
-        newFormat[i] = year.slice(2);
+        newFormat[i] = dateObj['YYYY'].slice(2);
         break;
 
       case 'YYYY':
-        newFormat[i] = year;
+        newFormat[i] = dateObj['YYYY'];
         break;
 
       case 'MM':
-        newFormat[i] = month;
+        newFormat[i] = dateObj['MM'];
         break;
 
       case 'DD':
-        newFormat[i] = day;
+        newFormat[i] = dateObj['DD'];
         break;
 
       default:
