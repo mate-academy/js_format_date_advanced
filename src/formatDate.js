@@ -54,7 +54,9 @@ function formatDate(date, fromFormat, toFormat) {
   let month = '';
   let year = '';
   let result = '';
-  const splits = date.split(fromFormat[3]);
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const splits = date.split(fromSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i][0] === 'Y') {
@@ -78,11 +80,11 @@ function formatDate(date, fromFormat, toFormat) {
         year = year.slice(2);
       }
 
-      result += year + toFormat[3];
+      result += year + toSeparator;
     } else if (toFormat[i][0] === 'M') {
-      result += month + toFormat[3];
+      result += month + toSeparator;
     } else {
-      result += day + toFormat[3];
+      result += day + toSeparator;
     }
   }
 
