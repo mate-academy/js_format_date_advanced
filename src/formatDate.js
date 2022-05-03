@@ -51,12 +51,12 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const arrDate = [];
-  const splitDate = date.split(fromFormat.pop());
+  const splitDate = date.split([...fromFormat].pop());
   const dateFormat = toFormat.pop();
 
-  let year,
-    month,
-    day;
+  let year;
+  let month;
+  let day;
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'YY') {
