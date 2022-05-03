@@ -54,7 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
   const toSeparator = toFormat.pop();
   const dateToArr = date.split(fromSeparator);
   const newDate = [];
-  let year, month, dte;
+  let year, month, dayNumber;
 
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
@@ -75,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'DD':
-        dte = dateToArr[i];
+        dayNumber = dateToArr[i];
         break;
 
       default:
@@ -98,7 +98,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'DD':
-        newDate.push(dte);
+        newDate.push(dayNumber);
         break;
 
       default:
