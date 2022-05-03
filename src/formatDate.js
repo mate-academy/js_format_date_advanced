@@ -75,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < dateArray.length; i++) {
     if (toFormat[i].includes('Y')) {
       if (toFormat[i].length === 4) {
-        if (parseInt(year.slice(-2)) < 30) {
+        if (+year.slice(-2) < 30) {
           result[i] = `20${year.slice(-2)}`;
         } else {
           result[i] = `19${year.slice(-2)}`;
