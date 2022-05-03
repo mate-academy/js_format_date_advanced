@@ -50,14 +50,16 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
+  const fromFormatCopy = [...fromFormat];
+  const toFormatCopy = [...toFormat];
+  const fromSeparator = fromFormatCopy.pop();
+  const toSeparator = toFormatCopy.pop();
   const dateToArr = date.split(fromSeparator);
   const newDate = [];
   let year, month, dayNumber;
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    switch (fromFormat[i]) {
+  for (let i = 0; i < fromFormatCopy.length; i++) {
+    switch (fromFormatCopy[i]) {
       case 'YY':
         if (+dateToArr[i] < 30) {
           year = dateToArr[i].padStart(4, '20');
@@ -83,8 +85,8 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    switch (toFormat[i]) {
+  for (let i = 0; i < toFormatCopy.length; i++) {
+    switch (toFormatCopy[i]) {
       case 'YY':
         newDate.push(year.slice(2));
         break;
