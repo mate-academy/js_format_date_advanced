@@ -81,19 +81,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'YYYY') {
-      dateOutput[(toFormat.indexOf(toFormat[i]))] = dateYear;
+      dateOutput[i] = dateYear;
     }
 
     if (toFormat[i] === 'YY') {
-      dateOutput[(toFormat.indexOf(toFormat[i]))] = dateYear.slice(2);
+      dateOutput[i] = dateYear.slice(2);
     }
 
     if (toFormat[i] === 'MM') {
-      dateOutput[(toFormat.indexOf(toFormat[i]))] = dateMonth;
+      dateOutput[i] = dateMonth;
     }
 
     if (toFormat[i] === 'DD') {
-      dateOutput[(toFormat.indexOf(toFormat[i]))] = dateDay;
+      dateOutput[i] = dateDay;
     }
   }
 
