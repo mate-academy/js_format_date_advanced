@@ -50,8 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const toSeperator = toFormat.pop();
+  const toSeperator = toFormat[toFormat.length - 1];
   const fromSeperator = fromFormat.pop();
   const dateArray = date.split(fromSeperator);
   let dateYear, dateMonth, dateDay;
@@ -81,19 +80,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'YYYY') {
-      dateOutput[i] = dateYear;
+      dateOutput[dateOutput.length] = dateYear;
     }
 
     if (toFormat[i] === 'YY') {
-      dateOutput[i] = dateYear.slice(2);
+      dateOutput[dateOutput.length] = dateYear.slice(2);
     }
 
     if (toFormat[i] === 'MM') {
-      dateOutput[i] = dateMonth;
+      dateOutput[dateOutput.length] = dateMonth;
     }
 
     if (toFormat[i] === 'DD') {
-      dateOutput[i] = dateDay;
+      dateOutput[dateOutput.length] = dateDay;
     }
   }
 
