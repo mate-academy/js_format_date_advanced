@@ -51,6 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const toSeperator = toFormat.pop();
   const fromSeperator = fromFormat.pop();
   const dateArray = date.split(fromSeperator);
   let dateYear, dateMonth, dateDay;
@@ -69,8 +70,6 @@ function formatDate(date, fromFormat, toFormat) {
       dateDay = dateArray[i];
     }
   }
-
-  const toSeperator = toFormat.pop();
 
   if (dateYear.length === 2) {
     if (parseInt(dateYear) < 30) {
