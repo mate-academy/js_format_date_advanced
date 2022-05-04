@@ -52,37 +52,39 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromDate = date.split(fromFormat[3]);
   const dates = {};
+  const shortFormat = 'YY';
+  const fullFormat = 'YYYY';
 
-  if (fromFormat[0] === 'YY'
-  && (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY')) {
+  if (fromFormat[0] === shortFormat
+  && (toFormat[0] === fullFormat || toFormat[2] === fullFormat)) {
     if (fromDate[0].toString() < 30) {
       fromDate[0] = '20' + fromDate[0];
     } else {
       fromDate[0] = '19' + fromDate[0];
     }
-    fromFormat[0] = 'YYYY';
+    fromFormat[0] = fullFormat;
   }
 
-  if (fromFormat[2] === 'YY'
-  && (toFormat[0] === 'YYYY' || toFormat[2] === 'YYYY')) {
+  if (fromFormat[2] === shortFormat
+  && (toFormat[0] === fullFormat || toFormat[2] === fullFormat)) {
     if (fromDate[0].toString() > 31) {
       fromDate[2] = '19' + fromDate[2];
     } else {
       fromDate[2] = '20' + fromDate[2];
     }
-    fromFormat[2] = 'YYYY';
+    fromFormat[2] = fullFormat;
   }
 
-  if (fromFormat[0] === 'YYYY'
-  && (toFormat[0] === 'YY' || toFormat[2] === 'YY')) {
+  if (fromFormat[0] === fullFormat
+  && (toFormat[0] === shortFormat || toFormat[2] === shortFormat)) {
     fromDate[0] = fromDate[0].slice(-2);
-    fromFormat[0] = 'YY';
+    fromFormat[0] = shortFormat;
   }
 
-  if (fromFormat[2] === 'YYYY'
-  && (toFormat[0] === 'YY' || toFormat[2] === 'YY')) {
+  if (fromFormat[2] === fullFormat
+  && (toFormat[0] === shortFormat || toFormat[2] === shortFormat)) {
     fromDate[2] = fromDate[2].slice(-2);
-    fromFormat[2] = 'YY';
+    fromFormat[2] = shortFormat;
   }
 
   for (let i = 0; i < 3; i++) {
