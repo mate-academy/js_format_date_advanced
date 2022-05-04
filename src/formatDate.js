@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const arrDate = [];
   const splitDate = date.split([...fromFormat].pop());
-  const dateFormat = toFormat.pop();
+  const dateFormat = [...toFormat.pop()];
 
   let year;
   let month;
