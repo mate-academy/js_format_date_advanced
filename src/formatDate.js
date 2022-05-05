@@ -51,8 +51,10 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // happy checking
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
+  const fromFormatCopy = fromFormat;
+  const toFormatCopy = toFormat;
+  const fromSeparator = fromFormatCopy.pop();
+  const toSeparator = toFormatCopy.pop();
   const inputArray = date.split(fromSeparator);
   const result = [];
 
