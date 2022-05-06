@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // happy checking
+  const fromFormatCopy = fromFormat;
+  const toFormatCopy = toFormat;
+  const fromSeparator = fromFormatCopy.pop();
+  const toSeparator = toFormatCopy.pop();
+  const inputArray = date.split(fromSeparator);
+  const result = [];
+
+  const YYwanted = toFormat.indexOf('YY') !== -1;
+  const YYYYwanted = toFormat.indexOf('YYYY') !== -1;
+
+  if (YYwanted) {
+    // change current format to match the desired
+    fromFormat[fromFormat.indexOf('YYYY')] = 'YY';
+
+    // change current date to match the desired
+    inputArray[fromFormat.indexOf('YY')]
+    = inputArray[fromFormat.indexOf('YY')].slice(2);
+  }
+
+  if (YYYYwanted) {
+    // change current format to match the desired
+    fromFormat[fromFormat.indexOf('YY')] = 'YYYY';
+
+    // change the current date to integer
+    inputArray[fromFormat.indexOf('YYYY')]
+    = parseInt(inputArray[fromFormat.indexOf('YYYY')]);
+
+    const currentDate = inputArray[fromFormat.indexOf('YYYY')];
+
+    if (currentDate < 30) {
+      inputArray[fromFormat.indexOf('YYYY')] += 2000;
+    } else if (currentDate < 100) {
+      inputArray[fromFormat.indexOf('YYYY')] += 1900;
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+  /* arrange the current date depending on current
+  date format with indexes from the desired format */
+    result.push(inputArray[fromFormat.indexOf(toFormat[i])]);
+  }
+
+  return result.join(toSeparator);
 }
 
 module.exports = formatDate;
