@@ -50,35 +50,60 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat.pop();
-  const newSeperator = toFormat.pop();
-  const arrDate = date.split(oldSeparator);
-  const dateObj = {};
-  const result = {};
+  const arrDate = date.split(fromFormat[3]);
+  const newDateArr = [];
+  let day, month, year;
 
-  for (let i = 0; i < arrDate.length; i++) {
-    dateObj[fromFormat[i]] = arrDate[i];
-  }
+  for (let i = 0; i < 3; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = arrDate[i];
+        break;
 
-  for (const key of toFormat) {
-    for (const value in dateObj) {
-      switch (true) {
-        case value === key:
-          result[value] = dateObj[key];
-          break;
-        case (value === 'YYYY' && key === 'YY'):
-          result[value] = +dateObj[value].slice(-2);
-          break;
-        case (value === 'YY' && key === 'YYYY'):
-          const partYear = dateObj[value].slice(-2);
-          const year = (partYear >= 30) ? '19' + partYear : '20' + partYear;
+      case 'MM':
+        month = arrDate[i];
+        break;
 
-          result[value] = year;
+      case 'YYYY':
+        year = arrDate[i];
+        break;
+
+      case 'YY': {
+        const yy = arrDate[i];
+
+        if (parseInt(yy, 10) < 30) {
+          year = `20${yy}`;
+        } else {
+          year = `19${yy}`;
+        }
+
+        break;
       }
     }
   }
 
-  return Object.values(result).join(newSeperator);
+  for (const part of toFormat) {
+    switch (part) {
+      case 'DD':
+        newDateArr.push(day);
+        break;
+
+      case 'MM':
+        newDateArr.push(month);
+        break;
+
+      case 'YYYY':
+        newDateArr.push(year);
+        break;
+
+      case 'YY': {
+        newDateArr.push(year.slice(2));
+        break;
+      }
+    }
+  }
+
+  return newDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
