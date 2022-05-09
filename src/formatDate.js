@@ -51,54 +51,64 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newFormat = [];
-  const initialSeperator = fromFormat.pop();
-  const dateArray = date.split(initialSeperator);
-  const finalSeparator = toFormat.pop();
+  const initialFormat = fromFormat;
+  const initialSeperator = initialFormat.pop();
+  const arrayOfdate = date;
+  const dateArray = arrayOfdate.split(initialSeperator);
+  const requiredFormat = toFormat;
+  const finalSeparator = requiredFormat.pop();
   let year = '';
   let month = '';
   let day = '';
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YY') {
-      if (+dateArray[i] < 30) {
-        year = `20${dateArray[i]}`;
-      } else {
-        year = `19${dateArray[i]}`;
-      }
-    }
+    switch (initialFormat[i]) {
+      case 'YY':
+        if (+dateArray[i] < 30) {
+          year = `20${dateArray[i]}`;
+        } else {
+          year = `19${dateArray[i]}`;
+        }
+        break;
 
-    if (fromFormat[i] === 'YYYY') {
-      year = dateArray[i];
-    }
+      case 'YYYY':
+        year = dateArray[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateArray[i];
-    }
+      case 'MM':
+        month = dateArray[i];
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      day = dateArray[i];
+      case 'DD':
+        day = dateArray[i];
+        break;
+
+      default:
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YY') {
-      newFormat[i] = year.slice(2);
-    }
+  for (let i = 0; i < requiredFormat.length; i++) {
+    switch (requiredFormat[i]) {
+      case 'YY':
+        newFormat[i] = year.slice(2);
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      newFormat[i] = year;
-    }
+      case 'YYYY':
+        newFormat[i] = year;
+        break;
 
-    if (toFormat[i] === 'MM') {
-      newFormat[i] = month;
-    }
+      case 'MM':
+        newFormat[i] = month;
+        break;
 
-    if (toFormat[i] === 'DD') {
-      newFormat[i] = day;
+      case 'DD':
+        newFormat[i] = day;
+        break;
+
+      default:
     }
   }
 
   return newFormat.join(finalSeparator);
 }
-
 module.exports = formatDate;
