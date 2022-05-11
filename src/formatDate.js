@@ -53,9 +53,9 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const result = [];
 
-  const fromSeparator = fromFormat.pop();
+  const fromSeparator = [...fromFormat].pop();
   const inputDateArray = date.split(fromSeparator);
-  const newSeparator = toFormat.pop();
+  const newSeparator = [...toFormat].pop();
 
   let year;
   let month;
