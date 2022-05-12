@@ -50,7 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const get = fromFormat;
+  const want = toFormat;
+  const dateToArray = date.split(get[3]);
+
+  const day = dateToArray.find((elem, index) => (
+    index === get.findIndex(format => format === 'DD')
+  ));
+  const month = dateToArray.find((elem, index) => (
+    index === get.findIndex(format => format === 'MM')
+  ));
+  const year = dateToArray.find((elem, index) => (
+    index === get.findIndex(format => (
+      format === 'YY' || format === 'YYYY'
+    ))
+  ));
+
+  const chars = get.find(format => (
+    format === 'YY' || format === 'YYYY'
+
+  )).length;
+  const charsNeed = want.find(format => (
+    format === 'YY' || format === 'YYYY'
+  )).length;
+
+  const chackpoint = (YearDate) => {
+    const numbYear = +YearDate;
+    let addYars = '';
+
+    if (numbYear < 30) {
+      addYars = '20';
+    } else {
+      addYars = '19';
+    }
+
+    if (chars < charsNeed) {
+      return addYars + YearDate;
+    } else if (chars > charsNeed) {
+      return ('' + YearDate).slice(2);
+    }
+
+    return YearDate;
+  };
+
+  const point = want[3];
+
+  want.length--;
+
+  const result = want.map(elmen => {
+    if (elmen === 'DD') {
+      return day;
+    } else if (elmen === 'MM') {
+      return month;
+    } else if (elmen === 'YY' || elmen === 'YYYY') {
+      return chackpoint(year);
+    }
+  });
+
+  return result.join(point);
 }
 
 module.exports = formatDate;
