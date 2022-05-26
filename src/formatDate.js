@@ -55,16 +55,10 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   const splitDate = date.split(separator);
-  let i = 0;
   const obj = {};
 
-  for (const word of fromFormat) {
-    if (word === separator) {
-      continue;
-    }
-
-    obj[word] = splitDate[i];
-    i++;
+  for (let i = 0; i < splitDate.length; i++) {
+    obj[fromFormat[i]] = splitDate[i];
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
@@ -83,15 +77,11 @@ function formatDate(date, fromFormat, toFormat) {
     const tmp = obj.YYYY.slice(2);
 
     delete obj.YYYY;
-    obj.YYYY = tmp;
+    obj.YY = tmp;
   }
 
-  for (const toWord of toFormat) {
-    for (const fromWord in obj) {
-      if (toWord[0] === fromWord[0]) {
-        result.push(obj[fromWord]);
-      }
-    }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result.push(obj[toFormat[i]]);
   }
 
   return result.join(newSeparator);
