@@ -51,6 +51,46 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  let separatorFirst;
+  let separatorEnd;
+
+  for (const elementArr of date.split('')) {
+    if (isNaN(elementArr)) {
+      separatorFirst = elementArr;
+    }
+  }
+
+  for (const element of toFormat.join(',')) {
+    if (isNaN(element)) {
+      separatorEnd = element;
+    }
+  }
+
+  const result = [];
+  const arrDate = date.split(separatorFirst);
+
+  for (let i = 0; i < toFormat.length; i++) {
+    for (let y = 0; y < arrDate.length; y++) {
+      if (toFormat[i] === fromFormat[y]) {
+        result[i] = arrDate[fromFormat.indexOf(fromFormat[y])];
+      }
+
+      if (toFormat[i] !== fromFormat[y] && toFormat[i].includes('YY')
+      && fromFormat[y].includes('YY')) {
+        if (fromFormat[y] === 'YYYY' && toFormat[i] === 'YY') {
+          result[y] = arrDate[fromFormat.indexOf(fromFormat[y])].slice(2);
+        } else {
+          if (+arrDate[fromFormat.indexOf(fromFormat[y])] < 30) {
+            result[y] = `20${arrDate[fromFormat.indexOf(fromFormat[y])]}`;
+          } else {
+            result[y] = `19${arrDate[fromFormat.indexOf(fromFormat[y])]}`;
+          }
+        }
+      }
+    }
+  }
+
+  return result.join(separatorEnd);
 }
 
 module.exports = formatDate;
