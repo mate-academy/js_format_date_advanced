@@ -51,6 +51,80 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldDate = date.split(fromFormat[3]);
+  const newDate = [];
+
+  // checking if data should be inverted
+  for (let index = 0; index < oldDate.length; index++) {
+    // first char of each element in array fromFormat
+    const firstChar = fromFormat[index].charAt(0);
+
+    const target = toFormat.findIndex(format => {
+      return (firstChar === format.charAt(0));
+    });
+
+    switch (firstChar) {
+      case 'Y':
+        const oldYearL = calcYearLength(fromFormat);
+        const newYearL = calcYearLength(toFormat);
+
+        newDate[target] = convertYear(oldDate[index], oldYearL, newYearL);
+        break;
+      case 'D':
+        newDate[target] = oldDate[index];
+        break;
+      case 'M':
+        newDate[target] = oldDate[index];
+        break;
+      default:
+        break;
+    }
+  }
+
+  return newDate.join(toFormat[3]);
+}
+
+function calcYearLength(array) {
+  for (const item of array) {
+    if (item === 'YYYY') {
+      return 4;
+    }
+  }
+
+  // if item === 'YY'
+  return 2;
+}
+
+function convertYear(year, oldFormat, newFormat) {
+  let newYear = year;
+
+  let thousands = '';
+
+  // YYYY
+  if (year.length === 4) {
+    thousands = year.charAt(0) + year.charAt(1);
+  }
+
+  // YY
+  if (year.length === 2) {
+    thousands = year >= 30 ? 19 : 20;
+  }
+
+  // YY => YYYY
+  if (oldFormat < newFormat) {
+    newYear = thousands + newYear;
+  }
+
+  // YYYY => YY
+  if (oldFormat > newFormat) {
+    newYear = newYear.charAt(2) + newYear.charAt(3);
+  }
+
+  // if oldFormat === newFormat
+  return newYear;
 }
 
 module.exports = formatDate;
+
+// use this
+// array.values
