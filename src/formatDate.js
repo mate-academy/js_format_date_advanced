@@ -50,7 +50,74 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  function getInfo(dateformat) {
+    const info = {};
+
+    for (let index = 0; index < 3; index++) {
+      const position = +index;
+      const letter = dateformat[index].slice(0, 1);
+      const length = dateformat[index].length;
+
+      info[letter] = { position, length };
+    }
+
+    return info;
+  }
+
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+
+  const inputDate = date.split(oldSeparator);
+  const outputDate = [];
+
+  const transformFrom = getInfo(fromFormat);
+  const transformTo = getInfo(toFormat);
+
+  for (const letter in transformFrom) {
+    const oldPos = transformFrom[letter].position;
+    const oldLen = transformFrom[letter].length;
+
+    const newPos = transformTo[letter].position;
+    const newLen = transformTo[letter].length;
+    let find;
+
+    switch (letter) {
+      case 'Y':
+        find = inputDate[oldPos];
+
+        if (oldLen < newLen) {
+          find = +find < 30
+            ? '20' + find
+            : '19' + find;
+        }
+
+        if (find.length > newLen) {
+          find = find.slice(2);
+        }
+
+        outputDate[newPos] = find;
+
+        break;
+
+      case 'D':
+        find = inputDate[oldPos];
+        outputDate[newPos] = find;
+
+        break;
+
+      case 'M':
+        find = inputDate[oldPos];
+        outputDate[newPos] = find;
+
+        break;
+
+      default:
+
+        return date;
+    }
+  }
+
+  return outputDate.join(newSeparator);
 }
 
 module.exports = formatDate;
