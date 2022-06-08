@@ -50,7 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  fromFormat.reverse();
+
+  const [separator, ...format] = fromFormat;
+  const initialDate = date
+    .split(separator)
+    .reverse()
+    .map((pieceOfDate, index) => {
+      return [format[index], pieceOfDate];
+    });
+
+  const initialDateObject = Object.fromEntries(initialDate);
+  const formatDateObject = {};
+
+  for (const symbol of toFormat) {
+    switch (symbol) {
+      case 'DD':
+        formatDateObject[symbol] = initialDateObject[symbol];
+        break;
+      case 'MM':
+        formatDateObject[symbol] = initialDateObject[symbol];
+        break;
+      case 'YY':
+        formatDateObject[symbol] = initialDateObject.hasOwnProperty(symbol)
+          ? initialDateObject[symbol]
+          : initialDateObject.YYYY.slice(2);
+        break;
+      case 'YYYY':
+        formatDateObject[symbol] = initialDateObject.hasOwnProperty(symbol)
+          ? initialDateObject[symbol]
+          : formatDateObject[symbol] = initialDateObject.YY >= 30
+            ? `19${initialDateObject.YY}`
+            : `20${initialDateObject.YY}`;
+        break;
+    }
+  }
+
+  const formatSeparator = toFormat[toFormat.length - 1];
+
+  return Object.values(formatDateObject).join(formatSeparator);
 }
 
 module.exports = formatDate;
