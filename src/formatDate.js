@@ -54,7 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
     const info = {};
 
     for (let index = 0; index < 3; index++) {
-      const position = +index;
+      const position = index;
       const letter = dateformat[index].slice(0, 1);
       const length = dateformat[index].length;
 
@@ -79,35 +79,31 @@ function formatDate(date, fromFormat, toFormat) {
 
     const newPos = transformTo[letter].position;
     const newLen = transformTo[letter].length;
-    let find;
 
     switch (letter) {
       case 'Y':
-        find = inputDate[oldPos];
 
         if (oldLen < newLen) {
-          find = +find < 30
-            ? '20' + find
-            : '19' + find;
+          inputDate[oldPos] = inputDate[oldPos] < 30
+            ? '20' + inputDate[oldPos]
+            : '19' + inputDate[oldPos];
         }
 
-        if (find.length > newLen) {
-          find = find.slice(2);
+        if (oldLen > newLen) {
+          inputDate[oldPos] = inputDate[oldPos].slice(2);
         }
 
-        outputDate[newPos] = find;
+        outputDate[newPos] = inputDate[oldPos]; ;
 
         break;
 
       case 'D':
-        find = inputDate[oldPos];
-        outputDate[newPos] = find;
+        outputDate[newPos] = inputDate[oldPos];
 
         break;
 
       case 'M':
-        find = inputDate[oldPos];
-        outputDate[newPos] = find;
+        outputDate[newPos] = inputDate[oldPos];
 
         break;
 
