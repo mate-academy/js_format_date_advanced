@@ -54,21 +54,20 @@ function formatDate(date, fromFormat, toFormat) {
   const dateOld = date.split(separatorOld);
   const dateNew = [];
 
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     const current = fromFormat[i];
+    const yearsFormatSame = toFormat.indexOf(current) !== -1;
 
-    if (current.includes('Y') && toFormat.indexOf(current) === -1) {
+    if (current.includes('Y') && !yearsFormatSame) {
       let year = dateOld[i];
 
       if (current === 'YYYY') {
         year = year.slice(2);
         dateNew[toFormat.indexOf('YY')] = year;
       } else if (current === 'YY') {
-        if (year < 30) {
-          dateNew[toFormat.indexOf('YYYY')] = '20' + year;
-        } else {
-          dateNew[toFormat.indexOf('YYYY')] = '19' + year;
-        }
+        const century = (year < 30) ? '20' : '19';
+
+        dateNew[toFormat.indexOf('YYYY')] = century + year;
       }
     } else {
       dateNew[toFormat.indexOf(current)] = dateOld[i];
@@ -76,9 +75,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   const separatorNew = toFormat.pop();
-  const result = dateNew.join(separatorNew);
+  const dateFormatNew = dateNew.join(separatorNew);
 
-  return result;
+  return dateFormatNew;
 }
 
 module.exports = formatDate;
