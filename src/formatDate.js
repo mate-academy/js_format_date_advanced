@@ -70,7 +70,7 @@ function formatDate(date, fromFormat, toFormat) {
       const toYearFormat = toFormat[i].length;
 
       if (toYearFormat < inputDate.yearFormat) {
-        inputDate.y = inputDate.y.slice(2, 4);
+        inputDate.y = inputDate.y.slice(2);
       } else if (toYearFormat > inputDate.yearFormat) {
         const century = (+inputDate.y < 30) ? '20' : '19';
 
