@@ -53,6 +53,8 @@ function formatDate(date, fromFormat, toFormat) {
   const formatedDate = [];
   const separator = toFormat[3];
   const arrayDate = date.split(fromFormat[3]);
+  const yearShort = arrayDate[fromFormat.indexOf('YY')];
+  const yearLong = arrayDate[fromFormat.indexOf('YYYY')];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
@@ -66,20 +68,20 @@ function formatDate(date, fromFormat, toFormat) {
 
       case 'YY':
         if (fromFormat.includes('YY')) {
-          formatedDate.push(arrayDate[fromFormat.indexOf('YY')]);
+          formatedDate.push(yearShort);
         } else {
-          formatedDate.push(arrayDate[fromFormat.indexOf('YYYY')].slice(2));
+          formatedDate.push(yearLong.slice(2));
         }
         break;
 
       case 'YYYY':
         if (fromFormat.includes('YYYY')) {
-          formatedDate.push(arrayDate[fromFormat.indexOf('YYYY')]);
+          formatedDate.push(yearLong);
         } else {
           if (arrayDate[fromFormat.indexOf('YY')] >= 30) {
-            formatedDate.push('19' + arrayDate[fromFormat.indexOf('YY')]);
+            formatedDate.push('19' + yearShort);
           } else {
-            formatedDate.push('20' + arrayDate[fromFormat.indexOf('YY')]);
+            formatedDate.push('20' + yearShort);
           };
         }
     }
