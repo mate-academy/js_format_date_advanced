@@ -50,81 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const oldDate = date.split(fromFormat[3]);
+  const fromSeperator = fromFormat[3];
+  const toSeperator = toFormat[3];
+  const dateSplit = date.split(fromSeperator);
+
+  const dateObject = {};
   const newDate = [];
 
-  // checking if data should be inverted
-  for (let index = 0; index < oldDate.length; index++) {
-    // first char of each element in array fromFormat
-    const firstChar = fromFormat[index].charAt(0);
-
-    const target = toFormat.findIndex(format => {
-      return (firstChar === format.charAt(0));
-    });
-
-    switch (firstChar) {
-      case 'Y':
-        const oldYearL = calcYearLength(fromFormat);
-        const newYearL = calcYearLength(toFormat);
-
-        newDate[target] = convertYear(oldDate[index], oldYearL, newYearL);
-        break;
-      case 'D':
-        newDate[target] = oldDate[index];
-        break;
-      case 'M':
-        newDate[target] = oldDate[index];
-        break;
-      default:
-        break;
-    }
+  for (let i = 0; i < 3; i++) {
+    dateObject[fromFormat[i]] = dateSplit[i];
   }
 
-  return newDate.join(toFormat[3]);
-}
+  // assign appriopriate data to a new date
+  for (let i = 0; i < 3; i++) {
+    const format = toFormat[i];
+    let formatValue = dateObject[format];
 
-function calcYearLength(array) {
-  for (const item of array) {
-    if (item === 'YYYY') {
-      return 4;
+    // check if we need to convert year length
+    if (!dateObject.hasOwnProperty(format)) {
+      const year = dateObject.YY || dateObject.YYYY;
+
+      formatValue = convertYear(year);
     }
+
+    newDate[i] = formatValue;
   }
 
-  // if item === 'YY'
-  return 2;
+  return newDate.join(toSeperator);
 }
 
-function convertYear(year, oldFormat, newFormat) {
+function convertYear(year) {
   let newYear = year;
 
-  let thousands = '';
-
-  // YYYY
   if (year.length === 4) {
-    thousands = year.charAt(0) + year.charAt(1);
-  }
-
-  // YY
-  if (year.length === 2) {
-    thousands = year >= 30 ? 19 : 20;
-  }
-
-  // YY => YYYY
-  if (oldFormat < newFormat) {
-    newYear = thousands + newYear;
-  }
-
-  // YYYY => YY
-  if (oldFormat > newFormat) {
+    // YYYY => YY
     newYear = newYear.charAt(2) + newYear.charAt(3);
   }
 
-  // if oldFormat === newFormat
+  if (year.length === 2) {
+    // check is it before 2000 or after
+    const thousands = year >= 30 ? 19 : 20;
+
+    //  YY => YYYY
+    newYear = thousands + newYear;
+  }
+
   return newYear;
 }
 
 module.exports = formatDate;
-
-// use this
-// array.values
