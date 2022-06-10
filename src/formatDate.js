@@ -59,18 +59,15 @@ function formatDate(date, fromFormat, toFormat) {
   const dateForRead = date.split(oldSeparator).join('');
 
   for (const type of 'YMD') {
-    const indexOfValue = fromFormat.join('').indexOf(type);
-    let property;
+    let indexOfValue = fromFormat.join('').indexOf(type);
 
     if (fromFormat[indexOfValue / 2] === 'YYYY') {
-      property = {
-        [type]: dateForRead.substr(indexOfValue + 2, 2),
-      };
-    } else {
-      property = {
-        [type]: dateForRead.substr(indexOfValue, 2),
-      };
+      indexOfValue += 2;
     }
+
+    const property = {
+      [type]: dateForRead.substr(indexOfValue, 2),
+    };
 
     Object.assign(newFormatDate, property);
   }
