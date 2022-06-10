@@ -55,48 +55,48 @@ function formatDate(date, fromFormat, toFormat) {
   const datePrevious = date.split(separatorPrevious);
 
   let yearPreviousFormat = '';
-  let Year = '';
-  let Day = '';
-  let Month = '';
+  let year = '';
+  let day = '';
+  let month = '';
   let newDateResult = '';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i].includes('YY') || fromFormat[i].includes('YYYY')) {
-      Year = datePrevious[i];
+      year = datePrevious[i];
       yearPreviousFormat = fromFormat[i];
     }
 
     if (fromFormat[i].includes('DD')) {
-      Day = datePrevious[i];
+      day = datePrevious[i];
     }
 
     if (fromFormat[i].includes('MM')) {
-      Month = datePrevious[i];
+      month = datePrevious[i];
     }
   }
 
   for (let j = 0; j < toFormat.length; j++) {
     if (toFormat[j].includes('YY') || toFormat[j].includes('YYYY')) {
       if (toFormat[j].length > yearPreviousFormat.length) {
-        if (Year < 30) {
-          Year = '20' + Year;
+        if (year < 30) {
+          year = '20' + year;
         } else {
-          Year = '19' + Year;
+          year = '19' + year;
         }
       }
 
       if (toFormat[j].length < yearPreviousFormat.length) {
-        Year = Year.slice(2, 4);
+        year = year.slice(2);
       }
-      newDateResult += Year;
+      newDateResult += year;
     }
 
     if (toFormat[j].includes('D')) {
-      newDateResult += Day;
+      newDateResult += day;
     }
 
     if (toFormat[j].includes('M')) {
-      newDateResult += Month;
+      newDateResult += month;
     }
 
     if (j < toFormat.length - 2) {
