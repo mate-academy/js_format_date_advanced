@@ -50,7 +50,124 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const data = {};
+  let dateArrey = [];
+  const dateResult = [];
+
+  switch (date.length) {
+    case 10:
+      if (fromFormat[0] === 'YYYY') {
+        dateArrey = date.split(date[4]);
+        data.year = dateArrey[0];
+
+        if (fromFormat[1] === 'MM') {
+          data.month = dateArrey[1];
+          data.day = dateArrey[2];
+        } else {
+          data.month = dateArrey[2];
+          data.day = dateArrey[1];
+        }
+      }
+
+      dateArrey = date.split(date[2]);
+
+      if (fromFormat[2] === 'YYYY') {
+        data.year = dateArrey[2];
+
+        if (fromFormat[1] === 'MM') {
+          data.month = dateArrey[1];
+          data.day = dateArrey[0];
+        } else {
+          data.month = dateArrey[0];
+          data.day = dateArrey[1];
+        }
+      }
+
+      if (fromFormat[1] === 'YYYY') {
+        data.year = dateArrey[1];
+
+        if (fromFormat[0] === 'MM') {
+          data.month = dateArrey[0];
+          data.day = dateArrey[2];
+        } else {
+          data.month = dateArrey[2];
+          data.day = dateArrey[0];
+        }
+      }
+      break;
+
+    case 8:
+      dateArrey = date.split(date[2]);
+      data.month = dateArrey[1];
+
+      if (fromFormat[0] === 'YY') {
+        if (dateArrey[0] < 30) {
+          data.year = '20' + dateArrey[0];
+        } else {
+          data.year = '19' + dateArrey[0];
+        }
+
+        data.day = dateArrey[2];
+      } else {
+        if (dateArrey[2] < 30) {
+          data.year = '20' + dateArrey[2];
+        } else {
+          data.year = '19' + dateArrey[2];
+        }
+
+        data.day = dateArrey[0];
+      }
+  }
+
+  if (toFormat[0] === 'YYYY') {
+    dateResult[0] = data.year;
+
+    if (toFormat[1] === 'MM') {
+      dateResult[1] = data.month;
+      dateResult[2] = data.day;
+    } else {
+      dateResult[2] = data.month;
+      dateResult[1] = data.day;
+    }
+  }
+
+  if (toFormat[2] === 'YYYY') {
+    dateResult[2] = data.year;
+
+    if (toFormat[1] === 'MM') {
+      dateResult[1] = data.month;
+      dateResult[0] = data.day;
+    } else {
+      dateResult[0] = data.month;
+      dateResult[1] = data.day;
+    }
+  }
+
+  if (toFormat[0] === 'YY') {
+    dateResult[0] = data.year.slice(2);
+
+    if (toFormat[1] === 'MM') {
+      dateResult[1] = data.month;
+      dateResult[2] = data.day;
+    } else {
+      dateResult[2] = data.month;
+      dateResult[1] = data.day;
+    }
+  }
+
+  if (toFormat[2] === 'YY') {
+    dateResult[2] = data.year.slice(2);
+
+    if (toFormat[1] === 'MM') {
+      dateResult[1] = data.month;
+      dateResult[0] = data.day;
+    } else {
+      dateResult[0] = data.month;
+      dateResult[1] = data.day;
+    }
+  }
+
+  return dateResult.join(toFormat[3]);
 }
 
 module.exports = formatDate;
