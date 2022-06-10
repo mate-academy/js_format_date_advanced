@@ -50,32 +50,32 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const initialDateObj = {};
+  const dateObj = {};
   const indexSeparator = toFormat.length - 1;
   const arrDate = date.split(fromFormat[indexSeparator]);
 
   for (let i = 0; i < indexSeparator; i++) {
-    initialDateObj[fromFormat[i]] = arrDate[i];
+    dateObj[fromFormat[i]] = arrDate[i];
   }
 
   for (let i = 0; i < indexSeparator; i++) {
-    if (initialDateObj.YYYY && toFormat[i] === 'YY') {
-      const dateYear = initialDateObj.YYYY;
+    if (dateObj.YYYY && toFormat[i] === 'YY') {
+      const dateYear = dateObj.YYYY;
 
-      delete initialDateObj.YYYY;
-      initialDateObj.YY = dateYear.slice(2);
+      delete dateObj.YYYY;
+      dateObj.YY = dateYear.slice(2);
     }
 
-    if (initialDateObj.YY && toFormat[i] === 'YYYY') {
-      const dateYear = initialDateObj.YY < 30
-        ? '20' + initialDateObj.YY
-        : '19' + initialDateObj.YY;
+    if (dateObj.YY && toFormat[i] === 'YYYY') {
+      const dateYear = dateObj.YY < 30
+        ? '20' + dateObj.YY
+        : '19' + dateObj.YY;
 
-      delete initialDateObj.YY;
-      initialDateObj.YYYY = dateYear;
+      delete dateObj.YY;
+      dateObj.YYYY = dateYear;
     }
 
-    arrDate[i] = initialDateObj[toFormat[i]];
+    arrDate[i] = dateObj[toFormat[i]];
   }
 
   return arrDate.join(toFormat[indexSeparator]);
