@@ -50,7 +50,58 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fF = fromFormat;
+  const tF = toFormat;
+
+  let separator = fF[3];
+  const arrStartDay = date.split(separator);
+  const arrResult = [];
+  const objDateInfo = {
+    YY: 'YY',
+    MM: 'MM',
+    DD: 'DD',
+    YYYY: 'YYYY',
+  };
+
+  for (let i = 0; i < fF.length; i++) {
+    if (fF[i] === 'YY') {
+      objDateInfo['YY'] = arrStartDay[i];
+
+      if (arrStartDay[i] >= 0 && arrStartDay[i] <= 22) {
+        objDateInfo['YYYY'] = 20 + arrStartDay[i];
+      }
+
+      if (arrStartDay[i] > 22 && arrStartDay[i] < 99) {
+        objDateInfo['YYYY'] = 19 + arrStartDay[i];
+      }
+    }
+
+    if (fF[i] === 'YYYY') {
+      objDateInfo['YYYY'] = arrStartDay[i];
+      objDateInfo['YY'] = arrStartDay[i].slice(-2);
+    }
+
+    if (fF[i] === 'DD') {
+      objDateInfo['DD'] = arrStartDay[i];
+    }
+
+    if (fF[i] === 'MM') {
+      objDateInfo['MM'] = arrStartDay[i];
+    }
+  }
+
+  for (const char of tF) {
+    for (const key in objDateInfo) {
+      if (key === char) {
+        arrResult.push(objDateInfo[key]);
+      }
+    }
+  }
+  separator = tF.slice(-1);
+
+  const dateResult = arrResult.join(separator);
+
+  return (dateResult);
 }
 
 module.exports = formatDate;
