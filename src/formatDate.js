@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldFormat = [...fromFormat];
+  const newFormat = [...toFormat];
+  const oldSeperator = oldFormat.pop();
+  const newSeperator = newFormat.pop();
+  const dateItems = date.split(oldSeperator);
+  const result = [];
+
+  for (let i = 0; i < dateItems.length; i++) {
+    if (newFormat[i].includes('D')) {
+      result.push(dateItems[foundIndex(oldFormat, 'D')]);
+    }
+
+    if (newFormat[i].includes('M')) {
+      result.push(dateItems[foundIndex(oldFormat, 'M')]);
+    }
+
+    if (newFormat[i].includes('Y')) {
+      let year = dateItems[foundIndex(oldFormat, 'Y')];
+      const oldFormatYear = oldFormat[foundIndex(oldFormat, 'Y')];
+      const newFormatYear = newFormat[foundIndex(newFormat, 'Y')];
+
+      if (oldFormatYear.length > newFormatYear.length) {
+        year = year.slice(-2);
+      }
+
+      if (oldFormatYear.length < newFormatYear.length) {
+        const millennium = year < 30 ? 20 : 19;
+
+        year = millennium + year;
+      }
+
+      result.push(year);
+    }
+  }
+
+  return result.join(newSeperator);
+}
+
+function foundIndex(oldFormatItems, partDate, newFormatItems) {
+  for (let i = 0; i < oldFormatItems.length; i++) {
+    if (oldFormatItems[i].includes(partDate)) {
+      return i;
+    }
+  }
 }
 
 module.exports = formatDate;
