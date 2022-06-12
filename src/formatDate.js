@@ -56,8 +56,8 @@ function formatDate(date, fromFormat, toFormat) {
   const formatedArr = [];
   const objDate = {};
 
-  for (let from = 0; from < arrDate.length; from++) {
-    objDate[fromFormat[from]] = arrDate[from];
+  for (let i = 0; i < arrDate.length; i++) {
+    objDate[fromFormat[i]] = arrDate[i];
   }
 
   for (const kay in objDate) {
