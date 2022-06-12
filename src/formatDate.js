@@ -88,7 +88,7 @@ function formatDate(date, fromFormat, toFormat) {
   return result.join(newSeperator);
 }
 
-function foundIndex(oldFormatItems, partDate, newFormatItems) {
+function foundIndex(oldFormatItems, partDate) {
   for (let i = 0; i < oldFormatItems.length; i++) {
     if (oldFormatItems[i].includes(partDate)) {
       return i;
