@@ -51,6 +51,54 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const arrDate = date.split(`${fromFormat[3]}`);
+  const sliceFromFormate = fromFormat.slice(0, 3);
+  const sliceToFormate = toFormat.slice(0, 3);
+  const realDate = [];
+  const separator = toFormat[3];
+  let dd;
+  let mm;
+  let year;
+
+  for (let i = 0; i < sliceFromFormate.length; i++) {
+    if (sliceFromFormate[i] === 'DD') {
+      dd = arrDate[i];
+    }
+
+    if (sliceFromFormate[i] === 'MM') {
+      mm = arrDate[i];
+    }
+
+    if (sliceFromFormate[i] === 'YYYY') {
+      year = arrDate[i];
+    }
+
+    if (sliceFromFormate[i] === 'YY') {
+      if (arrDate[i] >= 30) {
+        year = '19' + arrDate[i];
+      } else {
+        year = '20' + arrDate[i];
+      }
+    }
+  }
+
+  for (let i = 0; i < sliceToFormate.length; i++) {
+    if (sliceToFormate[i] === 'DD') {
+      realDate[i] = dd;
+    }
+
+    if (sliceToFormate[i] === 'MM') {
+      realDate[i] = mm;
+    }
+
+    if (sliceToFormate[i] === 'YY') {
+      realDate[i] = year.slice(2);
+    } else if (sliceToFormate[i] === 'YYYY') {
+      realDate[i] = year;
+    }
+  }
+
+  return realDate.join(`${separator}`);
 }
 
 module.exports = formatDate;
