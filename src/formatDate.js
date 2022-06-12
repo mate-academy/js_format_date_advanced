@@ -76,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
     return year < 30 ? '20' + year : '19' + year;
   }
 
-  formatedArr.length = 3;
+  formatedArr.splice(3);
 
   return formatedArr.join(separatorTo);
 }
