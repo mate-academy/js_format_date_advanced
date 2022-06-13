@@ -52,34 +52,29 @@
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
-  const oldDateFormat = date.split(oldSeparator);
-  const newDateFormat = [];
-  let formatedYear = '';
+  const dateArr = date.split(oldSeparator);
+  const resultArr = [];
+  const dateObj = {};
+
+  for (let i = 0; i < dateArr.length; i++) {
+    dateObj[fromFormat[i]] = dateArr[i];
+  }
 
   for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (toFormat[i] === fromFormat[j]) {
-        newDateFormat.push(oldDateFormat[j]);
+    if (toFormat[i] === 'YY' && dateObj['YYYY']) {
+      resultArr.push(dateObj['YYYY'].slice(2));
+    } else if (toFormat[i] === 'YYYY' && dateObj['YY']) {
+      if (dateObj['YY'] < 30) {
+        resultArr.push(`20${dateObj['YY']}`);
+      } else {
+        resultArr.push(`19${dateObj['YY']}`);
       }
-
-      if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
-        formatedYear = oldDateFormat[j].slice(2);
-        newDateFormat.push(formatedYear);
-      }
-
-      if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY') {
-        if (oldDateFormat[j] < 30) {
-          formatedYear = '20' + oldDateFormat[j];
-        } else {
-          formatedYear = '19' + oldDateFormat[j];
-        }
-
-        newDateFormat.push(formatedYear);
-      }
+    } else {
+      resultArr.push(dateObj[toFormat[i]]);
     }
   }
 
-  return newDateFormat.join(newSeparator);
+  return resultArr.join(newSeparator);
 }
 
 module.exports = formatDate;
