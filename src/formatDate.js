@@ -56,32 +56,36 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeperator = newFormat.pop();
   const dateItems = date.split(oldSeperator);
   const result = [];
+  let year = dateItems[foundIndex(oldFormat, 'Y')];
+  const oldFormatYear = oldFormat[foundIndex(oldFormat, 'Y')];
+  const newFormatYear = newFormat[foundIndex(newFormat, 'Y')];
 
   for (let i = 0; i < dateItems.length; i++) {
-    if (newFormat[i].includes('D')) {
-      result.push(dateItems[foundIndex(oldFormat, 'D')]);
-    }
+    switch (newFormat[i]) {
+      case 'DD':
+        result.push(dateItems[oldFormat.indexOf('DD')]);
+        break;
+      case 'MM':
+        result.push(dateItems[oldFormat.indexOf('MM')]);
+        break;
+      case 'YYYY':
+        if (oldFormatYear.length < newFormatYear.length) {
+          const millennium = year < 30 ? 20 : 19;
 
-    if (newFormat[i].includes('M')) {
-      result.push(dateItems[foundIndex(oldFormat, 'M')]);
-    }
+          year = millennium + year;
+        }
 
-    if (newFormat[i].includes('Y')) {
-      let year = dateItems[foundIndex(oldFormat, 'Y')];
-      const oldFormatYear = oldFormat[foundIndex(oldFormat, 'Y')];
-      const newFormatYear = newFormat[foundIndex(newFormat, 'Y')];
+        result.push(year);
+        break;
 
-      if (oldFormatYear.length > newFormatYear.length) {
-        year = year.slice(-2);
-      }
-
-      if (oldFormatYear.length < newFormatYear.length) {
-        const millennium = year < 30 ? 20 : 19;
-
-        year = millennium + year;
-      }
-
-      result.push(year);
+      case 'YY':
+        if (oldFormatYear.length > newFormatYear.length) {
+          year = year.slice(-2);
+        }
+        result.push(year);
+        break;
+      default:
+        throw new Error('Invalid Format');
     }
   }
 
