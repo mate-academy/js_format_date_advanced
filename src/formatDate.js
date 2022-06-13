@@ -60,22 +60,24 @@ function formatDate(date, fromFormat, toFormat) {
     objDate[fromFormat[i]] = arrDate[i];
   }
 
+  function changeYearFormat(year) {
+    return year < 30
+      ? '20' + year
+      : '19' + year;
+  }
+
   for (const yearFormat in objDate) {
     if (yearFormat === 'YYYY') {
       objDate['YY'] = objDate[yearFormat].slice(2);
-    } else if (yearFormat === 'YY') {
+    }
+
+    if (yearFormat === 'YY') {
       objDate['YYYY'] = changeYearFormat(objDate[yearFormat]);
     }
   }
 
   for (const part of toFormat) {
     formatedDate.push(objDate[part]);
-  }
-
-  function changeYearFormat(year) {
-    return year < 30
-      ? '20' + year
-      : '19' + year;
   }
 
   formatedDate.splice(3);
