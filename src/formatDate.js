@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -54,7 +55,8 @@ function formatDate(date, fromFormat, toFormat) {
   const tF = toFormat;
 
   let separator = fF[3];
-  const arrStartDay = date.split(separator);
+  const arrStartYear = date.split(separator);
+  const a = arrStartYear;
   const arrResult = [];
   const objDateInfo = {
     YY: 'YY',
@@ -62,38 +64,32 @@ function formatDate(date, fromFormat, toFormat) {
     DD: 'DD',
     YYYY: 'YYYY',
   };
+  const o = objDateInfo;
 
   for (let i = 0; i < fF.length; i++) {
-    if (fF[i] === 'YY') {
-      objDateInfo['YY'] = arrStartDay[i];
-
-      if (arrStartDay[i] >= 0 && arrStartDay[i] <= 22) {
-        objDateInfo['YYYY'] = 20 + arrStartDay[i];
-      }
-
-      if (arrStartDay[i] > 22 && arrStartDay[i] < 99) {
-        objDateInfo['YYYY'] = 19 + arrStartDay[i];
-      }
-    }
-
-    if (fF[i] === 'YYYY') {
-      objDateInfo['YYYY'] = arrStartDay[i];
-      objDateInfo['YY'] = arrStartDay[i].slice(-2);
-    }
-
-    if (fF[i] === 'DD') {
-      objDateInfo['DD'] = arrStartDay[i];
-    }
-
-    if (fF[i] === 'MM') {
-      objDateInfo['MM'] = arrStartDay[i];
+    switch (fF[i]) {
+      case 'YYYY' :
+        objDateInfo['YYYY'] = arrStartYear[i];
+        objDateInfo['YY'] = arrStartYear[i].slice(-2);
+        break;
+      case 'DD' :
+        objDateInfo['DD'] = arrStartYear[i];
+        break;
+      case 'MM':
+        objDateInfo['MM'] = arrStartYear[i];
+        break;
+      case 'YY':
+        objDateInfo['YY'] = arrStartYear[i];
+        a[i] >= 0 && a[i] <= 29 ? o['YYYY'] = 20 + a[i] : o['YYYY'] = 19 + a[i];
+        break;
     }
   }
 
   for (const char of tF) {
     for (const key in objDateInfo) {
-      if (key === char) {
-        arrResult.push(objDateInfo[key]);
+      switch (key) {
+        case char:
+          arrResult.push(objDateInfo[key]);
       }
     }
   }
