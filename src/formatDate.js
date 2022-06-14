@@ -52,49 +52,52 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const arrDate = date.split(`${fromFormat[3]}`);
-  const sliceFromFormate = fromFormat.slice(0, 3);
-  const sliceToFormate = toFormat.slice(0, 3);
   const realDate = [];
   const separator = toFormat[3];
   let dd;
   let mm;
   let year;
 
-  for (let i = 0; i < sliceFromFormate.length; i++) {
-    if (sliceFromFormate[i] === 'DD') {
-      dd = arrDate[i];
-    }
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        dd = arrDate[i];
+        break;
 
-    if (sliceFromFormate[i] === 'MM') {
-      mm = arrDate[i];
-    }
+      case 'MM':
+        mm = arrDate[i];
+        break;
 
-    if (sliceFromFormate[i] === 'YYYY') {
-      year = arrDate[i];
-    }
+      case 'YYYY':
+        year = arrDate[i];
+        break;
 
-    if (sliceFromFormate[i] === 'YY') {
-      if (arrDate[i] >= 30) {
-        year = '19' + arrDate[i];
-      } else {
-        year = '20' + arrDate[i];
-      }
+      case 'YY':
+        if (arrDate[i] >= 30) {
+          year = '19' + arrDate[i];
+        } else {
+          year = '20' + arrDate[i];
+        }
     }
   }
 
-  for (let i = 0; i < sliceToFormate.length; i++) {
-    if (sliceToFormate[i] === 'DD') {
-      realDate[i] = dd;
-    }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        realDate[i] = dd;
+        break;
 
-    if (sliceToFormate[i] === 'MM') {
-      realDate[i] = mm;
-    }
+      case 'MM':
+        realDate[i] = mm;
+        break;
 
-    if (sliceToFormate[i] === 'YY') {
-      realDate[i] = year.slice(2);
-    } else if (sliceToFormate[i] === 'YYYY') {
-      realDate[i] = year;
+      case 'YYYY':
+        realDate[i] = year;
+        break;
+
+      case 'YY':
+        realDate[i] = year.slice(2);
+        break;
     }
   }
 
