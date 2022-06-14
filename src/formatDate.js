@@ -50,7 +50,33 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorOld = fromFormat[3];
+  const dateOld = date.split(separatorOld);
+  const dateNew = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const current = fromFormat[i];
+
+    if (current.includes('Y') && toFormat.indexOf(current) === -1) {
+      let year = dateOld[i];
+
+      if (current === 'YYYY') {
+        year = year.slice(2);
+        dateNew[toFormat.indexOf('YY')] = year;
+      } else if (current === 'YY') {
+        const century = (year < 30) ? '20' : '19';
+
+        dateNew[toFormat.indexOf('YYYY')] = century + year;
+      }
+    } else {
+      dateNew[toFormat.indexOf(current)] = dateOld[i];
+    }
+  }
+
+  const separatorNew = toFormat[3];
+  const dateFormatNew = dateNew.join(separatorNew);
+
+  return dateFormatNew;
 }
 
 module.exports = formatDate;
