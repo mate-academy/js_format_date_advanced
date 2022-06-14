@@ -51,12 +51,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fF = fromFormat;
-  const tF = toFormat;
-
-  let separator = fF[3];
-  const arrStartYear = date.split(separator);
-  const a = arrStartYear;
+  let separator = fromFormat[3];
+  const splitedDate = date.split(separator);
+  const toFormatWithOutSep = toFormat.splice(0, 3);
   const arrResult = [];
   const objDateInfo = {
     YY: 'YY',
@@ -64,40 +61,35 @@ function formatDate(date, fromFormat, toFormat) {
     DD: 'DD',
     YYYY: 'YYYY',
   };
-  const o = objDateInfo;
 
-  for (let i = 0; i < fF.length; i++) {
-    switch (fF[i]) {
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
       case 'YYYY' :
-        objDateInfo['YYYY'] = arrStartYear[i];
-        objDateInfo['YY'] = arrStartYear[i].slice(-2);
+        objDateInfo['YYYY'] = splitedDate[i];
+        objDateInfo['YY'] = splitedDate[i].slice(-2);
         break;
       case 'DD' :
-        objDateInfo['DD'] = arrStartYear[i];
+        objDateInfo['DD'] = splitedDate[i];
         break;
       case 'MM':
-        objDateInfo['MM'] = arrStartYear[i];
+        objDateInfo['MM'] = splitedDate[i];
         break;
       case 'YY':
-        objDateInfo['YY'] = arrStartYear[i];
-        a[i] >= 0 && a[i] <= 29 ? o['YYYY'] = 20 + a[i] : o['YYYY'] = 19 + a[i];
+        objDateInfo['YY'] = splitedDate[i];
+        objDateInfo['YYYY'] = transform(splitedDate[i]);
         break;
     }
   }
 
-  for (const char of tF) {
-    for (const key in objDateInfo) {
-      switch (key) {
-        case char:
-          arrResult.push(objDateInfo[key]);
-      }
-    }
+  for (const char of toFormatWithOutSep) {
+    arrResult.push(objDateInfo[char]);
   }
-  separator = tF.slice(-1);
+  separator = toFormat.slice(-1);
 
-  const dateResult = arrResult.join(separator);
-
-  return (dateResult);
+  return arrResult.join(separator);
 }
 
+function transform(date) {
+  return date <= 29 ? 20 + date : 19 + date;
+}
 module.exports = formatDate;
