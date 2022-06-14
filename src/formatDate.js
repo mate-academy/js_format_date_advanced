@@ -54,61 +54,18 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
   const dateResult = [];
 
-  switch (date.length) {
-    case 10:
-      switch ('YYYY') {
-        case fromFormat[0]:
-          data.year = dateArray[0];
-          data.month = (fromFormat[1] === 'MM') ? dateArray[1] : dateArray[2];
-          data.day = (fromFormat[1] === 'MM') ? dateArray[2] : dateArray[1];
-          break;
-
-        case fromFormat[2]:
-          data.year = dateArray[2];
-          data.month = (fromFormat[1] === 'MM') ? dateArray[1] : dateArray[0];
-          data.day = (fromFormat[1] === 'MM') ? dateArray[0] : dateArray[1];
-          break;
-
-        case fromFormat[1]:
-          data.year = dateArray[1];
-          data.month = (fromFormat[0] === 'MM') ? dateArray[0] : dateArray[2];
-          data.day = (fromFormat[0] === 'MM') ? dateArray[2] : dateArray[0];
-      }
-      break;
-
-    case 8:
-      data.month = dateArray[1];
-      data.day = (fromFormat[0] === 'YY') ? dateArray[2] : dateArray[0];
-
-      data.year = (fromFormat[0] === 'YY')
-        ? (data.year = dateArray[0] < 30
-          ? '20' + dateArray[0] : '19' + dateArray[0])
-        : (data.year = dateArray[2] < 30
-          ? '20' + dateArray[2] : '19' + dateArray[2]);
+  for (let i = 0; i < 3; i++) {
+    data[fromFormat[i]] = dateArray[i];
   }
 
-  dateResult[1] = (toFormat[1] === 'MM') ? data.month : data.day;
-
-  switch ('YYYY') {
-    case toFormat[0]:
-      dateResult[0] = data.year;
-      dateResult[2] = (toFormat[1] === 'MM') ? data.day : data.month;
-      break;
-
-    case toFormat[2]:
-      dateResult[2] = data.year;
-      dateResult[0] = (toFormat[1] === 'MM') ? data.day : data.month;
+  if (data.YY) {
+    data.YYYY = data.YY < 30 ? '20' + data.YY : '19' + data.YY;
   }
 
-  switch ('YY') {
-    case toFormat[0]:
-      dateResult[0] = data.year.slice(2);
-      dateResult[2] = (toFormat[1] === 'MM') ? data.day : data.month;
-      break;
+  data.YY = data.YYYY.slice(2);
 
-    case toFormat[2]:
-      dateResult[2] = data.year.slice(2);
-      dateResult[0] = (toFormat[1] === 'MM') ? data.day : data.month;
+  for (let i = 0; i < 3; i++) {
+    dateResult[i] = data[toFormat[i]];
   }
 
   return dateResult.join(toFormat[3]);
