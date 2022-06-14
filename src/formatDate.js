@@ -81,7 +81,9 @@ function formatDate(date, fromFormat, toFormat) {
   const secondValDay = format[toFormat[1]];
   const thirdValDay = format[toFormat[2]];
 
-  return `${firstValDay}${newSeparator}${secondValDay}${newSeparator}${thirdValDay}`;
+  const newDate = `${firstValDay}${newSeparator}${secondValDay}${newSeparator}${thirdValDay}`;
+
+  return newDate;
 }
 
 module.exports = formatDate;
