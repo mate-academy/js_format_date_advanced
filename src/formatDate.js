@@ -77,7 +77,11 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return `${format[toFormat[0]]}${newSeparator}${format[toFormat[1]]}${newSeparator}${format[toFormat[2]]}`;
+  const firstValDay = format[toFormat[0]];
+  const secondValDay = format[toFormat[1]];
+  const thirdValDay = format[toFormat[2]];
+
+  return `${firstValDay}${newSeparator}${secondValDay}${newSeparator}${thirdValDay}`;
 }
 
 module.exports = formatDate;
