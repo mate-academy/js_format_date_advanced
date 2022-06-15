@@ -50,65 +50,37 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateParts = date.split(fromFormat[3]);
-  let day;
-  let month;
-  let unfixedYear;
-  let newFormatYear;
+  const daysParts = date.split(fromFormat[3]);
+  const newDateFormat = [];
+  const getNewDateFormat = str => daysParts[fromFormat.indexOf(str)];
+  const yearFullFormal = (getNewDateFormat('YY') < 30 ? '20' : '19')
+  + getNewDateFormat('YY');
 
   for (let i = 0; i < 3; i++) {
-    switch (fromFormat[i]) {
+    switch (toFormat[i]) {
       case 'DD':
-        day = dateParts[i];
+        newDateFormat.push(getNewDateFormat('DD'));
         break;
 
       case 'MM':
-        month = dateParts[i];
+        newDateFormat.push(getNewDateFormat('MM'));
         break;
 
       case 'YY':
+        newDateFormat.push(fromFormat.includes('YY')
+          ? getNewDateFormat('YY')
+          : getNewDateFormat('YYYY').slice(2));
+        break;
+
       case 'YYYY':
-        unfixedYear = dateParts[i];
-        break;
-    }
-
-    if (toFormat[i].includes('Y')) {
-      newFormatYear = toFormat[i];
-    }
-  }
-
-  const fixedYear = fixedYears(unfixedYear, newFormatYear);
-  const correcOrderedDate = [];
-
-  for (const part of toFormat) {
-    switch (part) {
-      case 'DD':
-        correcOrderedDate.push(day);
-        break;
-
-      case 'MM':
-        correcOrderedDate.push(month);
-        break;
-
-      case 'YY':
-      case 'YYYY':
-        correcOrderedDate.push(fixedYear);
+        newDateFormat.push(fromFormat.includes('YYYY')
+          ? getNewDateFormat('YYYY')
+          : yearFullFormal);
         break;
     }
   }
 
-  return correcOrderedDate.join(toFormat[3]);
+  return newDateFormat.join(toFormat[3]);
 }
 
-function fixedYears(input, required) {
-  if (input.length < required.length) {
-    return (input < 30 ? '20' : '19') + input;
-  }
-
-  if (input.length > required.length) {
-    return input.slice(-2);
-  }
-
-  return input;
-}
 module.exports = formatDate;
