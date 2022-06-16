@@ -66,17 +66,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (objFromFormat.YY && toFormat[i] === 'YYYY') {
-      let x = objFromFormat.YY;
+      let addNewFormat = objFromFormat.YY;
 
       if (objFromFormat.YY >= 30) {
-        x = '19' + objFromFormat.YY;
+        addNewFormat = '19' + objFromFormat.YY;
+      } else {
+        addNewFormat = '20' + objFromFormat.YY;
       }
 
-      if (objFromFormat.YY < 30) {
-        x = '20' + objFromFormat.YY;
-      }
-
-      objFromFormat.YYYY = x;
+      objFromFormat.YYYY = addNewFormat;
     }
 
     newFormat[i] = objFromFormat[toFormat[i]];
