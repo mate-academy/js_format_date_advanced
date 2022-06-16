@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let sliseDate = date.split(fromFormat[3]);
+
+  if (toFormat[0] === 'DD' && fromFormat[1] !== 'YYYY') {
+    sliseDate = sliseDate.reverse();
+  }
+
+  if (toFormat[2] === 'YYYY' && fromFormat[1] !== 'MM') {
+    sliseDate[0] = date.split(fromFormat[3])[2];
+    sliseDate[1] = date.split(fromFormat[3])[0];
+    sliseDate[2] = date.split(fromFormat[3])[1];
+  }
+
+  if (toFormat[0] === 'YY') {
+    sliseDate[0] = sliseDate[0].substr(2, 2);
+  }
+
+  if (toFormat[2] === 'YY') {
+    sliseDate[2] = sliseDate[2].substr(2, 2);
+  }
+
+  if (toFormat[0] === 'YYYY' && fromFormat[0] !== 'YYYY') {
+    if (Number(sliseDate[0]) < 30) {
+      sliseDate[0] = '20' + sliseDate[0];
+    } else {
+      sliseDate[0] = '19' + sliseDate[0];
+    }
+  }
+
+  return sliseDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
