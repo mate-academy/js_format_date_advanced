@@ -64,28 +64,15 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (!dateMap['YYYY']) {
-    dateMap['YYYY'] = +dateMap['YY'] >= 30 ? `19${dateMap['YY']}` : `20${dateMap['YY']}`;
+    dateMap['YYYY'] = +dateMap['YY'] >= 30
+      ? `19${dateMap['YY']}`
+      : `20${dateMap['YY']}`;
   }
 
-  for (let i = 0; i <= 2; i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-        newDate[i] = dateMap['DD'];
-        break;
-
-      case 'MM':
-        newDate[i] = dateMap['MM'];
-        break;
-
-      case 'YY':
-        newDate[i] = dateMap['YY'];
-        break;
-
-      default:
-        newDate[i] = dateMap['YYYY'];
-        break;
-    }
+  for (const format of toFormat) {
+    newDate.push(dateMap[format]);
   }
+  newDate.length -= 1;
 
   return newDate.join(newSeparator);
 }
