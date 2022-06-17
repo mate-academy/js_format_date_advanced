@@ -52,21 +52,21 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
 
-  const date1 = date.split(fromFormat[3]);
+  const dateArray = date.split(fromFormat[3]);
   const result = [];
 
-  const day = date1[fromFormat.indexOf('DD')];
+  const day = dateArray[fromFormat.indexOf('DD')];
 
   result[toFormat.indexOf('DD')] = day;
 
-  const month = date1[fromFormat.indexOf('MM')];
+  const month = dateArray[fromFormat.indexOf('MM')];
 
   result[toFormat.indexOf('MM')] = month;
 
   let year;
 
   if (fromFormat.includes('YY')) {
-    year = date1[fromFormat.indexOf('YY')];
+    year = dateArray[fromFormat.indexOf('YY')];
 
     if (toFormat.includes('YYYY')) {
       if (year >= 30) {
@@ -76,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
       }
     }
   } else {
-    year = date1[fromFormat.indexOf('YYYY')];
+    year = dateArray[fromFormat.indexOf('YYYY')];
 
     if (toFormat.includes('YY')) {
       year = `${year}`.slice(2, 4);
