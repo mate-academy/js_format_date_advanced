@@ -60,18 +60,16 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj[fromFormat[i]] = dateArr[i];
   }
 
+  if (dateObj.YYYY) {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
+
+  if (dateObj.YY) {
+    dateObj.YYYY = (dateObj.YY < 30) ? (`20${dateObj.YY}`) : dateObj.YYYY = (`19${dateObj.YY}`);
+  }
+
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'YY' && dateObj['YYYY']) {
-      resultArr.push(dateObj['YYYY'].slice(2));
-    } else if (toFormat[i] === 'YYYY' && dateObj['YY']) {
-      if (dateObj['YY'] < 30) {
-        resultArr.push(`20${dateObj['YY']}`);
-      } else {
-        resultArr.push(`19${dateObj['YY']}`);
-      }
-    } else {
-      resultArr.push(dateObj[toFormat[i]]);
-    }
+    resultArr.push(dateObj[toFormat[i]]);
   }
 
   return resultArr.join(newSeparator);
