@@ -52,20 +52,30 @@
 function formatDate(date, fromFormat, toFormat) {
   const separator = String(toFormat[3]);
   const dateSplit = date.split(fromFormat[3]);
+  const changeFormat = fromFormat.splice(0, 3).reduce((acc, item, index) => {
+    let key = item;
 
-  for (let i = 0; i < toFormat.length; i++) {
-    for (let j = 0; j < fromFormat.length; j++) {
-      if (dateLength(toFormat[i]) === dateLength(fromFormat[j])) {
-        if (toFormat[i].length === fromFormat[j].length) {
-          toFormat[i] = dateSplit[j];
-        } else {
-          toFormat[i] = getYear(toFormat[i], dateSplit[j]);
-        }
-      }
+    if (item.includes('Y')) {
+      key = dateLength(item);
     }
-  }
 
-  return toFormat.slice(0, 3).join(separator);
+    return ({
+      ...acc,
+      [key]: dateSplit[index],
+    });
+  }, {});
+
+  const dateToFormat = toFormat.slice(0, 3).map((item) => {
+    const value = changeFormat[dateLength(item)];
+
+    if (item.includes('Y') && item.length !== String(value).length) {
+      return getYear(item, value);
+    }
+
+    return value;
+  });
+
+  return dateToFormat.join(separator);
 };
 
 function dateLength(value) {
@@ -81,5 +91,4 @@ function getFullYear(end) {
 function getYear(toFormat, date) {
   return toFormat.length > 2 ? getFullYear(date) : date.slice(2);
 }
-
 module.exports = formatDate;
