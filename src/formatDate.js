@@ -50,7 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = String(toFormat[3]);
+  const dateSplit = date.split(fromFormat[3]);
+  const changeFormat = fromFormat.splice(0, 3).reduce((acc, item, index) => {
+    let key = item;
+
+    if (item.includes('Y')) {
+      key = dateLength(item);
+    }
+
+    return ({
+      ...acc,
+      [key]: dateSplit[index],
+    });
+  }, {});
+
+  const dateToFormat = toFormat.slice(0, 3).map((item) => {
+    const value = changeFormat[dateLength(item)];
+
+    if (item.includes('Y') && item.length !== String(value).length) {
+      return getYear(item, value);
+    }
+
+    return value;
+  });
+
+  return dateToFormat.join(separator);
+};
+
+function dateLength(value) {
+  return value.length > 2 ? value.slice(0, 2) : value;
 }
 
+function getFullYear(end) {
+  const start = end >= 30 ? 19 : 20;
+
+  return '' + start + end;
+}
+
+function getYear(toFormat, date) {
+  return toFormat.length > 2 ? getFullYear(date) : date.slice(2);
+}
 module.exports = formatDate;
