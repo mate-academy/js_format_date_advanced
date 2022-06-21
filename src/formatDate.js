@@ -53,36 +53,34 @@ function formatDate(date, fromFormat, toFormat) {
   const newDateFormat = [];
   const daysFrom = date.split(fromFormat[3]);
   const separator = toFormat[3];
-  let yearFullFormal = '';
 
-  if (daysFrom[fromFormat.indexOf('YY')] < 30) {
-    yearFullFormal = '20' + daysFrom[fromFormat.indexOf('YY')];
-  } else {
-    yearFullFormal = '19' + daysFrom[fromFormat.indexOf('YY')];
-  }
+  const findDayPart = x => daysFrom[fromFormat.indexOf(x)];
+
+  const yearFullFormal = findDayPart('YY') < 30
+    ? '20' + findDayPart('YY')
+    : '19' + findDayPart('YY');
 
   for (const dayPart of toFormat) {
     switch (dayPart) {
       case 'DD':
-        newDateFormat.push(daysFrom[fromFormat.indexOf('DD')]);
+        newDateFormat.push(findDayPart('DD'));
         break;
 
       case 'MM':
-        newDateFormat.push(daysFrom[fromFormat.indexOf('MM')]);
+        newDateFormat.push(findDayPart('MM'));
         break;
 
       case 'YY':
         if (fromFormat.includes('YY')) {
-          newDateFormat.push(daysFrom[fromFormat.indexOf('YY')]);
+          newDateFormat.push(findDayPart('YY'));
         } else {
-          newDateFormat.push(daysFrom[fromFormat.indexOf('YYYY')].slice(2));
+          newDateFormat.push(findDayPart('YYYY').slice(2));
         }
-
         break;
 
       case 'YYYY':
         if (fromFormat.includes('YYYY')) {
-          newDateFormat.push(daysFrom[fromFormat.indexOf('YYYY')]);
+          newDateFormat.push(findDayPart('YYYY'));
         } else {
           newDateFormat.push(yearFullFormal);
         }
