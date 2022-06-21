@@ -65,7 +65,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (dateObj.YY) {
-    dateObj.YYYY = (dateObj.YY < 30) ? (`20${dateObj.YY}`) : dateObj.YYYY = (`19${dateObj.YY}`);
+    dateObj.YYYY = (dateObj.YY < 30)
+      ? (`20${dateObj.YY}`)
+      : dateObj.YYYY = (`19${dateObj.YY}`);
   }
 
   for (let i = 0; i < 3; i++) {
