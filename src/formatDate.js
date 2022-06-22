@@ -98,10 +98,6 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'D':
-        outputDate[newPos] = inputDate[oldPos];
-
-        break;
-
       case 'M':
         outputDate[newPos] = inputDate[oldPos];
 
