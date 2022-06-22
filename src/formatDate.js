@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  function getInfo(dateformat) {
+    const info = {};
+
+    for (let index = 0; index < 3; index++) {
+      const position = index;
+      const letter = dateformat[index][0];
+      const length = dateformat[index].length;
+
+      info[letter] = { position, length };
+    }
+
+    return info;
+  }
+
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+
+  const inputDate = date.split(oldSeparator);
+  const outputDate = [];
+
+  const transformFrom = getInfo(fromFormat);
+  const transformTo = getInfo(toFormat);
+
+  for (const letter in transformFrom) {
+    const oldPos = transformFrom[letter].position;
+    const oldLen = transformFrom[letter].length;
+
+    const newPos = transformTo[letter].position;
+    const newLen = transformTo[letter].length;
+
+    const fullYear = inputDate[oldPos] < 30 ? '20' : '19';
+
+    switch (letter) {
+      case 'Y':
+
+        if (oldLen < newLen) {
+          inputDate[oldPos] = fullYear + inputDate[oldPos];
+        }
+
+        if (oldLen > newLen) {
+          inputDate[oldPos] = inputDate[oldPos].slice(2);
+        }
+
+        outputDate[newPos] = inputDate[oldPos];
+
+        break;
+
+      case 'D':
+      case 'M':
+        outputDate[newPos] = inputDate[oldPos];
+
+        break;
+
+      default:
+
+        return date;
+    }
+  }
+
+  return outputDate.join(newSeparator);
 }
 
 module.exports = formatDate;
