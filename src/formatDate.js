@@ -55,7 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     for (let index = 0; index < 3; index++) {
       const position = index;
-      const letter = dateformat[index].slice(0, 1);
+      const letter = dateformat[index][0];
       const length = dateformat[index].length;
 
       info[letter] = { position, length };
@@ -80,20 +80,20 @@ function formatDate(date, fromFormat, toFormat) {
     const newPos = transformTo[letter].position;
     const newLen = transformTo[letter].length;
 
+    const fullYear = inputDate[oldPos] < 30 ? '20' : '19';
+
     switch (letter) {
       case 'Y':
 
         if (oldLen < newLen) {
-          inputDate[oldPos] = inputDate[oldPos] < 30
-            ? '20' + inputDate[oldPos]
-            : '19' + inputDate[oldPos];
+          inputDate[oldPos] = fullYear + inputDate[oldPos];
         }
 
         if (oldLen > newLen) {
           inputDate[oldPos] = inputDate[oldPos].slice(2);
         }
 
-        outputDate[newPos] = inputDate[oldPos]; ;
+        outputDate[newPos] = inputDate[oldPos];
 
         break;
 
