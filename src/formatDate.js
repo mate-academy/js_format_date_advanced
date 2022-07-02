@@ -59,11 +59,8 @@ function formatDate(date, fromFormat, toFormat) {
   const dateSplited = date.split(separator);
   const day = dateSplited[dayIndex];
   const month = dateSplited[monthIndex];
-  const year = dateSplited[yearIndex];
-
-  const fullYear = year.length === 4 ? year
-    : year < 30 ? `20${year}`
-      : `19${year}`;
+  const year = dateSplited[yearIndex].slice(-2);
+  const fullYear = year < 30 ? `20${year}` : `19${year}`;
 
   const newDate = [];
 
