@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const pastSeparator = fromFormat.pop();
-  const futureSeparator = toFormat.pop();
+  const pastSeparator = fromFormat[fromFormat.length - 1];
+  const futureSeparator = toFormat[toFormat.length - 1];
   const arrDate = date.split(`${pastSeparator}`);
   const yearIndex = fromFormat.indexOf('YYYY') === -1
     ? fromFormat.indexOf('YY') : fromFormat.indexOf('YYYY');
