@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const firstSeperator = fromFormat.pop();
-  const secondSeperator = toFormat.pop();
+  const firstSeperator = fromFormat[fromFormat.length - 1];
+  const secondSeperator = toFormat[toFormat.length - 1];
 
   const separatedDate = date.split(`${firstSeperator}`);
 
@@ -71,7 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const formated = [];
 
-  toFormat.forEach(el => {
+  toFormat.slice(0, -1).forEach(el => {
     switch (el) {
       case 'DD':
         formated.push(values.DD);
@@ -90,9 +90,6 @@ function formatDate(date, fromFormat, toFormat) {
         break;
     }
   });
-
-  fromFormat.push(firstSeperator);
-  toFormat.push(secondSeperator);
 
   return formated.join(`${secondSeperator}`);
 }
