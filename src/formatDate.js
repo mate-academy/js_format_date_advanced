@@ -91,6 +91,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
+  fromFormat.push(firstSeperator);
+  toFormat.push(secondSeperator);
+
   return formated.join(`${secondSeperator}`);
 }
 
