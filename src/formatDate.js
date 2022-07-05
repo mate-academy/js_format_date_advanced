@@ -50,12 +50,15 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const DD = date.split(fromFormat[3])[fromFormat.indexOf('DD')];
-  const MM = date.split(fromFormat[3])[fromFormat.indexOf('MM')];
-  const YY = +date.split(fromFormat[3])[fromFormat.indexOf('YY')]
-            || date.split(fromFormat[3])[fromFormat.indexOf('YYYY')] % 100;
-  let YYYY = +date.split(fromFormat[3])[fromFormat.indexOf('YYYY')]
-          || +date.split(fromFormat[3])[fromFormat.indexOf('YY')];
+  const dateSplit = date.split(fromFormat[3]);
+  const indexOfDD = fromFormat.indexOf('DD');
+  const indexOfMM = fromFormat.indexOf('MM');
+  const indexOfYY = fromFormat.indexOf('YY');
+  const indexOfYYYY = fromFormat.indexOf('YYYY');
+  const DD = dateSplit[indexOfDD];
+  const MM = dateSplit[indexOfMM];
+  const YY = +dateSplit[indexOfYY] || dateSplit[indexOfYYYY] % 100;
+  let YYYY = +dateSplit[indexOfYYYY] || +dateSplit[indexOfYY];
   const toDate = [];
 
   if (YYYY >= 30 && YYYY < 99) {
@@ -78,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
         toDate.push(YY);
         break;
 
-      case 'YYYY':
+      default:
         toDate.push(YYYY);
         break;
     }
