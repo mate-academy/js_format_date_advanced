@@ -66,8 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
         format = format.replace('MM', dateElements[i]);
         break;
 
-      case 'YYYY':
-      case 'YY':
+      default:
         let year = dateElements[i];
 
         if (year.length === 2) {
