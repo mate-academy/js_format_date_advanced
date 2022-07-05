@@ -72,11 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
         if (year.length === 2) {
           year = year.split('');
 
-          if (parseInt(year.join('')) < 30) {
-            year.unshift('20');
-          } else {
-            year.unshift('19');
-          }
+          year.unshift(parseInt(year.join('')) < 30 ? '20' : '19');
 
           year = year.join('');
         }
