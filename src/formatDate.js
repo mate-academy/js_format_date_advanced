@@ -60,9 +60,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   function newDateYear(item) {
     if (+item < 30) {
-      return (newDate[fromFormatFindIndex] = `20${newDate[fromFormatFindIndex]}`);
+      return 20;
     } else {
-      newDate[fromFormatFindIndex] = `19${newDate[fromFormatFindIndex]}`;
+      return 19;
     }
   }
 
@@ -73,7 +73,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (toFormatFindY.length - fromFormatFindY.length === 2) {
-    newDateYear(newDate[fromFormatFindIndex]);
+    (newDate[fromFormatFindIndex] = `${newDateYear(newDate[fromFormatFindIndex])}${newDate[fromFormatFindIndex]}`);
   }
 
   if (fromFormatFindIndex !== toFormatFindIndex) {
