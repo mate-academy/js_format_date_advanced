@@ -51,31 +51,35 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
-  const fromFindY = fromFormat.find(el => el.includes('Y'));
-  const toFindY = toFormat.find(el => el.includes('Y'));
-  const fromFindIndex = fromFormat.indexOf(fromFindY);
-  const toFindIndex = toFormat.indexOf(toFindY);
-  const fromFindM = fromFormat.find(el => el.includes('M'));
-  const fromFindIndexM = fromFormat.indexOf(fromFindM);
+  const fromFormatFindY = fromFormat.find(el => el.includes('Y'));
+  const toFormatFindY = toFormat.find(el => el.includes('Y'));
+  const fromFormatFindIndex = fromFormat.indexOf(fromFormatFindY);
+  const toFormatFindIndex = toFormat.indexOf(toFormatFindY);
+  const fromFormatFindM = fromFormat.find(el => el.includes('M'));
+  const fromFormatFindIndexM = fromFormat.indexOf(fromFormatFindM);
 
-  if (fromFindY.length - toFindY.length === 2) {
-    const yearSplit = newDate[fromFindIndex].split('');
-
-    newDate[fromFindIndex] = `${yearSplit[2]}${yearSplit[3]}`;
-  }
-
-  if (toFindY.length - fromFindY.length === 2) {
-    if (+newDate[fromFindIndex] < 30) {
-      newDate[fromFindIndex] = `20${newDate[fromFindIndex]}`;
+  function newDateYear(item) {
+    if (+item < 30) {
+      return (newDate[fromFormatFindIndex] = `20${newDate[fromFormatFindIndex]}`);
     } else {
-      newDate[fromFindIndex] = `19${newDate[fromFindIndex]}`;
+      newDate[fromFormatFindIndex] = `19${newDate[fromFormatFindIndex]}`;
     }
   }
 
-  if (fromFindIndex !== toFindIndex) {
-    if (fromFindIndex === 1) {
-      [newDate[fromFindIndex], newDate[fromFindIndexM]]
-       = [newDate[fromFindIndexM], newDate[fromFindIndex]];
+  if (fromFormatFindY.length - toFormatFindY.length === 2) {
+    const yearSplit = newDate[fromFormatFindIndex].split('');
+
+    newDate[fromFormatFindIndex] = `${yearSplit[2]}${yearSplit[3]}`;
+  }
+
+  if (toFormatFindY.length - fromFormatFindY.length === 2) {
+    newDateYear(newDate[fromFormatFindIndex]);
+  }
+
+  if (fromFormatFindIndex !== toFormatFindIndex) {
+    if (fromFormatFindIndex === 1) {
+      [newDate[fromFormatFindIndex], newDate[fromFormatFindIndexM]]
+       = [newDate[fromFormatFindIndexM], newDate[fromFormatFindIndex]];
     }
 
     newDate.reverse();
