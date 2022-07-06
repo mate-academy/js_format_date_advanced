@@ -51,6 +51,66 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const formattedDate = [];
+
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+
+  const splittedDate = date.split(fromSeparator);
+
+  const fromIndexFinder = (formatToFind) => {
+    return fromFormat
+      .indexOf(fromFormat.find(format => format.includes(formatToFind)));
+  };
+
+  const fromIndexY = fromIndexFinder('Y');
+  const fromIndexM = fromIndexFinder('M');
+  const fromIndexD = fromIndexFinder('D');
+
+  const toIndexY = toFormat
+    .indexOf(toFormat.find(format => format.includes('Y')));
+
+  toFormat.forEach((format, idx) => {
+    if (format.includes('Y')) {
+      formattedDate[idx] = splittedDate[fromIndexY];
+    }
+
+    if (format.includes('M')) {
+      formattedDate[idx] = splittedDate[fromIndexM];
+    }
+
+    if (format.includes('D')) {
+      formattedDate[idx] = splittedDate[fromIndexD];
+    }
+  });
+
+  const isToFormatYearLess = (toFormat[toIndexY].length === 2
+    && fromFormat[fromIndexY].length === 4);
+  const isFromFormatYearLess = (toFormat[toIndexY].length === 4
+    && fromFormat[fromIndexY].length === 2);
+
+  if (isToFormatYearLess) {
+    formattedDate[toIndexY] = splittedDate[toIndexY]
+      .split('')
+      .slice(2, 4)
+      .join('');
+  }
+
+  if (isFromFormatYearLess && Number(splittedDate[toIndexY]) < 30) {
+    formattedDate[toIndexY] = `20${splittedDate[toIndexY]}`;
+  }
+
+  if (isFromFormatYearLess && Number(splittedDate[toIndexY]) >= 30) {
+    formattedDate[toIndexY] = `19${splittedDate[toIndexY]}`;
+  }
+
+  return formattedDate.join(toSeparator);
 }
+
+formatDate(
+  '20/02/18',
+  ['YY', 'MM', 'DD', '/'],
+  ['YYYY', 'MM', 'DD', '.'],
+);
 
 module.exports = formatDate;
