@@ -107,10 +107,4 @@ function formatDate(date, fromFormat, toFormat) {
   return formattedDate.join(toSeparator);
 }
 
-formatDate(
-  '20/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['YYYY', 'MM', 'DD', '.'],
-);
-
 module.exports = formatDate;
