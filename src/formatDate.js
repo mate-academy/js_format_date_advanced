@@ -50,10 +50,21 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const yearFull = date.split(fromFormat[3])[fromFormat.indexOf('YYYY')];
-  let year = date.split(fromFormat[3])[fromFormat.indexOf('YY')];
-  const month = date.split(fromFormat[3])[fromFormat.indexOf('MM')];
-  const day = date.split(fromFormat[3])[fromFormat.indexOf('DD')];
+  const separatorFrom = fromFormat[3];
+  const separatorTo = toFormat[3];
+
+  const previousFormat = date.split(separatorFrom);
+
+  const yearFullPlace = fromFormat.indexOf('YYYY');
+  const yearPlace = fromFormat.indexOf('YY');
+  const monthPlace = fromFormat.indexOf('MM');
+  const dayPlace = fromFormat.indexOf('DD');
+
+  const yearFull = previousFormat[yearFullPlace];
+  let year = previousFormat[yearPlace];
+  const month = previousFormat[monthPlace];
+  const day = previousFormat[dayPlace];
+
   const formattedDate = [];
 
   if (yearFull !== undefined) {
@@ -85,10 +96,13 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YY':
         formattedDate.push(year.substring(2, 4));
         break;
+
+      default:
+        throw new Error('Wrong format data.');
     }
   }
 
-  return formattedDate.join(toFormat[3]);
+  return formattedDate.join(separatorTo);
 }
 
 module.exports = formatDate;
