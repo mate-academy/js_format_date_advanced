@@ -54,7 +54,6 @@ function formatDate(date, fromFormat, toFormat) {
   const separateMark = toFormatCopy.pop();
   let format = toFormatCopy.join(separateMark);
   const dateElements = date.split(fromFormat[fromFormat.length - 1]);
-  const yearLength = format.split('Y').length - 1;
 
   for (let i = 0; i < toFormatCopy.length; i++) {
     switch (fromFormat[i]) {
@@ -75,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
           year = year.join('');
         }
 
-        if (yearLength === 2) {
+        if ((format.split('Y').length - 1) === 2) {
           format = format.replace('YY', year[2] + year[3]);
         } else {
           format = format.replace('YYYY', year);
