@@ -51,12 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
-  const fromFormatFindY = fromFormat.find(el => el.includes('Y'));
-  const toFormatFindY = toFormat.find(el => el.includes('Y'));
-  const fromFormatFindIndex = fromFormat.indexOf(fromFormatFindY);
-  const toFormatFindIndex = toFormat.indexOf(toFormatFindY);
-  const fromFormatFindM = fromFormat.find(el => el.includes('M'));
-  const fromFormatFindIndexM = fromFormat.indexOf(fromFormatFindM);
+  const fromFormatFindIndex = fromFormat.findIndex(newDateYearIndex);
+  const toFormatFindIndex = toFormat.findIndex(newDateYearIndex);
+  const fromFormatFindIndexM = fromFormat.findIndex(newDateYearIndexM);
 
   function newDateYear(item) {
     if (+item < 30) {
@@ -66,15 +63,29 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  function newDateYearIndex(value) {
+    if (value.length === 4) {
+      return value === 'YYYY';
+    } else {
+      return value === 'YY';
+    }
+  }
+
+  function newDateYearIndexM(value) {
+    return value === 'MM';
+  }
+
   const year = newDateYear(newDate[fromFormatFindIndex]);
 
-  if (fromFormatFindY.length - toFormatFindY.length === 2) {
+  if (fromFormat[fromFormatFindIndex].length
+     - toFormat[toFormatFindIndex].length === 2) {
     const yearSplit = newDate[fromFormatFindIndex].split('');
 
     newDate[fromFormatFindIndex] = `${yearSplit[2]}${yearSplit[3]}`;
   }
 
-  if (toFormatFindY.length - fromFormatFindY.length === 2) {
+  if (toFormat[toFormatFindIndex].length
+     - fromFormat[fromFormatFindIndex].length === 2) {
     (newDate[fromFormatFindIndex] = `${year}${newDate[fromFormatFindIndex]}`);
   }
 
