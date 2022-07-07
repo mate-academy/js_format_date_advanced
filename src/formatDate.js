@@ -49,26 +49,23 @@
  * @returns {string}
  */
 
+const fromIndexFinder = (formats, formatToFind) => {
+  return formats.findIndex(format => format.includes(formatToFind));
+};
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const formattedDate = [];
 
   const fromSeparator = fromFormat[3];
-  const toSeparator = toFormat[3];
+  const toSeparator = toFormat[toFormat.length - 1];
 
   const splittedDate = date.split(fromSeparator);
 
-  const fromIndexFinder = (formatToFind) => {
-    return fromFormat
-      .indexOf(fromFormat.find(format => format.includes(formatToFind)));
-  };
-
-  const fromIndexY = fromIndexFinder('Y');
-  const fromIndexM = fromIndexFinder('M');
-  const fromIndexD = fromIndexFinder('D');
-
-  const toIndexY = toFormat
-    .indexOf(toFormat.find(format => format.includes('Y')));
+  const fromIndexY = fromIndexFinder(fromFormat, 'Y');
+  const fromIndexM = fromIndexFinder(fromFormat, 'M');
+  const fromIndexD = fromIndexFinder(fromFormat, 'D');
+  const toIndexY = fromIndexFinder(toFormat, 'Y');
 
   toFormat.forEach((format, idx) => {
     if (format.includes('Y')) {
@@ -84,11 +81,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
+  // Validations conditions
   const isToFormatYearLess = (toFormat[toIndexY].length === 2
     && fromFormat[fromIndexY].length === 4);
   const isFromFormatYearLess = (toFormat[toIndexY].length === 4
     && fromFormat[fromIndexY].length === 2);
+  const isTwentyCentury = Number(splittedDate[toIndexY]) < 30;
+  const isNineteenthCentury = Number(splittedDate[toIndexY]) >= 30;
 
+  // Year format validation
   if (isToFormatYearLess) {
     formattedDate[toIndexY] = splittedDate[toIndexY]
       .split('')
@@ -96,12 +97,17 @@ function formatDate(date, fromFormat, toFormat) {
       .join('');
   }
 
-  if (isFromFormatYearLess && Number(splittedDate[toIndexY]) < 30) {
-    formattedDate[toIndexY] = `20${splittedDate[toIndexY]}`;
+  // Year value validation
+  const yearFormatter = (yearToFormat) => {
+    formattedDate[toIndexY] = `${yearToFormat}${splittedDate[toIndexY]}`;
+  };
+
+  if (isFromFormatYearLess && isTwentyCentury) {
+    yearFormatter('20');
   }
 
-  if (isFromFormatYearLess && Number(splittedDate[toIndexY]) >= 30) {
-    formattedDate[toIndexY] = `19${splittedDate[toIndexY]}`;
+  if (isFromFormatYearLess && isNineteenthCentury) {
+    yearFormatter('19');
   }
 
   return formattedDate.join(toSeparator);
