@@ -66,6 +66,8 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  const year = newDateYear(newDate[fromFormatFindIndex]);
+
   if (fromFormatFindY.length - toFormatFindY.length === 2) {
     const yearSplit = newDate[fromFormatFindIndex].split('');
 
@@ -73,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (toFormatFindY.length - fromFormatFindY.length === 2) {
-    (newDate[fromFormatFindIndex] = `${newDateYear(newDate[fromFormatFindIndex])}${newDate[fromFormatFindIndex]}`);
+    (newDate[fromFormatFindIndex] = `${year}${newDate[fromFormatFindIndex]}`);
   }
 
   if (fromFormatFindIndex !== toFormatFindIndex) {
