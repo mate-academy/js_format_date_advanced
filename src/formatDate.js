@@ -48,9 +48,46 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newDate = '';
+  const splittedDate = date.split(fromFormat[3]);
+  let year;
+  let month;
+  let day;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+      year = splittedDate[fromFormat.indexOf(fromFormat[i])];
+    } else if (fromFormat[i] === 'MM') {
+      month = splittedDate[fromFormat.indexOf(fromFormat[i])];
+    } else {
+      day = splittedDate[fromFormat.indexOf(fromFormat[i])];
+    }
+  }
+
+  for (const format of toFormat) {
+    if (toFormat.indexOf(format) === 3) {
+      break;
+    }
+
+    if (format === 'YYYY' && year.length === 2) {
+      if (year < 30) {
+        newDate += '20' + year + toFormat[3];
+      } else {
+        newDate += '19' + year + toFormat[3];
+      }
+    } else if (format === 'YY' && year.length === 4) {
+      newDate += year.slice(2) + toFormat[3];
+    } else if (format === 'MM') {
+      newDate += month + toFormat[3];
+    } else if (format === 'DD') {
+      newDate += day + toFormat[3];
+    } else {
+      newDate += year + toFormat[3];
+    }
+  }
+
+  return newDate.slice(0, -1);
 }
 
 module.exports = formatDate;
