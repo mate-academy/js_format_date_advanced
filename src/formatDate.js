@@ -54,24 +54,24 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[toFormat.length - 1];
   const splittedDate = date.split(oldSeparator);
   const dateInNewFormat = [];
-  const dateObj = {};
+  const newDate = {};
 
   for (let i = 0; i < splittedDate.length; i++) {
-    dateObj[fromFormat[i]] = splittedDate[i];
+    newDate[fromFormat[i]] = splittedDate[i];
   }
 
-  if (dateObj['YYYY']) {
-    dateObj['YY'] = dateObj['YYYY'].slice(2);
+  if ('YYYY' in newDate) {
+    newDate['YY'] = newDate['YYYY'].slice(2);
   }
 
-  if (dateObj['YY']) {
-    dateObj['YYYY'] = (dateObj['YY'] < 30)
-      ? (`20${dateObj['YY']}`)
-      : (`19${dateObj['YY']}`);
+  if ('YY' in newDate) {
+    newDate['YYYY'] = (newDate['YY'] < 30)
+      ? (`20${newDate['YY']}`)
+      : (`19${newDate['YY']}`);
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    dateInNewFormat.push(dateObj[toFormat[i]]);
+    dateInNewFormat.push(newDate[toFormat[i]]);
   }
 
   return dateInNewFormat.join(newSeparator);
