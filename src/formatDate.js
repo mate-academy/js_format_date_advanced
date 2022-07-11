@@ -61,41 +61,38 @@ function formatDate(date, fromFormat, toFormat) {
   const longYearMask = 'YYYY';
   const shortYearMask = 'YY';
 
-  let yearIndex = 0;
-
-  if (fromFormat.indexOf(shortYearMask) === -1) {
-    yearIndex = fromFormat.indexOf(longYearMask);
-  } else {
-    yearIndex = fromFormat.indexOf(shortYearMask);
-  }
+  const yearIndex = fromFormat.indexOf(shortYearMask) === -1
+    ? fromFormat.indexOf(longYearMask)
+    : fromFormat.indexOf(shortYearMask);
 
   const day = currentDate[fromFormat.indexOf(dayMask)];
   const month = currentDate[fromFormat.indexOf(monthMask)];
   const shortYear = currentDate[yearIndex].slice(-2);
+  const longYear = +shortYear < 30
+    ? `20${shortYear}`
+    : `19${shortYear}`;
 
-  let longYear = '';
+  for (const dateMask of toFormat) {
+    switch (dateMask) {
+      case dayMask:
+        newDate.push(day);
 
-  if (+shortYear < 30) {
-    longYear = `20${shortYear}`;
-  } else {
-    longYear = `19${shortYear}`;
-  }
+        break;
 
-  for (const dateItem of toFormat) {
-    if (dateItem === dayMask) {
-      newDate.push(day);
-    }
+      case monthMask:
+        newDate.push(month);
 
-    if (dateItem === monthMask) {
-      newDate.push(month);
-    }
+        break;
 
-    if (dateItem === shortYearMask) {
-      newDate.push(shortYear);
-    }
+      case shortYearMask:
+        newDate.push(shortYear);
 
-    if (dateItem === longYearMask) {
-      newDate.push(longYear);
+        break;
+
+      case longYearMask:
+        newDate.push(longYear);
+
+        break;
     }
   }
 
