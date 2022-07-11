@@ -48,9 +48,52 @@
  *
  * @returns {string}
  */
+function newDateYear(item) {
+  if (+item < 30) {
+    return 20;
+  } else {
+    return 19;
+  }
+}
+
+function newDateYearIndex(value) {
+  if (value.length === 4) {
+    return value === 'YYYY';
+  } else {
+    return value === 'YY';
+  }
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = date.split(fromFormat[3]);
+  const fromFormatFindIndex = fromFormat.findIndex(newDateYearIndex);
+  const toFormatFindIndex = toFormat.findIndex(newDateYearIndex);
+  const fromFormatFindIndexM = fromFormat.findIndex(() => 'MM');
+
+  const year = newDateYear(newDate[fromFormatFindIndex]);
+
+  if (fromFormat[fromFormatFindIndex].length
+     - toFormat[toFormatFindIndex].length === 2) {
+    const yearSplit = newDate[fromFormatFindIndex].split('');
+
+    newDate[fromFormatFindIndex] = `${yearSplit[2]}${yearSplit[3]}`;
+  }
+
+  if (toFormat[toFormatFindIndex].length
+     - fromFormat[fromFormatFindIndex].length === 2) {
+    (newDate[fromFormatFindIndex] = `${year}${newDate[fromFormatFindIndex]}`);
+  }
+
+  if (fromFormatFindIndex !== toFormatFindIndex) {
+    if (fromFormatFindIndex === 1) {
+      [newDate[fromFormatFindIndex], newDate[fromFormatFindIndexM]]
+       = [newDate[fromFormatFindIndexM], newDate[fromFormatFindIndex]];
+    }
+
+    newDate.reverse();
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
