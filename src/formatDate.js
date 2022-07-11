@@ -64,15 +64,11 @@ function newDateYearIndex(value) {
   }
 }
 
-function newDateYearIndexM() {
-  return 'MM';
-}
-
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
   const fromFormatFindIndex = fromFormat.findIndex(newDateYearIndex);
   const toFormatFindIndex = toFormat.findIndex(newDateYearIndex);
-  const fromFormatFindIndexM = fromFormat.findIndex(newDateYearIndexM);
+  const fromFormatFindIndexM = fromFormat.findIndex(() => 'MM');
 
   const year = newDateYear(newDate[fromFormatFindIndex]);
 
