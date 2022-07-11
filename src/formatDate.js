@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateDigits = date.match(/\d+/g);
+  const signedDates = {};
+  const arrangedDates = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    signedDates[fromFormat[i]] = dateDigits[i];
+  }
+
+  if (fromFormat.includes('YY')
+    && toFormat.includes('YYYY')
+    && signedDates.YY < 30) {
+    signedDates.YYYY = '20' + signedDates.YY;
+  }
+
+  if (fromFormat.includes('YY')
+    && toFormat.includes('YYYY')
+    && signedDates.YY >= 30) {
+    signedDates.YYYY = '19' + signedDates.YY;
+  }
+
+  if (fromFormat.includes('YYYY')
+    && toFormat.includes('YY')) {
+    signedDates.YY = signedDates.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        arrangedDates[i] = signedDates.DD;
+        break;
+
+      case 'MM':
+        arrangedDates[i] = signedDates.MM;
+        break;
+
+      case 'YY':
+        arrangedDates[i] = signedDates.YY;
+        break;
+
+      case 'YYYY':
+        arrangedDates[i] = signedDates.YYYY;
+        break;
+
+      default:
+        throw new Error('There is no valid format to convert');
+    }
+  }
+
+  return arrangedDates.join(toFormat[3]);
 }
 
 module.exports = formatDate;
