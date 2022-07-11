@@ -58,59 +58,60 @@ function formatDate(date, fromFormat, toFormat) {
   let YYYY = '';
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'DD') {
-      DD = dateParts[i];
-    }
+    switch (fromFormat[i]) {
+      case 'DD':
+        DD = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      MM = dateParts[i];
-    }
+      case 'MM':
+        MM = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'YY') {
-      YY = dateParts[i];
-    }
+      case 'YY':
+        YY = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'YYYY') {
-      YYYY = dateParts[i];
+      case 'YYYY':
+        YYYY = dateParts[i];
+        break;
+
+      default:
+        break;
     }
   }
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY') && (+YY) < 30) {
+  if (YY.length > 0 && +YY < 30) {
     YYYY = '20' + YY;
-    YY = '';
-  }
-
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY') && (+YY) >= 30) {
+  } else if (YY.length > 0 && +YY >= 30) {
     YYYY = '19' + YY;
-    YY = '';
-  }
-
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+  } else {
     YY = YYYY.slice(-2);
-    YYYY = '';
   }
 
   for (const e of toFormat) {
-    if (e === 'DD') {
-      dateGather += DD + toFormat[3];
-    }
+    switch (e) {
+      case 'DD':
+        dateGather += DD + toFormat[3];
+        break;
 
-    if (e === 'MM') {
-      dateGather += MM + toFormat[3];
-    }
+      case 'MM':
+        dateGather += MM + toFormat[3];
+        break;
 
-    if (e === 'YY') {
-      dateGather += YY + toFormat[3];
-    }
+      case 'YY':
+        dateGather += YY + toFormat[3];
+        break;
 
-    if (e === 'YYYY') {
-      dateGather += YYYY + toFormat[3];
+      case 'YYYY':
+        dateGather += YYYY + toFormat[3];
+        break;
+
+      default:
+        break;
     }
   }
 
-  const result = dateGather.slice(0, -1);
-
-  return result;
+  return dateGather.slice(0, -1);
 }
 
 module.exports = formatDate;
