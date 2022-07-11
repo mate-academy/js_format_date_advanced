@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let dateGather = '';
+  let newDate = '';
   const dateParts = date.split(fromFormat[3]);
   let DD = '';
   let MM = '';
@@ -91,19 +91,19 @@ function formatDate(date, fromFormat, toFormat) {
   for (const e of toFormat) {
     switch (e) {
       case 'DD':
-        dateGather += DD + toFormat[3];
+        newDate += DD + toFormat[3];
         break;
 
       case 'MM':
-        dateGather += MM + toFormat[3];
+        newDate += MM + toFormat[3];
         break;
 
       case 'YY':
-        dateGather += YY + toFormat[3];
+        newDate += YY + toFormat[3];
         break;
 
       case 'YYYY':
-        dateGather += YYYY + toFormat[3];
+        newDate += YYYY + toFormat[3];
         break;
 
       default:
@@ -111,7 +111,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return dateGather.slice(0, -1);
+  return newDate.slice(0, -1);
 }
 
 module.exports = formatDate;
