@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let dateGather = '';
+  const dateParts = date.split(fromFormat[3]);
+  let DD = '';
+  let MM = '';
+  let YY = '';
+  let YYYY = '';
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'DD') {
+      DD = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      MM = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'YY') {
+      YY = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      YYYY = dateParts[i];
+    }
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY') && (+YY) < 30) {
+    YYYY = '20' + YY;
+    YY = '';
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY') && (+YY) >= 30) {
+    YYYY = '19' + YY;
+    YY = '';
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    YY = YYYY.slice(-2);
+    YYYY = '';
+  }
+
+  for (const e of toFormat) {
+    if (e === 'DD') {
+      dateGather += DD + toFormat[3];
+    }
+
+    if (e === 'MM') {
+      dateGather += MM + toFormat[3];
+    }
+
+    if (e === 'YY') {
+      dateGather += YY + toFormat[3];
+    }
+
+    if (e === 'YYYY') {
+      dateGather += YYYY + toFormat[3];
+    }
+  }
+
+  const result = dateGather.slice(0, -1);
+
+  return result;
 }
 
 module.exports = formatDate;
