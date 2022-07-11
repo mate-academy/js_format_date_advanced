@@ -51,6 +51,81 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  let year;
+  let shortYear;
+  let longYear;
+  let month;
+  let isShortYear = true;
+  let dayOfMonth;
+  const inputDate = date.split(fromFormat[3]);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        longYear = inputDate[i];
+        break;
+
+      case 'YY':
+        shortYear = inputDate[i];
+        break;
+
+      case 'MM':
+        month = inputDate[i];
+        break;
+
+      case 'DD':
+        dayOfMonth = inputDate[i];
+        break;
+
+      default:
+        throw new Error('Enter correct date format');
+    }
+  }
+
+  if (toFormat.includes('YYYY')) {
+    isShortYear = false;
+  }
+
+  if (isShortYear && shortYear) {
+    year = shortYear;
+  } else if (isShortYear && !shortYear) {
+    year = longYear.slice(2);
+  } else if (!isShortYear && longYear) {
+    year = longYear;
+  } else if (!isShortYear && !longYear) {
+    if (+shortYear < 30) {
+      year = '20' + shortYear;
+    } else {
+      year = '19' + shortYear;
+    }
+  }
+
+  const correctDates = [];
+
+  for (let toWrite = 0; toWrite < toFormat.length - 1; toWrite++) {
+    switch (toFormat[toWrite]) {
+      case 'YYYY':
+        correctDates.push(year);
+        break;
+
+      case 'YY':
+        correctDates.push(year);
+        break;
+
+      case 'MM':
+        correctDates.push(month);
+        break;
+
+      case 'DD':
+        correctDates.push(dayOfMonth);
+        break;
+
+      default:
+        throw new Error('Enter correct date format');
+    }
+  }
+
+  return correctDates.join(toFormat[3]);
 }
 
 module.exports = formatDate;
