@@ -57,7 +57,6 @@ function formatDate(date, fromFormat, toFormat) {
   let month;
   let isShortYear = true;
   let dayOfMonth;
-  let dateToShow = '';
   const inputDate = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
@@ -126,9 +125,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  dateToShow += correctDates.join(toFormat[3]);
-
-  return dateToShow;
+  return correctDates.join(toFormat[3]);
 }
 
 module.exports = formatDate;
