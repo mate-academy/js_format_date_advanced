@@ -50,19 +50,16 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromFormatArr = fromFormat;
   const separFrom = fromFormat[fromFormat.length - 1];
-  const toFormatArr = toFormat;
   const separTo = toFormat[toFormat.length - 1];
   const dateArr = date.split(separFrom);
-
   const result = [0, 0, 0];
 
   let day;
   let month;
   let year;
 
-  fromFormatArr.forEach((item, idx) => {
+  fromFormat.forEach((item, idx) => {
     if (item === 'DD') {
       day = dateArr[idx];
     }
@@ -76,7 +73,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
-  toFormatArr.forEach((itemTo, idxTo) => {
+  toFormat.forEach((itemTo, idxTo) => {
     if (itemTo === 'DD') {
       result[idxTo] = day;
 
@@ -89,27 +86,31 @@ function formatDate(date, fromFormat, toFormat) {
       return;
     }
 
-    if (itemTo === 'YY' || itemTo === 'YYYY') {
-      if (year.length === itemTo.length) {
-        result[idxTo] = year;
+    if (year.length === itemTo.length
+      && (itemTo === 'YY' || itemTo === 'YYYY')) {
+      result[idxTo] = year;
 
-        return;
-      }
+      return;
+    }
 
-      if (year.length === 2) {
-        if (+year < 30) {
-          year = '20' + year;
-        } else {
-          year = '19' + year;
-        }
-        result[idxTo] = year;
+    if (year.length === 2 && (+year < 30)
+    && (itemTo === 'YY' || itemTo === 'YYYY')) {
+      year = '20' + year;
+      result[idxTo] = year;
 
-        return;
-      }
+      return;
+    }
 
-      if (year.length === 4) {
-        result[idxTo] = year[2] + year[3];
-      }
+    if (year.length === 2 && (+year >= 30)
+    && (itemTo === 'YY' || itemTo === 'YYYY')) {
+      year = '19' + year;
+      result[idxTo] = year;
+
+      return;
+    }
+
+    if (year.length === 4 && (itemTo === 'YY' || itemTo === 'YYYY')) {
+      result[idxTo] = year[2] + year[3];
     }
   });
 
