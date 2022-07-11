@@ -51,8 +51,8 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const oldSeparator = fromFormat[3];
-  const newSeparator = toFormat[3];
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
 
   const dateWithNoSeparator = date.split(`${oldSeparator}`);
   const convertedDate = [];
