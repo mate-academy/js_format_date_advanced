@@ -48,32 +48,31 @@
  *
  * @returns {string}
  */
+function newDateYear(item) {
+  if (+item < 30) {
+    return 20;
+  } else {
+    return 19;
+  }
+}
+
+function newDateYearIndex(value) {
+  if (value.length === 4) {
+    return value === 'YYYY';
+  } else {
+    return value === 'YY';
+  }
+}
+
+function newDateYearIndexM() {
+  return 'MM';
+}
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
   const fromFormatFindIndex = fromFormat.findIndex(newDateYearIndex);
   const toFormatFindIndex = toFormat.findIndex(newDateYearIndex);
   const fromFormatFindIndexM = fromFormat.findIndex(newDateYearIndexM);
-
-  function newDateYear(item) {
-    if (+item < 30) {
-      return 20;
-    } else {
-      return 19;
-    }
-  }
-
-  function newDateYearIndex(value) {
-    if (value.length === 4) {
-      return value === 'YYYY';
-    } else {
-      return value === 'YY';
-    }
-  }
-
-  function newDateYearIndexM(value) {
-    return value === 'MM';
-  }
 
   const year = newDateYear(newDate[fromFormatFindIndex]);
 
