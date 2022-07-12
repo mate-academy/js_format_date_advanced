@@ -85,6 +85,9 @@ function formatDate(date, fromFormat, toFormat) {
         formatedDate.push(longYear);
 
         break;
+
+      default:
+        break;
     }
   }
 
