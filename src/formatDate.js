@@ -51,22 +51,21 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const newdate = date.split(`${fromFormat[fromFormat.length - 1]}`);
+  const newDate = date.split(`${fromFormat[fromFormat.length - 1]}`);
   const separator = toFormat[toFormat.length - 1];
+  const shortYear = newDate[fromFormat.indexOf('YY')];
+  const longYear = newDate[fromFormat.indexOf('YYYY')];
+  const changedFormat = [];
 
-  const shortyear = newdate[fromFormat.indexOf('YY')];
-  const longyear = newdate[fromFormat.indexOf('YYYY')];
-  const changed = [];
-
-  if (toFormat.includes('YY') && longyear) {
-    changed[toFormat.indexOf('YY')] = longyear.slice(2);
+  if (toFormat.includes('YY') && longYear) {
+    changedFormat[toFormat.indexOf('YY')] = longYear.slice(2);
   }
 
   if (toFormat.includes('YYYY')) {
-    if (shortyear < 30) {
-      changed[toFormat.indexOf('YYYY')] = `20${shortyear}`;
+    if (shortYear < 30) {
+      changedFormat[toFormat.indexOf('YYYY')] = `20${shortYear}`;
     } else {
-      changed[toFormat.indexOf('YYYY')] = `19${shortyear}`;
+      changedFormat[toFormat.indexOf('YYYY')] = `19${shortYear}`;
     }
   }
 
@@ -74,11 +73,11 @@ function formatDate(date, fromFormat, toFormat) {
     const index = toFormat.indexOf(fromFormat[i]);
 
     if (index !== -1) {
-      changed[index] = newdate[i];
+      changedFormat[index] = newDate[i];
     }
   }
 
-  return changed.join(separator);
+  return changedFormat.join(separator);
 }
 
 module.exports = formatDate;
