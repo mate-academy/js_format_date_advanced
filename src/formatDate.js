@@ -56,15 +56,12 @@ function formatDate(date, fromFormat, toFormat) {
   const splitedDate = date.split(separator);
   const dayIndex = fromFormat.indexOf('DD');
   const monthIndex = fromFormat.indexOf('MM');
-  let yearIndex = 0;
+  const yearIndex = fromFormat.includes('YYYY')
+    ? fromFormat.indexOf('YYYY')
+    : fromFormat.indexOf('YY');
 
-  if (fromFormat.includes('YYYY')) {
-    yearIndex = fromFormat.indexOf('YYYY');
-  } else if (fromFormat.includes('YY')) {
-    yearIndex = fromFormat.indexOf('YY');
-  }
-
-  let year = splitedDate[yearIndex];
+  const year = splitedDate[yearIndex];
+  const fullYear = year < 30 ? '20' + year : '19' + year;
 
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'DD') {
@@ -75,22 +72,19 @@ function formatDate(date, fromFormat, toFormat) {
       formatedDate.push(splitedDate[monthIndex]);
     }
 
-    if (toFormat[i] === 'YYYY') {
-      if (fromFormat.includes('YY')) {
-        if (year < 30) {
-          year = '20' + year;
-        } else {
-          year = '19' + year;
-        }
-      }
-
+    if (toFormat[i] === 'YYYY' && fromFormat.includes('YYYY')) {
       formatedDate.push(year);
     }
 
-    if (toFormat[i] === 'YY') {
-      if (fromFormat.includes('YYYY')) {
-        year = year.slice(2);
-      }
+    if (toFormat[i] === 'YYYY' && fromFormat.includes('YY')) {
+      formatedDate.push(fullYear);
+    }
+
+    if (toFormat[i] === 'YY' && fromFormat.includes('YYYY')) {
+      formatedDate.push(year.slice(2));
+    }
+
+    if (toFormat[i] === 'YY' && fromFormat.includes('YY')) {
       formatedDate.push(year);
     }
   }
