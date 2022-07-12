@@ -62,7 +62,7 @@ function formatDate(date, fromFormat, toFormat) {
   const day = currentDate[fromFormat.indexOf('DD')];
   const month = currentDate[fromFormat.indexOf('MM')];
   const shortYear = currentDate[yearIndex].slice(-2);
-  const longYear = (+shortYear < 22 && +shortYear >= 0) ? `20${shortYear}` : `19${shortYear}`;
+  const longYear = (+shortYear < 30 && +shortYear >= 0) ? `20${shortYear}` : `19${shortYear}`;
 
   for (const char of toFormat) {
     switch (char) {
