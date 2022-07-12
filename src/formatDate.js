@@ -48,7 +48,6 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
   const fromDateSeparator = fromFormat[3];
   const toDateSeparator = toFormat[3];
@@ -56,18 +55,6 @@ function formatDate(date, fromFormat, toFormat) {
   let formatMap = {};
   const dateParts = date.split(fromDateSeparator);
   const formatedDate = [];
-
-  const getFullYear = (year) => {
-    if (+year < 30) {
-      return `20${year}`;
-    }
-
-    return `19${year}`;
-  };
-
-  const getShortYear = (year) => {
-    return year.slice(2);
-  };
 
   for (let i = 0; i < dateParts.length; i++) {
     if (fromFormat[i] === 'YY') {
@@ -96,5 +83,17 @@ function formatDate(date, fromFormat, toFormat) {
 
   return formatedDate.join(toDateSeparator);
 }
+
+const getFullYear = (year) => {
+  if (+year < 30) {
+    return `20${year}`;
+  }
+
+  return `19${year}`;
+};
+
+const getShortYear = (year) => {
+  return year.slice(2);
+};
 
 module.exports = formatDate;
