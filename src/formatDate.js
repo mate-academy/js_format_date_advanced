@@ -50,7 +50,27 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateDigits = date.match(/\d+/g);
+  const signedDates = {};
+  const arrangedDates = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    signedDates[fromFormat[i]] = dateDigits[i];
+
+    if (signedDates.YYYY) {
+      signedDates.YY = signedDates.YYYY.slice(2);
+    } else if (signedDates.YY < 30) {
+      signedDates.YYYY = '20' + signedDates.YY;
+    } else if (signedDates.YY >= 30) {
+      signedDates.YYYY = '19' + signedDates.YY;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    arrangedDates.push(signedDates[toFormat[i]]);
+  }
+
+  return arrangedDates.join(toFormat[3]);
 }
 
 module.exports = formatDate;
