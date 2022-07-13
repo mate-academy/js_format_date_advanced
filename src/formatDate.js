@@ -79,6 +79,6 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   return newFormat.join(newSeparator);
-}
+};
 
 module.exports = formatDate;
