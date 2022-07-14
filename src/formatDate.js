@@ -50,36 +50,23 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const allDate = date.split(fromFormat[3]);
-  const allFormat = fromFormat;
-
-  if (allFormat.includes('YYYY')) {
-    const itsIndex = fromFormat.indexOf('YYYY');
-
-    allFormat.unshift('YY');
-    allDate.unshift(allDate[itsIndex].slice(2));
-  } else {
-    const itsIndex = fromFormat.indexOf('YY');
-
-    allFormat.unshift('YYYY');
-    allDate.unshift(fullYearValue(allDate[itsIndex]));
-  };
-
+  const allDate = date.split(fromFormat[3]).map(shortLength);
+  const allFormat = fromFormat.map(shortLength);
+  const yearIndex = allFormat.indexOf('YY');
   const result = [];
 
-  for (let i = 0; i < 3; i++) {
+  allDate.unshift(fullYearValue(allDate[yearIndex]));
+  allFormat.unshift('YYYY');
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
     result.push(allDate[allFormat.indexOf(toFormat[i])]);
   }
 
   return result.join(toFormat[3]);
 };
 
-function fullYearValue(shortValue) {
-  const thisYearShortValue = new Date().getFullYear() - 2000;
-
-  return (thisYearShortValue > shortValue)
-    ? '20' + shortValue
-    : '19' + shortValue;
-}
+const shortLength = (item) => item.length > 2 ? item.slice(2) : item;
+const fullYearValue = (value) =>
+  new Date().getFullYear() - 2000 > value ? '20' + value : '19' + value;
 
 module.exports = formatDate;
