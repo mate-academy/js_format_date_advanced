@@ -50,7 +50,23 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const allDate = date.split(fromFormat[3]).map(shortLength);
+  const allFormat = fromFormat.map(shortLength);
+  const yearIndex = allFormat.indexOf('YY');
+  const result = [];
+
+  allDate.unshift(fullYearValue(allDate[yearIndex]));
+  allFormat.unshift('YYYY');
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result.push(allDate[allFormat.indexOf(toFormat[i])]);
+  }
+
+  return result.join(toFormat[3]);
+};
+
+const shortLength = (item) => item.length > 2 ? item.slice(2) : item;
+const fullYearValue = (value) =>
+  new Date().getFullYear() - 2000 > value ? '20' + value : '19' + value;
 
 module.exports = formatDate;
