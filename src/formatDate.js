@@ -51,6 +51,39 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const shorts = date.split(fromFormat[3]);
+  let toDate = [];
+  const iYearFrom = fromFormat.findIndex(e => e.includes('YY'));
+  const iYearTo = toFormat.findIndex(e => e.includes('YY'));
+  const yearEqual = fromFormat[iYearFrom] !== toFormat[iYearTo];
+
+  // checks
+  switch (true) {
+    // with second boolean yearEqual, if toFormat have YY
+    // so the opposite fromFormat have YYYY
+    case (toFormat[iYearTo] === 'YYYY' && yearEqual):
+      if (shorts[iYearFrom] >= 30) {
+        shorts[iYearFrom] = '19' + shorts[iYearFrom];
+        break;
+      }
+      shorts[iYearFrom] = '20' + shorts[iYearFrom];
+      break;
+    case (toFormat[iYearTo] === 'YY' && yearEqual):
+      shorts[iYearFrom] = shorts[iYearFrom].slice(2, 4);
+      break;
+  }
+
+  for (let i = 0; i < shorts.length; i++) {
+    const indexToFormat = fromFormat
+      .findIndex(el => el.slice(0, 2) === toFormat[i]
+        .slice(0, 2));
+
+    toDate.push(shorts[indexToFormat]);
+  }
+
+  toDate = toDate.join(toFormat[3]);
+
+  return toDate;
 }
 
 module.exports = formatDate;
