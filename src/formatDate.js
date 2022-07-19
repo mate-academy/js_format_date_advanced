@@ -50,7 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const longYearMask = 'YYYY';
+  const shortYearMask = 'YY';
+
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+
+  const thisDate = date.split(oldSeparator);
+  const formattedDate = [];
+
+  const shortYear = thisDate[fromFormat.indexOf(shortYearMask)];
+  const longYear = thisDate[fromFormat.indexOf(longYearMask)];
+
+  if (toFormat.includes(longYearMask)) {
+    formattedDate[toFormat.indexOf(longYearMask)] = `${getCentury(
+      shortYear
+    )}${shortYear}`;
+  } else if (toFormat.includes(shortYearMask) && longYear) {
+    formattedDate[toFormat.indexOf(shortYearMask)] = longYear.slice(2);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const index = toFormat.indexOf(fromFormat[i]);
+
+    if (index !== -1) {
+      formattedDate[index] = thisDate[i];
+    }
+  }
+
+  return formattedDate.join(newSeparator);
 }
+
+const getCentury = (year) => (year >= 30
+  ? '19'
+  : '20'
+);
 
 module.exports = formatDate;
