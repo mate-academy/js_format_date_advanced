@@ -60,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
   sortedArr.sort();
 
-  const [day, month, year] = sortedArr.map(name => name.slice(2));
+  const [day, month, year] = sortedArr.map(name => name.match(/\d+/)[0]);
 
   // order day, month, year according to new format
   for (let i = 0; i < toFormat.length - 1; i++) {
