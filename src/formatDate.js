@@ -71,9 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (dateObj.YY < 30) {
     dateObj.YYYY = 20 + dateObj.YY;
-  }
-
-  if (dateObj.YY >= 30) {
+  } else {
     dateObj.YYYY = 19 + dateObj.YY;
   }
 
