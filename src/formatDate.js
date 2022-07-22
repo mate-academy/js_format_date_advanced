@@ -81,22 +81,19 @@ function formatDate(date, fromFormat, toFormat) {
       case 'MM': newDate[i] = month;
         break;
       case 'YYYY':
-        if (year.length === 2) {
-          if (year >= 30) {
-            newDate[i] = '19' + year;
-          } else {
-            newDate[i] = '20' + year;
-          }
-        } else {
+        if (year.length !== 2) {
           newDate[i] = year;
+          break;
         }
+
+        newDate[i] = (year >= 30 && year.length === 2)
+          ? '19' + year
+          : '20' + year;
         break;
       case 'YY':
-        if (year.length === 4) {
-          newDate[i] = year.slice(-2);
-        } else {
-          newDate[i] = year;
-        }
+        newDate[i] = (year.length === 4)
+          ? newDate[i] = year.slice(-2)
+          : newDate[i] = year;
         break;
       default:
         break;
@@ -107,4 +104,3 @@ function formatDate(date, fromFormat, toFormat) {
 }
 
 module.exports = formatDate;
-
