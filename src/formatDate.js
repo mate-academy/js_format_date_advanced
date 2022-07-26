@@ -50,7 +50,43 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+
+  // ff = fromFormat, tf = toFormat
+  const ffDayIndex = fromFormat.indexOf('DD');
+  const ffMonthIndex = fromFormat.indexOf('MM');
+  const ffYearFourIndex = fromFormat.indexOf('YYYY');
+  const ffYearTwoIndex = fromFormat.indexOf('YY');
+  const tfDayIndex = toFormat.indexOf('DD');
+  const tfMonthIndex = toFormat.indexOf('MM');
+  const tfYearFourIndex = toFormat.indexOf('YYYY');
+  const tfYearTwoIndex = toFormat.indexOf('YY');
+
+  const arrayDateToFormat = [];
+  let yearFourResult = '';
+
+  if (fromFormat.includes('YY') === true) {
+    const yearTwoValue = dateArray[ffYearTwoIndex];
+
+    if (dateArray[ffYearTwoIndex] >= 30) {
+      yearFourResult = `19${yearTwoValue}`;
+    } else {
+      yearFourResult = `20${yearTwoValue}`;
+    }
+  } else {
+    yearFourResult = dateArray[ffYearFourIndex];
+  }
+
+  arrayDateToFormat[tfDayIndex] = dateArray[ffDayIndex];
+  arrayDateToFormat[tfMonthIndex] = dateArray[ffMonthIndex];
+
+  if (toFormat.includes('YY') === true) {
+    arrayDateToFormat[tfYearTwoIndex] = dateArray[ffYearFourIndex].slice(-2);
+  } else {
+    arrayDateToFormat[tfYearFourIndex] = yearFourResult;
+  }
+
+  return arrayDateToFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
