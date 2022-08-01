@@ -42,7 +42,7 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
+ * @param {string} dateArray
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
  *
@@ -52,41 +52,60 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
 
-  // ff = fromFormat, tf = toFormat
-  const ffDayIndex = fromFormat.indexOf('DD');
-  const ffMonthIndex = fromFormat.indexOf('MM');
-  const ffYearFourIndex = fromFormat.indexOf('YYYY');
-  const ffYearTwoIndex = fromFormat.indexOf('YY');
-  const tfDayIndex = toFormat.indexOf('DD');
-  const tfMonthIndex = toFormat.indexOf('MM');
-  const tfYearFourIndex = toFormat.indexOf('YYYY');
-  const tfYearTwoIndex = toFormat.indexOf('YY');
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
 
-  const arrayDateToFormat = [];
-  let yearFourResult = '';
+  let result = '';
 
-  if (fromFormat.includes('YY') === true) {
-    const yearTwoValue = dateArray[ffYearTwoIndex];
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        dateObj.DD = dateArray[i];
+        break;
 
-    if (dateArray[ffYearTwoIndex] >= 30) {
-      yearFourResult = `19${yearTwoValue}`;
-    } else {
-      yearFourResult = `20${yearTwoValue}`;
+      case 'MM':
+        dateObj.MM = dateArray[i];
+        break;
+
+      case 'YY':
+        dateObj.YY = dateArray[i];
+        break;
+
+      case 'YYYY':
+        dateObj.YYYY = dateArray[i];
+        break;
+
+      default:
+        break;
     }
-  } else {
-    yearFourResult = dateArray[ffYearFourIndex];
   }
 
-  arrayDateToFormat[tfDayIndex] = dateArray[ffDayIndex];
-  arrayDateToFormat[tfMonthIndex] = dateArray[ffMonthIndex];
-
-  if (toFormat.includes('YY') === true) {
-    arrayDateToFormat[tfYearTwoIndex] = dateArray[ffYearFourIndex].slice(-2);
-  } else {
-    arrayDateToFormat[tfYearFourIndex] = yearFourResult;
+  if (fromFormat.includes('YYYY') === true
+      && toFormat.includes('YY') === true) {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  } else if (fromFormat.includes('YY') === true
+      && toFormat.includes('YYYY') === true) {
+    if (dateObj.YY >= 30) {
+      dateObj.YYYY = `19${dateObj.YY}`;
+    } else {
+      dateObj.YYYY = `20${dateObj.YY}`;
+    }
   }
 
-  return arrayDateToFormat.join(toFormat[3]);
+  for (let x = 0; x < toFormat.length; x++) {
+    if (x < 2) {
+      result += dateObj[toFormat[x]] + toFormat[3];
+    } else {
+      result += dateObj[toFormat[x]];
+      break;
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
