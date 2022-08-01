@@ -42,7 +42,7 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
+ * @param {string} dateArray
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
  *
@@ -50,7 +50,62 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
+
+  let result = '';
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        dateObj.DD = dateArray[i];
+        break;
+
+      case 'MM':
+        dateObj.MM = dateArray[i];
+        break;
+
+      case 'YY':
+        dateObj.YY = dateArray[i];
+        break;
+
+      case 'YYYY':
+        dateObj.YYYY = dateArray[i];
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (fromFormat.includes('YYYY') === true
+      && toFormat.includes('YY') === true) {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  } else if (fromFormat.includes('YY') === true
+      && toFormat.includes('YYYY') === true) {
+    if (dateObj.YY >= 30) {
+      dateObj.YYYY = `19${dateObj.YY}`;
+    } else {
+      dateObj.YYYY = `20${dateObj.YY}`;
+    }
+  }
+
+  for (let x = 0; x < toFormat.length; x++) {
+    if (x < 2) {
+      result += dateObj[toFormat[x]] + toFormat[3];
+    } else {
+      result += dateObj[toFormat[x]];
+      break;
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
