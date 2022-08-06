@@ -51,6 +51,86 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-}
 
+  const substTo = toFormat[3];
+  const fromFormatStr = fromFormat[0] + substTo
+  + fromFormat[1] + substTo + fromFormat[2];
+  const toFormatStr = toFormat[0] + substTo
+  + toFormat[1] + substTo + toFormat[2];
+  const indYearFirstFrom = fromFormatStr.indexOf('Y');
+  const indYearLastFrom = fromFormatStr.lastIndexOf('Y');
+  const indMonFirstFrom = fromFormatStr.indexOf('M');
+  const indDayFirstFrom = fromFormatStr.indexOf('D');
+  const indYearFirstTo = toFormatStr.indexOf('Y');
+  const indYearLastTo = toFormatStr.lastIndexOf('Y');
+  const indMonFirstTo = toFormatStr.indexOf('M');
+  const indDayFirstTo = toFormatStr.indexOf('D');
+  let dataYear = '';
+  let dataMon = '';
+  let dataDay = '';
+  let flagShort = false;
+  let dataYearNew = '';
+
+  let res = '';
+
+  if (indYearLastFrom - indYearFirstFrom > 1) {
+    dataYear = date[indYearFirstFrom] + date[indYearFirstFrom + 1]
+    + date[indYearFirstFrom + 2] + date[indYearFirstFrom + 3];
+  } else {
+    dataYear = date[indYearFirstFrom] + date[indYearFirstFrom + 1];
+    flagShort = true;
+  }
+  dataMon = date[indMonFirstFrom] + date[indMonFirstFrom + 1];
+  dataDay = date[indDayFirstFrom] + date[indDayFirstFrom + 1];
+
+  const yearLengthTo = indYearLastTo - indYearFirstTo;
+
+  if (yearLengthTo === 1) {
+    if (flagShort === false) {
+      dataYearNew = dataYear.slice(2);
+    } else {
+      dataYearNew = dataYear;
+    }
+  }
+
+  if (yearLengthTo > 1) {
+    if (flagShort === true) {
+      if (Number(dataYear) < 30) {
+        dataYearNew = '20' + dataYear;
+      } else {
+        dataYearNew = '19' + dataYear;
+      }
+    } else {
+      dataYearNew = dataYear;
+    }
+  }
+
+  if (indYearFirstTo === 0) {
+    res += dataYearNew + substTo;
+
+    if (toFormatStr[toFormatStr.length - 1] === 'M') {
+      res += dataDay + substTo + dataMon;
+    } else {
+      res += dataMon + substTo + dataDay;
+    }
+  } else if (indDayFirstTo === 0) {
+    res += dataDay + substTo;
+
+    if (toFormatStr[toFormatStr.length - 1] === 'M') {
+      res += dataYearNew + substTo + dataMon;
+    } else {
+      res += dataMon + substTo + dataYearNew;
+    }
+  } else if (indMonFirstTo === 0) {
+    res += dataMon + substTo;
+
+    if (toFormatStr[toFormatStr.length - 1] === 'D') {
+      res += dataYearNew + substTo + dataDay;
+    } else {
+      res += dataDay + substTo + dataYearNew;
+    }
+  }
+
+  return res;
+};
 module.exports = formatDate;
