@@ -53,10 +53,8 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
 
   const substTo = toFormat[3];
-  const fromFormatStr = fromFormat[0] + substTo
-  + fromFormat[1] + substTo + fromFormat[2];
-  const toFormatStr = toFormat[0] + substTo
-  + toFormat[1] + substTo + toFormat[2];
+  const fromFormatStr = fromFormat.join();
+  const toFormatStr = toFormat.join();
   const indYearFirstFrom = fromFormatStr.indexOf('Y');
   const indYearLastFrom = fromFormatStr.lastIndexOf('Y');
   const indMonFirstFrom = fromFormatStr.indexOf('M');
