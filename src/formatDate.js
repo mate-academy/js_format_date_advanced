@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
 
       if (fromFormat[i] === 'YY') {
         const years = data[i] < 30
-          ? 20
+          ? 201
           : 19;
 
         result[i] = years + data[i];
