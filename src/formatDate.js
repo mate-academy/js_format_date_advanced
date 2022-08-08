@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const input = date.split(fromFormat[3]); /* get input date array */
+  const inputData = {};
+  const outputArray = [];
+
+  // get object with input data params
+
+  for (let i = 0; i < 3; i++) {
+    inputData[`${fromFormat[i]}`] = input[i];
+  }
+
+  // function return string - year corect extend
+
+  function year(objectInput, arrInput, arrOutput) {
+    const fromYear = arrInput.concat().sort()[3]; /* get input year extend */
+    const toYear = arrOutput.concat().sort()[3]; /* get output year extend */
+    const inputYear = objectInput[`${fromYear}`]; /* get input year */
+    const yearInteger = Number(inputYear); /* get input year integer */
+
+    // year transformation
+    if (fromYear === toYear) { /* YY = YY || YYYY = YYYY */
+      return inputYear;
+    } else if (fromYear.length > toYear.length) { /* YYYY to YY */
+      return inputYear.slice(2);
+    } else if (yearInteger < 30) { /* YY to YYYY */
+      return '20' + inputYear;
+    }
+
+    return '19' + inputYear;
+  }
+
+  // create output string
+
+  for (const key of toFormat) {
+    switch (key) {
+      case 'MM':
+        outputArray.push(inputData.MM);
+        break;
+      case 'DD':
+        outputArray.push(inputData.DD);
+        break;
+      case 'YY':
+        outputArray.push(year(inputData, fromFormat, toFormat));
+        break;
+      case 'YYYY':
+        outputArray.push(year(inputData, fromFormat, toFormat));
+        break;
+      default:
+        return outputArray.join(toFormat[3]);
+    }
+  }
 }
 
 module.exports = formatDate;
