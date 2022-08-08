@@ -59,7 +59,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const objDate = {};
 
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < 3; i++) {
     objDate[fromFormat[i]] = arrDate[i];
   }
 
@@ -69,10 +69,8 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (objDate['YY'] >= 30) {
     objDate['YYYY'] = 19 + objDate['YY'];
-  }
-
-  if (objDate['YYYY'] !== undefined) {
-    objDate['YY'] = objDate['YYYY'].slice(2, 4);
+  } else {
+    objDate['YY'] = objDate['YYYY'].slice(2);
   }
 
   for (let i = 0; i < 3; i++) {
