@@ -63,12 +63,12 @@ function formatDate(date, fromFormat, toFormat) {
     objDate[fromFormat[i]] = arrDate[i];
   }
 
-  if (objDate['YY'] < 30) {
-    objDate['YYYY'] = 20 + objDate['YY'];
-  }
-
-  if (objDate['YY'] >= 30) {
-    objDate['YYYY'] = 19 + objDate['YY'];
+  if (objDate['YY']) {
+    if (objDate['YY'] < 30) {
+      objDate['YYYY'] = 20 + objDate['YY'];
+    } else {
+      objDate['YYYY'] = 19 + objDate['YY'];
+    }
   } else {
     objDate['YY'] = objDate['YYYY'].slice(2);
   }
