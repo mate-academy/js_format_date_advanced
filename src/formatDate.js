@@ -50,40 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const fromFormatCopy = [...fromFormat];
   const separator = toFormat[3];
   const dataArray = date.split(fromFormat[3]);
-  let toDate = '';
+  const toDate = [];
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const index = fromFormat.indexOf('YYYY');
+  if (fromFormatCopy.includes('YYYY') && toFormat.includes('YY')) {
+    const index = fromFormatCopy.indexOf('YYYY');
 
-    fromFormat[index] = 'YY';
+    fromFormatCopy[index] = 'YY';
     dataArray[index] = dataArray[index].slice(2);
-  }
+  } else {
+    const index = fromFormatCopy.indexOf('YY');
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const index = fromFormat.indexOf('YY');
+    fromFormatCopy[index] = 'YYYY';
 
-    fromFormat[index] = 'YYYY';
-
-    if (dataArray[index] < 22) {
-      dataArray[index] = '20' + dataArray[index];
-    } else {
-      dataArray[index] = '19' + dataArray[index];
-    }
+    dataArray[index] = (dataArray[index] < 30 ? '20' : '19') + dataArray[index];
   }
 
   for (let i = 0; i < dataArray.length; i++) {
-    const index = fromFormat.indexOf(toFormat[i]);
+    const index = fromFormatCopy.indexOf(toFormat[i]);
 
-    toDate += dataArray[index];
-
-    if (i !== 2) {
-      toDate += separator;
-    }
+    toDate.push(dataArray[index]);
   }
 
-  return toDate;
+  return toDate.join(separator);
 }
 
 module.exports = formatDate;
