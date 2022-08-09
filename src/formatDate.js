@@ -60,9 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
 
       if (oldFormat.includes('YY')) {
         this['YYYY'] = (this.YY < 30) ? 20 + this.YY : 19 + this.YY;
-      }
-
-      if (oldFormat.includes('YYYY')) {
+      } else {
         this.YY = this.YYYY.slice(2);
       }
     },
