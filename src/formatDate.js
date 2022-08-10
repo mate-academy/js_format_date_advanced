@@ -5,6 +5,10 @@
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
+ * 
+ * 
+ * 
+ * 
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
@@ -50,7 +54,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  //  * formatDate(
+  //     '2020-02-18',
+  //      ['YYYY', 'MM', 'DD', '-'],
+  //      ['YYYY', 'MM', 'DD', '.'],
+  //      '2020.02.18'
+
+  const arrDate = date.split(fromFormat[3]);
+
+  let result = [];
+
+  for (let i = 0; i < arrDate.length; i++) {
+    if (toFormat.indexOf('DD') === i) {
+      result.push(arrDate[fromFormat.indexOf('DD')]);
+    }
+
+    if (toFormat.indexOf('MM') === i) {
+      result.push(arrDate[fromFormat.indexOf('MM')]);
+    }
+
+    if (toFormat.indexOf('YY') === i) {
+      if (fromFormat.includes('YY')) {
+        result.push(arrDate[fromFormat.indexOf('YY')]);
+      } else if (fromFormat.includes('YYYY')) {
+        result.push(arrDate[fromFormat.indexOf('YYYY')].slice(-2));
+      }
+    }
+
+    if (toFormat.indexOf('YYYY') === i) {
+      if (fromFormat.includes('YYYY')) {
+        result.push(arrDate[fromFormat.indexOf('YYYY')]);
+      } else if (fromFormat.includes('YY')) {
+        const year = arrDate[fromFormat.indexOf('YY')];
+        
+        if (year >= 30) {
+          result.push(`19${year}`);
+        } else {
+          result.push(`20${year}`);
+        }
+      }
+    }
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
