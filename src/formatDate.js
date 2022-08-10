@@ -59,13 +59,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (objectDate.YYYY) {
-    objectDate.YY = objectDate.YYYY.slice(2, 4);
-  }
-
-  if (objectDate.YY < 30) {
-    objectDate.YYYY = 20 + objectDate.YY;
+    objectDate.YY = objectDate.YYYY.slice(2);
   } else {
-    objectDate.YYYY = 19 + objectDate.YY;
+    objectDate.YYYY = (objectDate.YY < 30 ? 20 : 19) + objectDate.YY;
   }
 
   for (let i = 0; i < 3; i++) {
