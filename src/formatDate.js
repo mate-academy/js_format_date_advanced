@@ -51,6 +51,61 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const dateArray = date.split(fromSeparator);
+  let dateObj = {};
+  const newDateArray = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateObj[fromFormat[i]] = dateArray[i];
+  }
+
+  dateObj = normalizeYear(dateObj, toFormat);
+  // console.log(dateObj);
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (const key in dateObj) {
+      if (toFormat[i] === key) {
+        newDateArray.push(dateObj[key]);
+      }
+    }
+  }
+
+  return newDateArray.join(toSeparator);
+  // console.log(newDateArray);
 }
+
+function normalizeYear(obj, toFormat) {
+  const newObj = { ...obj };
+
+  for (const key in newObj) {
+    if ((key === 'YY' || key === 'YYYY') && toFormat.includes(key)) {
+      return newObj;
+    }
+
+    if (key === 'YY') {
+      if (newObj[key] < 30) {
+        newObj['YYYY'] = '20' + newObj[key];
+      } else {
+        newObj['YYYY'] = '19' + newObj[key];
+      }
+
+      return newObj;
+    }
+
+    if (key === 'YYYY') {
+      newObj['YY'] = (+newObj[key] % 100).toString();
+
+      return newObj;
+    }
+  }
+}
+
+formatDate(
+  '20/02/18',
+  ['YY', 'MM', 'DD', '/'],
+  ['DD', 'YYYY', 'MM', '.'],
+);
 
 module.exports = formatDate;
