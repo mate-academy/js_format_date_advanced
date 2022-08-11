@@ -102,10 +102,4 @@ function normalizeYear(obj, toFormat) {
   }
 }
 
-formatDate(
-  '20/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['DD', 'YYYY', 'MM', '.'],
-);
-
 module.exports = formatDate;
