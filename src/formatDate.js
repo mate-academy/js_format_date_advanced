@@ -50,11 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dataObj = {
-    day: null,
-    month: null,
-    year: null,
-  };
+  const dataObj = {};
   const arrDate = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
