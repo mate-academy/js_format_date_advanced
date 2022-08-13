@@ -48,9 +48,35 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const arrDate = date.split(fromFormat.pop());
+
+  if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
+    const indexY = fromFormat.indexOf('YY');
+
+    arrDate[indexY] = +arrDate[indexY] >= 30 ? '19' + arrDate[indexY]
+      : '20' + arrDate[indexY];
+
+    fromFormat[indexY] = 'YYYY';
+  }
+
+  if (toFormat.includes('YY') && fromFormat.includes('YYYY')) {
+    const indexY = fromFormat.indexOf('YYYY');
+
+    arrDate[indexY] = arrDate[indexY].slice(2);
+    fromFormat[indexY] = 'YY';
+  }
+
+  const obj = arrDate.reduce(function(target, key, index) {
+    const rigihtIndex = toFormat.indexOf(fromFormat[index]);
+
+    target[rigihtIndex] = key;
+
+    return target;
+  }, {});
+
+  return Object.values(obj).join(toFormat.pop());
 }
 
 module.exports = formatDate;
