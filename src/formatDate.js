@@ -50,7 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+  let result
+    = dateArray[fromFormat.indexOf(toFormat[0])]
+    + toFormat[3]
+    + dateArray[fromFormat.indexOf(toFormat[1])]
+    + toFormat[3]
+    + dateArray[fromFormat.indexOf(toFormat[2])];
+
+  if (result.includes('undefined')) {
+    const year = toFormat.includes('YY')
+      ? fromFormat.includes('YYYY')
+        ? dateArray[fromFormat.indexOf('YYYY')].slice(2)
+        : dateArray[fromFormat.indexOf('YY')]
+
+      : fromFormat.includes('YY')
+        ? +dateArray[fromFormat.indexOf('YY')] < 30
+          ? '20' + dateArray[fromFormat.indexOf('YY')]
+          : '19' + dateArray[fromFormat.indexOf('YY')]
+        : dateArray[fromFormat.indexOf('YYYY')];
+
+    result = result.replace('undefined', year);
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
