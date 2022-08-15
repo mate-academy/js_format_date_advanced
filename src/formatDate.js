@@ -50,49 +50,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // let res = '';
-  const res2 = [];
-  const wasFormat = fromFormat;
-  const willFormat = toFormat;
-  // нет смысла делать деструктуризацию объекта так как
-  // местами переменные в мссиве могут менятся
-  // надо по разделителю строку поделить так как
-  // надо настроить цикл на определенное количество итераций
-  // берем именно fromFormat так как у него разделитель как у date так как
-  // это старая дата и ее старый формат
-  const arrCurrentDate = date.split(wasFormat[3]);
+  const res = [];
+  const lastArrElem = fromFormat.length - 1;
+  const arrCurrentDate = date.split(fromFormat[lastArrElem]);
   // console.log(arrCurrentDate);
-  // каким то образом разделило все цифры между собой
-  // наверное мы взяли разделитель
-  // из массива fromFormat и выбрали его по индексу
-  // 3й индекс то как раз разделитель
-  // console.log(date.split(fromFormat[3]));
 
-  // просто цикл не сработает так как в строке
-  // date символом больше чем в переборе масива цикла
-  for (let i = 0; i < wasFormat.length; i++) {
-    if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'DD') {
-      res2.push(arrCurrentDate[2]);
-      // console.log(wasFormat[i], willFormat[i]);
-    }
+  const dateObj = {};
 
-    if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'MM') {
-      res2.push(arrCurrentDate[0]);
-      // console.log(wasFormat[i], willFormat[i]);
-    }
+  for (let i = 0; i < lastArrElem; i++) {
+    dateObj[fromFormat[i]] = arrCurrentDate[i];
+  }
+  // console.log(dateObj);
 
-    if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'YYYY') {
-      res2.push(arrCurrentDate[1]);
-      // console.log(wasFormat[i], willFormat[i]);
-    }
-    // console.log(object);
-    // res += date[i]
+  // поставил массиву порядок toFormat
+  // присвоил ключ как элемент из массива toFormat
+  // и цикл вытащил нужные ключи и запушил знвчения в массив
+  // в нужном порядке
+  for (let i = 0; i < lastArrElem; i++) {
+    res.push(dateObj[toFormat[i]]);
   }
 
-  return res2.join(willFormat[3]);
+  // console.log(dateObj);
+
+  return res.join(toFormat[lastArrElem]);
 }
 
 module.exports = formatDate;
+// console.log(formatDate('2012-12-21', ['YYYY', 'MM', 'DD', '-'],
+//  ['DD', 'MM', 'YYYY', '-'])); // 21-12-2012
+
+// console.log(formatDate('30.02.18', ['YY', 'MM', 'DD', '.'],
+// ['YYYY', 'MM', 'DD', '.'],)); // 1930.02.18
+// const result = formatDate(
+//   '2012-12-21',
+//   ['YYYY', 'MM', 'DD', '-'],
+//   ['DD', 'MM', 'YYYY', '-'],
+// );
+
+// expect(result)
+//   .toBe('21-12-2012');
+// });
 
 // console.log(formatDate('12-2012-21',
 // ['MM', 'YYYY', 'DD', '-'], ['DD', 'MM', 'YYYY', '-'])); // 21-12-2012
@@ -108,7 +105,7 @@ module.exports = formatDate;
 // });
 
 // console.log(formatDate('2012-12-21',
-// ['YYYY', 'MM', 'DD', '-'], ['YYYY', 'MM', 'DD', '.']));
+// ['YYYY', 'MM', 'DD', '-'], ['YYYY', 'MM', 'DD', '.'])); //2012.12.21
 
 // const result = formatDate(
 //   '2012-12-21',
@@ -119,3 +116,107 @@ module.exports = formatDate;
 // expect(result)
 //   .toBe('2012.12.21');
 // });
+
+// старая попытка
+// function formatDate(date, fromFormat, toFormat) {
+//   // let res = '';
+//   const res2 = [];
+//   const wasFormat = fromFormat;
+//   const willFormat = toFormat;
+//   // нет смысла делать деструктуризацию объекта так как
+//   // местами переменные в мссиве могут менятся
+//   // надо по разделителю строку поделить так как
+//   // надо настроить цикл на определенное количество итераций
+//   // берем именно fromFormat так как у него разделитель как у date так как
+//   // это старая дата и ее старый формат
+//   const arrCurrentDate = date.split(wasFormat[3]);
+//   // console.log(arrCurrentDate);
+//   // каким то образом разделило все цифры между собой
+//   // наверное мы взяли разделитель
+//   // из массива fromFormat и выбрали его по индексу
+//   // 3й индекс то как раз разделитель
+//   // console.log(date.split(fromFormat[3]));
+
+//   // просто цикл не сработает так как в строке
+//   // date символом больше чем в переборе масива цикла
+//   for (let i = 0; i < wasFormat.length; i++) {
+//     if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'DD') {
+//       res2.push(arrCurrentDate[2]);
+//       console.log(wasFormat[i], willFormat[i]);
+//     }
+
+//     if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'MM') {
+//       res2.push(arrCurrentDate[0]);
+//       console.log(wasFormat[i], willFormat[i]);
+//     }
+
+//     if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'YYYY') {
+//       res2.push(arrCurrentDate[1]);
+//       console.log(wasFormat[i], willFormat[i]);
+//     }
+//     // console.log(object);
+//     // res += date[i]
+//   }
+
+//   return res2.join(willFormat[3]);
+// }
+
+// старая попытка2
+// function formatDate(date, fromFormat, toFormat) {
+//   // let res = '';
+//   const res2 = [];
+//   const wasFormat = fromFormat;
+//   const willFormat = toFormat;
+//   // нет смысла делать деструктуризацию объекта так как
+//   // местами переменные в мссиве могут менятся
+//   // надо по разделителю строку поделить так как
+//   // надо настроить цикл на определенное количество итераций
+//   // берем именно fromFormat так как у него разделитель как у date так как
+//   // это старая дата и ее старый формат
+//   const arrCurrentDate = date.split(wasFormat[3]);
+//   console.log(arrCurrentDate);
+//   // каким то образом разделило все цифры между собой
+//   // наверное мы взяли разделитель
+//   // из массива fromFormat и выбрали его по индексу
+//   // 3й индекс то как раз разделитель
+//   // console.log(date.split(fromFormat[3]));
+
+//   // просто цикл не сработает так как в строке
+//   // date символом больше чем в переборе масива цикла
+//   for (let i = 0; i < wasFormat.length - 1; i++) {
+//     if (wasFormat[i] !== willFormat[i] && (willFormat[i] === 'DD'
+// || willFormat[i] === 'MM' || willFormat[i] === 'YYYY')) {
+//       res2.push(arrCurrentDate[2]);
+//       console.log(wasFormat[i], willFormat[i]);
+
+//     } else if (wasFormat[i] !== willFormat[i] && (willFormat[i] === 'DD'
+// || willFormat[i] === 'MM' || willFormat[i] === 'YYYY')) {
+//       res2.push(arrCurrentDate[0]);
+
+//       console.log(wasFormat[i], willFormat[i]);
+
+//     } else if (wasFormat[i] !== willFormat[i] && (willFormat[i] === 'DD'
+// || willFormat[i] === 'MM' || willFormat[i] === 'YYYY')) {
+//       res2.push(arrCurrentDate[1]);
+
+//       console.log(wasFormat[i], willFormat[i]);
+//     } else {
+//       res2.push(arrCurrentDate[i]);
+//     }
+
+//     // if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'MM') {
+//     //   res2.push(arrCurrentDate[0]);
+//     //   console.log(wasFormat[i], willFormat[i]);
+//     // }
+
+//     // if (wasFormat[i] !== willFormat[i] && willFormat[i] === 'YYYY') {
+//     //   res2.push(arrCurrentDate[1]);
+//     //   console.log(wasFormat[i], willFormat[i]);
+//     // }
+//     // console.log(object);
+//     // res += date[i]
+//   }
+
+//   // return res2;
+//   return res2.join(willFormat[3]);
+// }
