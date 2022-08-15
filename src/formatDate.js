@@ -60,7 +60,22 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < lastArrElem; i++) {
     dateObj[fromFormat[i]] = arrCurrentDate[i];
   }
+  // console.log('before changes below');
   // console.log(dateObj);
+
+  // надо както изменить значения обекта и измененное пушить
+  if (dateObj.YY >= 30) {
+    dateObj.YYYY = '19' + dateObj.YY;
+  } else if (dateObj.YY < 30) {
+    dateObj.YYYY = '20' + dateObj.YY;
+  } else {
+    // converting from YYYY to YY just use 2 last digit (1997 -> 97)
+    // нужное мне число но не перезаписывает значение обекта
+    // наверное из за того что в массиве  toFormat нет YYYY
+    // console.log((dateObj.YY));
+
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
 
   // поставил массиву порядок toFormat
   // присвоил ключ как элемент из массива toFormat
@@ -70,6 +85,7 @@ function formatDate(date, fromFormat, toFormat) {
     res.push(dateObj[toFormat[i]]);
   }
 
+  // console.log('after changes below');
   // console.log(dateObj);
 
   return res.join(toFormat[lastArrElem]);
@@ -79,6 +95,10 @@ module.exports = formatDate;
 // console.log(formatDate('2012-12-21', ['YYYY', 'MM', 'DD', '-'],
 //  ['DD', 'MM', 'YYYY', '-'])); // 21-12-2012
 
+// console.log(formatDate( '10/22/1979', ['MM', 'DD', 'YYYY', '/'],
+// ['MM', 'DD', 'YY', '/'],)); // '10/22/79'
+// // console.log(formatDate( '97/02/18', ['YY', 'MM', 'DD', '/'],
+// ['YYYY', 'MM', 'DD', '/'],)); // 1997/02/18
 // console.log(formatDate('30.02.18', ['YY', 'MM', 'DD', '.'],
 // ['YYYY', 'MM', 'DD', '.'],)); // 1930.02.18
 // const result = formatDate(
