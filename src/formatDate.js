@@ -66,11 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     copyFromFormat[index] = 'YYYY';
 
-    if (arrDate[index] < 30) {
-      arrDate[index] = 20 + arrDate[index];
-    } else {
-      arrDate[index] = 19 + arrDate[index];
-    }
+    arrDate[index] = (arrDate[index] < 30 ? '20' : '19') + arrDate[index];
   }
 
   for (let i = 0; i < toFormat.length; i++) {
