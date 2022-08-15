@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -58,15 +59,9 @@ function formatDate(date, fromFormat, toFormat) {
     oldDateObj[fromFormat[i]] = oldDate[i];
   }
 
-  if (oldDateObj['YY'] >= 30) {
-    oldDateObj['YYYY'] = 19 + oldDateObj['YY'];
-  }
-
-  if (oldDateObj['YY'] < 30) {
-    oldDateObj['YYYY'] = 20 + oldDateObj['YY'];
-  }
-
-  oldDateObj['YY'] = oldDateObj['YYYY'].slice(2);
+  oldDateObj['YY'] >= 30 ? oldDateObj['YYYY'] = 19 + oldDateObj['YY']
+    : oldDateObj['YY'] < 30 ? oldDateObj['YYYY'] = 20 + oldDateObj['YY']
+      : oldDateObj['YY'] = oldDateObj['YYYY'].slice(2);
 
   for (let i = 0; i < 3; i++) {
     newDate.push(oldDateObj[toFormat[i]]);
