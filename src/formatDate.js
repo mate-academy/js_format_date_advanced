@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -89,11 +90,9 @@ function formatDate(date, fromFormat, toFormat) {
         } else if (toFormatYear.length < fromFormatYear.length) {
           newDate.push(dataObj.year.slice(2));
         } else {
-          if (fromFormatYear >= 30) {
-            newDate.push(`19${dataObj.year}`);
-          } else {
-            newDate.push(`20${dataObj.year}`);
-          }
+          fromFormatYear >= 30
+            ? newDate.push(`19${dataObj.year}`)
+            : newDate.push(`20${dataObj.year}`);
         }
     }
   }
