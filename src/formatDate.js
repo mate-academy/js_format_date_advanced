@@ -50,12 +50,12 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateToArr = date.split(fromFormat[3]);
+  const arrOfDate = date.split(fromFormat[3]);
   const dateProperties = {};
   let result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateProperties[fromFormat[i]] = dateToArr[i];
+    dateProperties[fromFormat[i]] = arrOfDate[i];
   }
 
   if (dateProperties.hasOwnProperty('YYYY')) {
