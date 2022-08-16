@@ -66,19 +66,13 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       if (i === oldFormat.length - 1
-        && newFormat[j] !== oldFormat[i]
         && newFormat[j] === 'YY') {
         newDate += rawDate[i].toString().slice(-2);
       }
 
       if (i === oldFormat.length - 1
-        && newFormat[j] !== oldFormat[i]
         && newFormat[j] === 'YYYY') {
-        if (+rawDate[0] < 30) {
-          newDate += '20' + rawDate[0];
-        } else {
-          newDate += '19' + rawDate[0];
-        }
+        newDate += +rawDate[0] < 30 ? '20' + rawDate[0] : '19' + rawDate[0];
       }
     }
 
