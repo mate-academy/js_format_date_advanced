@@ -55,6 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
   const oldFormat = fromFormat.splice(0, 3);
   const newFormat = toFormat.splice(0, 3);
   const rawDate = date.split(oldSeparator);
+  const last = oldFormat.length - 1;
 
   let newDate = '';
 
@@ -65,14 +66,14 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       }
 
-      if (i === oldFormat.length - 1
+      if (i === last
         && newFormat[j] === 'YY') {
         newDate += rawDate[i].toString().slice(-2);
       }
 
-      if (i === oldFormat.length - 1
+      if (i === last
         && newFormat[j] === 'YYYY') {
-        newDate += +rawDate[0] < 30 ? '20' + rawDate[0] : '19' + rawDate[0];
+        newDate += (+rawDate[0] < 30 ? '20' : '19') + rawDate[0];
       }
     }
 
