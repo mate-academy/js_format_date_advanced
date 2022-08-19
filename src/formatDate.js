@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(`${fromFormat[3]}`);
+  const dateArr = date.split(fromFormat[3]);
   const dateObj = {};
   let finalDate = '';
 
