@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultDat = date.split(fromFormat[3]);
+
+  const resultDate = res(resultDat, fromFormat, toFormat);
+  // const yerFF = yer(fromFormat);
+  const yerTF = yer(toFormat);
+
+  if (resultDate[yerTF].length < toFormat[yerTF].length) {
+    if (resultDate[yerTF] < 30) {
+      resultDate[yerTF] = '20' + resultDate[yerTF];
+    } else {
+      resultDate[yerTF] = '19' + resultDate[yerTF];
+    }
+
+    return resultDate.join(toFormat[3]);
+  }
+
+  if (resultDate[yerTF].length === toFormat[yerTF].length) {
+    return resultDate.join(toFormat[3]);
+  }
+
+  resultDate[yerTF] = resultDate[yerTF].slice(2);
+
+  return resultDate.join(toFormat[3]);
+}
+
+function res(date, fFormat, tFormat) {
+  const result = [];
+
+  for (let i = 0; i < tFormat.length; i++) {
+    for (let a = 0; a < fFormat.length; a++) {
+      if (
+        tFormat[i] === fFormat[a]
+        || (tFormat[i] === 'YY' && fFormat[a] === 'YYYY')
+        || (tFormat[i] === 'YYYY' && fFormat[a] === 'YY')) {
+        result[i] = date[a];
+      }
+    }
+  }
+
+  result.length = 3;
+
+  return result;
+}
+
+function yer(format) {
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YY' || format[i] === 'YYYY') {
+      return i;
+    }
+  }
 }
 
 module.exports = formatDate;
