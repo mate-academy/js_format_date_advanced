@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 /**
@@ -50,50 +51,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const obj = {};
-  const newArr = [];
-  const newSymbol = toFormat[3];
-  const arrDate = date.split(fromFormat[3]).slice(0, 3).join(toFormat[3]);
+  const dateObj = {
+    DD: '', MM: '', YY: '', YYYY: '',
+  };
+  const dateArr = date.split(fromFormat[3]);
+  const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    obj[fromFormat[i][0]] = arrDate.split(toFormat[3])[i];
-  }
-
-  for (let j = 0; j < toFormat.length - 1; j++) {
-    if (toFormat[j] === 'DD') {
-      newArr.push(obj.D);
-    }
-
-    if (toFormat[j] === 'MM') {
-      newArr.push(obj.M);
-    }
-
-    if (toFormat[j] === 'YYYY') {
-      if (obj.Y.length === 4) {
-        newArr.push(obj.Y);
-      }
-
-      if (obj.Y.length === 2) {
-        if (obj.Y < 30) {
-          newArr.push('20' + obj.Y);
-        } else {
-          newArr.push('19' + obj.Y);
-        }
-      }
-    }
-
-    if (toFormat[j] === 'YY') {
-      if (obj.Y.length === 2) {
-        newArr.push(obj.Y);
-      }
-
-      if (obj.Y.length === 4) {
-        newArr.push(obj.Y.slice(2));
-      }
+    switch (fromFormat[i]) {
+      case 'YY':
+        dateObj.YY = dateArr[i];
+        break;
+      case 'MM':
+        dateObj.MM = dateArr[i];
+        break;
+      case 'DD':
+        dateObj.DD = dateArr[i];
+        break;
+      case 'YYYY':
+        dateObj.YYYY = dateArr[i];
+        break;
     }
   }
 
-  return newArr.join(newSymbol);
+  if (!dateObj.YYYY) {
+    if (dateObj.YY < 30) {
+      dateObj.YYYY = '20' + dateObj.YY;
+    } else {
+      dateObj.YYYY = '19' + dateObj.YY;
+    }
+  }
+
+  if (!dateObj.YY) {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result.push(dateObj[toFormat[i]]);
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
