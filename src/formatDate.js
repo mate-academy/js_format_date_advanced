@@ -52,6 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
   const dateObj = {};
+  const dateLength = 3;
   let finalDate = '';
 
   for (let i = 0; i <= dateArr.length; i++) {
@@ -62,20 +63,16 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj['YY'] = dateObj['YYYY'].slice(2);
   }
 
-  if (toFormat.includes('YYYY')) {
-    if (!dateObj.hasOwnProperty('YYYY')) {
-      if (dateObj['YY'] < 30) {
-        dateObj['YYYY'] = `20${dateObj['YY']}`;
-      } else {
-        dateObj['YYYY'] = `19${dateObj['YY']}`;
-      }
-    }
+  const fullYear = toFormat.includes('YYYY') && !dateObj.hasOwnProperty('YYYY');
+
+  if (fullYear) {
+    dateObj['YYYY'] = (dateObj['YY'] < 30) ? `20${dateObj['YY']}` : `19${dateObj['YY']}`;
   }
 
-  for (let a = 0; a < toFormat.slice(0, 3).length; a++) {
+  for (let a = 0; a < dateLength; a++) {
     finalDate += dateObj[toFormat[a]];
 
-    if (a !== toFormat.slice(0, 3).length - 1) {
+    if (a !== dateLength - 1) {
       finalDate += toFormat[3];
     }
   }
