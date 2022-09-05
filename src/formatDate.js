@@ -49,8 +49,39 @@
  * @returns {string}
  */
 
+function convertYear(dateObj) {
+  if (dateObj['YYYY']) {
+    dateObj['YY'] = dateObj['YYYY'].split('').slice(-2).join('');
+  }
+
+  if (dateObj['YY']) {
+    if (+dateObj['YY'] < 30) {
+      dateObj['YYYY'] = '20' + dateObj['YY'];
+    } else {
+      dateObj['YYYY'] = '19' + dateObj['YY'];
+    }
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrFormatFrom = fromFormat.slice(0, 3);
+  const [chrFrom] = fromFormat.slice(-1);
+  const arrData = date.split(chrFrom);
+
+  const dateFrom = arrFormatFrom.reduce((acc, key, ind) => {
+    return { ...acc, [key]: arrData[ind] };
+  }, {});
+
+  convertYear(dateFrom);
+
+  const arrFormatTo = toFormat.slice(0, 3);
+  const [chrTo] = toFormat.slice(-1);
+
+  const dateTo = arrFormatTo.reduce((acc, key) => {
+    return [...acc, dateFrom[key]];
+  }, []);
+
+  return dateTo.join(chrTo);
 }
 
 module.exports = formatDate;
