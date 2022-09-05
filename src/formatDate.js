@@ -50,7 +50,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-
   const dateObj = {
     'YYYY': 0,
     'YY': 0,
