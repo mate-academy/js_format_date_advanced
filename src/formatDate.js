@@ -60,16 +60,14 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (const key in dateObj) {
-      if (key === fromFormat[i]) {
-        dateObj[key] = arrDate[i];
-      }
-    }
+    dateObj[fromFormat[i]] = arrDate[i];
   }
 
   if (dateObj.YY === '') {
     dateObj.YY = dateObj.YYYY.slice(2);
-  } else if (dateObj.YYYY === '') {
+  }
+
+  if (dateObj.YYYY === '') {
     if (dateObj.YY >= 30) {
       (dateObj.YYYY = '19' + dateObj.YY);
     } else {
