@@ -49,8 +49,51 @@
  * @returns {string}
  */
 
+// - I ve tried to use minimum of magic methods
+// |-- like: x.split().map().reduce().filter().sort().join() =).
+// |-- SO here is the result:
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // Base setup:
+  const dateArr = date.split(fromFormat[3]);
+  const separator = toFormat[3];
+  const dateObj = {};
+  const res = [];
+  let oldYear = '';
+  let newYear = '';
+  let century = '19';
+
+  // Adding MM\DD\YY\YYYY keys-values to the obj:
+  for (let i = 0; i < dateArr.length; i++) {
+    if (fromFormat[i].indexOf('YY') !== -1) {
+      oldYear = fromFormat[i];
+    }
+
+    if (toFormat[i].indexOf('YY') !== -1) {
+      newYear = toFormat[i];
+    }
+
+    dateObj[fromFormat[i]] = dateArr[i];
+  }
+
+  // Changing a year format and check the century of the year:
+  if (oldYear !== newYear) {
+    if (oldYear === 'YYYY' && newYear === 'YY') {
+      dateObj[newYear] = dateArr[fromFormat.indexOf(oldYear)].slice(2);
+    } else if (oldYear === 'YY' && newYear === 'YYYY') {
+      if (parseInt(dateObj['YY']) < 30) {
+        century = '20';
+      }
+      dateObj[newYear] = century + dateArr[fromFormat.indexOf(oldYear)];
+    }
+  }
+
+  // Adding new format date in to result array for return:
+  for (let i = 0; i < dateArr.length; i++) {
+    res.push(dateObj[toFormat[i]]);
+  }
+
+  // Something we r looking for is here with a new separator =):
+  return res.join(separator);
 }
 
 module.exports = formatDate;
