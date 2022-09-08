@@ -52,9 +52,8 @@
 function formatDate(date, fromFormat, toFormat) {
   const resultDat = date.split(fromFormat[3]);
 
-  const resultDate = res(resultDat, fromFormat, toFormat);
-  // const yerFF = yer(fromFormat);
-  const yerTF = yer(toFormat);
+  const resultDate = transformation(resultDat, fromFormat, toFormat);
+  const yerTF = formatYear(toFormat);
 
   if (resultDate[yerTF].length < toFormat[yerTF].length) {
     if (resultDate[yerTF] < 30) {
@@ -75,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
   return resultDate.join(toFormat[3]);
 }
 
-function res(date, fFormat, tFormat) {
+function transformation(date, fFormat, tFormat) {
   const result = [];
 
   for (let i = 0; i < tFormat.length; i++) {
@@ -94,7 +93,7 @@ function res(date, fFormat, tFormat) {
   return result;
 }
 
-function yer(format) {
+function formatYear(format) {
   for (let i = 0; i < format.length; i++) {
     if (format[i] === 'YY' || format[i] === 'YYYY') {
       return i;
