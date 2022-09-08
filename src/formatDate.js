@@ -50,7 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultDate = [];
+  const separatorTypeFromFormat = fromFormat[fromFormat.length - 1];
+  const separatorTypeToFormat = toFormat[toFormat.length - 1];
+  const dateArr = date.split(separatorTypeFromFormat);
+  const fromFormatYearIndex = findDatePartsIndex(fromFormat, 'YY');
+  const fromFormatDayIndex = findDatePartsIndex(fromFormat, 'DD');
+  const fromFormatMonthIndex = findDatePartsIndex(fromFormat, 'MM');
+  const toFormatYearIndex = findDatePartsIndex(toFormat, 'YY');
+  const toFormatMonthIndex = findDatePartsIndex(toFormat, 'MM');
+  const toFormatDayIndex = findDatePartsIndex(toFormat, 'DD');
+
+  for (let i = 0; i < dateArr.length; i++) {
+    switch (i) {
+      case fromFormatDayIndex:
+        resultDate[toFormatDayIndex] = dateArr[i];
+        break;
+      case fromFormatMonthIndex:
+        resultDate[toFormatMonthIndex] = dateArr[i];
+        break;
+      case fromFormatYearIndex:
+        if (toFormat[toFormatYearIndex].length
+          < fromFormat[fromFormatYearIndex].length) {
+          resultDate[toFormatYearIndex] = dateArr[i].slice(-2);
+        } else if (fromFormat[fromFormatYearIndex].length
+            < toFormat[toFormatYearIndex].length) {
+          if (dateArr[fromFormatYearIndex] < 30) {
+            resultDate[toFormatYearIndex] = ['20', dateArr[i]].join('');
+          } else {
+            resultDate[toFormatYearIndex] = ['19', dateArr[i]].join('');
+          }
+        } else {
+          resultDate[toFormatYearIndex] = dateArr[i];
+        }
+        break;
+      default:
+        return false;
+    }
+  }
+
+  return resultDate.join(separatorTypeToFormat);
+}
+
+function findDatePartsIndex(arr, type) {
+  const typeFour = type.repeat(2);
+
+  return arr.findIndex(el => el === type || el === typeFour);
 }
 
 module.exports = formatDate;
