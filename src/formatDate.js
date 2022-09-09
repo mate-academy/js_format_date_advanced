@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeperator = fromFormat[fromFormat.length - 1];
+  const newSeperator = toFormat[toFormat.length - 1];
+  const arrFrom = date.split(oldSeperator);
+  const arrTo = [];
+  const formats = {
+    dayFormat: 'DD',
+    monthFormat: 'MM',
+    yearFormat: {
+      two: 'YY',
+      four: 'YYYY',
+    },
+  };
+  const data = {
+    days: 0,
+    monthes: 0,
+    years: 0,
+  };
+  let result = '';
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === formats.yearFormat.two
+      || fromFormat[i] === formats.yearFormat.four) {
+      data.years = arrFrom[i];
+    }
+
+    if (fromFormat[i] === formats.monthFormat) {
+      data.monthes = arrFrom[i];
+    }
+
+    if (fromFormat[i] === formats.dayFormat) {
+      data.days = arrFrom[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === formats.yearFormat.four && data.years.length === 2) {
+      arrTo[i] = data.years < 30
+        ? +`20${data.years}`
+        : +`19${data.years}`;
+    }
+
+    if (toFormat[i] === formats.yearFormat.four && data.years.length === 4) {
+      arrTo[i] = data.years;
+    }
+
+    if (toFormat[i] === formats.yearFormat.two && data.years.length === 4) {
+      arrTo[i] = +String(data.years).slice(-2);
+    }
+
+    if (toFormat[i] === formats.monthFormat) {
+      arrTo[i] = data.monthes;
+    }
+
+    if (toFormat[i] === formats.dayFormat) {
+      arrTo[i] = data.days;
+    }
+  }
+
+  result = arrTo.join(newSeperator);
+
+  return result;
 }
 
 module.exports = formatDate;
