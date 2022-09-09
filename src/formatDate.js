@@ -71,34 +71,34 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY' && year.length === 2) {
-      if (year >= 22) {
-        dateOnNewPlaces[i] = +year + 1900;
-      } else {
-        dateOnNewPlaces[i] = +year + 2000;
-      }
-    }
+    switch (toFormat[i]) {
+      case 'YYYY':
+        dateOnNewPlaces[i] = year;
 
-    if (toFormat[i] === 'YY' && year.length === 4) {
-      if (+year <= 2022 && +year >= 2000) {
-        dateOnNewPlaces[i] = +year - 2000;
-      }
+        if (Number(year) >= 22 && year.length === 2) {
+          dateOnNewPlaces[i] = Number(year) + 1900;
+        }
 
-      if (+year < 2000) {
-        dateOnNewPlaces[i] = +year - 1900;
-      }
-    }
+        if (Number(year) < 22 && year.length === 2) {
+          dateOnNewPlaces[i] = Number(year) + 2000;
+        }
+        break;
 
-    if (toFormat[i] === 'YYYY' && year.length === 4) {
-      dateOnNewPlaces[i] = year;
-    }
+      case 'YY':
+        if (Number(year) <= 2022 && Number(year) >= 2000) {
+          dateOnNewPlaces[i] = Number(year) - 2000;
+        }
 
-    if (toFormat[i] === 'MM') {
-      dateOnNewPlaces[i] = month;
-    }
-
-    if (toFormat[i] === 'DD') {
-      dateOnNewPlaces[i] = day;
+        if (Number(year) < 2000) {
+          dateOnNewPlaces[i] = Number(year) - 1900;
+        }
+        break;
+      case 'MM':
+        dateOnNewPlaces[i] = month;
+        break;
+      case 'DD':
+        dateOnNewPlaces[i] = day;
+        break;
     }
   }
 
