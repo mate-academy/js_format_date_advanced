@@ -70,17 +70,16 @@ function formatDate(date, fromFormat, toFormat) {
       } else {
         newDateObj[toFormat[i]] = `19${dateObj.YY}`;
       }
-    } else if (toFormat[i] === 'YY' && !dateObj[toFormat[i]]) {
+    }
+
+    if (toFormat[i] === 'YY' && !dateObj[toFormat[i]]) {
       newDateObj[toFormat[i]] = dateObj.YYYY.slice(2);
-    } else {
-      newDateObj[toFormat[i]] = dateObj[toFormat[i]];
     }
   }
 
   const newDate = Object.values(newDateObj);
-  const result = newDate.join(toFormat[toFormat.length - 1]);
 
-  return result;
+  return newDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
