@@ -51,8 +51,8 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const [,,, oldSeparator] = fromFormat;
-  const [,,, newSeparator] = toFormat;
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
 
   const arrDate = date.split(oldSeparator);
   const dateObj = {};
@@ -72,7 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj['YY'] = dateObj['YYYY'].slice(2);
   }
 
-  for (let j = 0; j < 3; j++) {
+  for (let j = 0; j < toFormat.length - 1; j++) {
     newDate.push(dateObj[toFormat[j]]);
   }
 
