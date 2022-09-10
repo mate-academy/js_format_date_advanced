@@ -96,7 +96,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (toFormat[i] === formats.yearFormat.two && data.years.length === 4) {
-      arrTo[i] = +String(data.years).slice(-2);
+      arrTo[i] = Number((data.years).slice(-2));
     }
 
     if (toFormat[i] === formats.monthFormat) {
