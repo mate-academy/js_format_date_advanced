@@ -63,29 +63,29 @@ function formatDate(date, fromFormat, toFormat) {
     alternativeYear = 20 + fromFormatArray[indexOfYear2];
   } else {
     alternativeYear = 19 + fromFormatArray[indexOfYear2];
-  }
+  };
 
   for (let i = 0; i < toFormatArray.length; i++) {
     if (toFormatArray[i] === 'DD') {
       toFormatArray[i] = fromFormatArray[indexOfDay];
-    }
+    };
 
     if (toFormatArray[i] === 'MM') {
       toFormatArray[i] = fromFormatArray[indexOfMonth];
-    }
+    };
 
     if (toFormatArray[i] === 'YYYY' && indexOfYear4 === -1) {
       toFormatArray[i] = alternativeYear;
-    }
+    };
 
     if (toFormatArray[i] === 'YYYY') {
       toFormatArray[i] = fromFormatArray[indexOfYear4];
-    }
+    };
 
     if (toFormatArray[i] === 'YY') {
       toFormatArray[i] = fromFormatArray[indexOfYear4].slice(2,
         indexOfYear4.length);
-    }
+    };
   }
 
   toFormatArray.length -= 1;
