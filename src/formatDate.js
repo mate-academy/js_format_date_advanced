@@ -60,19 +60,19 @@ function formatDate(date, fromFormat, toFormat) {
   let month = '';
   const strToFormat = newFormat.join(toFormat[toFormat.length - 1]);
 
-  for (const i of fromFormat) {
-    switch (i) {
+  for (const partOfDate of fromFormat) {
+    switch (partOfDate) {
       case ('DD'):
-        dayIndex = fromFormat.indexOf(i);
+        dayIndex = fromFormat.indexOf(partOfDate);
         day = dateArray[dayIndex];
         break;
       case ('MM'):
-        monthIndex = fromFormat.indexOf(i);
+        monthIndex = fromFormat.indexOf(partOfDate);
         month = dateArray[monthIndex];
         break;
       case ('YY'):
       case ('YYYY'):
-        yearIndex = fromFormat.indexOf(i);
+        yearIndex = fromFormat.indexOf(partOfDate);
         year = dateArray[yearIndex];
         break;
     }
@@ -93,21 +93,21 @@ function formatDate(date, fromFormat, toFormat) {
 function shortFormatYear(year) {
   if (year.length === 4) {
     return year.slice(2);
-  } else {
-    return year;
   }
+
+  return year;
 }
 
 function longFormatYear(year) {
   if (year.length === 2) {
     if (year < 30) {
       return `20${year}`;
-    } else {
-      return `19${year}`;
     }
-  } else {
-    return year;
+
+    return `19${year}`;
   }
+
+  return year;
 }
 
 module.exports = formatDate;
