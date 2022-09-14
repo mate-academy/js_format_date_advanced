@@ -65,24 +65,20 @@ function formatDate(date, fromFormat, toFormat) {
     case yearFormatCheck:
       dataObj.YYYY = +dataObj.YY < 30
         ? '20' + dataObj.YY
-        : dataObj.YYYY = '19' + dataObj.YY;
+        : '19' + dataObj.YY;
       break;
     default:
       dataObj.YY = dataObj.YYYY.slice(2);
   }
 
-  let convertedData = '';
+  const convertedData = [];
   const separatorTo = toFormat[formatLength - 1];
 
   for (let i = 0; i < formatLength - 1; i++) {
-    convertedData += dataObj[toFormat[i]];
-
-    if (i !== formatLength - 2) {
-      convertedData += separatorTo;
-    }
+    convertedData.push(dataObj[toFormat[i]]);
   }
 
-  return convertedData;
+  return convertedData.join(separatorTo);
 }
 
 module.exports = formatDate;
