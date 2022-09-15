@@ -52,12 +52,13 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat.slice(-1);
   const toSeparator = toFormat.slice(-1);
+  const formatLength = fromFormat.length;
   const splitedDate = date.split(fromSeparator);
   const dateObj = {};
   const formatedDate = [];
 
   fromFormat
-    .slice(0, fromFormat.length - 1)
+    .slice(0, formatLength - 1)
     .forEach((formatItem, formatIndex) => {
       const dateItem = splitedDate[formatIndex];
 
@@ -77,7 +78,7 @@ function formatDate(date, fromFormat, toFormat) {
       dateObj[formatItem] = dateItem;
     });
 
-  for (const format of toFormat.slice(0, toFormat.length - 1)) {
+  for (const format of toFormat.slice(0, formatLength - 1)) {
     formatedDate.push(dateObj[format]);
   }
 
