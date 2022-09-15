@@ -67,13 +67,9 @@ function formatDate(date, fromFormat, toFormat) {
 
       if (formatItem === 'YY') {
         const isCurrentCentury = dateItem < 30;
-        let fullYear;
-
-        if (isCurrentCentury) {
-          fullYear = dateItem.padStart(4, 20);
-        } else {
-          fullYear = dateItem.padStart(4, 19);
-        }
+        const fullYear = isCurrentCentury
+          ? dateItem.padStart(4, 20)
+          : dateItem.padStart(4, 19);
 
         dateObj['YYYY'] = fullYear;
       }
