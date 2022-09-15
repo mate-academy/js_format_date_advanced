@@ -60,12 +60,12 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (pattern.hasOwnProperty('YYYY')) {
-    pattern.YY = pattern['YYYY'].slice(2);
+    pattern.YY = pattern.YYYY.slice(2);
   }
 
-  pattern.YYYY = pattern['YY'] < 30
-    ? 20 + pattern['YY']
-    : 19 + pattern['YY'];
+  pattern.YYYY = pattern.YY < 30
+    ? '20' + pattern.YY
+    : '19' + pattern.YY;
 
   const correctFormat = [];
 
