@@ -74,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
         dateObj['YYYY'] = fullYear;
       }
 
-      dateObj[formatItem] = splitedDate[formatIndex];
+      dateObj[formatItem] = dateItem;
     });
 
   for (const format of toFormat.slice(0, toFormat.length - 1)) {
