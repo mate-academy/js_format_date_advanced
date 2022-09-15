@@ -56,28 +56,30 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObj = {};
   const formatedDate = [];
 
-  fromFormat.slice(0, fromFormat.length - 1).forEach((item, index) => {
-    const dateItem = splitedDate[index];
+  fromFormat
+    .slice(0, fromFormat.length - 1)
+    .forEach((formatItem, formatIndex) => {
+      const dateItem = splitedDate[formatIndex];
 
-    if (item === 'YYYY') {
-      dateObj['YY'] = dateItem.slice(-2);
-    }
-
-    if (item === 'YY') {
-      const isCurrentCentury = dateItem < 30;
-      let fullYear;
-
-      if (isCurrentCentury) {
-        fullYear = dateItem.padStart(4, 20);
-      } else {
-        fullYear = dateItem.padStart(4, 19);
+      if (formatItem === 'YYYY') {
+        dateObj['YY'] = dateItem.slice(-2);
       }
 
-      dateObj['YYYY'] = fullYear;
-    }
+      if (formatItem === 'YY') {
+        const isCurrentCentury = dateItem < 30;
+        let fullYear;
 
-    dateObj[item] = splitedDate[index];
-  });
+        if (isCurrentCentury) {
+          fullYear = dateItem.padStart(4, 20);
+        } else {
+          fullYear = dateItem.padStart(4, 19);
+        }
+
+        dateObj['YYYY'] = fullYear;
+      }
+
+      dateObj[formatItem] = splitedDate[formatIndex];
+    });
 
   for (const format of toFormat.slice(0, toFormat.length - 1)) {
     formatedDate.push(dateObj[format]);
