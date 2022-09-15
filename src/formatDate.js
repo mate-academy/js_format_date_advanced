@@ -50,7 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat.slice(-1);
+  const toSeparator = toFormat.slice(-1);
+  const formatLength = fromFormat.length;
+  const splitedDate = date.split(fromSeparator);
+  const dateObj = {};
+  const formatedDate = [];
+
+  fromFormat
+    .slice(0, formatLength - 1)
+    .forEach((formatItem, formatIndex) => {
+      const dateItem = splitedDate[formatIndex];
+
+      if (formatItem === 'YYYY') {
+        dateObj['YY'] = dateItem.slice(-2);
+      }
+
+      if (formatItem === 'YY') {
+        const isCurrentCentury = dateItem < 30;
+        const fullYear = isCurrentCentury
+          ? dateItem.padStart(4, 20)
+          : dateItem.padStart(4, 19);
+
+        dateObj['YYYY'] = fullYear;
+      }
+
+      dateObj[formatItem] = dateItem;
+    });
+
+  for (const format of toFormat.slice(0, formatLength - 1)) {
+    formatedDate.push(dateObj[format]);
+  }
+
+  return formatedDate.join(toSeparator);
 }
 
 module.exports = formatDate;
