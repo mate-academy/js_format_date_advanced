@@ -57,7 +57,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   let index = 0;
 
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY') {
       if (dateArray[index] < 30) {
         fromDateObject['YYYY'] = '20' + dateArray[index];
@@ -71,7 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
     index++;
   }
 
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     if (toFormat[i] === 'YY') {
       toDateArray.push(fromDateObject.YYYY.slice(2));
     } else {
