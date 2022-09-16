@@ -48,9 +48,68 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromFormatSeparator = fromFormat[fromFormat.length - 1];
+  const dateInCurrentFormat = date.split(fromFormatSeparator);
+
+  const currDateObj = {};
+
+  for (let i = 0; i < dateInCurrentFormat.length; i++) {
+    const key = fromFormat[i];
+    const val = dateInCurrentFormat[i];
+
+    currDateObj[key] = val;
+  }
+
+  let year, month, day;
+
+  for (const dateItem in currDateObj) {
+    if (dateItem === 'YYYY') {
+      year = currDateObj[dateItem];
+    }
+
+    if (dateItem === 'YY') {
+      year = currDateObj[dateItem];
+
+      if (year < 30) {
+        year = '20' + year;
+      } else {
+        year = '19' + year;
+      }
+    }
+
+    if (dateItem === 'MM') {
+      month = currDateObj[dateItem];
+    }
+
+    if (dateItem === 'DD') {
+      day = currDateObj[dateItem];
+    }
+  }
+
+  const dateInNewFormat = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYYY') {
+      dateInNewFormat[i] = year;
+    }
+
+    if (toFormat[i] === 'YY') {
+      dateInNewFormat[i] = year.slice(-2);
+    }
+
+    if (toFormat[i] === 'MM') {
+      dateInNewFormat[i] = month;
+    }
+
+    if (toFormat[i] === 'DD') {
+      dateInNewFormat[i] = day;
+    }
+  }
+
+  const toFormatSeparator = toFormat[toFormat.length - 1];
+
+  return dateInNewFormat.join(toFormatSeparator);
 }
 
 module.exports = formatDate;
