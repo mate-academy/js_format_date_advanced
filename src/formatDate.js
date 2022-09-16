@@ -50,62 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separatorFrom = fromFormat[fromFormat.length - 1];
-  let yearFromIndex;
-  let monthFromIndex;
-  let dayFromIndex;
+  const dateArr = date.split(fromFormat[3]);
+  let year;
 
-  const separatorTo = toFormat[toFormat.length - 1];
-  let yearTo;
-
-  const dateArray = date.split(separatorFrom);
+  const obj = {};
+  const resultDate = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i].includes('Y')) {
-      yearFromIndex = i;
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      year = dateArr[i];
     }
 
-    if (fromFormat[i].includes('M')) {
-      monthFromIndex = i;
-    }
-
-    if (fromFormat[i].includes('D')) {
-      dayFromIndex = i;
-    }
-
-    if (toFormat[i].includes('Y')) {
-      yearTo = toFormat[i];
-    }
+    obj[fromFormat[i]] = dateArr[i];
   }
 
-  let year = dateArray[yearFromIndex];
   const milenium = (year < 30) ? 20 : 19;
 
-  if (yearTo.length === 2 && year.length === 4) {
-    year = year.slice(2);
-  }
-
-  if (yearTo.length === 4 && year.length === 2) {
-    year = milenium + year;
-  }
-
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i].includes('D')) {
-      toFormat[i] = dateArray[dayFromIndex];
-    }
+    resultDate.push(obj[toFormat[i]]);
 
-    if (toFormat[i].includes('M')) {
-      toFormat[i] = dateArray[monthFromIndex];
-    }
+    if (!obj.hasOwnProperty(toFormat[i])) {
+      if (toFormat[i].length === 2) {
+        year = year.slice(2);
+      }
 
-    if (toFormat[i].includes('Y')) {
-      toFormat[i] = year;
+      if (toFormat[i].length === 4) {
+        year = milenium + year;
+      }
+
+      resultDate[i] = year;
     }
   }
 
-  toFormat.length -= 1;
-
-  return toFormat.join(separatorTo);
+  return resultDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
