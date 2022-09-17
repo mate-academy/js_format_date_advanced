@@ -51,6 +51,36 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const newstr = [];
+  const sep = fromFormat[3];
+  const newsep = toFormat[3];
+  const arr = date.split(sep);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    let ind = toFormat.indexOf(fromFormat[i]);
+
+    if (ind >= 0) {
+      newstr[ind] = arr[i];
+    } else {
+      if (fromFormat[i].length === 2) {
+        fromFormat[i] += fromFormat[i];
+
+        ind = toFormat.indexOf(fromFormat[i]);
+
+        if (+arr[i] < 30) {
+          newstr[ind] = '20' + arr[i];
+        } else {
+          newstr[ind] = '19' + arr[i];
+        }
+      } else if (fromFormat[i].length === 4) {
+        fromFormat[i] = fromFormat[i].substr(2, 4);
+        ind = toFormat.indexOf(fromFormat[i]);
+        newstr[ind] = arr[i].substr(2, 4);
+      }
+    }
+  }
+
+  return newstr.join(newsep);
 }
 
 module.exports = formatDate;
