@@ -50,7 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // format length
+  const formatLength = fromFormat.length;
+  // push date in array
+  const arrDate = date.split(fromFormat[formatLength - 1]);
+  // dividing sign
+  const separateSign = toFormat[formatLength - 1];
+  // arrays with results
+  const oldDate = [];
+  const newDate = [];
+
+  // loop were we add format and date in one value
+  for (let i = 0; i < formatLength - 1; i++) {
+    oldDate.push(`${fromFormat[i]}-${arrDate[i]}`);
+  }
+
+  // loop were we sort format+date values
+  for (const itemOfDate of oldDate) {
+    // loop were we can find same formats
+    for (const partOfFormat in toFormat) {
+      if (itemOfDate[0] === toFormat[partOfFormat][0]) {
+        // here we check year format length
+        if (toFormat[partOfFormat].length === 4) {
+          // here we build result
+          if (itemOfDate.slice(-2) < 30) {
+            newDate[partOfFormat] = `20${itemOfDate.slice(-2)}${separateSign}`;
+          } else {
+            newDate[partOfFormat] = `19${itemOfDate.slice(-2)}${separateSign}`;
+          }
+        } else {
+          newDate[partOfFormat] = `${itemOfDate.slice(-2)}${separateSign}`;
+        }
+      }
+    }
+  }
+
+  return newDate.join('').slice(0, -1);
 }
 
 module.exports = formatDate;
