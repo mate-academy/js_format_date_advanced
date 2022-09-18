@@ -50,7 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let result = '';
+  let checkPoint = 0;
+  const dateArr = date.split(fromFormat[3]);
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (const a of fromFormat) {
+      if (toFormat[i][0] === a[0]) {
+        if (toFormat[i].length === a.length) {
+          result += dateArr[fromFormat.indexOf(a)];
+        } else {
+          if (toFormat[i].length < a.length) {
+            result += dateArr[fromFormat.indexOf(a)].slice(2, 4);
+          }
+
+          if (toFormat[i].length > a.length) {
+            checkPoint = dateArr[fromFormat.indexOf(a)];
+
+            if (checkPoint < 30) {
+              result += `20${dateArr[fromFormat.indexOf(a)]}`;
+            } else {
+              result += `19${dateArr[fromFormat.indexOf(a)]}`;
+            }
+          }
+        }
+
+        if (i !== toFormat.length - 2) {
+          result += toFormat[3];
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
