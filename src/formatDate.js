@@ -52,64 +52,57 @@ function formatDate(date, fromFormat, toFormat) {
   const fromFormatSeparator = fromFormat[fromFormat.length - 1];
   const dateInCurrentFormat = date.split(fromFormatSeparator);
 
-  const currDateObj = {};
+  const currentDate = {};
 
   for (let i = 0; i < dateInCurrentFormat.length; i++) {
     const key = fromFormat[i];
     const val = dateInCurrentFormat[i];
 
-    currDateObj[key] = val;
+    currentDate[key] = val;
   }
 
   let year, month, day;
 
-  for (const dateItem in currDateObj) {
-    if (dateItem === 'YYYY') {
-      year = currDateObj[dateItem];
-    }
-
-    if (dateItem === 'YY') {
-      year = currDateObj[dateItem];
-
-      if (year < 30) {
-        year = '20' + year;
-      } else {
-        year = '19' + year;
-      }
-    }
-
-    if (dateItem === 'MM') {
-      month = currDateObj[dateItem];
-    }
-
-    if (dateItem === 'DD') {
-      day = currDateObj[dateItem];
+  for (const dateItem in currentDate) {
+    switch (dateItem) {
+      case 'YYYY':
+        year = currentDate[dateItem];
+        break;
+      case 'YY':
+        year = currentDate[dateItem];
+        year = year < 30 ? '20' + year : '19' + year;
+        break;
+      case 'MM':
+        month = currentDate[dateItem];
+        break;
+      case 'DD':
+        day = currentDate[dateItem];
+        break;
     }
   }
 
-  const dateInNewFormat = [];
+  const dateInToFormat = [];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY') {
-      dateInNewFormat[i] = year;
-    }
-
-    if (toFormat[i] === 'YY') {
-      dateInNewFormat[i] = year.slice(-2);
-    }
-
-    if (toFormat[i] === 'MM') {
-      dateInNewFormat[i] = month;
-    }
-
-    if (toFormat[i] === 'DD') {
-      dateInNewFormat[i] = day;
+    switch (toFormat[i]) {
+      case 'YYYY':
+        dateInToFormat[i] = year;
+        break;
+      case 'YY':
+        dateInToFormat[i] = year.slice(-2);
+        break;
+      case 'MM':
+        dateInToFormat[i] = month;
+        break;
+      case 'DD':
+        dateInToFormat[i] = day;
+        break;
     }
   }
 
   const toFormatSeparator = toFormat[toFormat.length - 1];
 
-  return dateInNewFormat.join(toFormatSeparator);
+  return dateInToFormat.join(toFormatSeparator);
 }
 
 module.exports = formatDate;
