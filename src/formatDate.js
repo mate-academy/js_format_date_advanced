@@ -64,10 +64,12 @@ function formatDate(date, fromFormat, toFormat) {
   switch (true) {
     case yearFormatCheck:
       const centuryCheck = +dataObj.YY < 30;
+      const twentys = '20' + dataObj.YY;
+      const ninteens = '19' + dataObj.YY;
 
       dataObj.YYYY = centuryCheck
-        ? '20' + dataObj.YY
-        : '19' + dataObj.YY;
+        ? twentys
+        : ninteens;
 
       break;
     default:
