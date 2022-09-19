@@ -52,31 +52,6 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
   const newDate = [];
-  const year = [];
-
-  for (let i = 0; i < 3; i++) {
-    if (fromFormat[i].includes('Y')) {
-      year.push(dateArray[i]);
-      year.push(fromFormat[i]);
-      break;
-    }
-  }
-
-  year.push(toFormat.find(a => a.includes('Y')));
-
-  if (year[1].length === 4 && year[2].length === 2) {
-    year[0] = year[0].slice(2);
-  }
-
-  if (year[1].length === 2 && year[2].length === 4) {
-    const yearShort = year[0];
-
-    if (yearShort < 30) {
-      year[0] = '20' + yearShort;
-    } else {
-      year[0] = '19' + yearShort;
-    }
-  }
 
   for (let i = 0; i < 3; i++) {
     const part = toFormat[i];
@@ -85,11 +60,40 @@ function formatDate(date, fromFormat, toFormat) {
     newDate[i] = dateArray[index];
 
     if (!newDate[i]) {
-      newDate[i] = year[0];
+      newDate[i] = getYear(dateArray, fromFormat, toFormat);
     }
   }
 
   return newDate.join(toFormat[3]);
+}
+
+function getYear(dateArray, fromFormat, toFormat) {
+  let indexFromYear;
+  let indexToYear;
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      indexFromYear = i;
+    }
+
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      indexToYear = i;
+    }
+  }
+
+  let year = dateArray[indexFromYear];
+
+  if (fromFormat[indexFromYear] === 'YYYY'
+    && toFormat[indexToYear] === 'YY') {
+    year = year.substring(2);
+  }
+
+  if (fromFormat[indexFromYear] === 'YY'
+    && toFormat[indexToYear] === 'YYYY') {
+    year = (year < 30) ? '20' + year : '19' + year;
+  }
+
+  return year;
 }
 
 module.exports = formatDate;
