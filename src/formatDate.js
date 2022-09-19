@@ -50,25 +50,20 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
 
   const fromDateObject = {};
   const toDateArray = [];
 
-  let index = 0;
+  const dateArray = date.split(fromSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY') {
-      if (dateArray[index] < 30) {
-        fromDateObject['YYYY'] = '20' + dateArray[index];
-      } else {
-        fromDateObject['YYYY'] = '19' + dateArray[index];
-      }
+      fromDateObject['YYYY'] = convertYY(dateArray[i]);
     } else {
-      fromDateObject[fromFormat[i]] = dateArray[index];
+      fromDateObject[fromFormat[i]] = dateArray[i];
     }
-
-    index++;
   }
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
@@ -79,7 +74,17 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return toDateArray.join(toFormat[3]);
+  return toDateArray.join(toSeparator);
+}
+
+// Function to convert YY to YYYY format:
+
+function convertYY(year) {
+  if (year < 30) {
+    return '20' + year;
+  } else {
+    return '19' + year;
+  }
 }
 
 module.exports = formatDate;
