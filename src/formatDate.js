@@ -51,16 +51,16 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dayMonthYear = [];
-  const dateArr = date.split(fromFormat[3]);
+  const oldDate = date.split(fromFormat[3]);
   const newDate = [];
 
   for (let i = 0; i < 3; i++) {
     if (fromFormat[i] === 'DD') {
-      dayMonthYear[0] = dateArr[i];
+      dayMonthYear[0] = oldDate[i];
     } else if (fromFormat[i] === 'MM') {
-      dayMonthYear[1] = dateArr[i];
+      dayMonthYear[1] = oldDate[i];
     } else {
-      dayMonthYear[2] = dateArr[i];
+      dayMonthYear[2] = checkFormat(fromFormat[i], oldDate[i]);
     }
   }
 
@@ -69,20 +69,26 @@ function formatDate(date, fromFormat, toFormat) {
       newDate[i] = dayMonthYear[0];
     } else if (toFormat[i] === 'MM') {
       newDate[i] = dayMonthYear[1];
-    } else if (toFormat[i] === 'YYYY' && dayMonthYear[2].length === 2
-    && dayMonthYear[2] < 30) {
-      newDate[i] = `20${dayMonthYear[2]}`;
-    } else if (toFormat[i] === 'YYYY' && dayMonthYear[2].length === 2
-    && dayMonthYear[2] >= 30) {
-      newDate[i] = `19${dayMonthYear[2]}`;
-    } else if (toFormat[i] === 'YYYY' && dayMonthYear[2].length === 4) {
-      newDate[i] = dayMonthYear[2];
-    } else {
+    } else if (toFormat[i] === 'YY') {
       newDate[i] = dayMonthYear[2].slice(2);
+    } else {
+      newDate[i] = dayMonthYear[2];
     }
   }
 
   return newDate.join(toFormat[3]);
+}
+
+function checkFormat(format, year) {
+  let correctFormat = year;
+
+  if (format === 'YY' && year >= 30) {
+    correctFormat = `19${year}`;
+  } else if (format === 'YY' && year < 30) {
+    correctFormat = `20${year}`;
+  }
+
+  return correctFormat;
 }
 
 module.exports = formatDate;
