@@ -49,6 +49,16 @@
  * @returns {string}
  */
 
+function formatedYear(year) {
+  const yearOfCentury = (year < 30) ? 20 : 19;
+
+  if (year.length === 4) {
+    return year.slice(2);
+  }
+
+  return yearOfCentury + year;
+}
+
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
@@ -65,22 +75,13 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj[fromFormat[i]] = oldDate[i];
   }
 
-  const yearOfCentury = (year < 30) ? 20 : 19;
-
   for (let i = 0; i < toFormat.length - 1; i++) {
-    newDate.push(dateObj[toFormat[i]]);
-
-    if (!dateObj.hasOwnProperty(toFormat[i])) {
-      if (toFormat[i].length === 2) {
-        year = year.slice(2);
-      }
-
-      if (toFormat[i].length === 4) {
-        year = yearOfCentury + year;
-      }
-
-      newDate[i] = year;
+    if (dateObj.hasOwnProperty(toFormat[i])) {
+      newDate.push(dateObj[toFormat[i]]);
+      continue;
     }
+
+    newDate.push(formatedYear(year));
   }
 
   return newDate.join(newSeparator);
