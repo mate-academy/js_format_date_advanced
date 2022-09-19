@@ -56,33 +56,33 @@ function formatDate(date, fromFormat, toFormat) {
 
   const splitDate = date.split(separator);
 
-  const obj = {};
+  const object = {};
 
   for (let i = 0; i < splitDate.length; i++) {
-    obj[fromFormat[i]] = splitDate[i];
+    object[fromFormat[i]] = splitDate[i];
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const temporary = obj.YY;
+    const temporary = object.YY;
 
-    delete obj.YY;
+    delete object.YY;
 
     if (+temporary < 30) {
-      obj.YYYY = '20' + temporary;
+      object.YYYY = '20' + temporary;
     } else {
-      obj.YYYY = '19' + temporary;
+      object.YYYY = '19' + temporary;
     }
   }
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const temporary = obj.YYYY.slice(2);
+    const temporary = object.YYYY.slice(2);
 
-    delete obj.YYYY;
-    obj.YY = temporary;
+    delete object.YYYY;
+    object.YY = temporary;
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    newDate.push(obj[toFormat[i]]);
+    newDate.push(object[toFormat[i]]);
   }
 
   return newDate.join(newJointer);
