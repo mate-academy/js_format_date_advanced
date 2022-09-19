@@ -3,8 +3,8 @@
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array and the new `toFormat` array. Function returns
- * given date in new format.
+ * the old `fromFormat` array and the date `toFormat` array. Function returns
+ * given date in date format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
@@ -50,7 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateObj = {
+    DD: 0,
+    MM: 0,
+    YY: 0,
+    YYYY: 0,
+  };
+  const dateArr = date.split(fromFormat[3]);
+  const separator = toFormat[3];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    dateObj[fromFormat[i]] = dateArr[i];
+  }
+
+  if (dateObj.YY === 0) {
+    dateObj.YY = dateObj.YYYY.slice(-2);
+  }
+
+  if (dateObj.YYYY === 0) {
+    dateObj.YYYY = dateObj.YY < 30
+      ? `20${dateObj.YY}`
+      : `19${dateObj.YY}`;
+  }
+
+  const result = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    result.push(dateObj[toFormat[i]]);
+  }
+
+  return result.join(separator).slice(0, -1);
 }
 
 module.exports = formatDate;
