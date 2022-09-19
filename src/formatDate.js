@@ -63,9 +63,12 @@ function formatDate(date, fromFormat, toFormat) {
 
   switch (true) {
     case yearFormatCheck:
-      dataObj.YYYY = +dataObj.YY < 30
+      const centuryCheck = +dataObj.YY < 30;
+
+      dataObj.YYYY = centuryCheck
         ? '20' + dataObj.YY
         : '19' + dataObj.YY;
+
       break;
     default:
       dataObj.YY = dataObj.YYYY.slice(2);
