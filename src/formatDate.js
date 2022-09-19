@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const separator = fromFormat[3];
   const newJointer = toFormat[3];
-  const result = [];
+  const newDate = [];
 
   const splitDate = date.split(separator);
 
@@ -63,29 +63,29 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const tmp = obj.YY;
+    const temporary = obj.YY;
 
     delete obj.YY;
 
-    if (+tmp < 30) {
-      obj.YYYY = '20' + tmp;
+    if (+temporary < 30) {
+      obj.YYYY = '20' + temporary;
     } else {
-      obj.YYYY = '19' + tmp;
+      obj.YYYY = '19' + temporary;
     }
   }
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const tmp = obj.YYYY.slice(2);
+    const temporary = obj.YYYY.slice(2);
 
     delete obj.YYYY;
-    obj.YY = tmp;
+    obj.YY = temporary;
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    result.push(obj[toFormat[i]]);
+    newDate.push(obj[toFormat[i]]);
   }
 
-  return result.join(newJointer);
+  return newDate.join(newJointer);
 }
 
 module.exports = formatDate;
