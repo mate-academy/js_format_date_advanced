@@ -58,15 +58,7 @@ function formatDate(date, fromFormat, toFormat) {
     receivedData[fromFormat[i]] = dateData[i];
   }
 
-  if (receivedData.hasOwnProperty('YYYY')) {
-    receivedData.YY = receivedData.YYYY.slice(-2);
-  } else {
-    const century = receivedData.YY < 30
-      ? 20
-      : 19;
-
-    receivedData.YYYY = `${century}${receivedData.YY}`;
-  }
+  defineYear(receivedData);
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     formattedDate += receivedData[toFormat[i]];
@@ -77,6 +69,18 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return formattedDate;
+}
+
+function defineYear(receivedData) {
+  if (receivedData.hasOwnProperty('YYYY')) {
+    receivedData.YY = receivedData.YYYY.slice(-2);
+  } else {
+    const century = receivedData.YY < 30
+      ? 20
+      : 19;
+
+    receivedData.YYYY = `${century}${receivedData.YY}`;
+  }
 }
 
 module.exports = formatDate;
