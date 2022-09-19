@@ -50,31 +50,37 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const partsOfDate = date.split(fromFormat[3]);
+  const dateParts = date.split(fromFormat[3]);
   let newDate = '';
-  const dateConstructor = {};
+  const dateMap = {};
 
   for (let i = 0; i < 3; i++) {
-    dateConstructor[fromFormat[i]] = partsOfDate[i];
+    dateMap[fromFormat[i]] = dateParts[i];
   }
 
-  const partsOfNewDate = [];
+  addYearExtraFormat(dateMap);
+
+  const newDateParts = [];
 
   for (let i = 0; i < 3; i++) {
-    if (dateConstructor.hasOwnProperty(toFormat[i])) {
-      partsOfNewDate.push(dateConstructor[toFormat[i]]);
-    } else if (toFormat[i] === 'YY') {
-      partsOfNewDate.push(dateConstructor['YYYY'].slice(2));
-    } else if (toFormat[i] === 'YYYY' && dateConstructor['YY'] < 30) {
-      partsOfNewDate.push('20' + dateConstructor['YY']);
-    } else {
-      partsOfNewDate.push('19' + dateConstructor['YY']);
-    }
+    newDateParts.push(dateMap[toFormat[i]]);
   }
 
-  newDate = partsOfNewDate.join(toFormat[3]);
+  newDate = newDateParts.join(toFormat[3]);
 
   return newDate;
+
+  function addYearExtraFormat(map) {
+    if (map.hasOwnProperty('YYYY')) {
+      map['YY'] = map['YYYY'].slice(2);
+    } else if (map['YY'] < 30) {
+      map['YYYY'] = '20' + map['YY'];
+    } else {
+      map['YYYY'] = '19' + map['YY'];
+    }
+
+    return map;
+  }
 }
 
 module.exports = formatDate;
