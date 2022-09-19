@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
+  const initialDate = date.split(fromFormat[3]);
   let year;
 
   const obj = {};
@@ -58,10 +58,10 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = dateArr[i];
+      year = initialDate[i];
     }
 
-    obj[fromFormat[i]] = dateArr[i];
+    obj[fromFormat[i]] = initialDate[i];
   }
 
   const milenium = (year < 30) ? 20 : 19;
