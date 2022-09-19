@@ -51,60 +51,68 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const inputArray = date.split(fromFormat[fromFormat.length - 1]);
 
-  let d, m, y, separator, inputYearLength;
+  const dateArray = date.split(fromFormat[3]);
+
+  const nowDate = {};
+
+  const separator = toFormat[3];
+
+  let inputYearLength;
 
   const outputArray = [];
 
-  for (let i = 0; i < inputArray.length; i++) {
+  for (let i = 0; i < 3; i++) {
     switch (fromFormat[i][0]) {
       case 'D':
-        d = inputArray[i];
+        nowDate.day = dateArray[i];
         break;
 
       case 'M':
-        m = inputArray[i];
+        nowDate.month = dateArray[i];
         break;
 
       case 'Y':
-        y = inputArray[i];
+        nowDate.year = dateArray[i];
         inputYearLength = fromFormat[i].length;
         break;
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < 3; i++) {
     switch (toFormat[i][0]) {
       case 'D':
-        outputArray.push(d);
+        outputArray.push(nowDate.day);
         break;
 
       case 'M':
-        outputArray.push(m);
+        outputArray.push(nowDate.month);
         break;
 
       case 'Y':
-        if (toFormat[i].length < inputYearLength) {
-          outputArray.push(y[y.length - 2] + y[y.length - 1]);
-        } else if (toFormat[i].length > inputYearLength) {
-          if (y >= 30) {
-            outputArray.push('19' + y);
-          } else {
-            outputArray.push('20' + y);
-          }
-        } else {
-          outputArray.push(y);
-        }
-        break;
+        outputArray.push(
+          getYear(nowDate.year, inputYearLength, toFormat[i].length)
+        );
 
-      default:
-        separator = toFormat[i];
         break;
     }
   }
 
   return outputArray.join(separator);
+
+  function getYear(year, inputLength, outputLength) {
+    if (inputLength > outputLength) {
+      return year.slice(2);
+    } else if (inputLength < outputLength) {
+      if (year >= 30) {
+        return `19${year}`;
+      } else {
+        return `20${year}`;
+      }
+    }
+
+    return year;
+  }
 }
 
 module.exports = formatDate;
