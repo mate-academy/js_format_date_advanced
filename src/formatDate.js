@@ -50,21 +50,21 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const separatorFromFormat = fromFormat[3];
+  const separatorToFormat = toFormat[3];
+  const dateArray = date.split(separatorFromFormat);
   const newDate = [];
 
   for (let i = 0; i < 3; i++) {
     const part = toFormat[i];
     const index = fromFormat.indexOf(part);
 
-    newDate[i] = dateArray[index];
-
-    if (!newDate[i]) {
-      newDate[i] = getYear(dateArray, fromFormat, toFormat);
-    }
+    newDate[i] = (part.includes('Y'))
+      ? getYear(dateArray, fromFormat, toFormat)
+      : dateArray[index];
   }
 
-  return newDate.join(toFormat[3]);
+  return newDate.join(separatorToFormat);
 }
 
 function getYear(dateArray, fromFormat, toFormat) {
@@ -81,19 +81,19 @@ function getYear(dateArray, fromFormat, toFormat) {
     }
   }
 
-  let year = dateArray[indexFromYear];
+  const year = dateArray[indexFromYear];
 
-  if (fromFormat[indexFromYear] === 'YYYY'
-    && toFormat[indexToYear] === 'YY') {
-    year = year.substring(2);
+  if (fromFormat[indexFromYear] === toFormat[indexToYear]) {
+    return year;
   }
 
-  if (fromFormat[indexFromYear] === 'YY'
-    && toFormat[indexToYear] === 'YYYY') {
-    year = (year < 30) ? '20' + year : '19' + year;
+  if (fromFormat[indexFromYear] === 'YYYY') {
+    return year.substring(2);
   }
 
-  return year;
+  return (year < 30)
+    ? '20' + year
+    : '19' + year;
 }
 
 module.exports = formatDate;
