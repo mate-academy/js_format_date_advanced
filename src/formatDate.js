@@ -52,12 +52,13 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const newDate = [];
-  const splitDate = date.split(fromFormat[3]);
+  const separator = toFormat.pop();
+  const splitDate = date.split(fromFormat.pop());
   let newDay = '';
   let newMonth = '';
   let newYear = '';
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
       newDay = splitDate[i];
     }
@@ -79,7 +80,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'DD') {
       newDate[i] = newDay;
     }
@@ -97,7 +98,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return newDate.join(separator);
 }
 
 module.exports = formatDate;
