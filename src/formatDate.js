@@ -66,10 +66,8 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject.YY = dateObject.YYYY.slice(-2);
   } else {
     dateObject.YYYY = (dateObject.YY < 30)
-      ? '20'
-      : '19';
-
-    dateObject.YYYY += dateObject.YY;
+      ? '20' + dateObject.YY
+      : '19' + dateObject.YY;
   }
 
   for (const template of toFormat) {
