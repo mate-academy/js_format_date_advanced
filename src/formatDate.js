@@ -51,36 +51,36 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const newstr = [];
-  const sep = fromFormat[3];
-  const newsep = toFormat[3];
-  const arr = date.split(sep);
+  const newData = [];
+  const separator = fromFormat[3];
+  const newseparator = toFormat[3];
+  const arrayOfDateNumbers = date.split(separator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    let ind = toFormat.indexOf(fromFormat[i]);
+    let index = toFormat.indexOf(fromFormat[i]);
 
-    if (ind >= 0) {
-      newstr[ind] = arr[i];
+    if (index >= 0) {
+      newData[index] = arrayOfDateNumbers[i];
     } else {
       if (fromFormat[i].length === 2) {
         fromFormat[i] += fromFormat[i];
 
-        ind = toFormat.indexOf(fromFormat[i]);
+        index = toFormat.indexOf(fromFormat[i]);
 
-        if (+arr[i] < 30) {
-          newstr[ind] = '20' + arr[i];
+        if (+arrayOfDateNumbers[i] < 30) {
+          newData[index] = '20' + arrayOfDateNumbers[i];
         } else {
-          newstr[ind] = '19' + arr[i];
+          newData[index] = '19' + arrayOfDateNumbers[i];
         }
       } else if (fromFormat[i].length === 4) {
         fromFormat[i] = fromFormat[i].substr(2, 4);
-        ind = toFormat.indexOf(fromFormat[i]);
-        newstr[ind] = arr[i].substr(2, 4);
+        index = toFormat.indexOf(fromFormat[i]);
+        newData[index] = arrayOfDateNumbers[i].substr(2, 4);
       }
     }
   }
 
-  return newstr.join(newsep);
+  return newData.join(newseparator);
 }
 
 module.exports = formatDate;
