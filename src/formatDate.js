@@ -57,8 +57,7 @@ function formatDate(date, fromFormat, toFormat) {
   let monthValue = 0;
   let dateValue = 0;
 
-
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'DD') {
       dateValue = clearDate[i];
     }
@@ -76,9 +75,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i <= 2; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     if (toFormat[i] === 'DD') {
-     fixedDate[i] = dateValue;
+      fixedDate[i] = dateValue;
     }
 
     if (toFormat[i] === 'MM') {
