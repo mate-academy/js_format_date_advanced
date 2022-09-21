@@ -50,39 +50,33 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let result = '';
-  let checkPoint = 0;
-  const dateArr = date.split(fromFormat[3]);
+  const fromFormatSeparator = fromFormat[3];
+  const toFormatSeparator = toFormat[3];
+  const dateArr = date.split(fromFormatSeparator);
+  const resultDate = [];
+  const dateObject = {};
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    for (const a of fromFormat) {
-      if (toFormat[i][0] === a[0]) {
-        if (toFormat[i].length === a.length) {
-          result += dateArr[fromFormat.indexOf(a)];
-        } else {
-          if (toFormat[i].length < a.length) {
-            result += dateArr[fromFormat.indexOf(a)].slice(2, 4);
-          }
-
-          if (toFormat[i].length > a.length) {
-            checkPoint = dateArr[fromFormat.indexOf(a)];
-
-            if (checkPoint < 30) {
-              result += `20${dateArr[fromFormat.indexOf(a)]}`;
-            } else {
-              result += `19${dateArr[fromFormat.indexOf(a)]}`;
-            }
-          }
-        }
-
-        if (i !== toFormat.length - 2) {
-          result += toFormat[3];
-        }
-      }
-    }
+  for (let i = 0; i < dateArr.length; i++) {
+    dateObject[fromFormat[i]] = dateArr[i];
   }
 
-  return result;
+  if (dateObject.hasOwnProperty('YYYY')) {
+    dateObject.YY = dateObject.YYYY.slice(2);
+  } else {
+    dateObject.YYYY = (dateObject.YY < 30)
+      ? '20' + dateObject.YY
+      : '19' + dateObject.YY;
+  }
+
+  for (const part of toFormat) {
+    if (part === toFormatSeparator) {
+      break;
+    }
+
+    resultDate.push(dateObject[part]);
+  }
+
+  return resultDate.join(toFormatSeparator);
 }
 
 module.exports = formatDate;
