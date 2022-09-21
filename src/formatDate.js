@@ -63,27 +63,29 @@ function formatDate(date, fromFormat, toFormat) {
   let i = 0;
 
   for (const format of fromFormat) {
-    if (format === 'YY') {
-      dateObj.YY = dayArrayOld[i];
+    switch (format) {
+      case 'YY':
+        dateObj.YY = dayArrayOld[i];
 
-      if (+dateObj.YY >= 30) {
-        dateObj.YYYY = '19' + dayArrayOld[i];
-      } else {
-        dateObj.YYYY = '20' + dayArrayOld[i];
-      };
-    };
+        if (+dateObj.YY >= 30) {
+          dateObj.YYYY = '19' + dayArrayOld[i];
+        } else {
+          dateObj.YYYY = '20' + dayArrayOld[i];
+        };
+        break;
 
-    if (format === 'YYYY') {
-      dateObj.YY = dayArrayOld[i].slice(-2);
-      dateObj.YYYY = dayArrayOld[i];
-    };
+      case 'YYYY':
+        dateObj.YY = dayArrayOld[i].slice(-2);
+        dateObj.YYYY = dayArrayOld[i];
+        break;
 
-    if (format === 'MM') {
-      dateObj.MM = dayArrayOld[i];
-    };
+      case 'MM':
+        dateObj.MM = dayArrayOld[i];
+        break;
 
-    if (format === 'DD') {
-      dateObj.DD = dayArrayOld[i];
+      case 'DD':
+        dateObj.DD = dayArrayOld[i];
+        break;
     };
 
     i++;
