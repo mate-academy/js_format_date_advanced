@@ -56,44 +56,38 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDate = date.split(oldDivider);
   const oldDateFormat = fromFormat.slice(0, -1);
   const newDateFormat = toFormat.slice(0, -1);
-  const oldDateObject = { normalize: toNormalizeDate };
+  const oldDateObject = {};
   const newDate = [];
 
   for (let i = 0; i < oldDate.length; i++) {
     oldDateObject[oldDateFormat[i]] = oldDate[i];
   }
 
-  oldDateObject.normalize(newDateFormat);
+  if (oldDateObject.hasOwnProperty('YY') && newDateFormat.includes('YYYY')) {
+    oldDateObject.YYYY = oldDateObject.YY;
+
+    if (+oldDateObject.YY > 22) {
+      oldDateObject.YYYY = oldDateObject.YYYY.padStart(4, '19');
+    } else {
+      oldDateObject.YYYY = oldDateObject.YYYY.padStart(4, '20');
+    }
+
+    delete oldDateObject.YY;
+  }
+
+  if (oldDateObject.hasOwnProperty('YYYY') && newDateFormat.includes('YY')) {
+    oldDateObject.YY = oldDateObject.YYYY;
+
+    oldDateObject.YY = oldDateObject.YY.slice(2);
+
+    delete oldDateObject.YYYY;
+  }
 
   for (const time of newDateFormat) {
     newDate.push(oldDateObject[time]);
   }
 
   return newDate.join(newDivider);
-}
-
-function toNormalizeDate(newDateFormat) {
-  if (this.hasOwnProperty('YY') && newDateFormat.includes('YYYY')) {
-    this.YYYY = this.YY;
-
-    if (+this.YY > 22) {
-      this.YYYY = this.YYYY.padStart(4, '19');
-    } else {
-      this.YYYY = this.YYYY.padStart(4, '20');
-    }
-
-    delete this.YY;
-  }
-
-  if (this.hasOwnProperty('YYYY') && newDateFormat.includes('YY')) {
-    this.YY = this.YYYY;
-
-    this.YY = this.YY.slice(2);
-
-    delete this.YYYY;
-  }
-
-  return this;
 }
 
 module.exports = formatDate;
