@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
@@ -17,7 +17,7 @@
  *   ['YYYY', 'MM', 'DD', '-'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
- *
+  s
  * formatDate(
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
@@ -50,7 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateSplit = date.split(`${fromFormat[3]}`);
+  const dateCopyObj = {};
+
+  for (let i = 0; i <= 3; i++) {
+    dateCopyObj[`${fromFormat[i]}`] = dateSplit[i];
+  }
+
+  if ('YY' in dateCopyObj) {
+    if (dateCopyObj.YY >= 30) {
+      dateCopyObj['YYYY'] = `19${dateCopyObj.YY}`;
+    } else {
+      dateCopyObj['YYYY'] = `20${dateCopyObj.YY}`;
+    }
+  } else {
+    dateCopyObj['YY'] = dateCopyObj.YYYY.slice(2, 4);
+  }
+
+  const result = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+      case 'MM':
+      case 'YY':
+      case 'YYYY':
+        result.push(dateCopyObj[toFormat[i]]);
+    }
+  }
+
+  return result.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
