@@ -51,34 +51,20 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromFormatSeparator = fromFormat[fromFormat.length - 1];
   const dateInCurrentFormat = date.split(fromFormatSeparator);
-
   const currentDate = {};
 
   for (let i = 0; i < dateInCurrentFormat.length; i++) {
-    const key = fromFormat[i];
-    const val = dateInCurrentFormat[i];
-
-    currentDate[key] = val;
-  }
-
-  let year, month, day;
-
-  for (const dateItem in currentDate) {
-    switch (dateItem) {
-      case 'YYYY':
-        year = currentDate[dateItem];
-        break;
-      case 'YY':
-        year = currentDate[dateItem];
-        year = year < 30 ? '20' + year : '19' + year;
-        break;
-      case 'MM':
-        month = currentDate[dateItem];
-        break;
-      case 'DD':
-        day = currentDate[dateItem];
-        break;
+    if (fromFormat[i] === 'YYYY') {
+      currentDate.year = dateInCurrentFormat[i];
     }
+
+    if (fromFormat[i] === 'YY') {
+      currentDate.year = Number(dateInCurrentFormat[i]) < 30
+        ? '20' + dateInCurrentFormat[i]
+        : '19' + dateInCurrentFormat[i];
+    }
+
+    currentDate[fromFormat[i]] = dateInCurrentFormat[i];
   }
 
   const dateInToFormat = [];
@@ -86,16 +72,16 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'YYYY':
-        dateInToFormat[i] = year;
+        dateInToFormat[i] = currentDate.year;
         break;
       case 'YY':
-        dateInToFormat[i] = year.slice(-2);
+        dateInToFormat[i] = currentDate.year.slice(-2);
         break;
       case 'MM':
-        dateInToFormat[i] = month;
+        dateInToFormat[i] = currentDate[toFormat[i]];
         break;
       case 'DD':
-        dateInToFormat[i] = day;
+        dateInToFormat[i] = currentDate[toFormat[i]];
         break;
     }
   }
