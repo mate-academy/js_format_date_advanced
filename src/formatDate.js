@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
     switch (fromFormat[i]) {
       case 'YY':
         if (yearToFormat === 'YYYY') {
-          dateOb.year = (arrDateFrom[i].slice(-2) < 30)
+          dateOb.year = (+arrDateFrom[i].slice(-2) < 30)
             ? '20' + arrDateFrom[i]
             : '19' + arrDateFrom[i];
         } else {
@@ -84,16 +84,17 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < 3; i++) {
-    if ((toFormat[i] === 'YYYY') || (toFormat[i] === 'YY')) {
-      arrDateTo[i] = dateOb.year;
-    }
-
-    if (toFormat[i] === 'MM') {
-      arrDateTo[i] = dateOb.month;
-    }
-
-    if (toFormat[i] === 'DD') {
-      arrDateTo[i] = dateOb.day;
+    switch (toFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        arrDateTo[i] = dateOb.year;
+        break;
+      case 'MM':
+        arrDateTo[i] = dateOb.month;
+        break;
+      case 'DD':
+        arrDateTo[i] = dateOb.day;
+        break;
     }
   }
 
