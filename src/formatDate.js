@@ -59,19 +59,18 @@ function formatDate(date, fromFormat, toFormat) {
     const partOldFormat = fromFormat[i];
     const indexInNewFormat = toFormat.indexOf(partOldFormat);
 
-    if (indexInNewFormat < 0) {
-      if (partOldFormat === 'YY') {
-        const years = newDate[i] < 30 ? 20 : 19;
+    if (indexInNewFormat < 0 && partOldFormat === 'YY') {
+      const years = newDate[i] < 30 ? 20 : 19;
 
-        result[i] = years + newDate[i];
-      }
-
-      if (partOldFormat === 'YYYY') {
-        newDate[i] = newDate[i].slice(2);
-
-        result[toFormat.indexOf('YY')] = newDate[i];
-      }
+      result[i] = years + newDate[i];
     }
+
+    if (indexInNewFormat < 0 && partOldFormat === 'YYYY') {
+      newDate[i] = newDate[i].slice(2);
+
+      result[toFormat.indexOf('YY')] = newDate[i];
+    }
+
     result[indexInNewFormat] = newDate[i];
   }
 
