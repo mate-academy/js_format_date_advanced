@@ -71,15 +71,15 @@ function formatDate(date, fromFormat, toFormat) {
   return newArray.join(toFormat[toFormat.length - 1]);
 }
 
-function convertYear(str) {
-  if (str.length === 2) {
-    if (+str < 30) {
-      return 20 + str;
+function convertYear(year) {
+  if (year.length === 2) {
+    if (+year < 30) {
+      return 20 + year;
     } else {
-      return 19 + str;
+      return 19 + year;
     }
-  } else if (str.length === 4) {
-    return str.slice(-2);
+  } else if (year.length === 4) {
+    return year.slice(-2);
   }
 }
 
