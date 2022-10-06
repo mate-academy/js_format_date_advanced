@@ -50,33 +50,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-
   let targetDate = '';
 
-  // destructing source data
   const [param1, param2, param3, separator] = fromFormat;
   const [val1, val2, val3] = date.split(separator);
 
-  // present source date as object to identify every datepart
   const sourceDate = {};
 
-  // fill object with properties and data
   sourceDate[param1] = val1;
   sourceDate[param2] = val2;
   sourceDate[param3] = val3;
 
-  // create additional year property
   if (Object.keys(sourceDate).includes('YYYY')) {
     sourceDate['YY'] = +sourceDate['YYYY'] % 100;
   } else if (Object.keys(sourceDate).includes('YY')) {
     sourceDate['YYYY'] = (
-      +sourceDate['YY'] < 30) ? 
-      2000 + +sourceDate['YY'] : 
-      1900 + +sourceDate['YY'];
+      +sourceDate['YY'] < 30)
+      ? 2000 + +sourceDate['YY']
+      : 1900 + +sourceDate['YY'];
   }
 
-  // create final date string
   for (let i = 0; i <= toFormat.length - 2; i++) {
     targetDate += sourceDate[toFormat[i]];
 
