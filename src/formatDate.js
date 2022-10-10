@@ -61,21 +61,21 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   let result = '';
-  const num1 = 19;
-  const num2 = 20;
+  const century19 = 19;
+  const century20 = 20;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     objDate[fromFormat[i]] = dateArr[i];
   }
 
   if (objDate.YY) {
-    objDate.YYYY = num2 + objDate.YY;
+    objDate.YYYY = century20 + objDate.YY;
   } else {
     objDate.YY = objDate.YYYY.slice(-2);
   }
 
   if (objDate.YY >= 30) {
-    objDate.YYYY = num1 + objDate.YY;
+    objDate.YYYY = century19 + objDate.YY;
   } else {
     objDate.YY = objDate.YYYY.slice(-2);
   }
