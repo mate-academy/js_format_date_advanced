@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const inSeparator = fromFormat[3];
+  const outSeparator = toFormat[3];
+  const newDate = [];
+
+  const slicedDate = date.split(inSeparator);
+
+  slicedDate.length = 3;
+
+  let indexY;
+  let indexM;
+  let indexD;
+
+  for (let i = 0; i < slicedDate.length; i++) {
+    if (fromFormat[i].includes('Y')) {
+      indexY = i;
+    } else if (fromFormat[i].includes('M')) {
+      indexM = i;
+    } else if (fromFormat[i].includes('D')) {
+      indexD = i;
+    };
+  };
+
+  for (let i = 0; i < slicedDate.length; i++) {
+    if (toFormat[i].includes('Y')) {
+      const yearFormat = toFormat[i];
+      const neededYearFormat = slicedDate[indexY];
+
+      if (neededYearFormat.length > yearFormat.length) {
+        newDate[i] = neededYearFormat.slice(2);
+      } else if (neededYearFormat.length < yearFormat.length) {
+        if (Number(neededYearFormat) < 30) {
+          newDate[i] = '20' + neededYearFormat;
+        } else {
+          newDate[i] = '19' + neededYearFormat;
+        };
+      } else if (neededYearFormat.length === yearFormat.length) {
+        newDate[i] = neededYearFormat;
+      };
+    } else if (toFormat[i].includes('M')) {
+      newDate[i] = slicedDate[indexM];
+    } else if (toFormat[i].includes('D')) {
+      newDate[i] = slicedDate[indexD];
+    };
+  }
+  newDate.length = 3;
+
+  const result = newDate.join(outSeparator);
+
+  return result;
 }
 
 module.exports = formatDate;
