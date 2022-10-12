@@ -51,37 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[3]);
-  let day = '';
-  let month = '';
-  let year = '';
   const result = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i].includes('D')) {
-      day += dateArray[i];
-    } else if (fromFormat[i].includes('Y')) {
-      year += dateArray[i];
-    } else if (fromFormat[i].includes('M')) {
-      month += dateArray[i];
-    }
-  }
+  const settingDate = (format, callback) => {
+    const data = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (toFormat[i].includes('D')) {
-      result.push(day);
-    } else if (toFormat[i].includes('Y')) {
-      if (year.length !== toFormat[i].length) {
-        if (toFormat[i].length < year.length) {
-          year = year.substring(2, 4);
-        } else if (year < 30) {
-          year = 20 + year;
-        } else if (year >= 30) {
-          year = 19 + year;
-        }
+    for (let i = 0; i < dateArray.length; i++) {
+      if (format[i].includes('D')) {
+        data.day = callback(i);
+      } else if (format[i].includes('Y')) {
+        data.year = callback(i);
+      } else if (format[i].includes('M')) {
+        data.month = callback(i);
       }
-      result.push(year);
-    } else if (toFormat[i].includes('M')) {
-      result.push(month);
+    }
+
+    return data;
+  };
+
+  const fromFormatCallback = i => dateArray[i];
+  const toFormatCallback = i => toFormat[i];
+
+  const fromDate = settingDate(fromFormat, fromFormatCallback);
+  const toDateFormat = settingDate(toFormat, toFormatCallback);
+
+  for (const key in toDateFormat) {
+    if (fromDate[key].length !== toDateFormat[key].length) {
+      if (toDateFormat[key].length < fromDate[key].length) {
+        toDateFormat[key] = fromDate[key].substring(2, 4);
+      } else if (fromDate[key] < 30) {
+        toDateFormat[key] = 20 + fromDate[key];
+      } else if (fromDate[key] >= 30) {
+        toDateFormat[key] = 19 + fromDate[key];
+      }
+
+      result.push(toDateFormat[key]);
+    } else {
+      result.push(fromDate[key]);
     }
   }
 
