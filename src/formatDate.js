@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDate = date.split(fromFormat[3]);
+  const newDate = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const type = setDate(oldDate, toFormat[i], fromFormat);
+
+    newDate.push(type);
+  }
+
+  return newDate.join(toFormat[3]);
 }
+
+const setDate = (oldDate, toFormat, fromFormat) => {
+  for (let j = 0; j < fromFormat.length - 1; j++) {
+    const firstLetterFromTypeOld = toFormat.at(0);
+    const firstLetterFromTypeNew = fromFormat[j].at(0);
+    const typeIsEqual = firstLetterFromTypeOld === firstLetterFromTypeNew;
+
+    if (typeIsEqual) {
+      if (firstLetterFromTypeNew === 'Y') {
+        return setYear(toFormat, fromFormat[j], oldDate[j]);
+      } else {
+        return oldDate[j];
+      }
+    }
+  }
+};
+
+const setYear = (toFormat, fromFormat, oldDate) => {
+  const lengthOfSymbolsNew = toFormat.length;
+  const lengthOfSymbolsOld = fromFormat.length;
+
+  if (lengthOfSymbolsNew === 2) {
+    if (lengthOfSymbolsOld > 2) {
+      return oldDate.slice(2);
+    } else {
+      return oldDate;
+    }
+  } else {
+    if (lengthOfSymbolsOld === 2) {
+      const addCentury = oldDate > 20 ? '19' + oldDate : '20' + oldDate;
+
+      return addCentury;
+    } else {
+      return oldDate;
+    }
+  }
+};
 
 module.exports = formatDate;
