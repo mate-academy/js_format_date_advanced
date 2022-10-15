@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDate = date.split(`${fromFormat[3]}`);
+  const newDate = [];
+  const indexOfOldDay = fromFormat.indexOf('DD');
+  const indexOfNewDay = toFormat.indexOf('DD');
+  const indexOfOldMonth = fromFormat.indexOf('MM');
+  const indexOfNewMonth = toFormat.indexOf('MM');
+  const indexOfOldYearShort = fromFormat.indexOf('YY');
+  const indexOfNewYearShort = toFormat.indexOf('YY');
+  const indexOfOldYearLong = fromFormat.indexOf('YYYY');
+  const indexOfNewYearLong = toFormat.indexOf('YYYY');
+
+  const createDateInNewFormat = () => {
+    newDate[indexOfNewDay] = oldDate[indexOfOldDay];
+    newDate[indexOfNewMonth] = oldDate[indexOfOldMonth];
+
+    // Checking the year format:
+
+    // if oldFormat YYYY and newFormat YY
+    if (indexOfOldYearLong >= 0 && indexOfNewYearShort >= 0) {
+      const yearLastTwoCharacters
+        = oldDate[indexOfOldYearLong][2]
+        + oldDate[indexOfOldYearLong][3];
+
+      newDate[indexOfNewYearShort] = yearLastTwoCharacters;
+      // if oldFormat YY and newFormat YYYY
+    } else if (indexOfOldYearShort >= 0 && indexOfNewYearLong >= 0) {
+      let convertYear = '';
+
+      if (+oldDate[indexOfOldYearShort] < 30) {
+        convertYear = '20' + oldDate[indexOfOldYearShort];
+      } else {
+        convertYear = '19' + oldDate[indexOfOldYearShort];
+      }
+
+      newDate[indexOfNewYearLong] = convertYear;
+      // if oldFormat YY and newFormat YY
+    } else if (indexOfOldYearShort >= 0 && indexOfNewYearShort >= 0) {
+      newDate[indexOfNewYearShort] = oldDate[indexOfOldYearShort];
+      // if oldFormat YYYY and newFormat YYYY
+    } else {
+      newDate[indexOfNewYearLong] = oldDate[indexOfOldYearLong];
+    }
+
+    return newDate.join(`${toFormat[3]}`);
+  };
+
+  return createDateInNewFormat();
 }
 
 module.exports = formatDate;
