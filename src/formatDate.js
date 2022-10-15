@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(`${fromFormat[3]}`);
+  const oldDate = date.split(fromFormat[3]);
   const newDate = [];
   const indexOfOldDay = fromFormat.indexOf('DD');
   const indexOfNewDay = toFormat.indexOf('DD');
@@ -69,9 +69,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     // if oldFormat YYYY and newFormat YY
     if (indexOfOldYearLong >= 0 && indexOfNewYearShort >= 0) {
-      const yearLastTwoCharacters
-        = oldDate[indexOfOldYearLong][2]
-        + oldDate[indexOfOldYearLong][3];
+      const yearLastTwoCharacters = oldDate[indexOfOldYearLong].slice(2);
 
       newDate[indexOfNewYearShort] = yearLastTwoCharacters;
       // if oldFormat YY and newFormat YYYY
@@ -93,7 +91,7 @@ function formatDate(date, fromFormat, toFormat) {
       newDate[indexOfNewYearLong] = oldDate[indexOfOldYearLong];
     }
 
-    return newDate.join(`${toFormat[3]}`);
+    return newDate.join(toFormat[3]);
   };
 
   return createDateInNewFormat();
