@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 
 /**
@@ -57,29 +58,33 @@ function formatDate(date, fromFormat, toFormat) {
     oldFormat[fromFormat[i]] = oldDateArr[i];
   }
 
+  const newFormatArr = [];
+  const toFormat1 = toFormat.map(x => x[0]);
+
+  for (const key in oldFormat) {
+    const newIndex = toFormat1.indexOf(key[0]);
+
+    newFormatArr[newIndex] = oldFormat[key];
+  }
+
   const newFormat = {};
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    for (const key in oldFormat) {
-      if (key.includes(toFormat[i][0])) {
-        newFormat[toFormat[i]] = oldFormat[key];
-      }
-    }
+  for (let i = 0; i < newFormatArr.length; i++) {
+    newFormat[toFormat[i]] = newFormatArr[i];
   }
 
-  if (fromFormat.join('').length > toFormat.join('').length) {
-    newFormat.YY = (oldFormat.YYYY).slice(2);
-  } else if (fromFormat.join('').length < toFormat.join('').length) {
-    if (oldFormat.YY < 30) {
-      newFormat.YYYY = '20' + oldFormat.YY;
-    } else if (oldFormat.YY >= 30) {
-      newFormat.YYYY = '19' + oldFormat.YY;
-    }
+  switch (true) {
+    case fromFormat.join('').length > toFormat.join('').length:
+      newFormat.YY = (oldFormat.YYYY).slice(2);
+      break;
+    case fromFormat.join('').length < toFormat.join('').length:
+      newFormat.YYYY
+      = oldFormat.YY >= 30 ? '19' + oldFormat.YY : '20' + oldFormat.YY;
   }
 
-  const newDateArr = Object.values(newFormat);
+  const result = Object.values(newFormat);
 
-  return newDateArr.join(toFormat[3]);
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
