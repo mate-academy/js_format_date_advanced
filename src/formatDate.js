@@ -50,26 +50,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const array = date.split(fromFormat[3]);
+  const arrayDate = date.split(fromFormat[3]);
   const newDate = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    const lengthTrue = fromFormat[i].length !== toFormat[i].length;
-    const inc = fromFormat[i].includes('Y') && toFormat[i].includes('Y');
+    const inequality = fromFormat[i].length !== toFormat[i].length;
+    const available = fromFormat[i].includes('Y') && toFormat[i].includes('Y');
 
-    if (lengthTrue && inc) {
+    if (inequality && available) {
       if (fromFormat[i].length > toFormat[i].length) {
-        newDate.push(array[i].slice(2));
+        newDate.push(arrayDate[i].slice(2));
       } else {
-        if (array[i] < 30) {
-          array[i] = 20 + array[i];
+        if (arrayDate[i] < 30) {
+          arrayDate[i] = 20 + arrayDate[i];
         } else {
-          array[i] = 19 + array[i];
+          arrayDate[i] = 19 + arrayDate[i];
         }
-        newDate.push(array[i]);
+        newDate.push(arrayDate[i]);
       }
     } else {
-      newDate.push(array[fromFormat.indexOf(toFormat[i])]);
+      newDate.push(arrayDate[fromFormat.indexOf(toFormat[i])]);
     }
   }
 
