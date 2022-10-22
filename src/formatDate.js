@@ -48,9 +48,38 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const [a, b, c] = fromFormat;
+  const [x, y, z] = date.split(fromFormat[3]);
+  const dateObj = {
+    [a]: x,
+    [b]: y,
+    [c]: z,
+  };
+
+  if (dateObj.hasOwnProperty('YYYY')) {
+    const l = dateObj['YYYY'].substr(2);
+
+    dateObj['YY'] = l;
+  }
+
+  if (dateObj.hasOwnProperty('YY') && dateObj['YY'] >= 30) {
+    dateObj['YYYY'] = 19 + dateObj['YY'];
+  }
+
+  if (dateObj.hasOwnProperty('YY') && dateObj['YY'] < 30) {
+    dateObj['YYYY'] = 20 + dateObj['YY'];
+  }
+
+  const arr = [];
+
+  for (const xxx of toFormat) {
+    arr.push(dateObj[xxx]);
+  }
+
+  const result = arr.slice(0, -1).join(toFormat[3]);
+
+  return result;
+} ;
 
 module.exports = formatDate;
