@@ -65,14 +65,10 @@ function formatDate(date, fromFormat, toFormat) {
     } else {
       dateArray[yearIndex] = `19${year}`;
     }
-
-    newDate = dateArray.join(fromFormat[3]);
   } else if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     yearIndex = fromFormat.indexOf('YYYY');
 
     dateArray[yearIndex] = dateArray[yearIndex].slice(-2);
-
-    newDate = dateArray.join(fromFormat[3]);
   }
 
   for (let i = 0; i < 3; i++) {
@@ -89,10 +85,10 @@ function formatDate(date, fromFormat, toFormat) {
     newDateArray[i] = dateArray[yearIndex];
   }
 
-  newDate = newDateArray.join(fromFormat[3]);
-
   if (fromFormat[3] !== toFormat[3]) {
-    newDate = newDate.split(fromFormat[3]).join(toFormat[3]);
+    newDate = newDateArray.join(toFormat[3]);
+  } else {
+    newDate = newDateArray.join(fromFormat[3]);
   }
 
   return newDate;
