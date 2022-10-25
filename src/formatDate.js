@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [, , , oldOperator] = fromFormat;
+  const [, , , newOperator] = toFormat;
+
+  const oldDate = date.split(oldOperator);
+  const oldDayPlace = fromFormat.indexOf('DD');
+  const oldMonthPlace = fromFormat.indexOf('MM');
+  let oldYearPlace = fromFormat.indexOf('YY');
+
+  if (oldYearPlace === -1) {
+    oldYearPlace = fromFormat.indexOf('YYYY');
+  }
+
+  const newDayPlace = toFormat.indexOf('DD');
+  const newMonthPlace = toFormat.indexOf('MM');
+  let newYearPlace = toFormat.indexOf('YY');
+
+  if (newYearPlace === -1) {
+    newYearPlace = toFormat.indexOf('YYYY');
+  }
+
+  const newDate = [];
+
+  newDate[newDayPlace] = oldDate[oldDayPlace];
+  newDate[newMonthPlace] = oldDate[oldMonthPlace];
+
+  switch (true) {
+    case fromFormat[oldYearPlace] === toFormat[newYearPlace]:
+      newDate[newYearPlace] = oldDate[oldYearPlace];
+      break;
+
+    case fromFormat[oldYearPlace] === 'YY' && oldDate[oldYearPlace] < 30:
+      newDate[newYearPlace] = 20 + oldDate[oldYearPlace];
+      break;
+
+    case fromFormat[oldYearPlace] === 'YY' && oldDate[oldYearPlace] >= 30:
+      newDate[newYearPlace] = 19 + oldDate[oldYearPlace];
+      break;
+
+    case fromFormat[oldYearPlace] === 'YYYY':
+      newDate[newYearPlace] = oldDate[oldYearPlace].slice(2);
+      break;
+
+    default:
+      break;
+  }
+
+  return newDate.join(newOperator);
 }
 
 module.exports = formatDate;
