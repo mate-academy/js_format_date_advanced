@@ -50,7 +50,43 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const currentSeparator = fromFormat.slice(-1);
+  const pattern = new RegExp('\\' + currentSeparator + '\\s*');
+  const parsedDate = date.split(pattern);
+
+  const newSeparator = toFormat.slice(-1);
+  const toFormatOrder = toFormat.slice(0, 3);
+  const formattedDate = [];
+
+  for (let datePart of toFormatOrder) {
+    let needToConvert = false;
+
+    if (!fromFormat.includes(datePart)) {
+      needToConvert = true;
+
+      if (datePart.length === 2) {
+        datePart = 'YYYY';
+      } else {
+        datePart = 'YY';
+      }
+    }
+
+    const index = fromFormat.indexOf(datePart);
+
+    if (needToConvert) {
+      if (datePart.length === 2) {
+        parsedDate[index] = parsedDate[index] < 30
+          ? 20 + parsedDate[index]
+          : 19 + parsedDate[index];
+      } else {
+        parsedDate[index] = parsedDate[index].split('').slice(2).join('');
+      }
+    }
+
+    formattedDate.push(parsedDate[index]);
+  }
+
+  return formattedDate.join(newSeparator);
 }
 
 module.exports = formatDate;
