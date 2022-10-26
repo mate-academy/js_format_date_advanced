@@ -85,11 +85,7 @@ function formatDate(date, fromFormat, toFormat) {
     newDateArray[i] = dateArray[yearIndex];
   }
 
-  if (fromFormat[3] !== toFormat[3]) {
-    newDate = newDateArray.join(toFormat[3]);
-  } else {
-    newDate = newDateArray.join(fromFormat[3]);
-  }
+  newDate = newDateArray.join(toFormat[3]);
 
   return newDate;
 }
