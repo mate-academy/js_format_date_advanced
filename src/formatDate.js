@@ -56,43 +56,34 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDate = date.split(oldOperator);
   const oldDayPlace = fromFormat.indexOf('DD');
   const oldMonthPlace = fromFormat.indexOf('MM');
-  let oldYearPlace = fromFormat.indexOf('YY');
-
-  if (oldYearPlace === -1) {
-    oldYearPlace = fromFormat.indexOf('YYYY');
-  }
+  const oldYearPlace = fromFormat.indexOf('YY') !== -1
+    ? fromFormat.indexOf('YY')
+    : fromFormat.indexOf('YYYY');
 
   const newDayPlace = toFormat.indexOf('DD');
   const newMonthPlace = toFormat.indexOf('MM');
-  let newYearPlace = toFormat.indexOf('YY');
-
-  if (newYearPlace === -1) {
-    newYearPlace = toFormat.indexOf('YYYY');
-  }
+  const newYearPlace = toFormat.indexOf('YY') !== -1
+    ? toFormat.indexOf('YY')
+    : toFormat.indexOf('YYYY');
 
   const newDate = [];
 
   newDate[newDayPlace] = oldDate[oldDayPlace];
   newDate[newMonthPlace] = oldDate[oldMonthPlace];
 
-  switch (true) {
-    case fromFormat[oldYearPlace] === toFormat[newYearPlace]:
+  switch (fromFormat[oldYearPlace]) {
+    case toFormat[newYearPlace]:
       newDate[newYearPlace] = oldDate[oldYearPlace];
       break;
 
-    case fromFormat[oldYearPlace] === 'YY' && oldDate[oldYearPlace] < 30:
-      newDate[newYearPlace] = 20 + oldDate[oldYearPlace];
-      break;
-
-    case fromFormat[oldYearPlace] === 'YY' && oldDate[oldYearPlace] >= 30:
-      newDate[newYearPlace] = 19 + oldDate[oldYearPlace];
-      break;
-
-    case fromFormat[oldYearPlace] === 'YYYY':
-      newDate[newYearPlace] = oldDate[oldYearPlace].slice(2);
+    case 'YY':
+      newDate[newYearPlace] = (oldDate[oldYearPlace] < 30)
+        ? 20 + oldDate[oldYearPlace]
+        : 19 + oldDate[oldYearPlace];
       break;
 
     default:
+      newDate[newYearPlace] = oldDate[oldYearPlace].slice(2);
       break;
   }
 
