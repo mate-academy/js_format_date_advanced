@@ -51,22 +51,30 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const currentSeparator = fromFormat.slice(-1);
-  const pattern = new RegExp('\\' + currentSeparator + '\\s*');
-  const parsedDate = date.split(pattern);
+  const parsedDate = date.split(currentSeparator);
 
   const newSeparator = toFormat.slice(-1);
   const toFormatOrder = toFormat.slice(0, 3);
   const formattedDate = [];
 
+  const YEAR_BREAKPOINT = 30;
+  const THIS_CENTURY = 20;
+  const LAST_CENTURY = 19;
+  const SHORT_DATE = 2;
+  const LONG_DATE = 4;
+
   for (let datePart of toFormatOrder) {
+    const datePartLength = datePart.length;
     let needToConvert = false;
 
     if (!fromFormat.includes(datePart)) {
       needToConvert = true;
 
-      if (datePart.length === 2) {
+      if (datePartLength === SHORT_DATE) {
         datePart = 'YYYY';
-      } else {
+      }
+
+      if (datePartLength === LONG_DATE) {
         datePart = 'YY';
       }
     }
@@ -74,11 +82,13 @@ function formatDate(date, fromFormat, toFormat) {
     const index = fromFormat.indexOf(datePart);
 
     if (needToConvert) {
-      if (datePart.length === 2) {
-        parsedDate[index] = parsedDate[index] < 30
-          ? 20 + parsedDate[index]
-          : 19 + parsedDate[index];
-      } else {
+      if (datePartLength === LONG_DATE) {
+        parsedDate[index] = parsedDate[index] < YEAR_BREAKPOINT
+          ? THIS_CENTURY + parsedDate[index]
+          : LAST_CENTURY + parsedDate[index];
+      }
+
+      if (datePartLength === SHORT_DATE) {
         parsedDate[index] = parsedDate[index].split('').slice(2).join('');
       }
     }
