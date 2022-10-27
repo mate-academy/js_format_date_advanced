@@ -57,18 +57,20 @@ function formatDate(date, fromFormat, toFormat) {
   const fromIndexM = fromFormat.indexOf('MM');
   const fromIndexY = 3 - fromIndexD - fromIndexM;
 
+  const currentDateObj = {
+    D: curentDateArr[fromIndexD],
+    M: curentDateArr[fromIndexM],
+    Y: curentDateArr[fromIndexY],
+  };
+
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i].includes('D')) {
-      newFormatArr[i] = curentDateArr[fromIndexD];
+    const key = toFormat[i][0];
+
+    if (toFormat[i].startsWith(key)) {
+      newFormatArr[i] = currentDateObj[key];
     }
 
-    if (toFormat[i].includes('M')) {
-      newFormatArr[i] = curentDateArr[fromIndexM];
-    }
-
-    if (toFormat[i].includes('Y')) {
-      newFormatArr[i] = curentDateArr[fromIndexY];
-
+    if (key === 'Y') {
       if (toFormat[i].length > newFormatArr[i].length) {
         if (+newFormatArr[i] < 30) {
           newFormatArr[i] = '20' + newFormatArr[i];
