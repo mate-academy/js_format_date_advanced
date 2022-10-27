@@ -51,31 +51,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const inputDate = date.split(fromFormat[3]);
-  const number = inputDate[fromFormat.indexOf('DD')];
+  const day = inputDate[fromFormat.indexOf('DD')];
   const month = inputDate[fromFormat.indexOf('MM')];
   const year = inputDate[fromFormat.indexOf('YYYY')]
   || inputDate[fromFormat.indexOf('YY')];
 
   const copyToFormat = [...toFormat];
   const dateBreakPoint = 30;
-  const currentCentury = 20;
-  const lastCentury = 19;
+  const century = (year < dateBreakPoint)
+    ? 20
+    : 19;
 
-  copyToFormat[copyToFormat.indexOf('DD')] = number;
+  copyToFormat[copyToFormat.indexOf('DD')] = day;
   copyToFormat[copyToFormat.indexOf('MM')] = month;
 
   copyToFormat[copyToFormat.indexOf('YYYY')] = (year.length === 4)
     ? year
-    : (year < dateBreakPoint)
-      ? currentCentury + year
-      : lastCentury + year;
+    : century + year;
 
   copyToFormat[copyToFormat.indexOf('YY')] = (year.length === 2)
     ? year
     : year.slice(2);
 
-  const resultData = copyToFormat[0] + copyToFormat[3] + copyToFormat[1]
-    + copyToFormat[3] + copyToFormat[2];
+  const resultData = copyToFormat.slice(0, 3).join(copyToFormat[3]);
 
   return resultData;
 }
