@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const currentSeparator = fromFormat.slice(-1);
+  const parsedDate = date.split(currentSeparator);
+
+  const newSeparator = toFormat.slice(-1);
+  const toFormatOrder = toFormat.slice(0, 3);
+  const formattedDate = [];
+
+  const YEAR_BREAKPOINT = 30;
+  const THIS_CENTURY = 20;
+  const LAST_CENTURY = 19;
+  const SHORT_DATE = 2;
+  const LONG_DATE = 4;
+
+  for (let datePart of toFormatOrder) {
+    const datePartLength = datePart.length;
+    let needToConvert = false;
+
+    if (!fromFormat.includes(datePart)) {
+      needToConvert = true;
+
+      if (datePartLength === SHORT_DATE) {
+        datePart = 'YYYY';
+      }
+
+      if (datePartLength === LONG_DATE) {
+        datePart = 'YY';
+      }
+    }
+
+    const index = fromFormat.indexOf(datePart);
+
+    if (needToConvert) {
+      if (datePartLength === LONG_DATE) {
+        parsedDate[index] = parsedDate[index] < YEAR_BREAKPOINT
+          ? THIS_CENTURY + parsedDate[index]
+          : LAST_CENTURY + parsedDate[index];
+      }
+
+      if (datePartLength === SHORT_DATE) {
+        parsedDate[index] = parsedDate[index].split('').slice(2).join('');
+      }
+    }
+
+    formattedDate.push(parsedDate[index]);
+  }
+
+  return formattedDate.join(newSeparator);
 }
 
 module.exports = formatDate;
