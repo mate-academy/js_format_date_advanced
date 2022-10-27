@@ -50,15 +50,13 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
   const oldSeparator = fromFormat[fromFormat.length - 1];
   const newSeparator = toFormat[toFormat.length - 1];
-  const dateArray = date.split(oldSeparator);
+  const splittedDate = date.split(oldSeparator);
   const dateFormattedArray = [];
-
   const dateObj = {};
 
-  dateArray.forEach((item, i) => {
+  splittedDate.forEach((item, i) => {
     dateObj[fromFormat[i][0]] = item;
   });
 
@@ -73,24 +71,19 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'Y':
+        let yearFormatted = dateObj.Y;
+
         if (dateObj.Y.length !== toFormat[i].length) {
-          let yearFormatted = dateObj.Y;
-
           if (dateObj.Y.length === 2) {
-            if (+yearFormatted < 30) {
-              yearFormatted = '20' + ('' + yearFormatted);
-            } else {
-              yearFormatted = '19' + ('' + yearFormatted);
-            }
-          }
-
-          if (dateObj.Y.length === 4) {
+            yearFormatted = +yearFormatted < 30
+              ? '20' + ('' + yearFormatted)
+              : '19' + ('' + yearFormatted);
+          } else {
             yearFormatted = yearFormatted.slice(2);
           }
-          dateFormattedArray.push(yearFormatted);
-        } else {
-          dateFormattedArray.push(dateObj.Y);
         }
+
+        dateFormattedArray.push(yearFormatted);
     }
   }
 
