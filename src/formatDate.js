@@ -57,15 +57,18 @@ function formatDate(date, fromFormat, toFormat) {
   || inputDate[fromFormat.indexOf('YY')];
 
   const copyToFormat = [...toFormat];
+  const dateBreakPoint = 30;
+  const currentCentury = 20;
+  const lastCentury = 19;
 
   copyToFormat[copyToFormat.indexOf('DD')] = number;
   copyToFormat[copyToFormat.indexOf('MM')] = month;
 
   copyToFormat[copyToFormat.indexOf('YYYY')] = (year.length === 4)
     ? year
-    : (year < 23)
-      ? '20' + year
-      : '19' + year;
+    : (year < dateBreakPoint)
+      ? currentCentury + year
+      : lastCentury + year;
 
   copyToFormat[copyToFormat.indexOf('YY')] = (year.length === 2)
     ? year
