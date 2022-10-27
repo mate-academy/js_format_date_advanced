@@ -86,11 +86,10 @@ function formatDate(date, fromFormat, toFormat) {
       if (fromFormat[index] === 'YY') {
         if (dateArr[index] < 30) {
           newDate += '20';
-          newDate += dateArr[index];
         } else {
           newDate += '19';
-          newDate += dateArr[index];
         }
+        newDate += dateArr[index];
       }
     }
 
