@@ -78,12 +78,17 @@ function formatDate(date, fromFormat, toFormat) {
             yearFormatted = +yearFormatted < 30
               ? '20' + ('' + yearFormatted)
               : '19' + ('' + yearFormatted);
+            dateFormattedArray.push(yearFormatted);
           } else {
-            yearFormatted = yearFormatted.slice(2);
+            dateFormattedArray.push(yearFormatted.slice(2));
           }
+        } else {
+          dateFormattedArray.push(yearFormatted);
         }
+        break;
 
-        dateFormattedArray.push(yearFormatted);
+      default:
+        throw new Error('Input data is not valid');
     }
   }
 
