@@ -59,16 +59,14 @@ function formatDate(date, fromFormat, toFormat) {
     const keyFromFormat = fromFormat[i];
     const valueFromSplitteDate = splittedDate[i];
 
-    if (keyFromFormat === 'YYYY') {
+    if (toFormat.includes('YY')) {
       storeDateObj['YY'] = valueFromSplitteDate.slice(2);
     }
 
-    if (keyFromFormat === 'YY') {
-      if (+valueFromSplitteDate < 30) {
-        storeDateObj['YYYY'] = '20' + valueFromSplitteDate;
-      } else {
-        storeDateObj['YYYY'] = '19' + valueFromSplitteDate;
-      }
+    if (keyFromFormat === 'YY' && toFormat.includes('YYYY')) {
+      storeDateObj['YYYY'] = +valueFromSplitteDate < 30
+        ? '20' + valueFromSplitteDate
+        : '19' + valueFromSplitteDate;
     }
 
     storeDateObj[keyFromFormat] = valueFromSplitteDate;
@@ -78,8 +76,8 @@ function formatDate(date, fromFormat, toFormat) {
   const resultDateArr = [];
   const toFormatDate = toFormat.slice(0, -1);
 
-  for (const i of toFormatDate) {
-    const valueOutStore = storeDateObj[i];
+  for (const datePart of toFormatDate) {
+    const valueOutStore = storeDateObj[datePart];
 
     resultDateArr.push(valueOutStore);
   }
