@@ -55,21 +55,10 @@ function formatDate(date, fromFormat, toFormat) {
   const inputDate = date.split(inputSeparator);
   const result = [];
 
-  let inputDay, inputMonth, inputYear;
-
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'DD') {
-      inputDay = inputDate[i];
-    }
-
-    if (fromFormat[i] === 'MM') {
-      inputMonth = inputDate[i];
-    }
-
-    if (fromFormat[i].includes('YY')) {
-      inputYear = inputDate[i];
-    }
-  }
+  const inputDay = inputDate[fromFormat.indexOf('DD')];
+  const inputMonth = inputDate[fromFormat.indexOf('MM')];
+  const inputYear = inputDate[fromFormat.indexOf('YYYY')]
+    || inputDate[fromFormat.indexOf('YY')];
 
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'DD') {
