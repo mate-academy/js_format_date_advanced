@@ -50,7 +50,65 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = new Array(toFormat.length - 1);
+  let divider = '';
+  let newDivider = '';
+
+  for (const char of date) {
+    if (isNaN(char)) {
+      divider = char;
+      break;
+    }
+  }
+
+  const dateChanged = date.split(divider);
+  const fromD = fromFormat.indexOf('DD');
+  const fromM = fromFormat.indexOf('MM');
+  const fromY = 3 - fromD - fromM;
+
+  const currentDateObj = {
+    D: dateChanged[fromD],
+    M: dateChanged[fromM],
+    Y: dateChanged[fromY],
+  };
+
+  for (let i = 0; i < 3; i++) {
+    const key = toFormat[i][0];
+
+    if (toFormat[i].startsWith(key)) {
+      newDate[i] = currentDateObj[key];
+    }
+
+    if (key === 'Y') {
+      if (toFormat[i].length > newDate[i].length) {
+        if (+newDate[i] < 30) {
+          newDate[i] = '20' + newDate[i];
+        } else {
+          newDate[i] = '19' + newDate[i];
+        }
+      }
+
+      if (toFormat[i].length < newDate[i].length) {
+        newDate[i] = newDate[i].slice(2);
+      }
+    }
+    newDivider = toFormat[toFormat.length - 1];
+  }
+
+  return newDate.join(newDivider);
 }
+
+//   for (let i = 0; i < fromFormat.length; i++) {
+//     for (let j = 0; j < toFormat.length; j++) {
+//       if (fromFormat[i] === toFormat[j]) {
+//         newDate[j] = dateChanged[i];
+//       }
+//     }
+//     newDate[newDate.length - 1] = toFormat[toFormat.length - 1];
+//     newDivider = newDate[newDate.length - 1];
+//   }
+
+//   return newDate.slice(0, -1).join(newDivider);
+// }
 
 module.exports = formatDate;
