@@ -50,7 +50,63 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const result = [];
+  const [, , , separateOld] = fromFormat;
+  const separateNew = toFormat[3];
+
+  const oldData = date.split(separateOld);
+  const indDay = fromFormat.indexOf('DD');
+  const indMonth = fromFormat.indexOf('MM');
+  let indYear = fromFormat.indexOf('YY');
+
+  if (indYear === -1) {
+    indYear = fromFormat.indexOf('YYYY');
+  }
+
+  let reNewYear = oldData[indYear];
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    reNewYear = oldData[indYear].slice(2);
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (reNewYear < 30) {
+      reNewYear = `20${reNewYear}`;
+    } else {
+      reNewYear = `19${reNewYear}`;
+    }
+  }
+
+  if (toFormat.indexOf('DD') === 0 && toFormat.indexOf('MM') === 1) {
+    result.push(oldData[indDay], oldData[indMonth], reNewYear);
+
+    return result.join(separateNew);
+  }
+
+  if (toFormat.indexOf('DD') === 2 && toFormat.indexOf('MM') === 1) {
+    result.push(oldData[indDay], oldData[indMonth], reNewYear);
+
+    return result.reverse().join(separateNew);
+  }
+
+  if (toFormat.indexOf('YY' || 'YYYY') && toFormat.indexOf('MM') === 2) {
+    result.push(oldData[indDay], reNewYear, oldData[indMonth]);
+
+    return result.join(separateNew);
+  }
+
+  if (
+    (toFormat.indexOf('YY' || 'YYYY') === 1 && toFormat.indexOf('MM') === 0)) {
+    result.push(oldData[indDay], reNewYear, oldData[indMonth]);
+
+    return result.reverse().join(separateNew);
+  }
+
+  if (toFormat.indexOf('MM') === 0 && toFormat.indexOf('DD') === 1) {
+    result.push(oldData[indMonth], oldData[indDay], reNewYear);
+
+    return result.join(separateNew);
+  }
 }
 
 module.exports = formatDate;
