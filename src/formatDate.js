@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrDate = date.split(`${fromFormat[3]}`);
+  const initialDateFromat = date.split(`${fromFormat[3]}`);
   let str = '';
 
   const obj = {
@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    obj[fromFormat[i]] = arrDate[i];
+    obj[fromFormat[i]] = initialDateFromat[i];
   }
 
   if (obj.YY === 0) {
