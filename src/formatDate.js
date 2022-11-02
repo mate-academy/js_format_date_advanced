@@ -66,11 +66,12 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (toFormat.includes('YYYY') && !objOfDate['YYYY']) {
-    if (objOfDate['YY'] < 30) {
-      objOfDate['YYYY'] = '20' + objOfDate['YY'];
-    } else {
-      objOfDate['YYYY'] = '19' + objOfDate['YY'];
-    }
+    // eslint-disable-next-line no-unused-expressions
+    objOfDate['YY'] < 30
+
+      ? objOfDate['YYYY'] = '20' + objOfDate['YY']
+
+      : objOfDate['YYYY'] = '19' + objOfDate['YY'];
   }
 
   for (let i = 0; i < dateSplits.length; i++) {
