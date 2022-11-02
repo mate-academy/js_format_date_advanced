@@ -53,22 +53,17 @@ function formatDate(date, fromFormat, toFormat) {
   const initialDateFromat = date.split(`${fromFormat[3]}`);
   let str = '';
 
-  const obj = {
-    DD: 0,
-    MM: 0,
-    YY: 0,
-    YYYY: 0,
-  };
+  const obj = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     obj[fromFormat[i]] = initialDateFromat[i];
   }
 
-  if (obj.YY === 0) {
+  if (obj.YY === undefined) {
     obj.YY = obj.YYYY.slice(2);
   }
 
-  if (obj.YYYY === 0) {
+  if (obj.YYYY === undefined) {
     if (obj.YY < 30) {
       obj.YYYY = `${20 + obj.YY}`;
     } else {
