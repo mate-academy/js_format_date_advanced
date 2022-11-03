@@ -67,11 +67,9 @@ function formatDate(date, fromFormat, toFormat) {
         : dateObj['YYYY'];
 
       if (!dateObj.hasOwnProperty(toFormat[i])) {
-        if (toFormat[i] !== shortYear) {
-          result.push(year < 30 ? `20${year}` : `19${year}`);
-        } else {
-          result.push(year.slice(2));
-        }
+        result.push(year < 30
+          ? `20${year}`
+          : `${year.slice(2)}` || `19${year}`);
       } else {
         result.push(year);
       }
