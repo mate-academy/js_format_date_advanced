@@ -69,11 +69,10 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj.YY = dateObj.YYYY.slice(2);
   }
 
-  if (dateObj.YY < 30) {
-    dateObj.YYYY = '20' + `${dateObj.YY}`;
-  } else {
-    dateObj.YYYY = '19' + `${dateObj.YY}`;
-  }
+  // eslint-disable-next-line no-unused-expressions
+  dateObj.YY < 30
+    ? dateObj.YYYY = '20' + `${dateObj.YY}`
+    : dateObj.YYYY = '19' + `${dateObj.YY}`;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     result += `${dateObj[toFormat[i]]}` + `${newSeparator}`;
