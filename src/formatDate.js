@@ -68,9 +68,7 @@ function formatDate(date, fromFormat, toFormat) {
   if (toFormat.includes('YYYY') && !objOfDate['YYYY']) {
     // eslint-disable-next-line no-unused-expressions
     objOfDate['YY'] < 30
-
       ? objOfDate['YYYY'] = '20' + objOfDate['YY']
-
       : objOfDate['YYYY'] = '19' + objOfDate['YY'];
   }
 
