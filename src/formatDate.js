@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const newDate = date.split(oldSeparator);
+  let result = '';
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    dateObj[fromFormat[i]] = newDate[i];
+  }
+
+  if (dateObj.YY === '') {
+    dateObj.YY = dateObj.YYYY.slice(2);
+  }
+
+  // eslint-disable-next-line no-unused-expressions
+  dateObj.YY < 30
+    ? dateObj.YYYY = '20' + `${dateObj.YY}`
+    : dateObj.YYYY = '19' + `${dateObj.YY}`;
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result += `${dateObj[toFormat[i]]}` + `${newSeparator}`;
+  }
+
+  return result.slice(0, -1);
 }
 
 module.exports = formatDate;
