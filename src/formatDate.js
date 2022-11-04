@@ -50,7 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const lastSeparator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+
+  const lastDateArr = date.split(lastSeparator);
+
+  const lastDayIndex = fromFormat.indexOf('DD');
+  const lastMonthIndex = fromFormat.indexOf('MM');
+  const lastYearLongIndex = fromFormat.indexOf('YYYY');
+  const lastYearShortIndex = fromFormat.indexOf('YY');
+
+  const newDayIndex = toFormat.indexOf('DD');
+  const newMonthIndex = toFormat.indexOf('MM');
+  const newYearLongIndex = toFormat.indexOf('YYYY');
+  const newYearShortIndex = toFormat.indexOf('YY');
+  let newYearIndex = null;
+
+  const day = lastDateArr[lastDayIndex];
+  const month = lastDateArr[lastMonthIndex];
+
+  let lastYear = null;
+  let newYear = null;
+
+  if (lastYearLongIndex === -1) {
+    lastYear = lastDateArr[lastYearShortIndex];
+
+    if (newYearLongIndex === -1) {
+      newYear = lastYear;
+      newYearIndex = newYearShortIndex;
+    } else {
+      newYearIndex = newYearLongIndex;
+
+      if (lastYear < 30) {
+        newYear = '20' + lastYear;
+      } else {
+        newYear = '19' + lastYear;
+      }
+    }
+  } else {
+    lastYear = lastDateArr[lastYearLongIndex];
+
+    if (newYearShortIndex === -1) {
+      newYear = lastYear;
+      newYearIndex = newYearLongIndex;
+    } else {
+      newYear = lastYear.slice(-2);
+      newYearIndex = newYearShortIndex;
+    }
+  }
+
+  const newDateArr = [];
+
+  newDateArr[newDayIndex] = day;
+  newDateArr[newMonthIndex] = month;
+  newDateArr[newYearIndex] = newYear;
+
+  const newDateString = newDateArr.join(newSeparator);
+
+  return newDateString;
 }
 
 module.exports = formatDate;
