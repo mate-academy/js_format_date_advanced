@@ -51,27 +51,27 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const initialDateFromat = date.split(`${fromFormat[3]}`);
-  let str = '';
+  let strDate = '';
 
-  const obj = {};
+  const objectDate = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    obj[fromFormat[i]] = initialDateFromat[i];
+    objectDate[fromFormat[i]] = initialDateFromat[i];
   }
 
-  if (obj.YY === undefined) {
-    obj.YY = obj.YYYY.slice(2);
+  if (objectDate.YY === undefined) {
+    objectDate.YY = objectDate.YYYY.slice(2);
   }
 
-  if (obj.YYYY === undefined) {
-    if (obj.YY < 30) {
-      obj.YYYY = `${20 + obj.YY}`;
+  if (objectDate.YYYY === undefined) {
+    if (objectDate.YY < 30) {
+      objectDate.YYYY = `${20 + objectDate.YY}`;
     } else {
-      obj.YYYY = `${19 + obj.YY}`;
+      objectDate.YYYY = `${19 + objectDate.YY}`;
     }
   }
-  str = `${obj[toFormat[0]]} ${obj[toFormat[1]]} ${obj[toFormat[2]]}`;
+  strDate = `${objectDate[toFormat[0]]} ${objectDate[toFormat[1]]} ${objectDate[toFormat[2]]}`;
 
-  return str.split(' ').join(`${toFormat[3]}`);
+  return strDate.split(' ').join(`${toFormat[3]}`);
 }
 module.exports = formatDate;
