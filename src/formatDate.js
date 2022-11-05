@@ -50,10 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const lastSeparator = fromFormat.pop();
-  const newSeparator = toFormat.pop();
-
-  const lastDateArr = date.split(lastSeparator);
+  const lastDateArr = date.split(fromFormat[3]);
 
   const lastDayIndex = fromFormat.indexOf('DD');
   const lastMonthIndex = fromFormat.indexOf('MM');
@@ -105,9 +102,7 @@ function formatDate(date, fromFormat, toFormat) {
   newDateArr[newMonthIndex] = month;
   newDateArr[newYearIndex] = newYear;
 
-  const newDateString = newDateArr.join(newSeparator);
-
-  return newDateString;
+  return newDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
