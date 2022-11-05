@@ -61,26 +61,26 @@ function formatDate(date, fromFormat, toFormat) {
     || inputDate[fromFormat.indexOf('YY')];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'DD') {
-      result[i] = inputDay;
-    }
+    switch (toFormat[i]) {
+      case 'DD':
+        result[i] = inputDay;
+        break;
 
-    if (toFormat[i] === 'MM') {
-      result[i] = inputMonth;
-    }
+      case 'MM':
+        result[i] = inputMonth;
+        break;
 
-    if (toFormat[i] === 'YY') {
-      result[i] = inputYear.slice(2);
-    }
+      case 'YY':
+        result[i] = result[i] = inputYear.slice(2);
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      if (+inputYear < 30) {
-        result[i] = 20 + inputYear;
-      } else if (inputYear.length === 2) {
-        result[i] = 19 + inputYear;
-      } else {
-        result[i] = inputYear;
-      }
+      case 'YYYY':
+        result[i] = inputYear < 30
+          ? 20 + inputYear
+          : inputYear.length === 2
+            ? 19 + inputYear
+            : inputYear;
+        break;
     }
   }
 
