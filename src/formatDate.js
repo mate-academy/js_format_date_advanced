@@ -51,21 +51,21 @@
 
 function formatDate(date, fromFormat, toFormat) {
   function dateDestruct(targetDate, format) {
-    const dateSeparated = date.split(fromFormat[3]);
+    const dateSeparated = targetDate.split(format[3]);
     const res = {};
 
-    for (const elem of fromFormat) {
+    for (const elem of format) {
       switch (true) {
         case elem === 'DD':
-          res.DD = dateSeparated[fromFormat.indexOf(elem)];
+          res.DD = dateSeparated[format.indexOf(elem)];
           break;
 
         case elem === 'MM':
-          res.MM = dateSeparated[fromFormat.indexOf(elem)];
+          res.MM = dateSeparated[format.indexOf(elem)];
           break;
 
         case elem.includes('YY'):
-          res.YY = dateSeparated[fromFormat.indexOf(elem)];
+          res.YY = dateSeparated[format.indexOf(elem)];
       }
     };
 
@@ -75,25 +75,25 @@ function formatDate(date, fromFormat, toFormat) {
   function dateReformat(format, dateData) {
     const newDate = [];
 
-    for (const elem of toFormat) {
+    for (const elem of format) {
       switch (true) {
         case elem === 'DD':
-          newDate.push(rawDate.DD);
+          newDate.push(dateData.DD);
           break;
 
         case elem === 'MM':
-          newDate.push(rawDate.MM);
+          newDate.push(dateData.MM);
           break;
 
         case elem.includes('YY'):
-          if (elem.length !== rawDate.YY.length) {
-            rawDate.YY = yearFormat(rawDate.YY, elem);
+          if (elem.length !== dateData.YY.length) {
+            dateData.YY = yearFormat(dateData.YY, elem);
           }
-          newDate.push(rawDate.YY);
+          newDate.push(dateData.YY);
       }
     }
 
-    return newDate.join(toFormat[3]);
+    return newDate.join(format[3]);
   };
 
   function yearFormat(currentDate, targetFormat) {
