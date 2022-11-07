@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -54,22 +55,14 @@ function formatDate(date, fromFormat, toFormat) {
   const newFormat = [];
 
   for (let i = 0; i < 3; i++) {
-    for (let k = 0; k < 3; k++) {
-      if (fromFormat[i] === 'YYYY' && toFormat[k] === 'YY') {
-        newFormat[k] = oldFormat[i].slice(2);
-      }
-
-      if (fromFormat[i] === 'YY' && toFormat[k] === 'YYYY') {
-        if (oldFormat[i] < 30) {
-          newFormat[k] = '20' + oldFormat[i];
-        } else {
-          newFormat[k] = '19' + oldFormat[i];
-        }
-      }
-
-      if (fromFormat[i] === toFormat[k]) {
-        newFormat[k] = oldFormat[i];
-      }
+    if (fromFormat[i] === ('YYYY') && toFormat.includes('YY')) {
+      newFormat[toFormat.indexOf('YY')] = oldFormat[i].slice(2);
+    } else if (fromFormat[i] === ('YY') && toFormat.includes('YYYY')) {
+      oldFormat[i] < 30
+        ? newFormat[toFormat.indexOf('YYYY')] = '20' + oldFormat[i]
+        : newFormat[toFormat.indexOf('YYYY')] = '19' + oldFormat[i];
+    } else {
+      newFormat[toFormat.indexOf(fromFormat[i])] = oldFormat[i];
     }
   }
 
