@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -50,7 +51,22 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldFormat = date.split(fromFormat[3]);
+  const newFormat = [];
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === ('YYYY') && toFormat.includes('YY')) {
+      newFormat[toFormat.indexOf('YY')] = oldFormat[i].slice(2);
+    } else if (fromFormat[i] === ('YY') && toFormat.includes('YYYY')) {
+      oldFormat[i] < 30
+        ? newFormat[toFormat.indexOf('YYYY')] = '20' + oldFormat[i]
+        : newFormat[toFormat.indexOf('YYYY')] = '19' + oldFormat[i];
+    } else {
+      newFormat[toFormat.indexOf(fromFormat[i])] = oldFormat[i];
+    }
+  }
+
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
