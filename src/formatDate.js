@@ -98,17 +98,4 @@ function formatDate(date, fromFormat, toFormat) {
   return newDate.join(newDivider);
 }
 
-//   for (let i = 0; i < fromFormat.length; i++) {
-//     for (let j = 0; j < toFormat.length; j++) {
-//       if (fromFormat[i] === toFormat[j]) {
-//         newDate[j] = dateChanged[i];
-//       }
-//     }
-//     newDate[newDate.length - 1] = toFormat[toFormat.length - 1];
-//     newDivider = newDate[newDate.length - 1];
-//   }
-
-//   return newDate.slice(0, -1).join(newDivider);
-// }
-
 module.exports = formatDate;
