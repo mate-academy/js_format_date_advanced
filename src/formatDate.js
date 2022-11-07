@@ -49,63 +49,63 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  function dateDestruct(targetDate, format) {
-    const dateSeparated = targetDate.split(format[3]);
-    const res = {};
+function dateDestruct(targetDate, format) {
+  const dateSeparated = targetDate.split(format[3]);
+  const res = {};
 
-    for (const elem of format) {
-      switch (true) {
-        case elem === 'DD':
-          res.DD = dateSeparated[format.indexOf(elem)];
-          break;
+  for (const elem of format) {
+    switch (true) {
+      case elem === 'DD':
+        res.DD = dateSeparated[format.indexOf(elem)];
+        break;
 
-        case elem === 'MM':
-          res.MM = dateSeparated[format.indexOf(elem)];
-          break;
+      case elem === 'MM':
+        res.MM = dateSeparated[format.indexOf(elem)];
+        break;
 
-        case elem.includes('YY'):
-          res.YY = dateSeparated[format.indexOf(elem)];
-      }
-    };
-
-    return res;
+      case elem.includes('YY'):
+        res.YY = dateSeparated[format.indexOf(elem)];
+    }
   };
 
-  function dateReformat(format, dateData) {
-    const newDate = [];
+  return res;
+};
 
-    for (const elem of format) {
-      switch (true) {
-        case elem === 'DD':
-          newDate.push(dateData.DD);
-          break;
+function dateReformat(format, dateData) {
+  const newDate = [];
 
-        case elem === 'MM':
-          newDate.push(dateData.MM);
-          break;
+  for (const elem of format) {
+    switch (true) {
+      case elem === 'DD':
+        newDate.push(dateData.DD);
+        break;
 
-        case elem.includes('YY'):
-          if (elem.length !== dateData.YY.length) {
-            dateData.YY = yearFormat(dateData.YY, elem);
-          }
-          newDate.push(dateData.YY);
-      }
+      case elem === 'MM':
+        newDate.push(dateData.MM);
+        break;
+
+      case elem.includes('YY'):
+        if (elem.length !== dateData.YY.length) {
+          dateData.YY = yearFormat(dateData.YY, elem);
+        }
+        newDate.push(dateData.YY);
     }
-
-    return newDate.join(format[3]);
-  };
-
-  function yearFormat(currentDate, targetFormat) {
-    if (currentDate.length > targetFormat.length) {
-      return currentDate.slice(2);
-    } else if (currentDate < 30) {
-      return '20' + currentDate;
-    }
-
-    return '19' + currentDate;
   }
 
+  return newDate.join(format[3]);
+};
+
+function yearFormat(currentDate, targetFormat) {
+  if (currentDate.length > targetFormat.length) {
+    return currentDate.slice(2);
+  } else if (currentDate < 30) {
+    return '20' + currentDate;
+  }
+
+  return '19' + currentDate;
+}
+
+function formatDate(date, fromFormat, toFormat) {
   const rawDate = dateDestruct(date, fromFormat);
 
   return dateReformat(toFormat, rawDate);
