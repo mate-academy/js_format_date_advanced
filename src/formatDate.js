@@ -50,59 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const lastDateArr = date.split(fromFormat[3]);
+  const fromDateArr = date.split(fromFormat[3]);
 
-  const lastDayIndex = fromFormat.indexOf('DD');
-  const lastMonthIndex = fromFormat.indexOf('MM');
-  const lastYearLongIndex = fromFormat.indexOf('YYYY');
-  const lastYearShortIndex = fromFormat.indexOf('YY');
+  const fromDayIndex = fromFormat.indexOf('DD');
+  const fromMonthIndex = fromFormat.indexOf('MM');
+  const fromYearLongIndex = fromFormat.indexOf('YYYY');
+  const fromYearShortIndex = fromFormat.indexOf('YY');
 
-  const newDayIndex = toFormat.indexOf('DD');
-  const newMonthIndex = toFormat.indexOf('MM');
-  const newYearLongIndex = toFormat.indexOf('YYYY');
-  const newYearShortIndex = toFormat.indexOf('YY');
-  let newYearIndex = null;
+  const toDayIndex = toFormat.indexOf('DD');
+  const toMonthIndex = toFormat.indexOf('MM');
+  const toYearLongIndex = toFormat.indexOf('YYYY');
+  const toYearShortIndex = toFormat.indexOf('YY');
+  let toYearIndex = null;
 
-  const day = lastDateArr[lastDayIndex];
-  const month = lastDateArr[lastMonthIndex];
+  const day = fromDateArr[fromDayIndex];
+  const month = fromDateArr[fromMonthIndex];
 
-  let lastYear = null;
-  let newYear = null;
+  let fromYear = null;
+  let toYear = null;
 
-  if (lastYearLongIndex === -1) {
-    lastYear = lastDateArr[lastYearShortIndex];
+  if (fromYearLongIndex === -1) {
+    fromYear = fromDateArr[fromYearShortIndex];
 
-    if (newYearLongIndex === -1) {
-      newYear = lastYear;
-      newYearIndex = newYearShortIndex;
+    if (toYearLongIndex === -1) {
+      toYear = fromYear;
+      toYearIndex = toYearShortIndex;
     } else {
-      newYearIndex = newYearLongIndex;
+      toYearIndex = toYearLongIndex;
 
-      if (lastYear < 30) {
-        newYear = '20' + lastYear;
+      if (fromYear < 30) {
+        toYear = '20' + fromYear;
       } else {
-        newYear = '19' + lastYear;
+        toYear = '19' + fromYear;
       }
     }
   } else {
-    lastYear = lastDateArr[lastYearLongIndex];
+    fromYear = fromDateArr[fromYearLongIndex];
 
-    if (newYearShortIndex === -1) {
-      newYear = lastYear;
-      newYearIndex = newYearLongIndex;
+    if (toYearShortIndex === -1) {
+      toYear = fromYear;
+      toYearIndex = toYearLongIndex;
     } else {
-      newYear = lastYear.slice(-2);
-      newYearIndex = newYearShortIndex;
+      toYear = fromYear.slice(-2);
+      toYearIndex = toYearShortIndex;
     }
   }
 
-  const newDateArr = [];
+  const toDateArr = [];
 
-  newDateArr[newDayIndex] = day;
-  newDateArr[newMonthIndex] = month;
-  newDateArr[newYearIndex] = newYear;
+  toDateArr[toDayIndex] = day;
+  toDateArr[toMonthIndex] = month;
+  toDateArr[toYearIndex] = toYear;
 
-  return newDateArr.join(toFormat[3]);
+  return toDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
