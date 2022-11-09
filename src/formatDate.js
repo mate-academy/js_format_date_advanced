@@ -57,42 +57,52 @@ function formatDate(date, fromFormat, toFormat) {
   let day, month, year;
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = dateParts[i];
-    }
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateParts[i];
-    }
+      case 'MM':
+        month = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'YYYY') {
-      year = dateParts[i];
-    }
+      case 'YYYY':
+        year = dateParts[i];
+        break;
 
-    if (fromFormat[i] === 'YY') {
-      if (+dateParts[i] < 30) {
-        year = 20 + dateParts[i];
-      } else {
-        year = 19 + dateParts[i];
-      }
+      case 'YY':
+        if (+dateParts[i] < 30) {
+          year = 20 + dateParts[i];
+        } else {
+          year = 19 + dateParts[i];
+        }
+        break;
+
+      default:
+        throw new Error('unspecified format to conver from');
     }
   }
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'DD') {
-      finalResult[i] = day;
-    }
+    switch (toFormat[i]) {
+      case 'DD':
+        finalResult[i] = day;
+        break;
 
-    if (toFormat[i] === 'MM') {
-      finalResult[i] = month;
-    }
+      case 'MM':
+        finalResult[i] = month;
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      finalResult[i] = year;
-    }
+      case 'YYYY':
+        finalResult[i] = year;
+        break;
 
-    if (toFormat[i] === 'YY') {
-      finalResult[i] = year.slice(2);
+      case 'YY':
+        finalResult[i] = year.slice(2);
+        break;
+
+      default:
+        throw new Error('unspecified format to convert into');
     }
   }
 
