@@ -51,15 +51,11 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = new Array(toFormat.length - 1);
-  let divider = '';
-  let newDivider = '';
+  const divider = fromFormat[fromFormat.length - 1];
 
-  for (const char of date) {
-    if (isNaN(char)) {
-      divider = char;
-      break;
-    }
-  }
+  ;
+
+  let newDivider = '';
 
   const dateChanged = date.split(divider);
   const fromD = fromFormat.indexOf('DD');
