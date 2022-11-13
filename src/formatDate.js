@@ -51,6 +51,53 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const searchValue = date;
+  const from = fromFormat;
+  const to = toFormat;
+  const result = [];
+
+  const splitted = searchValue.split(from[3]);
+
+  function yearsInfo(array) {
+    const years = {};
+
+    for (const item in array) {
+      if (array[item].includes('YY')) {
+        years.index = +item; ;
+        years.length = array[item].length;
+      }
+    }
+
+    return years;
+  }
+
+  const yearsInfo2 = yearsInfo(from);
+  const yearsInfo3 = yearsInfo(to);
+  const { index } = yearsInfo2;
+  const lengthAfter = yearsInfo3.length;
+  const indexhAfter = yearsInfo3.index;
+
+  let finalYears = splitted[index];
+
+  if (lengthAfter === 4 && finalYears.length === 2) {
+    if (finalYears > 23) {
+      finalYears = 19 + finalYears;
+    } else {
+      finalYears = 20 + finalYears;
+    }
+  }
+
+  if (lengthAfter === 2 && finalYears.length === 4) {
+    finalYears = finalYears.slice(2);
+  }
+
+  result[indexhAfter] = finalYears;
+  result[to.indexOf('DD')] = splitted[from.indexOf('DD')];
+  result[to.indexOf('MM')] = splitted[from.indexOf('MM')];
+
+  const joined = result.join(to[3]);
+
+  return joined;
 }
 
 module.exports = formatDate;
