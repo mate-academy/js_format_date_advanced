@@ -74,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YY':
         objDate['YYYY'] = objDate['YYYY'].slice(-2);
 
-        result.push(objDate['YY'] ?? objDate['YYYY']);
+        result.push(objDate['YY'] || objDate['YYYY']);
         break;
 
       case 'YYYY':
@@ -84,7 +84,7 @@ function formatDate(date, fromFormat, toFormat) {
           objDate['YY'] = '19' + objDate['YY'];
         }
 
-        result.push(objDate['YYYY'] ?? objDate['YY']);
+        result.push(objDate['YYYY'] || objDate['YY']);
         break;
     }
   }
