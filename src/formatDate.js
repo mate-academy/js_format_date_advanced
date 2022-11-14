@@ -57,45 +57,43 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YY':
-        dateObject.year = initialDate[i];
+        dateObject.YY = initialDate[i];
         break;
       case 'YYYY':
-        dateObject.year = initialDate[i];
+        dateObject.YYYY = initialDate[i];
         break;
       case 'MM':
-        dateObject.month = initialDate[i];
+        dateObject.MM = initialDate[i];
         break;
       case 'DD':
-        dateObject.day = initialDate[i];
+        dateObject.DD = initialDate[i];
         break;
     }
   }
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    dateObject.year = dateObject.year.slice(2);
+    dateObject.YY = dateObject.YYYY.slice(2);
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (dateObject.year < 30) {
-      dateObject.year = '20' + dateObject.year;
-    } else {
-      dateObject.year = '19' + dateObject.year;
-    }
+    dateObject.YYYY = (dateObject.YY < 30)
+      ? (dateObject.YYYY = '20' + dateObject.YY)
+      : (dateObject.YYYY = '19' + dateObject.YY);
   }
 
   for (const char of toFormat) {
     switch (char) {
       case 'YY':
-        finalArray.push(dateObject.year);
+        finalArray.push(dateObject.YY);
         break;
       case 'YYYY':
-        finalArray.push(dateObject.year);
+        finalArray.push(dateObject.YYYY);
         break;
       case 'MM':
-        finalArray.push(dateObject.month);
+        finalArray.push(dateObject.MM);
         break;
       case 'DD':
-        finalArray.push(dateObject.day);
+        finalArray.push(dateObject.DD);
         break;
     }
   }
