@@ -51,33 +51,35 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
-  const day = dateArr[fromFormat.indexOf('DD')];
-  const month = dateArr[fromFormat.indexOf('MM')];
   const oldYearIndex = fromFormat.indexOf('YY') === -1
     ? fromFormat.indexOf('YYYY') : fromFormat.indexOf('YY');
-  let year = dateArr[oldYearIndex];
+
+  const dateObj = {
+    day: dateArr[fromFormat.indexOf('DD')],
+    month: dateArr[fromFormat.indexOf('MM')],
+    year: dateArr[oldYearIndex],
+  };
 
   const newDateArr = [];
 
-  newDateArr[toFormat.indexOf('DD')] = day;
-  newDateArr[toFormat.indexOf('MM')] = month;
+  newDateArr[toFormat.indexOf('DD')] = dateObj.day;
+  newDateArr[toFormat.indexOf('MM')] = dateObj.month;
 
   const newYearIndex = toFormat.indexOf('YY') === -1
     ? toFormat.indexOf('YYYY') : toFormat.indexOf('YY');
 
-  if (year.length !== toFormat[newYearIndex].length) {
-    if (year.length === 2) {
-      if (year < 30) {
-        year = `20${year}`;
-      } else {
-        year = `19${year}`;
-      }
-    } else {
-      year = year.slice(2);
-    }
-  };
+  const currentYearFormat = dateObj.year.length;
+  const expectedYearFormat = toFormat[newYearIndex].length;
 
-  newDateArr[newYearIndex] = year;
+  if (currentYearFormat > expectedYearFormat) {
+    dateObj.year = dateObj.year.slice(2);
+  } else if (currentYearFormat < expectedYearFormat && dateObj.year < 30) {
+    dateObj.year = `20${dateObj.year}`;
+  } else if (currentYearFormat < expectedYearFormat && dateObj.year >= 30) {
+    dateObj.year = `19${dateObj.year}`;
+  }
+
+  newDateArr[newYearIndex] = dateObj.year;
 
   return newDateArr.join(toFormat[3]);
 }
