@@ -55,29 +55,29 @@ function formatDate(date, fromFormat, toFormat) {
   const originalDate = date.split(firstDivider);
 
   const reverseDate = [];
-  let year;
-  let month;
-  let day;
+  const dateObj = {
+
+  };
 
   for (let i = 0; i < 3; i++) {
     switch (fromFormat[i]) {
       case 'DD':
-        day = originalDate[i];
+        dateObj.DD = originalDate[i];
         break;
 
       case 'MM':
-        month = originalDate[i];
+        dateObj.MM = originalDate[i];
         break;
 
       case 'YYYY':
-        year = originalDate[i];
+        dateObj.YYYY = originalDate[i];
         break;
 
       case 'YY':
         if (+originalDate[i] < 30) {
-          year = 20 + originalDate[i];
+          dateObj.YYYY = 20 + originalDate[i];
         } else {
-          year = 19 + originalDate[i];
+          dateObj.YYYY = 19 + originalDate[i];
         }
         break;
     }
@@ -86,16 +86,16 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < 3; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        reverseDate.push(day);
+        reverseDate.push(dateObj.DD);
         break;
       case 'MM':
-        reverseDate.push(month);
+        reverseDate.push(dateObj.MM);
         break;
       case 'YYYY':
-        reverseDate.push(year);
+        reverseDate.push(dateObj.YYYY);
         break;
       case 'YY':
-        reverseDate[i] = year.slice(2);
+        reverseDate[i] = dateObj.YYYY.slice(2);
         break;
     }
   }
