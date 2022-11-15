@@ -51,6 +51,37 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dataArr = date.split(fromFormat[3]);
+  const updatedDate = [];
+  const updatedYear = (lengthDiff, year) => {
+    if (lengthDiff > 0) {
+      return year < 30 ? `20${year}` : `19${year}`;
+    } else if (lengthDiff < 0) {
+      return year.slice(2);
+    }
+
+    return year;
+  };
+
+  const yearData = (format) => {
+    for (let i = 0; i < format.length; i++) {
+      if (format[i].includes('Y')) {
+        return [i, format[i].length];
+      }
+    }
+  };
+
+  for (let i = 0; i < 3; i++) {
+    if (!(toFormat[i].includes('Y'))) {
+      updatedDate.push(dataArr[fromFormat.indexOf(toFormat[i])]);
+    } else {
+      const lenDiff = yearData(toFormat)[1] - yearData(fromFormat)[1];
+
+      updatedDate.push(updatedYear(lenDiff, dataArr[yearData(fromFormat)[0]]));
+    }
+  }
+
+  return updatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
