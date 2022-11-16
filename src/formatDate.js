@@ -50,46 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateSplited = date.split(fromFormat[fromFormat.length - 1]);
-  const glue = toFormat[toFormat.length - 1];
+  const dateToArray = date.split(fromFormat.slice(-1));
 
-  const objDate = {};
+  const dateToObject = {};
 
   const result = [];
 
-  for (let i = 0; i < dateSplited.length; i++) {
-    Object.assign(objDate, { [fromFormat[i]]: dateSplited[i] });
+  for (let i = 0; i < dateToArray.length; i++) {
+    Object.assign(dateToObject, { [fromFormat[i]]: dateToArray[i] });
   }
 
   for (const part of toFormat) {
     switch (part) {
       case 'DD':
-        result.push(objDate[part]);
-        break;
-
       case 'MM':
-        result.push(objDate[part]);
+        result.push(dateToObject[part]);
         break;
 
       case 'YY':
-        objDate['YYYY'] = objDate['YYYY'].slice(-2);
+        dateToObject['YYYY'] = dateToObject['YYYY'].slice(-2);
 
-        result.push(objDate['YY'] || objDate['YYYY']);
+        result.push(dateToObject['YY'] || dateToObject['YYYY']);
         break;
 
       case 'YYYY':
-        if (+objDate['YY'] < 30) {
-          objDate['YY'] = '20' + objDate['YY'];
+        if (+dateToObject['YY'] < 30) {
+          dateToObject['YY'] = '20' + dateToObject['YY'];
         } else {
-          objDate['YY'] = '19' + objDate['YY'];
+          dateToObject['YY'] = '19' + dateToObject['YY'];
         }
 
-        result.push(objDate['YYYY'] || objDate['YY']);
+        result.push(dateToObject['YYYY'] || dateToObject['YY']);
         break;
     }
   }
 
-  return result.join(glue);
+  return result.join(toFormat.slice(-1));
 }
 
 module.exports = formatDate;
