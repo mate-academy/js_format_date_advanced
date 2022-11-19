@@ -51,6 +51,54 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const fromDayArray = date.split(fromFormat[3]);
+
+  const newObject = {};
+
+  newObject[`${fromFormat[0]}`] = fromDayArray[0];
+  newObject[`${fromFormat[1]}`] = fromDayArray[1];
+  newObject[`${fromFormat[2]}`] = fromDayArray[2];
+
+  const toDayArray = [];
+
+  for (let i = 0; i < 3; i++) {
+    for (const key in newObject) {
+      if (toFormat[i] === key) {
+        toDayArray[i] = newObject[key];
+      }
+
+      switch (key) {
+        case 'YY':
+          switch (toFormat[i]) {
+            case 'YY':
+              toDayArray[i] = newObject[key];
+              break;
+            case 'YYYY':
+              if (Number(newObject[key]) >= 30) {
+                toDayArray[i] = '19' + newObject[key];
+              } else {
+                toDayArray[i] = '20' + newObject[key];
+              }
+              break;
+          }
+          break;
+        case 'YYYY':
+          switch (toFormat[i]) {
+            case 'YYYY':
+              toDayArray[i] = newObject[key];
+              break;
+            case 'YY':
+              toDayArray[i] = newObject[key][2] + newObject[key][3];
+              break;
+          }
+          break;
+      }
+    }
+  }
+
+  const resultString = toDayArray.join(toFormat[3]);
+
+  return resultString;
 }
 
 module.exports = formatDate;
