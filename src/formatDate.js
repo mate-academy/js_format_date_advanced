@@ -60,43 +60,24 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   for (let i = 0; i < 3; i++) {
-    switch (fromFormat[i]) {
-      case 'DD':
-        dateObj.DD = originalDate[i];
-        break;
+    dateObj[fromFormat[i]] = originalDate[i];
 
-      case 'MM':
-        dateObj.MM = originalDate[i];
-        break;
-
-      case 'YYYY':
-        dateObj.YYYY = originalDate[i];
-        break;
-
-      case 'YY':
-        if (+originalDate[i] < 30) {
-          dateObj.YYYY = 20 + originalDate[i];
-        } else {
-          dateObj.YYYY = 19 + originalDate[i];
-        }
-        break;
+    if (fromFormat[i] === 'YY') {
+      if (+originalDate[i] < 30) {
+        dateObj.YYYY = 20 + originalDate[i];
+      } else {
+        dateObj.YYYY = 19 + originalDate[i];
+      }
     }
   }
 
   for (let i = 0; i < 3; i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-        reverseDate.push(dateObj.DD);
-        break;
-      case 'MM':
-        reverseDate.push(dateObj.MM);
-        break;
-      case 'YYYY':
-        reverseDate.push(dateObj.YYYY);
-        break;
-      case 'YY':
-        reverseDate[i] = dateObj.YYYY.slice(2);
-        break;
+    reverseDate[i] = dateObj[toFormat[i]];
+
+    if (toFormat[i] === 'YY') {
+      reverseDate[i] = dateObj.YYYY.slice(2);
+    } else if (toFormat[i] === 'YYYY') {
+      reverseDate[i] = dateObj.YYYY;
     }
   }
 
