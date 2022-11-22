@@ -51,35 +51,49 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const initialDateFromat = date.split(fromFormat[3]);
-  const result = [];
+  const initialDate = {};
+  const fullYearFormat = 'YYYY';
+  const shortYearFormat = 'YY';
+  const formatedDate = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === fullYearFormat) {
+      initialDate[fromFormat[i]] = initialDateFromat[i];
+    }
+
+    if (fromFormat[i] === shortYearFormat) {
+      initialDate[fullYearFormat] = +initialDateFromat[i] < 30
+        ? `20${initialDateFromat[i]}`
+        : `19${initialDateFromat[i]}`;
+    }
+
+    initialDate[fromFormat[i]] = initialDateFromat[i];
+  }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    for (let j = 0; j < fromFormat.length - 1; j++) {
-      if (fromFormat[j] === toFormat[i]) {
-        result.push(initialDateFromat[j]);
-      }
+    switch (toFormat[i]) {
+      case 'DD':
+        formatedDate.push(initialDate[toFormat[i]]);
+        break;
 
-      if (fromFormat[j] === 'YYYY' && toFormat[i] === 'YY') {
-        result.push(initialDateFromat[j].slice(2));
-      }
+      case 'MM':
+        formatedDate.push(initialDate[toFormat[i]]);
+        break;
 
-      if (fromFormat[j] === 'YY'
-        && toFormat[i] === 'YYYY'
-        && initialDateFromat[j] < 30
-      ) {
-        result.push(`20${initialDateFromat[j]}`);
-      }
+      case 'YY':
+        formatedDate.push(initialDate[fullYearFormat].slice(-2));
+        break;
 
-      if (fromFormat[j] === 'YY'
-        && toFormat[i] === 'YYYY'
-        && initialDateFromat[j] >= 30
-      ) {
-        result.push(`19${initialDateFromat[j]}`);
-      }
+      case 'YYYY':
+        formatedDate.push(initialDate[toFormat[i]]);
+        break;
+
+      default:
+        throw new Error();
     }
   }
 
-  return result.join(toFormat[3]);
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
