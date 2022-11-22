@@ -55,13 +55,11 @@ function formatDate(date, fromFormat, toFormat) {
   const dateResult = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      dateObject.DD = splitedDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      dateObject.MM = splitedDate[i];
-    } else {
+    dateObject[fromFormat[i]] = splitedDate[i];
+
+    if (fromFormat[i].includes('Y')) {
       if (splitedDate[i].length === 2) {
-        if (splitedDate[i] < 25) {
+        if (splitedDate[i] < 30) {
           dateObject.YYYY = '20' + splitedDate[i];
         } else {
           dateObject.YYYY = '19' + splitedDate[i];
