@@ -50,9 +50,11 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateItem = date.split(fromFormat[3]);
   const dateFrom = {};
-  const result = [];
+  const finallDate = [];
+  const separatorfromFormat = fromFormat[3];
+  const separatorToFormat = toFormat[3];
+  const dateItem = date.split(separatorfromFormat);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY') {
@@ -61,20 +63,20 @@ function formatDate(date, fromFormat, toFormat) {
       } else {
         dateFrom['YYYY'] = `19${dateItem[i]}`;
       }
-    } else {
-      dateFrom[fromFormat[i]] = dateItem[i];
     }
+
+    dateFrom[fromFormat[i]] = dateItem[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY') {
-      result.push(dateFrom['YYYY'].slice(2));
+      finallDate.push(dateFrom['YYYY'].slice(2));
     } else {
-      result.push(dateFrom[toFormat[i]]);
+      finallDate.push(dateFrom[toFormat[i]]);
     }
   }
 
-  return result.join(toFormat[3]);
+  return finallDate.join(separatorToFormat);
 }
 
 module.exports = formatDate;
