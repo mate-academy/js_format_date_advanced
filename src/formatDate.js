@@ -51,9 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const initialDateFromat = date.split(fromFormat[3]);
-  const initialDate = {};
   const fullYearFormat = 'YYYY';
   const shortYearFormat = 'YY';
+  const initialDate = {};
   const formatedDate = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
