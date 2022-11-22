@@ -50,35 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let result = [];
-  let dateOld = [];
-  const dateNew = [];
+  const newDate = date.split(fromFormat[3]);
+  const newFormat = fromFormat.slice(0, 3);
+  const newToFormat = toFormat.slice(0, 3);
+  const format = {};
+  const result = [];
 
-  dateOld = date.split(fromFormat[3]);
+  newFormat.forEach((key, index) => {
+    format[key] = newDate[index];
+  });
 
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (fromFormat[i][0] === toFormat[j][0]) {
-        if ((fromFormat[i][0] === 'Y') && (fromFormat[i].length === 2)
-        && (toFormat[j].length === 4)) {
-          if (dateOld[i] > '22') {
-            dateOld[i] = '19' + dateOld[i];
-          } else {
-            dateOld[i] = '20' + dateOld[i];
-          }
-        } else if ((fromFormat[i][0] === 'Y') && (fromFormat[i].length === 4)
-        && (toFormat[j].length === 2)) {
-          dateOld[i] = dateOld[i].slice(2);
+  newToFormat.forEach((key) => {
+    if (key in format) {
+      result.push(format[key]);
+    } else {
+      let year;
+
+      if (key === 'YY') {
+        year = format['YYYY'];
+        year = year.slice(2, 4);
+      } else {
+        year = format['YY'];
+
+        if (year > '22') {
+          year = '19' + year;
+        } else {
+          year = '20' + year;
         }
-
-        dateNew[j] = dateOld[i];
       }
+
+      result.push(year);
     }
-  }
+  });
 
-  result = dateNew.join(toFormat[3]);
-
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
