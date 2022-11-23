@@ -51,38 +51,44 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const beforSeparator = fromFormat[3];
-  const dateBefor = date.split(beforSeparator);
+  const dateBefore = date.split(beforSeparator);
   const dateObject = {};
+  const yearFormatFull = 'YYYY';
+  const yearFormatShort = 'YY';
+  const monthFormat = 'MM';
+  const dayFormat = 'DD';
 
-  for (let i = 0; i < dateBefor.length; i++) {
-    if (fromFormat[i] === 'YYYY') {
-      dateObject.year = dateBefor[i];
+  for (let i = 0; i < dateBefore.length; i++) {
+    if (fromFormat[i] === yearFormatFull) {
+      dateObject.year = dateBefore[i];
     }
 
-    if (fromFormat[i] === 'YY') {
-      dateObject.year = +dateBefor[i] < 30
-        ? '20' + dateBefor[i]
-        : '19' + dateBefor[i];
+    if (fromFormat[i] === yearFormatShort) {
+      dateObject.year = +dateBefore[i] < 30
+        ? '20' + dateBefore[i]
+        : '19' + dateBefore[i];
     }
-    dateObject[fromFormat[i]] = dateBefor[i];
+    dateObject[fromFormat[i]] = dateBefore[i];
   }
 
   const dateAfter = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
-      case 'YYYY':
+      case yearFormatFull:
         dateAfter[i] = dateObject.year;
         break;
-      case 'YY':
+      case yearFormatShort:
         dateAfter[i] = dateObject.year.slice(-2);
         break;
-      case 'MM':
+      case monthFormat:
         dateAfter[i] = dateObject[toFormat[i]];
         break;
-      case 'DD':
+      case dayFormat:
         dateAfter[i] = dateObject[toFormat[i]];
         break;
+      default:
+        throw new Error('Input data is not valid');
     }
   }
 
