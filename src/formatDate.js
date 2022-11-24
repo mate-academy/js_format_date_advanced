@@ -51,9 +51,9 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateSplit = date.split(fromFormat[3]);
 
-  return toFormat.slice(0, 3).reduce((accumilator, current, i) => {
+  return toFormat.slice(0, 3).reduce((accumulator, current, i) => {
     const index = fromFormat.findIndex(field => current === field);
-    let running;
+    let running; // variable to add to compilation for each date field
 
     if (index !== -1) { // exact value taken from the initial date
       running = dateSplit[index];
@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
       running = dateSplit[fromFormat.indexOf('YYYY')].substring(2);
     }
 
-    return accumilator + running + ((i !== 2) ? toFormat[3] : '');
+    return accumulator + running + ((i !== 2) ? toFormat[3] : '');
   }, '');
 }
 
