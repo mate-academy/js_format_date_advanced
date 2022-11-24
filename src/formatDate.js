@@ -49,56 +49,24 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dictionary = {};
-  const dateValues = date.split(fromFormat[3]);
+  const dateSplit = date.split(fromFormat[3]);
 
-  // destructuring fromFormat into a dictionary
-  // for reading the parameter date
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      dictionary['DD'] = dateValues[i];
-    } else if (fromFormat[i] === 'MM') {
-      dictionary['MM'] = dateValues[i];
-    } else if (fromFormat[i] === 'YY') {
-      dictionary['YY'] = dateValues[i];
-    } else if (fromFormat[i] === 'YYYY') {
-      dictionary['YYYY'] = dateValues[i];
-    }
-  }
+  return toFormat.slice(0, 3).reduce((accumilator, current, i) => {
+    const index = fromFormat.findIndex(field => current === field);
+    let running;
 
-  let result = '';
+    if (index !== -1) { // exact value taken from the initial date
+      running = dateSplit[index];
+    } else if (current === 'YYYY') { // value is asked in YYYY format
+      const years = dateSplit[fromFormat.indexOf('YY')]; // date in YY format
 
-  // applying dictionary with toFormat
-  // to create the result (resulting date)
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      result += dictionary['DD'];
-    } else if (toFormat[i] === 'MM') {
-      result += dictionary['MM'];
-    } else if (toFormat[i] === 'YY') {
-      if ('YY' in dictionary) {
-        result += dictionary['YY'];
-      } else {
-        result += dictionary['YYYY'].substring(2);
-      }
-    } else if (toFormat[i] === 'YYYY') {
-      if ('YYYY' in dictionary) {
-        result += dictionary['YYYY'];
-      } else {
-        if (dictionary['YY'][0] < '3') {
-          result += '20' + dictionary['YY'];
-        } else {
-          result += '19' + dictionary['YY'];
-        }
-      }
+      running = years[0] < 3 ? '20' + years : '19' + years; // century added
+    } else if (current === 'YY') { // value is asked in YY format
+      running = dateSplit[fromFormat.indexOf('YYYY')].substring(2);
     }
 
-    if (i !== 2) {
-      result += toFormat[3];
-    }
-  }
-
-  return result;
+    return accumilator + running + ((i !== 2) ? toFormat[3] : '');
+  }, '');
 }
 
 module.exports = formatDate;
