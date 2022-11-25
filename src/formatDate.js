@@ -49,8 +49,56 @@
  * @returns {string}
  */
 
+const yearFormat = (to, year) => {
+  switch (true) {
+    case to === 'YY' && year.length === 4:
+      return year.slice(2);
+    case to === 'YYYY' && year.length === 2:
+      return parseInt(year) < 30 ? '20' + year : '19' + year;
+    default:
+      return year;
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [, , , fromSep] = fromFormat;
+  const [, , , toSep] = toFormat;
+  const dateArr = date.split(fromSep);
+
+  let day;
+  let month;
+  let year;
+  const resArr = [];
+
+  fromFormat.forEach((e, index) => {
+    if (e === 'YYYY' || e === 'YY') {
+      year = dateArr[index];
+    }
+
+    if (e === 'MM') {
+      month = dateArr[index];
+    }
+
+    if (e === 'DD') {
+      day = dateArr[index];
+    }
+  });
+
+  toFormat.forEach((d, i) => {
+    if (d === 'YYYY' || d === 'YY') {
+      resArr[i] = yearFormat(d, year);
+    }
+
+    if (d === 'MM') {
+      resArr[i] = month;
+    }
+
+    if (d === 'DD') {
+      resArr[i] = day;
+    }
+  });
+
+  return resArr.join(toSep);
 }
 
 module.exports = formatDate;
