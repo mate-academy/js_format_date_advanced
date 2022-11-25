@@ -50,7 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateInArrey = date.split(fromFormat[3]);
+  const yearFull = 'YYYY';
+  const yearShort = 'YY';
+  const month = 'MM';
+  const day = 'DD';
+  const sortNum = {};
+  const sortedArr = [];
+
+  for (let i = 0; i < dateInArrey.length; i++) {
+    if (fromFormat[i] === day) {
+      sortNum[day] = dateInArrey[i];
+    }
+
+    if (fromFormat[i] === month) {
+      sortNum[month] = dateInArrey[i];
+    }
+
+    if (fromFormat[i] === yearFull || fromFormat[i] === yearShort) {
+      sortNum.year = dateInArrey[i];
+    }
+  }
+
+  for (let i = 0; i < dateInArrey.length; i++) {
+    if (toFormat[i] === day) {
+      sortedArr.push(sortNum[day]);
+    }
+
+    if (toFormat[i] === month) {
+      sortedArr.push(sortNum[month]);
+    }
+
+    if (toFormat[i] === yearFull) {
+      if (!(sortNum.year.length === 4)) {
+        const newForm = sortNum.year < 30 ? `20${sortNum.year}` : `19${sortNum.year}`;
+
+        sortedArr.push(newForm);
+      } else {
+        sortedArr.push(sortNum.year);
+      }
+    }
+
+    if (toFormat[i] === yearShort) {
+      if (!(sortNum.year.length === 2)) {
+        const newForm = sortNum.year.slice(-2);
+
+        sortedArr.push(newForm);
+      } else {
+        sortedArr.push(sortNum.year);
+      }
+    }
+  }
+
+  return sortedArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
