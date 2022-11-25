@@ -50,7 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = {
+    year: '',
+    month: '',
+    day: '',
+    separator: fromFormat[fromFormat.length - 1],
+  };
+
+  const separateDate = date.split(dateParts.separator);
+
+  for (const partFrom of fromFormat) {
+    switch (partFrom) {
+      case 'YY':
+        dateParts.year = separateDate[fromFormat.indexOf(partFrom)];
+        break;
+
+      case 'YYYY':
+        dateParts.year = separateDate[fromFormat.indexOf(partFrom)];
+        break;
+
+      case 'MM':
+        dateParts.month = separateDate[fromFormat.indexOf(partFrom)];
+        break;
+
+      case 'DD':
+        dateParts.day = separateDate[fromFormat.indexOf(partFrom)];
+        break;
+    }
+  }
+
+  for (const partTo of toFormat) {
+    switch (partTo) {
+      case 'YY':
+        if (partTo.length === dateParts.year.length) {
+          toFormat[toFormat.indexOf(partTo)] = dateParts.year;
+          break;
+        } else {
+          toFormat[toFormat.indexOf(partTo)]
+          = dateParts.year.slice(2, dateParts.year.length);
+          break;
+        }
+
+      case 'YYYY':
+        if (partTo.length === dateParts.year.length) {
+          toFormat[toFormat.indexOf(partTo)] = dateParts.year;
+          break;
+        } else {
+          toFormat[toFormat.indexOf(partTo)] = (parseInt(dateParts.year) >= 30)
+            ? '19' + dateParts.year
+            : '20' + dateParts.year;
+          break;
+        }
+
+      case 'MM':
+        toFormat[toFormat.indexOf(partTo)] = dateParts.month;
+        break;
+
+      case 'DD':
+        toFormat[toFormat.indexOf(partTo)] = dateParts.day;
+        break;
+    }
+  }
+
+  return toFormat.join(toFormat.pop());
 }
 
 module.exports = formatDate;
