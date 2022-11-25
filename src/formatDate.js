@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  return toDate(toFormat, separateDate(fromFormat, date));
 }
 
 module.exports = formatDate;
+
+function separateDate(format, date) {
+  const dateArr = date.split(format[3]);
+
+  const dateObj = {};
+
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YYYY') {
+      dateObj.year = dateArr[i];
+    }
+
+    if (format[i] === 'YY') {
+      dateObj.year = dateArr[i];
+    }
+
+    if (format[i] === 'DD') {
+      dateObj.day = dateArr[i];
+    }
+
+    if (format[i] === 'MM') {
+      dateObj.month = dateArr[i];
+    }
+  }
+
+  return dateObj;
+}
+
+function toDate(format, dateObj) {
+  const dateArr = [];
+
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YYYY') {
+      if (dateObj.year.length === 2 && dateObj.year < 30) {
+        dateArr.push(`20${dateObj.year}`);
+      } else if (dateObj.year.length === 2 && dateObj.year >= 30) {
+        dateArr.push(`19${dateObj.year}`);
+      } else {
+        dateArr.push(dateObj.year);
+      }
+    }
+
+    if (format[i] === 'YY') {
+      if (dateObj.year.length === 4) {
+        dateArr.push(dateObj.year.slice(2));
+      } else {
+        dateArr.push(dateObj.year);
+      }
+    }
+
+    if (format[i] === 'DD') {
+      dateArr.push(dateObj.day);
+    }
+
+    if (format[i] === 'MM') {
+      dateArr.push(dateObj.month);
+    }
+  }
+
+  return dateArr.join(format[3]);
+}
