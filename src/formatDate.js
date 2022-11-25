@@ -57,24 +57,14 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     dateObject[fromFormat[i]] = splitedDate[i];
 
-    if (fromFormat[i].includes('Y')) {
-      if (splitedDate[i].length === 2) {
-        if (splitedDate[i] < 30) {
-          dateObject.YYYY = '20' + splitedDate[i];
-        } else {
-          dateObject.YYYY = '19' + splitedDate[i];
-        }
-      } else {
-        dateObject.YYYY = splitedDate[i];
-      }
+    if (fromFormat[i] === 'YY') {
+      convertingDate(dateObject, splitedDate[i]);
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      dateResult.push(dateObject.DD);
-    } else if (toFormat[i] === 'MM') {
-      dateResult.push(dateObject.MM);
+    if (toFormat[i] !== 'YY') {
+      dateResult.push(dateObject[toFormat[i]]);
     } else {
       if (toFormat[i].length === 2) {
         dateResult.push(dateObject.YYYY.slice(2, 4));
@@ -85,6 +75,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return dateResult.join(toFormat[3]);
+}
+
+function convertingDate(dateObject, splitedDate) {
+  if (splitedDate < 30) {
+    dateObject.YYYY = '20' + splitedDate;
+  } else {
+    dateObject.YYYY = '19' + splitedDate;
+  }
 }
 
 module.exports = formatDate;
