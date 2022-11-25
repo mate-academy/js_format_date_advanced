@@ -50,72 +50,75 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSep = fromFormat[3];
-  const newSep = toFormat[3];
-  const oldDate = date.split(oldSep);
-
-  let fromYearFirst = false;
-  let toYearFirst = false;
-  let fromYearLast = false;
-  let toYearLast = false;
-
+  const newDate = date.split(fromFormat[3]);
   const year = {
-    from_2: false,
-    from_4: false,
-    to_2: false,
-    to_4: false,
+    from: {
+      start: false,
+      mid: false,
+      end: false,
+      2: false,
+      4: false,
+    },
   };
 
-  if (fromFormat[0].includes('Y')) {
-    fromYearFirst = true;
-    year[`from_${fromFormat[0].length}`] = true;
-  } else {
-    fromYearLast = true;
-    year[`from_${fromFormat[2].length}`] = true;
-  }
+  year.to = { ...year.from };
 
-  if (toFormat[0].includes('Y')) {
-    toYearFirst = true;
-    year[`to_${toFormat[0].length}`] = true;
-  } else {
-    toYearLast = true;
-    year[`to_${toFormat[2].length}`] = true;
-  }
+  const format = {
+    from: fromFormat,
+    to: toFormat,
+  };
+  const positions = ['start', 'mid', 'end'];
 
-  let i = 0;
-  let y = '';
+  for (const pos of positions) {
+    for (const source in format) {
+      const ind = positions.indexOf(pos);
 
-  if (year.from_2) {
-    i = fromFormat.indexOf('YY');
-    y = (oldDate[i] < 30 ? '20' : '19') + oldDate[i];
-  }
-
-  if (year.from_4) {
-    i = fromFormat.indexOf('YYYY');
-    y = oldDate[i].slice(2);
-  }
-
-  if (fromFormat.indexOf('YYYY') === 1 && toYearLast) {
-    oldDate.unshift(oldDate.pop());
-
-    return oldDate.join(newSep);
-  }
-
-  if ((year.from_2 && year.to_4) || (year.from_4 && year.to_2)) {
-    oldDate.splice(i, 1, y);
-
-    if ((fromYearFirst && toYearFirst) || (fromYearLast && toYearLast)) {
-      return oldDate.join(newSep);
+      if (format[`${source}`][ind].includes('Y')) {
+        year[`${source}`][`${pos}`] = true;
+        year[`${source}`][`${format[`${source}`][ind].length}`] = true;
+      }
     }
-
-    return oldDate.reverse().join(newSep);
   }
 
-  if ((fromYearFirst && toYearLast) || (fromYearLast && toYearFirst)) {
-    return oldDate.reverse().join(newSep);
+  let i;
+  let y;
+
+  if (year.from[2]) {
+    i = fromFormat.indexOf('YY');
+    y = (newDate[i] < 30 ? '20' : '19') + newDate[i];
   }
 
-  return oldDate.join(newSep);
+  if (year.from[4]) {
+    i = fromFormat.indexOf('YYYY');
+    y = newDate[i].slice(2);
+  }
+
+  switch (true) {
+    case (year.from.mid && year.to.end)
+      || (year.from.start && year.to.mid):
+      newDate.unshift(newDate.pop());
+      break;
+
+    case (year.from.mid && year.to.start)
+      || (year.from.end && year.to.mid):
+      newDate.push(newDate.shift());
+      break;
+
+    case (year.from.start && year.to.end)
+      || (year.from.end && year.to.start):
+      newDate.reverse();
+      break;
+
+    case (year.from[2] && year.to[4])
+      || (year.from[4] && year.to[2]):
+      newDate.splice(i, 1, y);
+      break;
+
+    default:
+      break;
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
