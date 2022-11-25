@@ -60,16 +60,25 @@ function formatDate(date, fromFormat, toFormat) {
   let year;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = dateBefore[i];
-    }
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = dateBefore[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateBefore[i];
-    }
+      case 'MM':
+        month = dateBefore[i];
+        break;
 
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = dateBefore[i];
+      case 'YY':
+        year = dateBefore[i];
+        break;
+
+      case 'YYYY':
+        year = dateBefore[i];
+        break;
+
+      default:
+        break;
     }
   }
 
