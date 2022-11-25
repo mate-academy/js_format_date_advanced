@@ -83,16 +83,25 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const newFormat of toFormat) {
-    if (newFormat === 'DD') {
-      result.push(day);
-    }
+    switch (newFormat) {
+      case 'DD':
+        result.push(day);
+        break;
 
-    if (newFormat === 'MM') {
-      result.push(month);
-    }
+      case 'MM':
+        result.push(month);
+        break;
 
-    if (newFormat === 'YY' || newFormat === 'YYYY') {
-      result.push(yearFormat(year, newFormat));
+      case 'YY':
+        result.push(yearFormat(year, newFormat));
+        break;
+
+      case 'YYYY':
+        result.push(yearFormat(year, newFormat));
+        break;
+
+      default:
+        break;
     }
   }
 
