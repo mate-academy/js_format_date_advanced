@@ -50,38 +50,34 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const splitedDate = date.split(fromFormat[3]);
-  const dateObject = {};
+  const dateObject = date.split(fromFormat[3]);
+  const dateMapping = {};
   const dateResult = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateObject[fromFormat[i]] = splitedDate[i];
+    dateMapping[fromFormat[i]] = dateObject[i];
 
     if (fromFormat[i] === 'YY') {
-      convertingDate(dateObject, splitedDate[i]);
+      convertingDate(dateMapping, dateObject[i]);
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] !== 'YY') {
-      dateResult.push(dateObject[toFormat[i]]);
+    if (toFormat[i] === 'YY') {
+      dateResult.push(dateMapping.YYYY.slice(2, 4));
     } else {
-      if (toFormat[i].length === 2) {
-        dateResult.push(dateObject.YYYY.slice(2, 4));
-      } else {
-        dateResult.push(dateObject.YYYY);
-      }
+      dateResult.push(dateMapping[toFormat[i]]);
     }
   }
 
   return dateResult.join(toFormat[3]);
 }
 
-function convertingDate(dateObject, splitedDate) {
-  if (splitedDate < 30) {
-    dateObject.YYYY = '20' + splitedDate;
+function convertingDate(dateMapping, dateObject) {
+  if (dateObject < 30) {
+    dateMapping.YYYY = '20' + dateObject;
   } else {
-    dateObject.YYYY = '19' + splitedDate;
+    dateMapping.YYYY = '19' + dateObject;
   }
 }
 
