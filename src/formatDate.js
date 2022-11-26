@@ -50,10 +50,11 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const dateSplit = date.split(fromFormat[3]);
+  let index;
+  let running;
 
   return toFormat.slice(0, 3).reduce((accumulator, current, i) => {
-    const index = fromFormat.findIndex(field => current === field);
-    let running;
+    index = fromFormat.findIndex(field => current === field);
 
     if (index !== -1) {
       running = dateSplit[index];
