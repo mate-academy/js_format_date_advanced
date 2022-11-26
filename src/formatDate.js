@@ -114,11 +114,9 @@ function yearFormat(year, format) {
   }
 
   if (year.length === 2 && format === 'YYYY') {
-    if (parseInt(year) < 30) {
-      return '20' + year;
-    } else {
-      return '19' + year;
-    }
+    return (parseInt(year) < 30)
+      ? '20' + year
+      : '19' + year;
   }
 
   return year;
