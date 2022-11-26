@@ -51,9 +51,6 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = {
-    year: '',
-    month: '',
-    day: '',
     separator: fromFormat[fromFormat.length - 1],
   };
 
