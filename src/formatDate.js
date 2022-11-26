@@ -53,19 +53,23 @@ function formatDate(date, fromFormat, toFormat) {
 
   return toFormat.slice(0, 3).reduce((accumulator, current, i) => {
     const index = fromFormat.findIndex(field => current === field);
-    let running; // variable to add to compilation for each date field
+    let running;
 
-    if (index !== -1) { // exact value taken from the initial date
+    if (index !== -1) {
       running = dateSplit[index];
-    } else if (current === 'YYYY') { // value is asked in YYYY format
-      const years = dateSplit[fromFormat.indexOf('YY')]; // date in YY format
+    } else if (current === 'YYYY') { // need to add century to get to YYYY
+      const years = dateSplit[fromFormat.indexOf('YY')]; // the date is in YY
 
-      running = years[0] < 3 ? '20' + years : '19' + years; // century added
-    } else if (current === 'YY') { // value is asked in YY format
+      running = years[0] < 3 // addition of century required
+        ? '20' + years
+        : '19' + years;
+    } else if (current === 'YY') { // value is asked in YY format, date has YYYY
       running = dateSplit[fromFormat.indexOf('YYYY')].substring(2);
     }
 
-    return accumulator + running + ((i !== 2) ? toFormat[3] : '');
+    return accumulator + running + ((i !== 2)
+      ? toFormat[3]
+      : '');
   }, '');
 }
 
