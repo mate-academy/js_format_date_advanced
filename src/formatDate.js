@@ -80,18 +80,10 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  let i;
-  let y;
-
-  if (year.from[2]) {
-    i = fromFormat.indexOf('YY');
-    y = (newDate[i] < 30 ? '20' : '19') + newDate[i];
-  }
-
-  if (year.from[4]) {
-    i = fromFormat.indexOf('YYYY');
-    y = newDate[i].slice(2);
-  }
+  const i = fromFormat.findIndex((element) => element.includes('Y'));
+  const y = year.from[2]
+    ? (newDate[i] < 30 ? '20' : '19') + newDate[i]
+    : newDate[i].slice(2);
 
   switch (true) {
     case (year.from.mid && year.to.end)
