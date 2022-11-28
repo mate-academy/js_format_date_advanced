@@ -53,7 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const currentSep = fromFormat[3];
   const finalSep = toFormat[3];
   const dateBefore = date.split(currentSep);
-  const result = [];
+  const dateAfter = [];
 
   let day;
   let month;
@@ -85,19 +85,19 @@ function formatDate(date, fromFormat, toFormat) {
   for (const newFormat of toFormat) {
     switch (newFormat) {
       case 'DD':
-        result.push(day);
+        dateAfter.push(day);
         break;
 
       case 'MM':
-        result.push(month);
+        dateAfter.push(month);
         break;
 
       case 'YY':
-        result.push(yearFormat(year, newFormat));
+        dateAfter.push(yearFormat(year, newFormat));
         break;
 
       case 'YYYY':
-        result.push(yearFormat(year, newFormat));
+        dateAfter.push(yearFormat(year, newFormat));
         break;
 
       default:
@@ -105,7 +105,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return result.join(finalSep);
+  return dateAfter.join(finalSep);
 }
 
 function yearFormat(year, format) {
