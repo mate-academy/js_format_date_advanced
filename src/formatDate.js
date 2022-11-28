@@ -60,29 +60,23 @@ function formatDate(date, fromFormat, toFormat) {
     DD: separateDate[fromFormat.indexOf('DD')],
   };
 
-  for (const partTo of toFormat) {
-    switch (partTo) {
-      case 'YY':
-        if (partTo.length === dateParts.year.length) {
-          toFormat[toFormat.indexOf(partTo)] = dateParts.year;
-          break;
-        } else {
-          toFormat[toFormat.indexOf(partTo)]
-          = dateParts.year.slice(2);
-          break;
-        }
+  const toYear = (toFormat.includes('YYYY'))
+    ? 'YYYY'
+    : 'YY';
 
-      case 'YYYY':
-        if (partTo.length === dateParts.year.length) {
-          toFormat[toFormat.indexOf(partTo)] = dateParts.year;
-          break;
-        } else {
-          toFormat[toFormat.indexOf(partTo)] = (parseInt(dateParts.year) >= 30)
-            ? '19' + dateParts.year
-            : '20' + dateParts.year;
-          break;
-        }
-    }
+  switch (true) {
+    case (toYear.length < dateParts.year.length):
+      toFormat[toFormat.indexOf(toYear)] = dateParts.year.slice(2);
+      break;
+
+    case (toYear.length > dateParts.year.length):
+      toFormat[toFormat.indexOf(toYear)] = (parseInt(dateParts.year) >= 30)
+        ? '19' + dateParts.year
+        : '20' + dateParts.year;
+      break;
+
+    default:
+      toFormat[toFormat.indexOf(toYear)] = dateParts.year;
   }
 
   for (const key in dateParts) {
