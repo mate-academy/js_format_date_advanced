@@ -56,8 +56,8 @@ function formatDate(date, fromFormat, toFormat) {
     year: (fromFormat.includes('YYYY'))
       ? separateDate[fromFormat.indexOf('YYYY')]
       : separateDate[fromFormat.indexOf('YY')],
-    month: separateDate[fromFormat.indexOf('MM')],
-    day: separateDate[fromFormat.indexOf('DD')],
+    MM: separateDate[fromFormat.indexOf('MM')],
+    DD: separateDate[fromFormat.indexOf('DD')],
   };
 
   for (const partTo of toFormat) {
@@ -68,7 +68,7 @@ function formatDate(date, fromFormat, toFormat) {
           break;
         } else {
           toFormat[toFormat.indexOf(partTo)]
-          = dateParts.year.slice(2, dateParts.year.length);
+          = dateParts.year.slice(2);
           break;
         }
 
@@ -82,15 +82,11 @@ function formatDate(date, fromFormat, toFormat) {
             : '20' + dateParts.year;
           break;
         }
-
-      case 'MM':
-        toFormat[toFormat.indexOf(partTo)] = dateParts.month;
-        break;
-
-      case 'DD':
-        toFormat[toFormat.indexOf(partTo)] = dateParts.day;
-        break;
     }
+  }
+
+  for (const key in dateParts) {
+    toFormat[toFormat.indexOf(`${key}`)] = dateParts[key];
   }
 
   return toFormat.join(toFormat.pop());
