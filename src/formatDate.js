@@ -69,21 +69,19 @@ function formatDate(date, fromFormat, toFormat) {
   };
   const positions = ['start', 'mid', 'end'];
 
-  for (const pos of positions) {
+  for (let i = 0; i < positions.length; i++) {
     for (const source in format) {
-      const ind = positions.indexOf(pos);
-
-      if (format[`${source}`][ind].includes('Y')) {
-        year[`${source}`][`${pos}`] = true;
-        year[`${source}`][`${format[`${source}`][ind].length}`] = true;
+      if (format[source][i].includes('Y')) {
+        year[source][positions[i]] = true;
+        year[source][format[source][i].length] = true;
       }
     }
   }
 
-  const i = fromFormat.findIndex((element) => element.includes('Y'));
+  const index = fromFormat.findIndex((element) => element.includes('Y'));
   const y = year.from[2]
-    ? (newDate[i] < 30 ? '20' : '19') + newDate[i]
-    : newDate[i].slice(2);
+    ? (newDate[index] < 30 ? '20' : '19') + newDate[index]
+    : newDate[index].slice(2);
 
   switch (true) {
     case (year.from.mid && year.to.end)
@@ -103,7 +101,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     case (year.from[2] && year.to[4])
       || (year.from[4] && year.to[2]):
-      newDate.splice(i, 1, y);
+      newDate.splice(index, 1, y);
       break;
 
     default:
