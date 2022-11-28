@@ -50,31 +50,15 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const separateDate = date.split(fromFormat.pop());
+
   const dateParts = {
-    separator: fromFormat[fromFormat.length - 1],
+    year: (fromFormat.includes('YYYY'))
+      ? separateDate[fromFormat.indexOf('YYYY')]
+      : separateDate[fromFormat.indexOf('YY')],
+    month: separateDate[fromFormat.indexOf('MM')],
+    day: separateDate[fromFormat.indexOf('DD')],
   };
-
-  const separateDate = date.split(dateParts.separator);
-
-  for (const partFrom of fromFormat) {
-    switch (partFrom) {
-      case 'YY':
-        dateParts.year = separateDate[fromFormat.indexOf(partFrom)];
-        break;
-
-      case 'YYYY':
-        dateParts.year = separateDate[fromFormat.indexOf(partFrom)];
-        break;
-
-      case 'MM':
-        dateParts.month = separateDate[fromFormat.indexOf(partFrom)];
-        break;
-
-      case 'DD':
-        dateParts.day = separateDate[fromFormat.indexOf(partFrom)];
-        break;
-    }
-  }
 
   for (const partTo of toFormat) {
     switch (partTo) {
