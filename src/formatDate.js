@@ -56,9 +56,10 @@ function formatDate(date, fromFormat, toFormat) {
   const yearLimit = 30;
   const twoDigitFormat = 2;
   const fourDigitFormat = 4;
+  const indexSeparator = 3;
 
   // make an array from the date
-  const arrayParam = date.split(fromFormat[3]);
+  const arrayParam = date.split(fromFormat[indexSeparator]);
 
   let day;
   let month;
@@ -97,7 +98,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return resultArray.join(toFormat[3]);
+  return resultArray.join(toFormat[indexSeparator]);
 }
 
 module.exports = formatDate;
