@@ -63,18 +63,17 @@ function formatDate(date, fromFormat, toFormat) {
 
   year.to = { ...year.from };
 
-  const format = {
-    from: fromFormat,
-    to: toFormat,
-  };
   const positions = ['start', 'mid', 'end'];
 
   for (let i = 0; i < positions.length; i++) {
-    for (const source in format) {
-      if (format[source][i].includes('Y')) {
-        year[source][positions[i]] = true;
-        year[source][format[source][i].length] = true;
-      }
+    if (fromFormat[i].includes('Y')) {
+      year.from[positions[i]] = true;
+      year.from[fromFormat[i].length] = true;
+    }
+
+    if (toFormat[i].includes('Y')) {
+      year.to[positions[i]] = true;
+      year.to[toFormat[i].length] = true;
     }
   }
 
