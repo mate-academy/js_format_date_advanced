@@ -77,12 +77,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   // fill resultArray  in new format
   for (const i in toFormat) {
-    if (toFormat[i].includes('M')) {
-      resultArray[i] = month;
-    }
-
-    if (toFormat[i].includes('D')) {
-      resultArray[i] = day;
+    switch (toFormat[i]) {
+      case 'MM': resultArray[i] = month; break;
+      case 'DD' : resultArray[i] = day;
     }
 
     if (toFormat[i] === 'YYYY'
