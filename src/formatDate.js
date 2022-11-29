@@ -50,7 +50,68 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // magic numbers
+  const previousMillennium = 19;
+  const currentlyMillennium = 20;
+  const yearLimit = 30;
+  const twoDigitFormat = 2;
+  const fourDigitFormat = 4;
+
+  // make an array from the date
+  const arrayParam = date.split(fromFormat[3]);
+
+  let day;
+  let month;
+  let year;
+  const resultArray = [];
+
+  // determine day, month and year
+  for (const i in fromFormat) {
+    if (fromFormat[i].includes('D')) {
+      day = arrayParam[i];
+    }
+
+    if (fromFormat[i].includes('M')) {
+      month = arrayParam[i];
+    }
+
+    if (fromFormat[i].includes('Y')) {
+      year = arrayParam[i];
+    }
+  }
+
+  // fill resultArray  in new format
+  for (const i in toFormat) {
+    if (toFormat[i].includes('M')) {
+      resultArray[i] = month;
+    }
+
+    if (toFormat[i].includes('D')) {
+      resultArray[i] = day;
+    }
+
+    if (toFormat[i] === 'YYYY'
+      && year.length === twoDigitFormat
+      && year >= yearLimit) {
+      resultArray[i] = previousMillennium + year;
+    }
+
+    if (toFormat[i] === 'YYYY'
+      && year.length === twoDigitFormat
+      && year < yearLimit) {
+      resultArray[i] = currentlyMillennium + year;
+    }
+
+    if (toFormat[i] === 'YY' && year.length === fourDigitFormat) {
+      resultArray[i] = year.substring(2);
+    }
+
+    if (toFormat[i] === 'YYYY' && year.length === fourDigitFormat) {
+      resultArray[i] = year;
+    }
+  }
+
+  return resultArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
