@@ -79,7 +79,8 @@ function formatDate(date, fromFormat, toFormat) {
   for (const i in toFormat) {
     switch (toFormat[i]) {
       case 'MM': resultArray[i] = month; break;
-      case 'DD' : resultArray[i] = day;
+      case 'DD': resultArray[i] = day; break;
+      case 'YY': resultArray[i] = year.substring(2);
     }
 
     if (toFormat[i] === 'YYYY'
@@ -92,10 +93,6 @@ function formatDate(date, fromFormat, toFormat) {
       && year.length === twoDigitFormat
       && year < yearLimit) {
       resultArray[i] = currentlyMillennium + year;
-    }
-
-    if (toFormat[i] === 'YY' && year.length === fourDigitFormat) {
-      resultArray[i] = year.substring(2);
     }
 
     if (toFormat[i] === 'YYYY' && year.length === fourDigitFormat) {
