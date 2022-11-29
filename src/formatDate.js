@@ -50,40 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separateDate = date.split(fromFormat.pop());
+  const oldSep = fromFormat.pop();
+  const newSep = toFormat.pop();
+  const sepDate = date.split(oldSep);
 
-  const dateParts = {
-    year: (fromFormat.includes('YYYY'))
-      ? separateDate[fromFormat.indexOf('YYYY')]
-      : separateDate[fromFormat.indexOf('YY')],
-    MM: separateDate[fromFormat.indexOf('MM')],
-    DD: separateDate[fromFormat.indexOf('DD')],
+  const oldIndexes = {
+    monthIndex: fromFormat.indexOf('MM'),
+    dayIndex: fromFormat.indexOf('DD'),
+    yearIndex: (fromFormat.includes('YYYY'))
+      ? fromFormat.indexOf('YYYY')
+      : fromFormat.indexOf('YY'),
   };
 
-  const toYear = (toFormat.includes('YYYY'))
-    ? 'YYYY'
-    : 'YY';
+  const newIndexes = {
+    monthIndex: toFormat.indexOf('MM'),
+    dayIndex: toFormat.indexOf('DD'),
+    yearIndex: (toFormat.includes('YYYY'))
+      ? toFormat.indexOf('YYYY')
+      : toFormat.indexOf('YY'),
+  };
 
-  switch (true) {
-    case (toYear.length < dateParts.year.length):
-      toFormat[toFormat.indexOf(toYear)] = dateParts.year.slice(2);
-      break;
+  let yearNow = sepDate[oldIndexes.yearIndex];
+  const yearToBe = toFormat[newIndexes.yearIndex];
 
-    case (toYear.length > dateParts.year.length):
-      toFormat[toFormat.indexOf(toYear)] = (parseInt(dateParts.year) >= 30)
-        ? '19' + dateParts.year
-        : '20' + dateParts.year;
-      break;
-
-    default:
-      toFormat[toFormat.indexOf(toYear)] = dateParts.year;
+  if (yearNow.length < yearToBe.length) {
+    yearNow = (parseInt(yearNow) >= 30)
+      ? '19' + yearNow
+      : '20' + yearNow;
   }
 
-  for (const key in dateParts) {
-    toFormat[toFormat.indexOf(`${key}`)] = dateParts[key];
+  if (yearNow.length > yearToBe.length) {
+    yearNow = yearNow.slice(2);
   }
 
-  return toFormat.join(toFormat.pop());
+  sepDate[oldIndexes.yearIndex] = yearNow;
+
+  for (const index in newIndexes) {
+    toFormat[newIndexes[index]] = sepDate[oldIndexes[index]];
+  }
+
+  return toFormat.join(newSep);
 }
-
 module.exports = formatDate;
