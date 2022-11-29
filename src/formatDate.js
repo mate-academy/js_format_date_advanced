@@ -50,7 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  return toDate(toFormat, separateDate(fromFormat, date));
 }
 
 module.exports = formatDate;
+
+function separateDate(format, date) {
+  const dateSeparated = date.split(format[3]);
+
+  const dateGroup = {};
+
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YYYY') {
+      dateGroup.year = dateSeparated[i];
+    }
+
+    if (format[i] === 'YY') {
+      dateGroup.year = dateSeparated[i];
+    }
+
+    if (format[i] === 'DD') {
+      dateGroup.day = dateSeparated[i];
+    }
+
+    if (format[i] === 'MM') {
+      dateGroup.month = dateSeparated[i];
+    }
+  }
+
+  return dateGroup;
+}
+
+function toDate(format, date) {
+  const finalDate = [];
+
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YYYY') {
+      if (date.year.length === 4) {
+        finalDate.push(date.year);
+      }
+
+      if (date.year.length === 2) {
+        const year = date.year < 30 ? `20${date.year}` : `19${date.year}`;
+
+        finalDate.push(year);
+      }
+    }
+
+    if (format[i] === 'YY') {
+      if (date.year.length === 4) {
+        finalDate.push(date.year.slice(2));
+      } else {
+        finalDate.push(date.year);
+      }
+    }
+
+    if (format[i] === 'DD') {
+      finalDate.push(date.day);
+    }
+
+    if (format[i] === 'MM') {
+      finalDate.push(date.month);
+    }
+  }
+
+  return finalDate.join(format[3]);
+}
