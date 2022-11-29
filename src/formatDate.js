@@ -50,9 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const currentSep = fromFormat[3];
-  const finalSep = toFormat[3];
-  const dateBefore = date.split(currentSep);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const dateBefore = date.split(oldSeparator);
   const dateAfter = [];
 
   let day;
@@ -93,11 +93,11 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        dateAfter.push(yearFormat(year, newFormat));
+        dateAfter.push(formatTheYear(year, newFormat));
         break;
 
       case 'YYYY':
-        dateAfter.push(yearFormat(year, newFormat));
+        dateAfter.push(formatTheYear(year, newFormat));
         break;
 
       default:
@@ -105,10 +105,10 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return dateAfter.join(finalSep);
+  return dateAfter.join(newSeparator);
 }
 
-function yearFormat(year, format) {
+function formatTheYear(year, format) {
   if (year.length === 4 && format === 'YY') {
     return year.slice(2);
   }
