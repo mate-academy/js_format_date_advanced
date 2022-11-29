@@ -67,16 +67,11 @@ function formatDate(date, fromFormat, toFormat) {
 
   // determine day, month and year
   for (const i in fromFormat) {
-    if (fromFormat[i].includes('D')) {
-      day = arrayParam[i];
-    }
-
-    if (fromFormat[i].includes('M')) {
-      month = arrayParam[i];
-    }
-
-    if (fromFormat[i].includes('Y')) {
-      year = arrayParam[i];
+    switch (fromFormat[i]) {
+      case 'DD': day = arrayParam[i]; break;
+      case 'MM': month = arrayParam[i]; break;
+      case 'YY': year = arrayParam[i]; break;
+      case 'YYYY': year = arrayParam[i];
     }
   }
 
