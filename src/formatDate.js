@@ -56,61 +56,63 @@ function formatDate(date, fromFormat, toFormat) {
 module.exports = formatDate;
 
 function separateDate(format, date) {
-  const dateArr = date.split(format[3]);
+  const dateSeparated = date.split(format[3]);
 
-  const dateObj = {};
+  const dateGroup = {};
 
   for (let i = 0; i < format.length; i++) {
     if (format[i] === 'YYYY') {
-      dateObj.year = dateArr[i];
+      dateGroup.year = dateSeparated[i];
     }
 
     if (format[i] === 'YY') {
-      dateObj.year = dateArr[i];
+      dateGroup.year = dateSeparated[i];
     }
 
     if (format[i] === 'DD') {
-      dateObj.day = dateArr[i];
+      dateGroup.day = dateSeparated[i];
     }
 
     if (format[i] === 'MM') {
-      dateObj.month = dateArr[i];
+      dateGroup.month = dateSeparated[i];
     }
   }
 
-  return dateObj;
+  return dateGroup;
 }
 
-function toDate(format, dateObj) {
-  const dateArr = [];
+function toDate(format, date) {
+  const finalDate = [];
 
   for (let i = 0; i < format.length; i++) {
     if (format[i] === 'YYYY') {
-      if (dateObj.year.length === 2 && dateObj.year < 30) {
-        dateArr.push(`20${dateObj.year}`);
-      } else if (dateObj.year.length === 2 && dateObj.year >= 30) {
-        dateArr.push(`19${dateObj.year}`);
-      } else {
-        dateArr.push(dateObj.year);
+      if (date.year.length === 4) {
+        finalDate.push(date.year);
+      }
+
+      if (date.year.length === 2) {
+        const year = date.year < 30 ? `20${date.year}` : `19${date.year}`;
+
+        finalDate.push(year);
       }
     }
 
     if (format[i] === 'YY') {
-      if (dateObj.year.length === 4) {
-        dateArr.push(dateObj.year.slice(2));
+      if (date.year.length === 4) {
+        finalDate.push(date.year.slice(2));
       } else {
-        dateArr.push(dateObj.year);
+        finalDate.push(date.year);
       }
     }
 
     if (format[i] === 'DD') {
-      dateArr.push(dateObj.day);
+      finalDate.push(date.day);
     }
 
     if (format[i] === 'MM') {
-      dateArr.push(dateObj.month);
+      finalDate.push(date.month);
     }
   }
 
-  return dateArr.join(format[3]);
+  return finalDate.join(format[3]);
 }
