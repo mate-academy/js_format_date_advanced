@@ -67,8 +67,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     dateObj[fromFormat[i]] = splitted[i];
-    dateObj['YY'] = dateObj['YYYY'].substr(2);
   };
+
+  dateObj['YY'] = dateObj['YYYY'].substr(2);
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     result += dateObj[toFormat[i]];
