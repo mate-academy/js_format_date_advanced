@@ -50,34 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  let result = '';
   const splitted = date.split(fromFormat[3]);
-  const result = [];
+  const dateObj = {
+    'DD': '',
+    'MM': '',
+    'YY': '',
+    'YYYY': '',
+  };
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let j = 0; j < toFormat.length - 1; j++) {
-      if (fromFormat[i] === toFormat[j]) {
-        result[j] = splitted[i];
-      };
+    if (fromFormat[i] === 'YY' && +splitted[i] < 30) {
+      dateObj['YYYY'] = `20${splitted[i]}`;
+    } else if (fromFormat[i] === 'YY' && +splitted[i] >= 30) {
+      dateObj['YYYY'] = `19${splitted[i]}`;
+    }
 
-      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
-        result[j] = splitted[i].substr(2);
-      };
+    dateObj[fromFormat[i]] = splitted[i];
+    dateObj['YY'] = dateObj['YYYY'].substr(2);
+  };
 
-      if (
-        fromFormat[i] === 'YY'
-        && toFormat[j] === 'YYYY'
-        && +splitted[i] >= 30) {
-        result[j] = `19${splitted[i]}`;
-        continue;
-      }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result += dateObj[toFormat[i]];
 
-      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
-        result[j] = `20${splitted[i]}`;
-      }
+    if (i !== toFormat.length - 2) {
+      result += toFormat[3];
     }
   }
 
-  return result.join(toFormat[3]);
+  return result;
 }
 
 module.exports = formatDate;
