@@ -63,6 +63,10 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i <= 2; i++) {
     switch (fromFormat[i]) {
       case ('YY'):
+        dateParts.year = (initialDate[i] < 30)
+          ? `20${initialDate[i]}`
+          : `19${initialDate[i]}`;
+        break;
       case ('YYYY'):
         dateParts.year = initialDate[i];
         break;
@@ -80,24 +84,11 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i <= 2; i++) {
     switch (toFormat[i]) {
       case ('YY'):
-        if (dateParts.year.length === 2) {
-          resultDate.push(dateParts.year);
-        } else {
-          resultDate.push(dateParts.year.slice(-2));
-        }
+        resultDate.push(dateParts.year.slice(-2));
         break;
 
       case ('YYYY'):
-        if (dateParts.year.length === 4) {
-          resultDate.push(dateParts.year);
-          continue;
-        }
-
-        if (dateParts.year < 30) {
-          resultDate.push(`20${dateParts.year}`);
-        } else {
-          resultDate.push(`19${dateParts.year}`);
-        }
+        resultDate.push(dateParts.year);
         break;
 
       case ('MM'):
