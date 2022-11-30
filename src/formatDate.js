@@ -66,23 +66,15 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (dateObj.YYYY === '') {
-    if (dateObj.YY >= 30) {
-      dateObj.YYYY = `19${dateObj.YY}`;
-    } else {
-      dateObj.YYYY = `20${dateObj.YY}`;
-    }
+    dateObj.YYYY = dateObj.YY >= 30
+      ? dateObj.YYYY = `19${dateObj.YY}`
+      : dateObj.YYYY = `20${dateObj.YY}`;
   } else {
     dateObj.YY = dateObj.YYYY.slice(2);
   }
 
   for (let i = 0; i < 3; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-      case 'YY':
-      case 'MM':
-      case 'DD':
-        result.push(dateObj[toFormat[i]]);
-    }
+    result.push(dateObj[toFormat[i]]);
   }
 
   return result.join(toFormat[3]);
