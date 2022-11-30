@@ -59,21 +59,22 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
 
   for (const itemFrom of fromFormat) {
-    if (itemFrom.includes('Y')) {
-      oldYearIndex = fromFormat.indexOf(itemFrom);
-      oldYearLength = itemFrom.length;
-    }
+    switch (true) {
+      case itemFrom.includes('Y'):
+        oldYearIndex = fromFormat.indexOf(itemFrom);
+        oldYearLength = itemFrom.length;
+        break;
 
-    if (itemFrom.includes('M')) {
-      oldMonthIndex = fromFormat.indexOf(itemFrom);
-    }
+      case itemFrom.includes('M'):
+        oldMonthIndex = fromFormat.indexOf(itemFrom);
+        break;
 
-    if (itemFrom.includes('D')) {
-      oldDayIndex = fromFormat.indexOf(itemFrom);
-    }
+      case itemFrom.includes('D'):
+        oldDayIndex = fromFormat.indexOf(itemFrom);
+        break;
 
-    if (!(itemFrom.toLowerCase() !== itemFrom.toUpperCase())) {
-      oldSeparator = itemFrom;
+      default:
+        oldSeparator = itemFrom;
     }
   }
 
@@ -82,29 +83,27 @@ function formatDate(date, fromFormat, toFormat) {
   const longYear = (shortYear < 30) ? `20${shortYear}` : `19${shortYear}`;
 
   for (const itemTo of toFormat) {
-    if (itemTo.includes('D')) {
-      newDate[toFormat.indexOf(itemTo)] = oldDateArray[oldDayIndex];
-    }
+    switch (true) {
+      case itemTo.includes('D'):
+        newDate[toFormat.indexOf(itemTo)] = oldDateArray[oldDayIndex];
+        break;
 
-    if (itemTo.includes('M')) {
-      newDate[toFormat.indexOf(itemTo)] = oldDateArray[oldMonthIndex];
-    }
+      case itemTo.includes('M'):
+        newDate[toFormat.indexOf(itemTo)] = oldDateArray[oldMonthIndex];
+        break;
 
-    if (itemTo.includes('Y')) {
-      switch (oldYearLength) {
-        case '2':
+      case itemTo.includes('Y'):
+        if (oldYearLength === 2) {
           newDate[toFormat.indexOf(itemTo)]
             = (itemTo.length === 2) ? shortYear : longYear;
-          break;
-
-        default:
+        } else {
           newDate[toFormat.indexOf(itemTo)]
             = (itemTo.length === 4) ? longYear : shortYear;
-      }
-    }
+        };
+        break;
 
-    if (!(itemTo.toLowerCase() !== itemTo.toUpperCase())) {
-      newSeparator = itemTo;
+      default:
+        newSeparator = itemTo;
     }
   }
 
