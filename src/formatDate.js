@@ -54,10 +54,6 @@ function formatDate(date, fromFormat, toFormat) {
   const partialYear = 'YY';
 
   for (let i = 0; i < fromFormat.length - 1; ++i) {
-    if (fromFormat[i] === fullYear) {
-      firstDate[fullYear] = oldFormat[i];
-    }
-
     if (fromFormat[i] === partialYear) {
       firstDate[fullYear] = oldFormat[i] < 30
         ? 20 + oldFormat[i]
