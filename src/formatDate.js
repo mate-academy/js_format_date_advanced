@@ -64,9 +64,11 @@ function formatDate(date, fromFormat, toFormat) {
   year.to = { ...year.from };
 
   const positions = ['start', 'mid', 'end'];
+  let index;
 
   for (let i = 0; i < positions.length; i++) {
     if (fromFormat[i].includes('Y')) {
+      index = i;
       year.from[positions[i]] = true;
       year.from[fromFormat[i].length] = true;
     }
@@ -77,29 +79,40 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const index = fromFormat.findIndex((element) => element.includes('Y'));
   const y = year.from[2]
     ? (newDate[index] < 30 ? '20' : '19') + newDate[index]
     : newDate[index].slice(2);
 
+  const moveYearRight
+    = (year.from.mid && year.to.end)
+    || (year.from.start && year.to.mid);
+
+  const moveYearLeft
+    = (year.from.mid && year.to.start)
+    || (year.from.end && year.to.mid);
+
+  const reverseYearIndex
+    = (year.from.start && year.to.end)
+    || (year.from.end && year.to.start);
+
+  const changeYearFormat
+    = (year.from[2] && year.to[4])
+    || (year.from[4] && year.to[2]);
+
   switch (true) {
-    case (year.from.mid && year.to.end)
-      || (year.from.start && year.to.mid):
+    case moveYearRight:
       newDate.unshift(newDate.pop());
       break;
 
-    case (year.from.mid && year.to.start)
-      || (year.from.end && year.to.mid):
+    case moveYearLeft:
       newDate.push(newDate.shift());
       break;
 
-    case (year.from.start && year.to.end)
-      || (year.from.end && year.to.start):
+    case reverseYearIndex:
       newDate.reverse();
       break;
 
-    case (year.from[2] && year.to[4])
-      || (year.from[4] && year.to[2]):
+    case changeYearFormat:
       newDate.splice(index, 1, y);
       break;
 
