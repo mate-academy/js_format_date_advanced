@@ -63,6 +63,16 @@ function formatDate(date, fromFormat, toFormat) {
   const temp = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case yearFormatFull:
+        temp[splitDate[i]] = splitDate[i];
+        break;
+
+      case yearFormatShort:
+        temp[yearFormatFull] = (splitDate[i] >= 30) ? `19${splitDate[i]}` : `20${splitDate[i]}`;
+        break;
+    }
+
     temp[fromFormat[i]] = splitDate[i];
   }
 
@@ -77,23 +87,11 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case yearFormatFull:
-        if (temp[yearFormatFull]) {
-          newDate.push(temp[yearFormatFull]);
-        } else {
-          newDate.push(
-            temp[yearFormatShort] >= 30
-              ? `19${temp[yearFormatShort]}`
-              : `20${temp[yearFormatShort]}`
-          );
-        }
+        newDate.push(temp[yearFormatFull]);
         break;
 
       case yearFormatShort:
-        if (temp[yearFormatShort]) {
-          newDate.push(temp[yearFormatShort]);
-        } else {
-          newDate.push(temp[yearFormatFull].slice(-2));
-        }
+        newDate.push(temp[yearFormatFull].slice(-2));
         break;
 
       default:
