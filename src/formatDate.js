@@ -49,7 +49,7 @@
  * @returns {string}
  */
 
- function formatDate(date, fromFormat, toFormat) {
+function formatDate(date, fromFormat, toFormat) {
   const fullFormatDate = {};
   const newDate = [];
   const oldDate = date.split(fromFormat[3]);
