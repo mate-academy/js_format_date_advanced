@@ -41,16 +41,52 @@
  *   ['YY', 'MM', 'DD', '/'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
- *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
  */
 
+// console.clear();
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formatedDate = [];
+  const firstDate = {};
+  const oldFormat = date.split(fromFormat[3]);
+
+  const fullYear = 'YYYY';
+  const partialYear = 'YY';
+
+  for (let i = 0; i < fromFormat.length - 1; ++i) {
+    if (fromFormat[i] === partialYear) {
+      firstDate[fullYear] = oldFormat[i] < 30
+        ? 20 + oldFormat[i]
+        : 19 + oldFormat[i];
+    }
+
+    firstDate[fromFormat[i]] = oldFormat[i];
+  }
+
+  for (let i = 0; i < fromFormat.length - 1; ++i) {
+    switch (toFormat[i]) {
+      case 'DD':
+        formatedDate.push(firstDate[toFormat[i]]);
+        break;
+
+      case 'MM':
+        formatedDate.push(firstDate[toFormat[i]]);
+        break;
+
+      case 'YY':
+        formatedDate.push(firstDate[fullYear].slice(2));
+        break;
+
+      case 'YYYY':
+        formatedDate.push(firstDate[toFormat[i]]);
+        break;
+
+      default:
+        throw new Error();
+    }
+  }
+
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
