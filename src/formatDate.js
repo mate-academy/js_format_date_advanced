@@ -73,10 +73,10 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case yearFull:
-        if (sortNum[yearShort]) {
-          const newForm = sortNum[yearShort] < 30 ? `20${sortNum[yearShort]}` : `19${sortNum[yearShort]}`;
+        const newFullForm = sortNum[yearShort] < 30 ? `20${sortNum[yearShort]}` : `19${sortNum[yearShort]}`;
 
-          formatedDay.push(newForm);
+        if (sortNum[yearShort]) {
+          formatedDay.push(newFullForm);
         } else {
           formatedDay.push(sortNum[yearFull]);
         }
