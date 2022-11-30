@@ -50,42 +50,43 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrOld = [...fromFormat];
-  const arrNew = [...toFormat];
+  const arrDate = date.split(fromFormat[3]);
 
-  const [data1, data2, data3] = date.split(arrOld[3]);
+  const oldFormat = {};
 
-  arrOld[0] = `${arrOld[0]}` + `${data1}`;
-  arrOld[1] = `${arrOld[1]}` + `${data2}`;
-  arrOld[2] = `${arrOld[2]}` + `${data3}`;
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    oldFormat[fromFormat[i]] = arrDate[i];
+  }
 
-  for (let i = 0; i < 3; i++) {
-    for (let y = 0; y < 3; y++) {
-      if (arrNew[i] === 'YYYY' && arrOld[y].length === 4) {
-        if (Number(arrOld[y].slice(2)) < 30) {
-          arrNew[i] = `${arrOld[y].slice(0, 2)}` + `20` + `${arrOld[y].slice(2)}`;
-        } else {
-          arrNew[i] = `${arrOld[y].slice(0, 2)}` + `19` + `${arrOld[y].slice(2)}`;
-        }
-      } else if (arrNew[i] === 'YY' && arrOld[y].length === 8) {
-        arrNew[i] = `${arrOld[y].slice(0, 2)}` + `${arrOld[y].slice(6)}`;
-      } else {
-        if (arrNew[i].slice(0, 1) === arrOld[y].slice(0, 1)) {
-          arrNew[i] = arrOld[y];
-        }
+  const newFormat = {};
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    newFormat[toFormat[i]] = 0;
+  }
+
+  for (const key in oldFormat) {
+    for (const newKey in newFormat) {
+      if (key.slice(0, 1) === newKey.slice(0, 1)) {
+        newFormat[newKey] = oldFormat[key];
       }
     }
   }
 
-  for (let i = 0; i < 3; i++) {
-    if (arrNew[i].length > 6) {
-      arrNew[i] = arrNew[i].slice(4);
+  if (newFormat['YY']) {
+    newFormat['YY'] = newFormat['YY'].slice(2);
+  }
+
+  if (oldFormat['YY'] && newFormat['YYYY']) {
+    if (Number(oldFormat['YY']) < 30) {
+      newFormat['YYYY'] = `20` + `${newFormat['YYYY']}`;
     } else {
-      arrNew[i] = arrNew[i].slice(2);
+      newFormat['YYYY'] = `19` + `${newFormat['YYYY']}`;
     }
   }
 
-  return `${arrNew[0]}${arrNew[3]}${arrNew[1]}${arrNew[3]}${arrNew[2]}`;
+  const arrNew = Object.values(newFormat);
+
+  return arrNew.join(toFormat[3]);
 }
 
 module.exports = formatDate;
