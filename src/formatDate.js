@@ -49,29 +49,33 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dateSplit = date.split(fromFormat[3]);
-  let index;
-  let running;
+  const decadeLimit = 3;
+  const separatorIndex = 3;
+  const dateSplit = date.split(fromFormat[separatorIndex]);
+  let foundAt;
+  let datePart;
 
-  return toFormat.slice(0, 3).reduce((accumulator, current, i) => {
-    index = fromFormat.findIndex(field => current === field);
+  return toFormat
+    .slice(0, separatorIndex)
+    .reduce((acc, toCurrent, i) => {
+      foundAt = fromFormat.findIndex(fromField => fromField === toCurrent);
 
-    if (index !== -1) {
-      running = dateSplit[index];
-    } else if (current === 'YYYY') { // need to add century to get to YYYY
-      const years = dateSplit[fromFormat.indexOf('YY')]; // the date is in YY
+      if (foundAt >= 0) { // case: found
+        datePart = dateSplit[foundAt];
+      } else if (toCurrent === 'YYYY') { // case: YY -> YYYY
+        const decade = dateSplit[fromFormat.indexOf('YY')];
 
-      running = years[0] < 3 // addition of century required
-        ? '20' + years
-        : '19' + years;
-    } else if (current === 'YY') { // value is asked in YY format, date has YYYY
-      running = dateSplit[fromFormat.indexOf('YYYY')].substring(2);
-    }
+        datePart = decade[0] < decadeLimit
+          ? '20' + decade // <= 2029
+          : '19' + decade; // >= 1930
+      } else if (toCurrent === 'YY') { // case: YYYY -> YY
+        datePart = dateSplit[fromFormat.indexOf('YYYY')].substring(2);
+      }
 
-    return accumulator + running + ((i !== 2)
-      ? toFormat[3]
-      : '');
-  }, '');
+      return acc + datePart + ((i < 2)
+        ? toFormat[separatorIndex]
+        : '');
+    }, '');
 }
 
 module.exports = formatDate;
