@@ -60,16 +60,19 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YY' && +splitted[i] < 30) {
-      dateObj['YYYY'] = `20${splitted[i]}`;
-    } else if (fromFormat[i] === 'YY' && +splitted[i] >= 30) {
-      dateObj['YYYY'] = `19${splitted[i]}`;
-    }
-
     dateObj[fromFormat[i]] = splitted[i];
   };
 
-  dateObj['YY'] = dateObj['YYYY'].substr(2);
+  switch (true) {
+    case dateObj.YY === '':
+      dateObj.YY = dateObj.YYYY.substr(2);
+      break;
+    case dateObj.YY < 30:
+      dateObj.YYYY = `20${dateObj.YY}`;
+      break;
+    default:
+      dateObj.YYYY = `19${dateObj.YY}`;
+  };
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     result += dateObj[toFormat[i]];
