@@ -50,24 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateParts = date.split(`${fromFormat[3]}`);
-  const dateItems = {};
+  const oldDateParts = date.split(`${fromFormat[3]}`);
+  const allDateItems = {};
   let newDate = '';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateItems[fromFormat[i]] = dateParts[i];
+    allDateItems[fromFormat[i]] = oldDateParts[i];
   }
 
-  if (dateItems.hasOwnProperty('YY')) {
-    dateItems.YYYY = dateItems.YY < 30
-      ? '20' + dateItems.YY : '19' + dateItems.YY;
+  if (allDateItems.hasOwnProperty('YY')) {
+    allDateItems.YYYY
+      = allDateItems.YY < 30
+        ? '20' + allDateItems.YY
+        : '19' + allDateItems.YY;
   } else {
-    dateItems.YY = dateItems.YYYY.slice(2, 4);
+    allDateItems.YY = allDateItems.YYYY.slice(2, 4);
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (dateItems.hasOwnProperty(toFormat[i])) {
-      newDate += dateItems[toFormat[i]] + `${toFormat[3]}`;
+    const newFormatSeperator = toFormat[3];
+    const newFormatItem = allDateItems[toFormat[i]];
+
+    if (allDateItems.hasOwnProperty(toFormat[i])) {
+      newDate += newFormatItem + `${newFormatSeperator}`;
     }
   }
 
