@@ -54,14 +54,18 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[3];
   const year = fromFormat.find(el => el.includes('Y'));
   const yearIndex = fromFormat.indexOf(year);
+  const shortYear = 'YY';
+  const fullYear = 'YYYY';
 
   const oldDate = date.split(oldSeparator);
   const newDate = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (!fromFormat.includes(toFormat[i])
-      && fromFormat.includes('YY')
-      && toFormat.includes('YYYY')) {
+    if (
+      !fromFormat.includes(toFormat[i])
+      && fromFormat.includes(shortYear)
+      && toFormat.includes(fullYear)
+    ) {
       newDate.push((Number(oldDate[yearIndex]) < 30)
         ? '20' + oldDate[yearIndex]
         : '19' + oldDate[yearIndex]);
