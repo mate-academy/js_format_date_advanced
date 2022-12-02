@@ -61,11 +61,10 @@ function formatDate(date, fromFormat, toFormat) {
     } else if (fromFormat[i] === 'YY') {
       let year = dateParse[i];
 
-      if (+year < 30) {
-        year = 20 + year;
-      } else {
-        year = 19 + year;
-      }
+      year = +year < 30
+        ? year = 20 + year
+        : year = 19 + year;
+
       mappedDate['YYYY'] = year;
     }
     mappedDate[fromFormat[i]] = dateParse[i];
