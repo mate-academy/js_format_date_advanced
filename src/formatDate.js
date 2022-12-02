@@ -59,16 +59,14 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (!fromFormat.includes(toFormat[i])) {
-      if (fromFormat.includes('YY') && toFormat.includes('YYYY')
-        && Number(oldDate[yearIndex]) < 30) {
-        newDate.push('20' + oldDate[yearIndex]);
-      } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')
-        && Number(oldDate[yearIndex]) >= 30) {
-        newDate.push('19' + oldDate[yearIndex]);
-      } else {
-        newDate.push(oldDate[yearIndex].slice(2));
-      }
+    if (!fromFormat.includes(toFormat[i])
+      && fromFormat.includes('YY')
+      && toFormat.includes('YYYY')) {
+      newDate.push((Number(oldDate[yearIndex]) < 30)
+        ? '20' + oldDate[yearIndex]
+        : '19' + oldDate[yearIndex]);
+    } else if (!fromFormat.includes(toFormat[i])) {
+      newDate.push(oldDate[yearIndex].slice(2));
     } else {
       newDate.push(oldDate[fromFormat.indexOf(toFormat[i])]);
     }
