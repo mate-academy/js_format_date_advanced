@@ -59,9 +59,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromFormat[i] === 'YYYY') {
       mappedDate['YY'] = separator[i].slice(2);
     } else if (fromFormat[i] === 'YY') {
-      let year = separator[i];
-
-      year = +year < 30
+      const year = +separator[i] < 30
         ? 20 + separator[i]
         : 19 + separator[i];
 
