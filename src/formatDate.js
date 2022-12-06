@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const toMonthIndex = toFormat.indexOf('MM');
+  const toDayIndex = toFormat.indexOf('DD');
+  let toYearIndex = 0;
+  let toYear = '';
+
+  if (toFormat.includes('YY')) {
+    toYearIndex = toFormat.indexOf('YY');
+  } else {
+    toYearIndex = toFormat.indexOf('YYYY');
+  }
+
+  const newFormatArray = new Array(3);
+  const dateArray = date.split(fromFormat[3]);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (true) {
+      case fromFormat[i].includes('DD'):
+        newFormatArray[toDayIndex] = dateArray[i];
+        continue;
+
+      case fromFormat[i].includes('MM'):
+        newFormatArray[toMonthIndex] = dateArray[i];
+        continue;
+
+      case fromFormat[i].includes('YYYY')
+        || fromFormat[i].includes('YY'):
+        newFormatArray[toYearIndex] = dateArray[i];
+        break;
+    }
+  }
+
+  if (toFormat.includes('YY') && fromFormat.includes('YYYY')) {
+    toYear = newFormatArray[toYearIndex].slice(2);
+    newFormatArray[toYearIndex] = toYear;
+  }
+
+  if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
+    if (+newFormatArray[toYearIndex] < 30) {
+      toYear = `20${newFormatArray[toYearIndex]}`;
+      newFormatArray[toYearIndex] = toYear;
+    } else {
+      toYear = `19${newFormatArray[toYearIndex]}`;
+      newFormatArray[toYearIndex] = toYear;
+    }
+  }
+
+  const result = newFormatArray.join(toFormat[3]);
+
+  return result;
 }
 
 module.exports = formatDate;
