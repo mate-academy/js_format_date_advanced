@@ -51,30 +51,40 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const arrDate = date.split(fromFormat[3]);
-  const arrNew = [];
 
-  for (const key of toFormat.slice(0, 3)) {
-    let oldIndex = '';
-    let newElement = '';
+  const oldFormat = {};
 
-    if (key === 'YY' && fromFormat.includes('YYYY')) {
-      oldIndex = fromFormat.indexOf('YYYY');
-      newElement = arrDate[oldIndex].slice(2);
-    } else if (key === 'YYYY' && fromFormat.includes('YY')) {
-      oldIndex = fromFormat.indexOf('YY');
-
-      if (arrDate[oldIndex] < 30) {
-        newElement = `20` + `${arrDate[oldIndex]}`;
-      } else {
-        newElement = `19` + `${arrDate[oldIndex]}`;
-      }
-    } else {
-      oldIndex = fromFormat.indexOf(key);
-      newElement = arrDate[oldIndex];
-    }
-
-    arrNew.push(newElement);
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    oldFormat[fromFormat[i]] = arrDate[i];
   }
+
+  const newFormat = {};
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    newFormat[toFormat[i]] = 0;
+  }
+
+  for (const key in oldFormat) {
+    for (const newKey in newFormat) {
+      if (key.slice(0, 1) === newKey.slice(0, 1)) {
+        newFormat[newKey] = oldFormat[key];
+      }
+    }
+  }
+
+  if (newFormat['YY']) {
+    newFormat['YY'] = newFormat['YY'].slice(2);
+  }
+
+  if (oldFormat['YY'] && newFormat['YYYY']) {
+    if (Number(oldFormat['YY']) < 30) {
+      newFormat['YYYY'] = `20` + `${newFormat['YYYY']}`;
+    } else {
+      newFormat['YYYY'] = `19` + `${newFormat['YYYY']}`;
+    }
+  }
+
+  const arrNew = Object.values(newFormat);
 
   return arrNew.join(toFormat[3]);
 }
