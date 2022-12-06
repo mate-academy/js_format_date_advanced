@@ -36,13 +36,9 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case fullYears:
-        let lengthenedYears;
-
-        if (sortedDate[shortYears] < 30) {
-          lengthenedYears = `20${sortedDate[shortYears]}`;
-        } else {
-          lengthenedYears = `19${sortedDate[shortYears]}`;
-        }
+        const lengthenedYears = sortedDate[shortYears] < 30
+          ? `20${sortedDate[shortYears]}`
+          : `19${sortedDate[shortYears]}`;
 
         if (sortedDate[shortYears]) {
           formatedDate.push(lengthenedYears);
