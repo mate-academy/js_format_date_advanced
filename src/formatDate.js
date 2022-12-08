@@ -52,8 +52,10 @@
 function formatDate(date, fromFormat, toFormat) {
   const toMonthIndex = toFormat.indexOf('MM');
   const toDayIndex = toFormat.indexOf('DD');
+  const fromMonthIndex = fromFormat.indexOf('MM');
+  const fromDayIndex = fromFormat.indexOf('DD');
   let toYearIndex = 0;
-  let toYear = '';
+  let fromYearIndex = 0;
 
   if (toFormat.includes('YY')) {
     toYearIndex = toFormat.indexOf('YY');
@@ -61,44 +63,39 @@ function formatDate(date, fromFormat, toFormat) {
     toYearIndex = toFormat.indexOf('YYYY');
   }
 
+  if (fromFormat.includes('YY')) {
+    fromYearIndex = fromFormat.indexOf('YY');
+  } else {
+    fromYearIndex = fromFormat.indexOf('YYYY');
+  }
+
   const newFormatArray = new Array(3);
   const dateArray = date.split(fromFormat[3]);
+  const toYear = dateArray[fromYearIndex];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (true) {
-      case fromFormat[i].includes('DD'):
-        newFormatArray[toDayIndex] = dateArray[i];
-        continue;
-
-      case fromFormat[i].includes('MM'):
-        newFormatArray[toMonthIndex] = dateArray[i];
-        continue;
-
-      case fromFormat[i].includes('YYYY')
-        || fromFormat[i].includes('YY'):
-        newFormatArray[toYearIndex] = dateArray[i];
-        break;
-    }
-  }
+  newFormatArray[toDayIndex] = dateArray[fromDayIndex];
+  newFormatArray[toMonthIndex] = dateArray[fromMonthIndex];
+  newFormatArray[toYearIndex] = dateArray[fromYearIndex];
 
   if (toFormat.includes('YY') && fromFormat.includes('YYYY')) {
-    toYear = newFormatArray[toYearIndex].slice(2);
-    newFormatArray[toYearIndex] = toYear;
+    newFormatArray[toYearIndex] = toYear.slice(2);
   }
 
-  if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
-    if (+newFormatArray[toYearIndex] < 30) {
-      toYear = `20${newFormatArray[toYearIndex]}`;
-      newFormatArray[toYearIndex] = toYear;
-    } else {
-      toYear = `19${newFormatArray[toYearIndex]}`;
-      newFormatArray[toYearIndex] = toYear;
-    }
+  switch (true) {
+    case toFormat.includes('YYYY')
+    && fromFormat.includes('YY')
+    && +toYear < 30:
+      newFormatArray[toYearIndex] = `20${toYear}`;
+      break;
+
+    case toFormat.includes('YYYY')
+    && fromFormat.includes('YY')
+    && +toYear >= 30:
+      newFormatArray[toYearIndex] = `19${toYear}`;
+      break;
   }
 
-  const result = newFormatArray.join(toFormat[3]);
-
-  return result;
+  return newFormatArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
