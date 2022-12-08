@@ -50,7 +50,95 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let year;
+  let day;
+  let month;
+  const separator = fromFormat[3];
+  const arrayDate = date.split(separator);
+  const newSeparator = toFormat[3];
+  const newDate = ['', '', ''];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY' :
+        year = arrayDate[i];
+        break;
+
+      case 'YY' :
+        if (arrayDate[i] < 30) {
+          year = `20${arrayDate[i]}`;
+        } else {
+          year = `19${arrayDate[i]}`;
+        }
+        break;
+
+      case 'MM' :
+        month = arrayDate[i];
+        break;
+
+      case 'DD' :
+        day = arrayDate[i];
+        break;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY' :
+        newDate[i] = year;
+        break;
+
+      case 'YY' :
+        newDate[i] = year.slice(2);
+        break;
+
+      case 'MM' :
+        newDate[i] = month;
+        break;
+
+      case 'DD' :
+        newDate[i] = day;
+        break;
+    }
+  }
+
+  return newDate.toString().split(',').join(newSeparator);
+
+  // const newDate = ['', '', ''];
+  // let startSlice = 0;
+  // const separator = toFormat[3];
+  // let year = date.slice(0, 2);
+
+  // for (let i = 0; i < fromFormat.length - 1; i++) {
+  //   for (let j = 0; j < toFormat.length - 1; j++) {
+  //     if (fromFormat[i] === toFormat[j]) {
+  //       newDate[j] += date.slice(startSlice,
+  //         fromFormat[i].length + startSlice);
+  //       break;
+  //     }
+
+  //     if (fromFormat[i].length > toFormat[i].length
+  //       && fromFormat[i][0] === toFormat[j][0]) {
+  //       newDate[j] += date.slice(startSlice + 2,
+  //         fromFormat[i].length + startSlice);
+  //       break;
+  //     }
+
+  //     if (fromFormat[i].length < toFormat[i].length
+  //       && fromFormat[i][0] === toFormat[j][0]) {
+  //       if (year < 30) {
+  //         year = `20${year}`;
+  //       } else {
+  //         year = `19${year}`;
+  //       }
+  //       newDate[j] += year;
+  //     }
+  //   }
+
+  //   startSlice += fromFormat[i].length + 1;
+  // }
+
+  // return newDate.toString().split(',').join(separator);
 }
 
 module.exports = formatDate;
