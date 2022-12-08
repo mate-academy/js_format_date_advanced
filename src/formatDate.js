@@ -54,19 +54,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   const oldFormat = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    oldFormat[fromFormat[i]] = arrDate[i];
-  }
+  oldFormat[fromFormat[0]] = arrDate[0];
+  oldFormat[fromFormat[1]] = arrDate[1];
+  oldFormat[fromFormat[2]] = arrDate[2];
 
   const newFormat = {};
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    newFormat[toFormat[i]] = 0;
-  }
+  newFormat[toFormat[0]] = '';
+  newFormat[toFormat[1]] = '';
+  newFormat[toFormat[2]] = '';
 
   for (const key in oldFormat) {
     for (const newKey in newFormat) {
-      if (key.slice(0, 1) === newKey.slice(0, 1)) {
+      if (key[0] === newKey[0]) {
         newFormat[newKey] = oldFormat[key];
       }
     }
@@ -77,16 +77,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (oldFormat['YY'] && newFormat['YYYY']) {
-    if (Number(oldFormat['YY']) < 30) {
+    if (oldFormat['YY'] < 30) {
       newFormat['YYYY'] = `20` + `${newFormat['YYYY']}`;
     } else {
       newFormat['YYYY'] = `19` + `${newFormat['YYYY']}`;
     }
   }
 
-  const arrNew = Object.values(newFormat);
-
-  return arrNew.join(toFormat[3]);
+  return Object.values(newFormat).join(toFormat[3]);
 }
 
 module.exports = formatDate;
