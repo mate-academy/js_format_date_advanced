@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
     ? (toYearIndex = toFormat.indexOf('YY'))
     : (toYearIndex = toFormat.indexOf('YYYY'));
 
-  toYearIndex = fromFormat.includes('YY')
+  fromYearIndex = fromFormat.includes('YY')
     ? (fromYearIndex = fromFormat.indexOf('YY'))
     : (fromYearIndex = fromFormat.indexOf('YYYY'));
 
