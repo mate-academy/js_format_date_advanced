@@ -57,17 +57,13 @@ function formatDate(date, fromFormat, toFormat) {
   let toYearIndex = 0;
   let fromYearIndex = 0;
 
-  if (toFormat.includes('YY')) {
-    toYearIndex = toFormat.indexOf('YY');
-  } else {
-    toYearIndex = toFormat.indexOf('YYYY');
-  }
+  toYearIndex = toFormat.includes('YY')
+    ? (toYearIndex = toFormat.indexOf('YY'))
+    : (toYearIndex = toFormat.indexOf('YYYY'));
 
-  if (fromFormat.includes('YY')) {
-    fromYearIndex = fromFormat.indexOf('YY');
-  } else {
-    fromYearIndex = fromFormat.indexOf('YYYY');
-  }
+  toYearIndex = fromFormat.includes('YY')
+    ? (fromYearIndex = fromFormat.indexOf('YY'))
+    : (fromYearIndex = fromFormat.indexOf('YYYY'));
 
   const newFormatArray = new Array(3);
   const dateArray = date.split(fromFormat[3]);
@@ -81,18 +77,16 @@ function formatDate(date, fromFormat, toFormat) {
     newFormatArray[toYearIndex] = toYear.slice(2);
   }
 
-  switch (true) {
-    case toFormat.includes('YYYY')
-    && fromFormat.includes('YY')
-    && +toYear < 30:
-      newFormatArray[toYearIndex] = `20${toYear}`;
-      break;
+  if (toFormat.includes('YYYY')
+  && fromFormat.includes('YY')
+  && +toYear < 30) {
+    newFormatArray[toYearIndex] = `20${toYear}`;
+  }
 
-    case toFormat.includes('YYYY')
-    && fromFormat.includes('YY')
-    && +toYear >= 30:
-      newFormatArray[toYearIndex] = `19${toYear}`;
-      break;
+  if (toFormat.includes('YYYY')
+  && fromFormat.includes('YY')
+  && +toYear >= 30) {
+    newFormatArray[toYearIndex] = `19${toYear}`;
   }
 
   return newFormatArray.join(toFormat[3]);
