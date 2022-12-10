@@ -58,12 +58,12 @@ function formatDate(date, fromFormat, toFormat) {
   let fromYearIndex = 0;
 
   toYearIndex = toFormat.includes('YY')
-    ? (toYearIndex = toFormat.indexOf('YY'))
-    : (toYearIndex = toFormat.indexOf('YYYY'));
+    ? toFormat.indexOf('YY')
+    : toFormat.indexOf('YYYY');
 
   fromYearIndex = fromFormat.includes('YY')
-    ? (fromYearIndex = fromFormat.indexOf('YY'))
-    : (fromYearIndex = fromFormat.indexOf('YYYY'));
+    ? fromFormat.indexOf('YY')
+    : fromFormat.indexOf('YYYY');
 
   const newFormatArray = new Array(3);
   const dateArray = date.split(fromFormat[3]);
