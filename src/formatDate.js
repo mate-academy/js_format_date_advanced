@@ -58,18 +58,25 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (true) {
-      case fromFormat[i] === 'DD':
+    switch (fromFormat[i]) {
+      case 'DD':
         day = dateWithDots[i];
         break;
 
-      case fromFormat[i] === 'MM':
+      case 'MM':
         month = dateWithDots[i];
         break;
 
-      case fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY':
+      case 'YYYY':
         year = dateWithDots[i];
         break;
+
+      case 'YY':
+        year = dateWithDots[i];
+        break;
+
+      default:
+        throw new Error('invalid type of action');
     }
   }
 
