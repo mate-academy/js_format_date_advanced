@@ -62,11 +62,8 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   for (let i = 0; i <= fromFormat.length - 2; i++) {
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      if (fromFormat[i].length > 2) {
-        dates.YYYY = oldDate[i];
-        dates.YY = oldDate[i].slice(-2);
-      } else {
+    switch (fromFormat[i]) {
+      case 'YY':
         if (oldDate[i] < 30) {
           dates.YY = oldDate[i];
           dates.YYYY = 20 + `${oldDate[i]}`;
@@ -74,33 +71,40 @@ function formatDate(date, fromFormat, toFormat) {
           dates.YY = oldDate[i];
           dates.YYYY = 19 + `${oldDate[i]}`;
         }
-      }
-    }
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      dates.MM = oldDate[i];
-    }
+      case 'YYYY':
+        dates.YYYY = oldDate[i];
+        dates.YY = oldDate[i].slice(-2);
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      dates.DD = oldDate[i];
+      case 'MM':
+        dates.MM = oldDate[i];
+        break;
+
+      case 'DD':
+        dates.DD = oldDate[i];
+        break;
     }
   }
 
   for (let i = 0; i <= toFormat.length - 2; i++) {
-    if (toFormat[i] === 'YY') {
-      newFormat[i] = dates.YY;
-    }
+    switch (toFormat[i]) {
+      case 'YY':
+        newFormat[i] = dates.YY;
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      newFormat[i] = dates.YYYY;
-    }
+      case 'YYYY':
+        newFormat[i] = dates.YYYY;
+        break;
 
-    if (toFormat[i] === 'MM') {
-      newFormat[i] = dates.MM;
-    }
+      case 'MM':
+        newFormat[i] = dates.MM;
+        break;
 
-    if (toFormat[i] === 'DD') {
-      newFormat[i] = dates.DD;
+      case 'DD':
+        newFormat[i] = dates.DD;
+        break;
     }
   }
 
