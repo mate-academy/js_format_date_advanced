@@ -87,6 +87,10 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  if (fullFromFormatYear >= 0 && fullToFormatYear >= 0) {
+    result[fullToFormatYear] = year;
+  }
+
   return result.join(`${toFormat[3]}`);
 }
 
