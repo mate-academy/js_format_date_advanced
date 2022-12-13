@@ -50,45 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fullFromFormatYear = fromFormat.indexOf('YYYY');
-  const shortFromFormatYear = fromFormat.indexOf('YY');
-  const dayFromFormat = fromFormat.indexOf('DD');
-  const monthFromFormat = fromFormat.indexOf('MM');
-  const fullToFormatYear = toFormat.indexOf('YYYY');
-  const shortToFormatYear = toFormat.indexOf('YY');
-  const dayToFormat = toFormat.indexOf('DD');
-  const monthToFormat = toFormat.indexOf('MM');
+  const indexOfFullFromFormatYear = fromFormat.indexOf('YYYY');
+  const indexOfShortFromFormatYear = fromFormat.indexOf('YY');
+  const indexOfDayFromFormat = fromFormat.indexOf('DD');
+  const indexOfMonthFromFormat = fromFormat.indexOf('MM');
+  const indexOfFullToFormatYear = toFormat.indexOf('YYYY');
+  const indexOfShortToFormatYear = toFormat.indexOf('YY');
+  const indexOfDayToFormat = toFormat.indexOf('DD');
+  const indexOfMonthToFormat = toFormat.indexOf('MM');
   const fullData = date.split(`${fromFormat[3]}`);
   const result = [];
   let year = '';
 
-  result[dayToFormat] = fullData[dayFromFormat];
-  result[monthToFormat] = fullData[monthFromFormat];
+  result[indexOfDayToFormat] = fullData[indexOfDayFromFormat];
+  result[indexOfMonthToFormat] = fullData[indexOfMonthFromFormat];
 
-  if (fullFromFormatYear >= 0) {
-    year = fullData[fullFromFormatYear];
+  if (indexOfFullFromFormatYear >= 0) {
+    year = fullData[indexOfFullFromFormatYear];
 
-    if (fullToFormatYear < 0) {
+    if (indexOfFullToFormatYear < 0) {
       year = year.slice(2, 4);
-      result[shortToFormatYear] = year;
+      result[indexOfShortToFormatYear] = year;
     }
   }
 
-  if (shortFromFormatYear >= 0) {
-    year = fullData[shortFromFormatYear];
+  if (indexOfShortFromFormatYear >= 0) {
+    year = fullData[indexOfShortFromFormatYear];
 
-    if (shortToFormatYear < 0) {
+    if (indexOfShortToFormatYear < 0) {
       if (year < 30) {
         year = 20 + year;
       } else {
         year = 19 + year;
       }
-      result[fullToFormatYear] = year;
+      result[indexOfFullToFormatYear] = year;
     }
   }
 
-  if (fullFromFormatYear >= 0 && fullToFormatYear >= 0) {
-    result[fullToFormatYear] = year;
+  if (indexOfFullFromFormatYear >= 0 && indexOfFullToFormatYear >= 0) {
+    result[indexOfFullToFormatYear] = year;
   }
 
   return result.join(`${toFormat[3]}`);
