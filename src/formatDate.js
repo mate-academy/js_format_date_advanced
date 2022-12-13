@@ -50,7 +50,48 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const indexOfFullFromFormatYear = fromFormat.indexOf('YYYY');
+  const indexOfShortFromFormatYear = fromFormat.indexOf('YY');
+  const indexOfDayFromFormat = fromFormat.indexOf('DD');
+  const indexOfMonthFromFormat = fromFormat.indexOf('MM');
+  const indexOfFullToFormatYear = toFormat.indexOf('YYYY');
+  const indexOfShortToFormatYear = toFormat.indexOf('YY');
+  const indexOfDayToFormat = toFormat.indexOf('DD');
+  const indexOfMonthToFormat = toFormat.indexOf('MM');
+  const fullData = date.split(`${fromFormat[3]}`);
+  const result = [];
+  let year = '';
+
+  result[indexOfDayToFormat] = fullData[indexOfDayFromFormat];
+  result[indexOfMonthToFormat] = fullData[indexOfMonthFromFormat];
+
+  if (indexOfFullFromFormatYear >= 0) {
+    year = fullData[indexOfFullFromFormatYear];
+
+    if (indexOfFullToFormatYear < 0) {
+      year = year.slice(2, 4);
+      result[indexOfShortToFormatYear] = year;
+    }
+  }
+
+  if (indexOfShortFromFormatYear >= 0) {
+    year = fullData[indexOfShortFromFormatYear];
+
+    if (indexOfShortToFormatYear < 0) {
+      if (year < 30) {
+        year = 20 + year;
+      } else {
+        year = 19 + year;
+      }
+      result[indexOfFullToFormatYear] = year;
+    }
+  }
+
+  if (indexOfFullFromFormatYear >= 0 && indexOfFullToFormatYear >= 0) {
+    result[indexOfFullToFormatYear] = year;
+  }
+
+  return result.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
