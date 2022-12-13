@@ -103,42 +103,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newDate.toString().split(',').join(newSeparator);
-
-  // const newDate = ['', '', ''];
-  // let startSlice = 0;
-  // const separator = toFormat[3];
-  // let year = date.slice(0, 2);
-
-  // for (let i = 0; i < fromFormat.length - 1; i++) {
-  //   for (let j = 0; j < toFormat.length - 1; j++) {
-  //     if (fromFormat[i] === toFormat[j]) {
-  //       newDate[j] += date.slice(startSlice,
-  //         fromFormat[i].length + startSlice);
-  //       break;
-  //     }
-
-  //     if (fromFormat[i].length > toFormat[i].length
-  //       && fromFormat[i][0] === toFormat[j][0]) {
-  //       newDate[j] += date.slice(startSlice + 2,
-  //         fromFormat[i].length + startSlice);
-  //       break;
-  //     }
-
-  //     if (fromFormat[i].length < toFormat[i].length
-  //       && fromFormat[i][0] === toFormat[j][0]) {
-  //       if (year < 30) {
-  //         year = `20${year}`;
-  //       } else {
-  //         year = `19${year}`;
-  //       }
-  //       newDate[j] += year;
-  //     }
-  //   }
-
-  //   startSlice += fromFormat[i].length + 1;
-  // }
-
-  // return newDate.toString().split(',').join(separator);
 }
 
 module.exports = formatDate;
