@@ -53,29 +53,39 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[fromFormat.length - 1];
   const newSeparator = toFormat[toFormat.length - 1];
   const oldDate = date.split(oldSeparator);
-  const newDate = [];
+  const result = [];
+  const dateObj = {
+    DD: '',
+    MM: '',
+    YY: '',
+    YYYY: '',
+  };
 
-  for (let f = 0; f < fromFormat.length - 1; f++) {
-    for (let t = 0; t < toFormat.length - 1; t++) {
-      if (fromFormat[f][0] === toFormat[t][0]) {
-        if (fromFormat[f].length !== toFormat[t].length) {
-          if (fromFormat[f].length === 4) {
-            oldDate[f] = oldDate[f].slice(2);
-          } else {
-            let decade = 20;
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateObj[fromFormat[i]] = oldDate[i];
+  }
 
-            if (oldDate[f] >= 30) {
-              decade = '19';
-            }
-            oldDate[f] = decade + oldDate[f];
-          }
-        }
-        newDate[t] = oldDate[f];
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (!dateObj[toFormat[i]]) {
+      fixedYearFormat();
+    }
+    result.push(dateObj[toFormat[i]]);
+  }
+
+  function fixedYearFormat() {
+    if (!dateObj.YY) {
+      dateObj.YY = dateObj.YYYY.slice(2);
+    } else {
+      let decade = 19;
+
+      if (dateObj.YY < 30) {
+        decade = 20;
       }
+      dateObj.YYYY = decade + dateObj.YY;
     }
   }
 
-  return newDate.join(newSeparator);
+  return result.join(newSeparator);
 }
 
 module.exports = formatDate;
