@@ -51,25 +51,27 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const oldDate = date.split(fromFormat[3]);
-  const newDate = [];
+  const oldFormat = {
+    YY: 'YY',
+    YYYY: 'YYYY',
+    [fromFormat[0]]: oldDate[0],
+    [fromFormat[1]]: oldDate[1],
+    [fromFormat[2]]: oldDate[2],
+  };
 
-  for (let i = 0; i < 3; i++) {
-    newDate[i] = oldDate[fromFormat.indexOf(toFormat[i])];
+  const newFormat = {};
 
-    if (fromFormat.indexOf(toFormat[i]) === -1) {
-      if (toFormat[i] === 'YY') {
-        newDate[i] = oldDate[i].slice(2);
-      }
-
-      if (toFormat[i] === 'YYYY') {
-        newDate[i] = '19' + oldDate[i];
-
-        if (oldDate[i] < 30) {
-          newDate[i] = '20' + oldDate[i];
-        }
-      }
-    }
+  for (const n of toFormat) {
+    newFormat[n] = oldFormat[n];
   }
+
+  const newDate = Object.values(newFormat).slice(0, -1);
+
+  if (oldFormat.YY >= 30) {
+    newDate[newDate.indexOf('YYYY')] = '19' + oldFormat.YY;
+  }
+  newDate[newDate.indexOf('YYYY')] = '20' + oldFormat.YY;
+  newDate[newDate.indexOf('YY')] = oldFormat.YYYY.slice(2);
 
   return newDate.join(toFormat[3]);
 }
