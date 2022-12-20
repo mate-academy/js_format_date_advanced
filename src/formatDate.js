@@ -2,9 +2,10 @@
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
- * date format. Create a `formatDate` function that accepts the `date` string,
+ * date fromFormat. Create a `fromFormatDate` function that accepts the `date`
+ * string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
- * given date in new format.
+ * given date in new fromFormat.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
@@ -12,31 +13,31 @@
  *
  * Examples:
  *
- * formatDate(
+ * fromFormatDate(
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
- * formatDate(
+ * fromFormatDate(
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.2020'
  *
- * formatDate(
+ * fromFormatDate(
  *   '18-02-2020',
  *   ['DD', 'MM', 'YYYY', '-'],
  *   ['DD', 'MM', 'YY', '/'],
  * ) // '18/02/20'
  *
- * formatDate(
+ * fromFormatDate(
  *   '20/02/18',
  *   ['YY', 'MM', 'DD', '/'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
- * formatDate(
+ * fromFormatDate(
  *   '97/02/18',
  *   ['YY', 'MM', 'DD', '/'],
  *   ['DD', 'MM', 'YYYY', '.'],
@@ -49,8 +50,41 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+function fromFormatDate(date, fromFormat, toFormat) {
+  const dateArr = date.split(fromFormat[fromFormat.length - 1]);
+  const newIndexes = [];
+  let newDateArr = [];
+  let newDate = '';
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (toFormat.indexOf(fromFormat[i]) === -1) {
+      const yearLen = fromFormat[i].length;
+      const year = dateArr[fromFormat.indexOf(fromFormat[i])];
+
+      if (yearLen === 4) {
+        newIndexes.push(toFormat.indexOf(fromFormat[i].slice(2)));
+
+        dateArr[fromFormat.indexOf(fromFormat[i])] = year.slice(2);
+      } else {
+        newIndexes.push(toFormat.indexOf(fromFormat[i].repeat(2)));
+
+        dateArr[fromFormat.indexOf(fromFormat[i])] = (year >= 30)
+          ? '19' + year
+          : '20' + year;
+      }
+    } else {
+      newIndexes.push(toFormat.indexOf(fromFormat[i]));
+    }
+  }
+
+  newDateArr = [
+    dateArr[newIndexes.indexOf(0)],
+    dateArr[newIndexes.indexOf(1)],
+    dateArr[newIndexes.indexOf(2)]];
+
+  newDate = newDateArr.join(toFormat[toFormat.length - 1]);
+
+  return newDate;
 }
 
-module.exports = formatDate;
+module.exports = fromFormatDate;
