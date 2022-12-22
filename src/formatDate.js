@@ -58,15 +58,11 @@ function formatDate(date, fromFormat, toFormat) {
     newDate[i] = oldDate[fromFormat.indexOf(toFormat[i])];
 
     if (!fromFormat.includes(toFormat[i])) {
-      newDate[i] = oldDate[i].slice(2);
+      const oldFormatYear = oldDate[i];
 
-      if (toFormat[i] === 'YYYY') {
-        newDate[i] = '19' + oldDate[i];
-
-        if (oldDate[i] < 30) {
-          newDate[i] = '20' + oldDate[i];
-        }
-      }
+      newDate[i] = oldFormatYear.length === 4
+        ? oldFormatYear.slice(2)
+        : (oldFormatYear < 30 ? '20' : '19') + oldFormatYear;
     }
   }
 
