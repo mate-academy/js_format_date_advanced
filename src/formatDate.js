@@ -64,9 +64,8 @@ function formatDate(date, fromFormat, toFormat) {
     if (index === -1 && item === 'YYYY') {
       const indexOfYear = fromFormat.indexOf('YY');
 
-      dateInANewFormat.push(dateArray[indexOfYear] < 30
-        ? '20' + dateArray[indexOfYear]
-        : '19' + dateArray[indexOfYear]);
+      dateInANewFormat.push(
+        (dateArray[indexOfYear] < 30 ? '20' : '19') + dateArray[indexOfYear]);
     }
 
     if (index === -1 && item === 'YY') {
@@ -77,9 +76,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const joinNewDate = dateInANewFormat.join(toFormat[toFormat.length - 1]);
+  const NewDateStr = dateInANewFormat.join(toFormat[toFormat.length - 1]);
 
-  return joinNewDate;
+  return NewDateStr;
 }
 
 module.exports = formatDate;
