@@ -51,31 +51,26 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const arr = [];
-  let yearOrder;
-  let monthOrder;
-  let dayOrder;
-  const splitSeparator = fromFormat[3];
-  const joinSeparator = toFormat[3];
+  let separator = fromFormat[3];
+  let year;
+  let month;
+  let day;
+
+  const dateArr = date.split(separator);
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i].includes('Y')) {
-      yearOrder = i;
+      year = dateArr[i];
     }
 
     if (fromFormat[i].includes('D')) {
-      dayOrder = i;
+      day = dateArr[i];
     }
 
     if (fromFormat[i].includes('M')) {
-      monthOrder = i;
+      month = dateArr[i];
     }
   }
-
-  const dateArr = date.split(splitSeparator);
-
-  const year = dateArr[yearOrder];
-  const month = dateArr[monthOrder];
-  const day = dateArr[dayOrder];
 
   toFormat
     .map((format) => {
@@ -102,7 +97,9 @@ function formatDate(date, fromFormat, toFormat) {
       }
     });
 
-  return arr.join(joinSeparator);
+  separator = toFormat[3];
+
+  return arr.join(separator);
 }
 
 module.exports = formatDate;
