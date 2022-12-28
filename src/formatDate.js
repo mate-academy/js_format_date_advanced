@@ -59,17 +59,16 @@ function formatDate(date, fromFormat, toFormat) {
     let oldFormatPart = fromFormat[i];
     let dateArrayPart = dateArray[i];
 
-    // checking years format for differences
-    if (fromFormat[i][0] !== toFormat[i][0]) {
+    const isFormatItemLonger = (format1, format2) =>
+      format1[i].length > format2[i].length;
+    const isItemYear = (format1, format2) => format1[i].slice(2) === format2[i];
 
-    }
-
-    if (fromFormat[i].length > toFormat[i].length
-      && fromFormat[i].slice(2) === toFormat[i]) {
+    if (isFormatItemLonger(fromFormat, toFormat)
+      && isItemYear(fromFormat, toFormat)) {
       oldFormatPart = fromFormat[i].slice(2);
       dateArrayPart = dateArray[i].slice(2);
-    } else if (fromFormat[i].length < toFormat[i].length
-      && toFormat[i].slice(2) === fromFormat[i]) {
+    } else if (isFormatItemLonger(toFormat, fromFormat)
+      && isItemYear(toFormat, fromFormat)) {
       oldFormatPart = 'YY' + fromFormat[i];
 
       dateArrayPart = dateArray[i] < 30
@@ -77,10 +76,8 @@ function formatDate(date, fromFormat, toFormat) {
         : '19' + dateArray[i];
     }
 
-    // looking for place of a part of the date
     const index = toFormat.indexOf(oldFormatPart);
 
-    // assigning part of the date to proper place in array
     newDate[index] = dateArrayPart;
   }
 
