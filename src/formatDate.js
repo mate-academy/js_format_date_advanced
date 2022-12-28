@@ -50,9 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const prevDelim = fromFormat.pop();
-  const curDelim = toFormat.pop();
-  const curDate = date.split(prevDelim);
+  const previousSeparator = fromFormat.pop();
+  const currentSeparator = toFormat.pop();
+  const currentDate = date.split(previousSeparator);
 
   const fromDayIndex = fromFormat.indexOf('DD');
   const fromMonthIndex = fromFormat.indexOf('MM');
@@ -67,12 +67,12 @@ function formatDate(date, fromFormat, toFormat) {
 
   const result = [];
 
-  result[toDayIndex] = curDate[fromDayIndex];
-  result[toMonthIndex] = curDate[fromMonthIndex];
-  result[toYearIndex] = curDate[fromYearIndex];
+  result[toDayIndex] = currentDate[fromDayIndex];
+  result[toMonthIndex] = currentDate[fromMonthIndex];
+  result[toYearIndex] = currentDate[fromYearIndex];
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    result[toYearIndex] = curDate[fromYearIndex].slice(2);
+    result[toYearIndex] = currentDate[fromYearIndex].slice(2);
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
@@ -81,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
       : `19${result[toYearIndex]}`;
   }
 
-  return result.join(curDelim);
+  return result.join(currentSeparator);
 }
 
 module.exports = formatDate;
