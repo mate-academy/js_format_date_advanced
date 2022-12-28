@@ -55,22 +55,29 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YY') {
-      if (dateArr[i] < 30) {
-        fullDate['YYYY'] = `20${dateArr[i]}`;
-      } else {
-        fullDate['YYYY'] = `19${dateArr[i]}`;
+    const from = fromFormat[i];
+    const initialDate = dateArr[i];
+
+    if (from === 'YY') {
+      if (initialDate < 30) {
+        fullDate['YYYY'] = `20${initialDate}`;
+      }
+
+      if (initialDate >= 30) {
+        fullDate['YYYY'] = `19${initialDate}`;
       }
     }
 
-    fullDate[fromFormat[i]] = dateArr[i];
+    fullDate[from] = initialDate;
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YY') {
+    const to = toFormat[i];
+
+    if (to === 'YY') {
       finallDate.push(fullDate['YYYY'].slice(2));
     } else {
-      finallDate.push(fullDate[toFormat[i]]);
+      finallDate.push(fullDate[to]);
     }
   }
 
