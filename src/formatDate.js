@@ -50,7 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+  const dateObject = {};
+  const separator = toFormat[3];
+
+  for (let i = 0; i < 3; i++) {
+    dateObject[fromFormat[i]] = dateArray[i];
+  }
+
+  normalazeYear(dateObject, toFormat);
+
+  return `${dateObject[toFormat[0]]}${separator}${dateObject[toFormat[1]]}${separator}${dateObject[toFormat[2]]}`;
+}
+
+function normalazeYear(date, format) {
+  const year = date.YY || date.YYYY;
+  const needsShortFormat = format.includes('YY');
+  let newYear = '';
+
+  if (year.length === 4 && needsShortFormat) {
+    newYear = year.substr(2);
+
+    delete date.YYYY;
+    date.YY = newYear;
+  } else if (year.length === 2 && !needsShortFormat) {
+    const sentury = year < 30 ? '20' : '19';
+
+    newYear = sentury + year;
+    delete date.YY;
+    date.YYYY = newYear;
+  }
 }
 
 module.exports = formatDate;
