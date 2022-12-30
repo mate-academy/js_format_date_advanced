@@ -50,7 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const toSeparator = toFormat[3];
+  const fromSeparator = fromFormat[3];
+  const dateArray = date.split(fromSeparator);
   const formatedArray = [];
 
   const formatYear = yearString => {
@@ -77,7 +79,7 @@ function formatDate(date, fromFormat, toFormat) {
     formatedArray[index] = dateArray[i];
   }
 
-  return formatedArray.join(toFormat[3]);
+  return formatedArray.join(toSeparator);
 }
 
 module.exports = formatDate;
