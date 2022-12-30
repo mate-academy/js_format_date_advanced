@@ -3,7 +3,8 @@
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array and the new `toFormat` array. Function returns
+ * the old ` oldFormat` corectDateay and the new `newFormat` corectDateay.
+ * Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
@@ -43,14 +44,56 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
+ * @param {string[]}  oldFormat
+ * @param {string[]} newFormat
  *
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+function formatDate(date, oldFormat, newFormat) {
+  const corectDate = [];
+  let separator = oldFormat[3];
+  let year, month, day;
+
+  const dateArr = date.split(separator);
+
+  // fill variables: year, month, day with data
+  for (let i = 0; i < oldFormat.length; i++) {
+    if (oldFormat[i].includes('Y')) {
+      year = dateArr[i];
+    }
+
+    if (oldFormat[i].includes('D')) {
+      day = dateArr[i];
+    }
+
+    if (oldFormat[i].includes('M')) {
+      month = dateArr[i];
+    }
+  }
+
+  // add variables to the final array in the correct order
+  for (const format of newFormat) {
+    if (format.includes('Y')) {
+      if (format.length < year.length) {
+        corectDate.push(year.slice(2));
+      } else {
+        corectDate.push(year.padStart(format.length, year >= 30 ? '19' : '20'));
+      }
+    }
+
+    if (format.includes('M')) {
+      corectDate.push(month);
+    }
+
+    if (format.includes('D')) {
+      corectDate.push(day);
+    }
+  }
+
+  separator = newFormat[3];
+
+  return corectDate.join(separator);
 }
 
 module.exports = formatDate;
