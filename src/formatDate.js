@@ -52,7 +52,8 @@
 function formatDate(date, fromFormat, toFormat) {
   const fullDate = {};
   const finallDate = [];
-  const dateArr = date.split(fromFormat[3]);
+  let separator = fromFormat[3];
+  const dateArr = date.split(separator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     const from = fromFormat[i];
@@ -80,8 +81,9 @@ function formatDate(date, fromFormat, toFormat) {
       finallDate.push(fullDate[to]);
     }
   }
+  separator = toFormat[3];
 
-  return finallDate.join(toFormat[3]);
+  return finallDate.join(separator);
 }
 
 module.exports = formatDate;
