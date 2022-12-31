@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = [];
+  const toSeparator = toFormat[3];
+  const fromSeparator = fromFormat[3];
+  const separatedDate = date.split(fromSeparator);
+  let inputYear;
+  let inputMonth;
+  let inputDate;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        inputYear = separatedDate[i];
+        break;
+      case 'YY':
+        inputYear = separatedDate[i];
+        break;
+      case 'MM':
+        inputMonth = separatedDate[i];
+        break;
+      case 'DD':
+        inputDate = separatedDate[i];
+        break;
+      default:
+        throw new Error('Invalid input');
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (inputYear.length === 2 && inputYear < 30) {
+          newDate.push('20' + inputYear);
+        };
+
+        if (inputYear.length === 2 && inputYear >= 30) {
+          newDate.push('19' + inputYear);
+        };
+
+        if (inputYear.length === 4) {
+          newDate.push(inputYear);
+        }
+        break;
+      case 'YY':
+        if (inputYear.length === 4) {
+          newDate.push(inputYear.slice(2));
+        } else {
+          newDate.push(inputYear);
+        };
+        break;
+      case 'MM':
+        newDate.push(inputMonth);
+        break;
+      case 'DD':
+        newDate.push(inputDate);
+        break;
+      default:
+        throw new Error('Invalid input');
+    }
+  }
+
+  return newDate.join(toSeparator);
 }
 
 module.exports = formatDate;
