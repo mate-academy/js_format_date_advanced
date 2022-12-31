@@ -52,9 +52,9 @@
 function formatDate(date, fromFormat, toFormat) {
   const yearLengthFormat = toFormat.find(el => el[0] === 'Y').length;
   const dateArray = date.split(fromFormat[3]);
-  const day = dateArray[fromFormat.findIndex(el => el[0] === 'D')];
-  const month = dateArray[fromFormat.findIndex(el => el[0] === 'M')];
-  let year = dateArray[fromFormat.findIndex(el => el[0] === 'Y')];
+  const day = dateArray[getDateIndex('D', fromFormat)];
+  const month = dateArray[getDateIndex('M', fromFormat)];
+  let year = dateArray[getDateIndex('Y', fromFormat)];
 
   if (yearLengthFormat === 2 && year.length === 4) {
     year = year[2] + year[3];
@@ -70,5 +70,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   return dateArray.join(toFormat[3]);
 }
+
+const getDateIndex = function(dateType, array) {
+  return array.findIndex(el => el[0] === dateType);
+};
 
 module.exports = formatDate;
