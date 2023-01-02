@@ -60,28 +60,42 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = currDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      month = currDate[i];
-    } else if (fromFormat[i] === 'YYYY') {
-      year = currDate[i];
-    } else if (fromFormat[i] === 'YY' && currDate[i] < 30) {
-      year = '20' + currDate[i];
-    } else if (fromFormat[i] === 'YY' && currDate[i] >= 30) {
-      year = '19' + currDate[i];
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = currDate[i];
+        break;
+      case 'MM':
+        month = currDate[i];
+        break;
+      case 'YYYY':
+        year = currDate[i];
+        break;
+      case 'YY':
+        if (currDate[i] < 30) {
+          year = '20' + currDate[i];
+        } else {
+          year = '19' + currDate[i];
+        }
+        break;
+      default:
+        throw new Error('error');
     }
   }
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'DD') {
-      newDate[i] = day;
-    } else if (toFormat[i] === 'MM') {
-      newDate[i] = month;
-    } else if (toFormat[i] === 'YYYY') {
-      newDate[i] = year;
-    } else if (toFormat[i] === 'YY') {
-      newDate[i] = year[2] + year[3];
+    switch (toFormat[i]) {
+      case 'DD':
+        newDate[i] = day;
+        break;
+      case 'MM':
+        newDate[i] = month;
+        break;
+      case 'YYYY':
+        newDate[i] = year;
+        break;
+      case 'YY':
+        newDate[i] = year[2] + year[3];
+        break;
     }
   }
 
