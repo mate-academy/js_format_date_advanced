@@ -78,7 +78,7 @@ function formatDate(date, fromFormat, toFormat) {
         }
         break;
       default:
-        throw new Error('error');
+        throw new Error('Passed format is incorrect');
     }
   }
 
@@ -94,8 +94,10 @@ function formatDate(date, fromFormat, toFormat) {
         newDate[i] = year;
         break;
       case 'YY':
-        newDate[i] = year[2] + year[3];
+        newDate[i] = year.slice(-2);
         break;
+      default:
+        throw new Error('New format is incorrect');
     }
   }
 
