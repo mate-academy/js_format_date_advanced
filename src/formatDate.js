@@ -50,7 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = [];
+  const oldDate = date.split(fromFormat[fromFormat.length - 1]);
+
+  function findSameElement(index) {
+    for (const oldEl of fromFormat) {
+      const indexOfOld = fromFormat.indexOf(oldEl);
+      let newEl = oldDate[indexOfOld];
+
+      if (oldEl === toFormat[index]) {
+        newDate.push(newEl);
+        break;
+      }
+
+      const isBothYears = oldEl.includes('Y') && toFormat[index].includes('Y');
+      const isNewLengthBigger = oldEl.length < toFormat[index].length;
+
+      if (isBothYears && !isNewLengthBigger) {
+        newEl = oldDate[indexOfOld].slice(2);
+        newDate.push(newEl);
+      }
+
+      if (isBothYears && isNewLengthBigger && (+oldDate[indexOfOld] < 30)) {
+        newEl = 20 + oldDate[indexOfOld];
+        newDate.push(newEl);
+      } else if (isBothYears && isNewLengthBigger) {
+        newEl = 19 + oldDate[indexOfOld];
+        newDate.push(newEl);
+      }
+    }
+  }
+
+  findSameElement(0);
+  findSameElement(1);
+  findSameElement(2);
+
+  return newDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
