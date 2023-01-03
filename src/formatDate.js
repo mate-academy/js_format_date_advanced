@@ -41,6 +41,7 @@
  *   ['YY', 'MM', 'DD', '/'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
+ * // .join(toFormat[toFormat.length - 1]);
  *
  * @param {string} date
  * @param {string[]} fromFormat
@@ -50,7 +51,33 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitDate = date.split(fromFormat[3]);
+  const oldDataFormat = {};
+  const newDataFormat = [];
+
+  for (let i = 0; i < splitDate.length; i++) {
+    if (fromFormat[i] === 'YY' && +splitDate[i] < 30) {
+      oldDataFormat.YYYY = `20${splitDate[i]}`;
+      continue;
+    }
+
+    if (fromFormat[i] === 'YY') {
+      oldDataFormat.YYYY = `19${splitDate[i]}`;
+      continue;
+    }
+
+    oldDataFormat[fromFormat[i]] = splitDate[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (oldDataFormat[toFormat[i]]) {
+      newDataFormat.push(oldDataFormat[toFormat[i]]);
+    } else {
+      newDataFormat.push(oldDataFormat['YYYY'].slice(2));
+    }
+  }
+
+  return newDataFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
