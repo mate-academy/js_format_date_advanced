@@ -54,29 +54,30 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDate = date.split(fromFormat[fromFormat.length - 1]);
 
   function findSameElement(index) {
-    for (const oldEl of fromFormat) {
-      const indexOfOld = fromFormat.indexOf(oldEl);
-      let newEl = oldDate[indexOfOld];
+    for (const oldElement of fromFormat) {
+      const indexOfOld = fromFormat.indexOf(oldElement);
+      let newElement = oldDate[indexOfOld];
 
-      if (oldEl === toFormat[index]) {
-        newDate.push(newEl);
+      if (oldElement === toFormat[index]) {
+        newDate.push(newElement);
         break;
       }
 
-      const isBothYears = oldEl.includes('Y') && toFormat[index].includes('Y');
-      const isNewLengthBigger = oldEl.length < toFormat[index].length;
+      const isBothYears = oldElement.includes('Y')
+      && toFormat[index].includes('Y');
+      const isNewLengthBigger = oldElement.length < toFormat[index].length;
 
       if (isBothYears && !isNewLengthBigger) {
-        newEl = oldDate[indexOfOld].slice(2);
-        newDate.push(newEl);
+        newElement = oldDate[indexOfOld].slice(2);
+        newDate.push(newElement);
       }
 
       if (isBothYears && isNewLengthBigger && (+oldDate[indexOfOld] < 30)) {
-        newEl = 20 + oldDate[indexOfOld];
-        newDate.push(newEl);
+        newElement = 20 + oldDate[indexOfOld];
+        newDate.push(newElement);
       } else if (isBothYears && isNewLengthBigger) {
-        newEl = 19 + oldDate[indexOfOld];
-        newDate.push(newEl);
+        newElement = 19 + oldDate[indexOfOld];
+        newDate.push(newElement);
       }
     }
   }
