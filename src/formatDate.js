@@ -50,47 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateValues = date.split(fromFormat[3]);
-  const dateObj = {};
-  const newFormat = [];
+  const dateVal = date.split(fromFormat[3]);
+  const dateParameterStorage = {};
+  const formatedDate = [];
 
   for (let i = 0; i < 3; i++) {
-    dateObj[fromFormat[i]] = dateValues[i];
+    dateParameterStorage[fromFormat[i]] = dateVal[i];
   }
 
-  if (dateObj.hasOwnProperty('YY')) {
-    if (+dateObj.YY < 30) {
-      dateObj.YYYY = 20 + dateObj.YY;
+  if (dateParameterStorage.hasOwnProperty('YY')) {
+    if (+dateParameterStorage.YY < 30) {
+      dateParameterStorage.YYYY = 20 + dateParameterStorage.YY;
     } else {
-      dateObj.YYYY = 19 + dateObj.YY;
+      dateParameterStorage.YYYY = 19 + dateParameterStorage.YY;
     }
   } else {
-    dateObj.YY = dateObj.YYYY.slice(-2);
+    dateParameterStorage.YY = dateParameterStorage.YYYY.slice(-2);
   }
 
   for (const char of toFormat) {
     switch (char) {
       case 'DD':
-        newFormat.push(dateObj.DD);
+        formatedDate.push(dateParameterStorage.DD);
         break;
 
       case 'MM':
-        newFormat.push(dateObj.MM);
+        formatedDate.push(dateParameterStorage.MM);
         break;
 
       case 'YYYY':
-        newFormat.push(dateObj.YYYY);
+        formatedDate.push(dateParameterStorage.YYYY);
         break;
 
       case 'YY':
-        newFormat.push(dateObj.YY);
+        formatedDate.push(dateParameterStorage.YY);
         break;
       default:
         break;
     }
   }
 
-  return newFormat.join(toFormat[3]);
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
