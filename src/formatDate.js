@@ -65,13 +65,19 @@ function formatDate(date, fromFormat, toFormat) {
       if (dateObject.YY) {
         if (+dateObject.YY < 30) {
           newFormat.push(`20${dateObject.YY}`);
-        } else {
+        }
+
+        if (+dateObject.YY >= 30) {
           newFormat.push(`19${dateObject.YY}`);
         }
-      } else {
+      }
+
+      if (dateObject.YYYY) {
         newFormat.push(`${dateObject.YYYY.slice(-2)}`);
       }
-    } else {
+    }
+
+    if (dateObject[toFormat[i]]) {
       newFormat.push(dateObject[toFormat[i]]);
     }
   }
