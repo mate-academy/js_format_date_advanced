@@ -53,35 +53,33 @@ function formatDate(date, fromFormat, toFormat) {
   const fromSeparate = fromFormat[fromFormat.length - 1];
   const toSeparate = toFormat[toFormat.length - 1];
   const oldDate = date.split(fromSeparate);
-  const oldDateInfo = {};
+  const dateInfo = {};
   const formatedDate = [];
 
-  const yearFormatFull = 'YYYY';
-  const yearFormatShort = 'YY';
+  const yearFull = 'YYYY';
+  const yearShort = 'YY';
 
   let yearOfDate;
 
   for (let i = 0; i < oldDate.length; i++) {
-    oldDateInfo[fromFormat[i]] = oldDate[i];
+    dateInfo[fromFormat[i]] = oldDate[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (oldDateInfo.hasOwnProperty(toFormat[i])) {
-      formatedDate.push(oldDateInfo[toFormat[i]]);
+    if (dateInfo.hasOwnProperty(toFormat[i])) {
+      formatedDate.push(dateInfo[toFormat[i]]);
     }
 
-    if (toFormat[i] === yearFormatFull && oldDateInfo[yearFormatShort] < 30) {
-      yearOfDate = `20${oldDateInfo[yearFormatShort]}`;
+    if (toFormat[i] === yearShort) {
+      yearOfDate = dateInfo[yearFull].toString().slice(2);
       formatedDate.push(yearOfDate);
     }
 
-    if (toFormat[i] === yearFormatFull && oldDateInfo[yearFormatShort] >= 30) {
-      yearOfDate = `19${oldDateInfo[yearFormatShort]}`;
-      formatedDate.push(yearOfDate);
-    }
+    if (toFormat[i] === yearFull && !dateInfo.hasOwnProperty(toFormat[i])) {
+      yearOfDate = dateInfo[yearShort] >= 30
+        ? `19${dateInfo[yearShort]}`
+        : `20${dateInfo[yearShort]}`;
 
-    if (toFormat[i] === yearFormatShort) {
-      yearOfDate = oldDateInfo[yearFormatFull].toString().slice(2);
       formatedDate.push(yearOfDate);
     }
   }
