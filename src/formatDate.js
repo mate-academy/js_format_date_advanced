@@ -59,11 +59,9 @@ function formatDate(date, fromFormat, toFormat) {
     const arrayElement = dataArray[i];
 
     if (fromFormat[i] === 'YY') {
-      if (arrayElement >= 30) {
-        dataObject['YYYY'] = `19${arrayElement}`;
-      } else {
-        dataObject['YYYY'] = `20${arrayElement}`;
-      }
+      dataObject['YYYY'] = arrayElement >= 30
+        ? `19${arrayElement}`
+        : `20${arrayElement}`;
     }
 
     dataObject[fromFormat[i]] = arrayElement;
