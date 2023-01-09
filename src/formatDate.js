@@ -50,7 +50,76 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const arr = date.split(fromSeparator);
+  let yearLengthFromFormat;
+  let yearIndexFromFormat;
+  let yearLengthToFormat;
+  let yearIndexToFormat;
+  let dayIndexFromFormat;
+  let dayIndexToFormat;
+  let monthIndexFromFormat;
+  let monthIndexToFormat;
+  let cut;
+  let cutYear;
+  let cutDay;
+  let string;
+
+  for (const elem of fromFormat) {
+    if (elem === 'YYYY' || elem === 'YY') {
+      yearLengthFromFormat = elem.length;
+      yearIndexFromFormat = fromFormat.indexOf(elem);
+    } else if (elem === 'DD') {
+      dayIndexFromFormat = fromFormat.indexOf(elem);
+    } else if (elem === 'MM') {
+      monthIndexFromFormat = fromFormat.indexOf(elem);
+    }
+  }
+
+  for (const elem of toFormat) {
+    if (elem === 'YYYY' || elem === 'YY') {
+      yearLengthToFormat = elem.length;
+      yearIndexToFormat = toFormat.indexOf(elem);
+    } else if (elem === 'DD') {
+      dayIndexToFormat = toFormat.indexOf(elem);
+    } else if (elem === 'MM') {
+      monthIndexToFormat = toFormat.indexOf(elem);
+    }
+  }
+
+  if (yearLengthFromFormat !== yearLengthToFormat) {
+    if (yearLengthFromFormat === 4) {
+      string = arr[yearIndexFromFormat].slice(-2);
+      arr[yearIndexFromFormat] = string;
+    }
+
+    if (yearLengthFromFormat === 2) {
+      if (+arr[yearIndexFromFormat] < 30) {
+        arr[yearIndexFromFormat] = '20' + arr[yearIndexFromFormat];
+      } else {
+        arr[yearIndexFromFormat] = '19' + arr[yearIndexFromFormat];
+      }
+    }
+  }
+
+  if (monthIndexFromFormat !== monthIndexToFormat) {
+    cutYear = arr[yearIndexFromFormat];
+    cutDay = arr[dayIndexFromFormat];
+    arr[monthIndexToFormat] = arr[monthIndexFromFormat];
+    arr[yearIndexToFormat] = cutYear;
+    arr[dayIndexToFormat] = cutDay;
+
+    return arr.join(toSeparator);
+  }
+
+  if (yearIndexFromFormat !== yearIndexToFormat) {
+    cut = arr[yearIndexToFormat];
+    arr[yearIndexToFormat] = arr[yearIndexFromFormat];
+    arr[yearIndexFromFormat] = cut;
+  }
+
+  return arr.join(toSeparator);
 }
 
 module.exports = formatDate;
