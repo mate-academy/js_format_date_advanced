@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
     year = 19 + `${year}`;
   }
 
-  if (year === '00' || year < 30) {
+  if (year < 30) {
     year = 20 + `${year}`;
   }
 
