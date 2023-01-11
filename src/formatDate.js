@@ -50,54 +50,41 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let month;
-  let year;
-  let day;
-
   const dateArr = date.split(fromFormat[3]);
   const newDateArr = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = dateArr[i];
-    }
+  for (let i = 0; i < dateArr.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        newDateArr[i] = dateArr[fromFormat.indexOf('DD')];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateArr[i];
-    }
+      case 'MM':
+        newDateArr[i] = dateArr[fromFormat.indexOf('MM')];
+        break;
 
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = dateArr[i];
-    }
-  }
+      case 'YY':
+        if (fromFormat.indexOf('YY') === -1) {
+          newDateArr[i] = dateArr[fromFormat.indexOf('YYYY')];
+          newDateArr[i] = newDateArr[i].slice(2);
+        } else {
+          newDateArr[i] = dateArr[fromFormat.indexOf('YY')];
+        }
+        break;
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YY') {
-      if (year.length === 2) {
-        newDateArr.push(year);
-      } else {
-        newDateArr.push(year[2] + year[3]);
-      }
-    }
+      case 'YYYY':
+        if (fromFormat.indexOf('YYYY') === -1) {
+          const year = dateArr[fromFormat.indexOf(`YY`)];
 
-    if (toFormat[i] === 'DD') {
-      newDateArr.push(day);
-    }
-
-    if (toFormat[i] === 'MM') {
-      newDateArr.push(month);
-    }
-
-    if (toFormat[i] === 'YYYY') {
-      if (year.length === 4) {
-        newDateArr.push(year);
-      }
-
-      if (year.length === 2 && (+year < 30)) {
-        newDateArr.push(`20${year}`);
-      } else if (year.length === 2 && (+year >= 30)) {
-        newDateArr.push(`19${year}`);
-      }
+          if (year > 20) {
+            newDateArr[i] = [`19` + year];
+          } else {
+            newDateArr[i] = [`20` + year];
+          }
+        } else {
+          newDateArr[i] = dateArr[fromFormat.indexOf('YYYY')];
+        }
+        break;
     }
   }
 
