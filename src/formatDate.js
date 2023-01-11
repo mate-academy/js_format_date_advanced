@@ -54,6 +54,9 @@ function formatDate(date, fromFormat, toFormat) {
   const newSpliter = toFormat[3];
   const time = {};
   const rezult = [];
+  const twentyCentury = '19';
+  const twentyOneCentury = '20';
+  const halfCentury = '30';
 
   const oldData = date.split(oldSpliter);
 
@@ -62,10 +65,10 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (time.YY) {
-    if (time.YY < 30) {
-      (time.YYYY = '20' + time.YY);
+    if (time.YY < halfCentury) {
+      (time.YYYY = twentyOneCentury + time.YY);
     } else {
-      (time.YYYY = '19' + time.YY);
+      (time.YYYY = twentyCentury + time.YY);
     }
   }
 
