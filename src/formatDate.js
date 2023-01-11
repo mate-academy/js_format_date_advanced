@@ -60,15 +60,17 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < 3; i++) {
-    const index = toFormat.indexOf(fromFormat[i]);
+    const oldFormat = fromFormat[i];
+    const index = toFormat.indexOf(oldFormat);
 
     if (index === -1) {
-      if (fromFormat[i].length === 2) {
-        dateObject['YYYY']
-          = Number(dateArray[i]) < 30 ? 20 + dateArray[i] : 19 + dateArray[i];
+      if (oldFormat === 'YY') {
+        dateObject['YYYY'] = Number(dateArray[i]) < 30 
+          ? 20 + dateArray[i] 
+          : 19 + dateArray[i];
       }
 
-      if (fromFormat[i].length === 4) {
+      if (oldFormat === 'YYYY') {
         dateObject['YY'] = dateArray[i].slice(2);
       }
     }
