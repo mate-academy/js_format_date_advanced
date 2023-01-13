@@ -50,55 +50,34 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const resultDat = date.split(fromFormat[3]);
+  const dataArray = date.split(fromFormat[3]);
+  const result = {};
+  const resultArray = [];
 
-  const resultDate = transformation(resultDat, fromFormat, toFormat);
-  const yerTF = formatYear(toFormat);
+  for (let i = 0; i < 3; i++) {
+    result[fromFormat[i]] = dataArray[i];
+  }
 
-  if (resultDate[yerTF].length < toFormat[yerTF].length) {
-    if (resultDate[yerTF] < 30) {
-      resultDate[yerTF] = '20' + resultDate[yerTF];
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (result[toFormat[i]]) {
+      resultArray.push(result[toFormat[i]]);
     } else {
-      resultDate[yerTF] = '19' + resultDate[yerTF];
-    }
-
-    return resultDate.join(toFormat[3]);
-  }
-
-  if (resultDate[yerTF].length === toFormat[yerTF].length) {
-    return resultDate.join(toFormat[3]);
-  }
-
-  resultDate[yerTF] = resultDate[yerTF].slice(2);
-
-  return resultDate.join(toFormat[3]);
-}
-
-function transformation(date, fFormat, tFormat) {
-  const result = [];
-
-  for (let i = 0; i < tFormat.length; i++) {
-    for (let a = 0; a < fFormat.length; a++) {
-      if (
-        tFormat[i] === fFormat[a]
-        || (tFormat[i] === 'YY' && fFormat[a] === 'YYYY')
-        || (tFormat[i] === 'YYYY' && fFormat[a] === 'YY')) {
-        result[i] = date[a];
+      switch (toFormat[i].length) {
+        case 2:
+          resultArray.push(result['YYYY'].slice(2));
+          break;
+        default:
+          if (result['YY'] < 30) {
+            resultArray.push('20' + result['YY']);
+          } else {
+            resultArray.push('19' + result['YY']);
+          }
+          break;
       }
     }
   }
 
-  result.length = 3;
-
-  return result;
-}
-
-function formatYear(format) {
-  for (let i = 0; i < format.length; i++) {
-    if (format[i] === 'YY' || format[i] === 'YYYY') {
-      return i;
-    }
-  }
+  return resultArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
