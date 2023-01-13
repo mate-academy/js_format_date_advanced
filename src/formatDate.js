@@ -69,7 +69,7 @@ function formatDate(date, fromFormat, toFormat) {
     year = 20 + `${year}`;
   }
 
-  toFormat.map(element => {
+  toFormat.forEach(element => {
     if (element === 'DD') {
       result.push(day);
     }
