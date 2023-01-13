@@ -58,6 +58,14 @@ function formatDate(date, fromFormat, toFormat) {
     result[fromFormat[i]] = dataArray[i];
   }
 
+  function century(number) {
+    if (number < 30) {
+      return 20;
+    } else {
+      return 19;
+    }
+  }
+
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (result[toFormat[i]]) {
       resultArray.push(result[toFormat[i]]);
@@ -67,11 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
           resultArray.push(result['YYYY'].slice(2));
           break;
         default:
-          if (result['YY'] < 30) {
-            resultArray.push('20' + result['YY']);
-          } else {
-            resultArray.push('19' + result['YY']);
-          }
+          resultArray.push(century(result['YY']) + result['YY']);
           break;
       }
     }
