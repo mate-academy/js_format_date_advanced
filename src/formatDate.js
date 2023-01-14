@@ -58,6 +58,15 @@ function formatDate(date, fromFormat, toFormat) {
     result[fromFormat[i]] = dataArray[i];
   }
 
+  function recordTypeYear(number) {
+    switch (number) {
+      case 2:
+        return result['YYYY'].slice(2);
+      default:
+        return (century(result['YY']) + result['YY']);
+    }
+  }
+
   function century(number) {
     if (number < 30) {
       return 20;
@@ -70,14 +79,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (result[toFormat[i]]) {
       resultArray.push(result[toFormat[i]]);
     } else {
-      switch (toFormat[i].length) {
-        case 2:
-          resultArray.push(result['YYYY'].slice(2));
-          break;
-        default:
-          resultArray.push(century(result['YY']) + result['YY']);
-          break;
-      }
+      resultArray.push(recordTypeYear(toFormat[i].length));
     }
   }
 
