@@ -63,16 +63,16 @@ function formatDate(date, fromFormat, toFormat) {
       case 2:
         return result['YYYY'].slice(2);
       default:
-        return (century(result['YY']) + result['YY']);
+        return (getCentury(result['YY']) + result['YY']);
     }
   }
 
-  function century(number) {
+  function getCentury(number) {
     if (number < 30) {
       return 20;
-    } else {
-      return 19;
     }
+
+    return 19;
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
