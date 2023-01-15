@@ -50,7 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dataArray = date.split(fromFormat[3]);
+  const result = {};
+  const resultArray = [];
+
+  for (let i = 0; i < 3; i++) {
+    result[fromFormat[i]] = dataArray[i];
+  }
+
+  function recordTypeYear(number) {
+    switch (number) {
+      case 2:
+        return result['YYYY'].slice(2);
+      default:
+        return (getCentury(result['YY']) + result['YY']);
+    }
+  }
+
+  function getCentury(number) {
+    if (number < 30) {
+      return 20;
+    }
+
+    return 19;
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (result[toFormat[i]]) {
+      resultArray.push(result[toFormat[i]]);
+    } else {
+      resultArray.push(recordTypeYear(toFormat[i].length));
+    }
+  }
+
+  return resultArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
