@@ -49,8 +49,44 @@
  * @returns {string}
  */
 
+// const date = '20/02/18';
+// const fromFormat = ['YY', 'MM', 'DD', '/'];
+// const toFormat = ['YYYY', 'MM', 'DD', '-'];
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const temp = {};
+  let newDate = '';
+  const splittedDate = date.split(fromFormat[3]);
+  const [,,, newSymbol] = toFormat;
+
+  // adding to temp object fromFormat values as a keys and values from date
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    temp[fromFormat[i]] = splittedDate[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    // comparing our temp data with toFormat data
+    // and adding result to newDate string
+    if (temp.YYYY
+    && toFormat[i] === 'YY') {
+      newDate += temp.YYYY.slice(2) + newSymbol;
+    } else if (temp.YY
+    && toFormat[i] === 'YYYY') {
+      if (temp.YY >= 30) {
+        newDate += `19${temp.YY}` + newSymbol;
+      } else {
+        newDate += `20${temp.YY}` + newSymbol;
+      }
+    } else {
+      newDate += temp[toFormat[i]] + newSymbol;
+    }
+  }
+  // getting rid of last element in the newDate
+  newDate = newDate.split('');
+  newDate.pop();
+
+  return newDate.join('');
 }
+// console.log(formatDate(date, fromFormat, toFormat));
 
 module.exports = formatDate;
