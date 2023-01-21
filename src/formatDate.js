@@ -11,31 +11,31 @@
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
  *
  * Examples:
- *
- * formatDate(
- *   '2020-02-18',
- *   ['YYYY', 'MM', 'DD', '-'],
- *   ['YYYY', 'MM', 'DD', '.'],
- * ) // '2020.02.18'
- *
- * formatDate(
- *   '2020-02-18',
- *   ['YYYY', 'MM', 'DD', '-'],
- *   ['DD', 'MM', 'YYYY', '.'],
- * ) // '18.02.2020'
- *
- * formatDate(
- *   '18-02-2020',
- *   ['DD', 'MM', 'YYYY', '-'],
- *   ['DD', 'MM', 'YY', '/'],
- * ) // '18/02/20'
- *
- * formatDate(
- *   '20/02/18',
- *   ['YY', 'MM', 'DD', '/'],
- *   ['YYYY', 'MM', 'DD', '.'],
- * ) // '2020.02.18'
- *
+ */
+formatDate(
+  '2020-02-18',
+  ['YYYY', 'MM', 'DD', '-'],
+  ['YYYY', 'MM', 'DD', '.'],
+); // '2020.02.18'
+
+formatDate(
+  '2020-02-18',
+  ['YYYY', 'MM', 'DD', '-'],
+  ['DD', 'MM', 'YYYY', '.'],
+); // '18.02.2020'
+
+formatDate(
+  '18-02-2020',
+  ['DD', 'MM', 'YYYY', '-'],
+  ['DD', 'MM', 'YY', '/'],
+); // '18/02/20'
+
+formatDate(
+  '20/02/18',
+  ['YY', 'MM', 'DD', '/'],
+  ['YYYY', 'MM', 'DD', '.'],
+); // '2020.02.18'
+/*
  * formatDate(
  *   '97/02/18',
  *   ['YY', 'MM', 'DD', '/'],
@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  let day, month, year;
+  const outputDate = [];
 
+  const dateItems = date.split(fromFormat[3]);
+
+  // console.log(dateItems);
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i].includes('Y')) {
+      year = dateItems[i];
+    }
+
+    if (fromFormat[i].includes('M')) {
+      month = dateItems[i];
+    }
+
+    if (fromFormat[i].includes('D')) {
+      day = dateItems[i];
+    }
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    year = year.slice(2);
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (year < 30) {
+      year = '20' + year;
+    } else {
+      year = '19' + year;
+    }
+  }
+
+  for (let j = 0; j < toFormat.length; j++) {
+    if (toFormat[j].includes('Y')) {
+      outputDate.push(year);
+    }
+
+    if (toFormat[j].includes('M')) {
+      outputDate.push(month);
+    }
+
+    if (toFormat[j].includes('D')) {
+      outputDate.push(day);
+    }
+  }
+
+  return outputDate.join(toFormat[3]);
+}
 module.exports = formatDate;
