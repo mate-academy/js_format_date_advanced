@@ -51,35 +51,37 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const splitted = date.split(fromFormat[3]);
-  const year = toFormat.includes('YY') ? 'YY' : 'YYYY';
+  const toYearKey = toFormat.includes('YY') ? 'YY' : 'YYYY';
   const formattedDate = {};
   const result = [];
 
-  for (let i = 0; fromFormat.length - 1 > i; i++) {
-    for (let k = 0; toFormat.length - 1 > k; k++) {
-      if (toFormat[k].includes(fromFormat[i][0])) {
-        formattedDate[toFormat[k]] = splitted[i];
-      }
-    }
-  }
-
-  if (formattedDate.YYYY && formattedDate[year].length === 2) {
-    formattedDate[year] = formattedDate[year] < 30
-      ? 20 + formattedDate[year]
-      : 19 + formattedDate[year];
-  }
-
-  if (formattedDate.YY && formattedDate[year].length === 4) {
-    formattedDate[year] = formattedDate[year].slice(-2);
-  }
-
-  for (const prop in formattedDate) {
+  fromFormat.forEach((element, index) => {
     for (let i = 0; toFormat.length - 1 > i; i++) {
-      if (prop === toFormat[i]) {
-        result[i] = formattedDate[prop];
+      if (toFormat[i].includes(element[0])) {
+        formattedDate[toFormat[i]] = splitted[index];
       }
     }
+  });
+
+  const valueOfYearKey = formattedDate[toYearKey];
+
+  if (formattedDate.YYYY && valueOfYearKey.length === 2) {
+    formattedDate[toYearKey] = valueOfYearKey < 30
+      ? 20 + valueOfYearKey
+      : 19 + valueOfYearKey;
   }
+
+  if (formattedDate.YY && valueOfYearKey.length === 4) {
+    formattedDate[toYearKey] = valueOfYearKey.slice(-2);
+  }
+
+  Object.entries(formattedDate).forEach(([key, value]) => {
+    for (let i = 0; toFormat.length - 1 > i; i++) {
+      if (key === toFormat[i]) {
+        result[i] = value;
+      }
+    }
+  });
 
   return result.join(toFormat[3]);
 }
