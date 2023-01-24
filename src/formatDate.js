@@ -64,17 +64,13 @@ function formatDate(date, fromFormat, toFormat) {
   const toYearIndex = toDate.indexOf(null);
   const toYearFormat = toFormat[toYearIndex];
 
-  if (year.length > toYearFormat.length) {
-    year = year.slice(2);
-  }
-
-  if (year.length < toYearFormat.length) {
-    if (year < 30) {
-      year = '20'.concat(year);
-    } else {
-      year = '19'.concat(year);
-    }
-  }
+  year = year.length > toYearFormat.length
+    ? year.slice(2)
+    : year.length < toYearFormat.length
+      ? year < 30
+        ? '20'.concat(year)
+        : '19'.concat(year)
+      : year;
 
   toDate[toYearIndex] = year;
 
