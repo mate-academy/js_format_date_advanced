@@ -43,14 +43,53 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromFormat
+ * @param {string[]} string
  * @param {string[]} toFormat
  *
  * @returns {string}
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const string = fromFormat.join('.');
+  let year = 0;
+  const month = date.slice(string.indexOf('MM'),
+    string.indexOf('MM') + 2);
+  const day = date.slice(string.indexOf('DD'), string.indexOf('DD') + 2);
+  const separator = toFormat[3];
+  const newFormat = [];
+
+  if (fromFormat.includes('YYYY')) {
+    year = date.slice(string.indexOf('YYYY'), string.indexOf('YYYY') + 4);
+  } else {
+    year = date.slice(string.indexOf('YY'), string.indexOf('YY') + 2);
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYYY'
+        && fromFormat.includes('YYYY')) {
+      newFormat.push(year);
+    } else if (fromFormat[i] === 'YYYY'
+              && toFormat.includes('YY')) {
+      newFormat.push(year[2] + year[3]);
+    } else if (fromFormat[i] === 'YY'
+              && toFormat.includes('YY')) {
+      newFormat.push(year);
+    } else if (fromFormat[i] === 'YY'
+              && toFormat.includes('YYYY')
+              && year < 30) {
+      newFormat.push(20 + year);
+    } else if (fromFormat[i] === 'YY'
+              && toFormat.includes('YYYY')
+              && year >= 30) {
+      newFormat.push(19 + year);
+    } else if (toFormat[i] === 'MM') {
+      newFormat.push(month);
+    } else if (toFormat[i] === 'DD') {
+      newFormat.push(day);
+    }
+  }
+
+  return newFormat.join(separator);
 }
 
 module.exports = formatDate;
