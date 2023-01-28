@@ -48,32 +48,36 @@
  *
  * @returns {string}
  */
+const yearLong = 'YYYY';
+const yearShort = 'YY';
+const month = 'MM';
+const day = 'DD';
 
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
   const formated = [];
-  const indexYearShort = fromFormat.indexOf('YY');
+  const indexYearShort = fromFormat.indexOf(yearShort);
 
-  if (fromFormat.includes('YY') && newDate[indexYearShort] >= 30) {
+  if (fromFormat.includes(yearShort) && newDate[indexYearShort] >= 30) {
     newDate[indexYearShort] = '19' + newDate[indexYearShort];
   }
 
-  if (fromFormat.includes('YY') && newDate[indexYearShort] < 30) {
+  if (fromFormat.includes(yearShort) && newDate[indexYearShort] < 30) {
     newDate[indexYearShort] = '20' + newDate[indexYearShort];
   }
 
-  fromFormat[indexYearShort] = 'YYYY';
+  fromFormat[indexYearShort] = yearLong;
 
-  const indexYearLong = fromFormat.indexOf('YYYY');
+  const indexYearLong = fromFormat.indexOf(yearLong);
 
-  if (toFormat.includes('YY')) {
-    toFormat[toFormat.indexOf('YY')] = 'YYYY';
+  if (toFormat.includes(yearShort)) {
+    toFormat[toFormat.indexOf(yearShort)] = yearLong;
     newDate[indexYearLong] = newDate[indexYearLong].slice(2, 4);
   }
 
-  formated[toFormat.indexOf('YYYY')] = newDate[indexYearLong];
-  formated[toFormat.indexOf('MM')] = newDate[fromFormat.indexOf('MM')];
-  formated[toFormat.indexOf('DD')] = newDate[fromFormat.indexOf('DD')];
+  formated[toFormat.indexOf(yearLong)] = newDate[indexYearLong];
+  formated[toFormat.indexOf(month)] = newDate[fromFormat.indexOf(month)];
+  formated[toFormat.indexOf(day)] = newDate[fromFormat.indexOf(day)];
 
   return (formated.join(toFormat[3]));
 }
