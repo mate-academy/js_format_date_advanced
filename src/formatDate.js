@@ -50,46 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const string = fromFormat.join('.');
-  let year = 0;
-  const month = date.slice(string.indexOf('MM'),
-    string.indexOf('MM') + 2);
-  const day = date.slice(string.indexOf('DD'), string.indexOf('DD') + 2);
-  const separator = toFormat[3];
-  const newFormat = [];
+  const prevDate = date.split(fromFormat[3]);
+  const nextDate = [];
 
-  if (fromFormat.includes('YYYY')) {
-    year = date.slice(string.indexOf('YYYY'), string.indexOf('YYYY') + 4);
-  } else {
-    year = date.slice(string.indexOf('YY'), string.indexOf('YY') + 2);
+  // check if year has double format
+  const isDouble1 = fromFormat.includes('YY');
+  const isDouble2 = toFormat.includes('YY');
+
+  // get all indexes
+  const indDay1 = fromFormat.indexOf('DD');
+  const indMonth1 = fromFormat.indexOf('MM');
+  const indYear1
+  = isDouble1 ? fromFormat.indexOf('YY') : fromFormat.indexOf('YYYY');
+  const indDay2 = toFormat.indexOf('DD');
+  const indMonth2 = toFormat.indexOf('MM');
+  const indYear2
+  = isDouble2 ? toFormat.indexOf('YY') : toFormat.indexOf('YYYY');
+
+  // day and month assignment
+  nextDate[indDay2] = prevDate[indDay1];
+  nextDate[indMonth2] = prevDate[indMonth1];
+
+  // year assignment depending on its format
+  const year = prevDate[indYear1];
+
+  if (isDouble1 === isDouble2) {
+    nextDate[indYear2] = year;
+
+    return nextDate.join(toFormat[3]);
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY'
-        && fromFormat.includes('YYYY')) {
-      newFormat.push(year);
-    } else if (fromFormat[i] === 'YYYY'
-              && toFormat.includes('YY')) {
-      newFormat.push(year[2] + year[3]);
-    } else if (fromFormat[i] === 'YY'
-              && toFormat.includes('YY')) {
-      newFormat.push(year);
-    } else if (fromFormat[i] === 'YY'
-              && toFormat.includes('YYYY')
-              && year < 30) {
-      newFormat.push(20 + year);
-    } else if (fromFormat[i] === 'YY'
-              && toFormat.includes('YYYY')
-              && year >= 30) {
-      newFormat.push(19 + year);
-    } else if (toFormat[i] === 'MM') {
-      newFormat.push(month);
-    } else if (toFormat[i] === 'DD') {
-      newFormat.push(day);
-    }
+  if (!isDouble1) {
+    nextDate[indYear2] = year[2] + year[3];
   }
 
-  return newFormat.join(separator);
+  if (!isDouble2) {
+    nextDate[indYear2] = year < 30 ? '20' + year : '19' + year;
+  }
+
+  return nextDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
