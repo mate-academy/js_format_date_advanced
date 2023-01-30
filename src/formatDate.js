@@ -43,14 +43,57 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromFormat
+ * @param {string[]} string
  * @param {string[]} toFormat
  *
  * @returns {string}
  */
+const century20 = '19';
+const century21 = '20';
+const centuryLimit = 30;
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const prevDate = date.split(fromFormat[3]);
+  const nextDate = [];
+
+  // check if year has double format
+  const isDouble1 = fromFormat.includes('YY');
+  const isDouble2 = toFormat.includes('YY');
+
+  // get all indexes
+  const indDay1 = fromFormat.indexOf('DD');
+  const indMonth1 = fromFormat.indexOf('MM');
+  const indYear1
+  = isDouble1 ? fromFormat.indexOf('YY') : fromFormat.indexOf('YYYY');
+  const indDay2 = toFormat.indexOf('DD');
+  const indMonth2 = toFormat.indexOf('MM');
+  const indYear2
+  = isDouble2 ? toFormat.indexOf('YY') : toFormat.indexOf('YYYY');
+
+  // day and month assignment
+  nextDate[indDay2] = prevDate[indDay1];
+  nextDate[indMonth2] = prevDate[indMonth1];
+
+  // year assignment depending on its format
+  const year = prevDate[indYear1];
+
+  if (isDouble1 === isDouble2) {
+    nextDate[indYear2] = year;
+
+    return nextDate.join(toFormat[3]);
+  }
+
+  if (!isDouble1) {
+    nextDate[indYear2] = year[2] + year[3];
+  }
+
+  if (!isDouble2) {
+    nextDate[indYear2] = year < centuryLimit
+      ? century21 + year
+      : century20 + year;
+  }
+
+  return nextDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
