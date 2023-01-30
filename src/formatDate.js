@@ -48,13 +48,13 @@
  *
  * @returns {string}
  */
+const century20 = '19';
+const century21 = '20';
+const centuryLimit = 30;
 
 function formatDate(date, fromFormat, toFormat) {
   const prevDate = date.split(fromFormat[3]);
   const nextDate = [];
-  const century20 = '19';
-  const century21 = '20';
-  const centuryLimit = 30;
 
   // check if year has double format
   const isDouble1 = fromFormat.includes('YY');
