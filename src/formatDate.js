@@ -52,6 +52,9 @@
 function formatDate(date, fromFormat, toFormat) {
   const prevDate = date.split(fromFormat[3]);
   const nextDate = [];
+  const century20 = '19';
+  const century21 = '20';
+  const centuryLimit = 30;
 
   // check if year has double format
   const isDouble1 = fromFormat.includes('YY');
@@ -85,7 +88,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (!isDouble2) {
-    nextDate[indYear2] = year < 30 ? '20' + year : '19' + year;
+    nextDate[indYear2] = year < centuryLimit
+      ? century21 + year
+      : century20 + year;
   }
 
   return nextDate.join(toFormat[3]);
