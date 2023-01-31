@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let normalizeDate = date.split(fromFormat[3]);
+  const normalizeDate = date.split(fromFormat[3]);
   const finallyDate = [];
   let day = '';
   let month = '';
@@ -73,10 +73,11 @@ function formatDate(date, fromFormat, toFormat) {
       case 'MM' :
         month = normalizeDate[i];
         break;
+
+      default :
+        break;
     }
   }
-
-  normalizeDate = [day, month, year];
 
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
@@ -95,6 +96,9 @@ function formatDate(date, fromFormat, toFormat) {
       case 'DD' :
         finallyDate[i] = day;
         break;
+
+      default :
+        break;
     }
   }
 
@@ -104,9 +108,9 @@ function formatDate(date, fromFormat, toFormat) {
 function formatYear(year) {
   if (+year < 30) {
     return `20${year}`;
-  } else {
-    return `19${year}`;
   }
+
+  return `19${year}`;
 }
 
 module.exports = formatDate;
