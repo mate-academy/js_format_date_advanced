@@ -51,40 +51,36 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const newDate = [0, 0, 0];
   const dateSplit = date.split(fromFormat[3]);
-  const oldDayIndex = fromFormat.indexOf('DD');
-  const oldMonthIndex = fromFormat.indexOf('MM');
-  const DayIndex = toFormat.indexOf('DD');
-  const MonthIndex = toFormat.indexOf('MM');
+  const oldDateObj = {};
+  const finalDateObj = {};
 
-  newDate[MonthIndex] = dateSplit[oldMonthIndex];
-  newDate[DayIndex] = dateSplit[oldDayIndex];
+  for (let i = 0; i < dateSplit.length; i++) {
+    oldDateObj[fromFormat[i]] = dateSplit[i];
+  }
 
-  if (
-    fromFormat.indexOf('YY') === toFormat.indexOf('YY')
-    || fromFormat.indexOf('YYYY') === toFormat.indexOf('YYYY')
-  ) {
-    newDate[toFormat.indexOf('YYYY')] = dateSplit[fromFormat.indexOf('YYYY')];
-    newDate[toFormat.indexOf('YY')] = dateSplit[fromFormat.indexOf('YY')];
-  };
-
-  if (fromFormat.indexOf('YY') !== -1) {
-    if (dateSplit[fromFormat.indexOf('YY')] < 30) {
-      newDate[toFormat.indexOf('YYYY')]
-      = '20' + dateSplit[fromFormat.indexOf('YY')];
-    } else {
-      newDate[toFormat.indexOf('YYYY')]
-    = '19' + dateSplit[fromFormat.indexOf('YY')];
+  for (const key of toFormat) {
+    if (key === 'YYYY' && fromFormat.indexOf('YY') !== -1) {
+      if (oldDateObj['YY'] < 30) {
+        finalDateObj[key] = '20' + oldDateObj['YY'];
+      } else {
+        finalDateObj[key] = '19' + oldDateObj['YY'];
+      }
     }
+
+    if (key === 'YY') {
+      finalDateObj[key] = oldDateObj['YYYY'].split('').slice(2).join('');
+    }
+
+    if (oldDateObj[key] === undefined) {
+      continue;
+    }
+    finalDateObj[key] = oldDateObj[key];
   }
 
-  if (fromFormat.indexOf('YYYY') !== -1) {
-    newDate[toFormat.indexOf('YY')]
-    = dateSplit[fromFormat.indexOf('YYYY')].split('').slice(2).join('');
-  }
+  const newDate = Object.values(finalDateObj).join(toFormat[3]);
 
-  return newDate.join(toFormat[3]);
+  return newDate;
 }
 
 module.exports = formatDate;
