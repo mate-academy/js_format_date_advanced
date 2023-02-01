@@ -60,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const key of toFormat) {
-    if (key === 'YYYY' && fromFormat.indexOf('YY') !== -1) {
+    if (key === 'YYYY' && fromFormat.includes('YY')) {
       if (oldDateObj['YY'] < 30) {
         finalDateObj[key] = '20' + oldDateObj['YY'];
       } else {
