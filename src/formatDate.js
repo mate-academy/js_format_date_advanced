@@ -50,7 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  function getOldIndex(value) {
+    return fromFormat.indexOf(value);
+  }
+
+  function getNewIndex(value) {
+    return toFormat.indexOf(value);
+  }
+
+  const newDate = [];
+  const oldDate = date.split(fromFormat[3]);
+
+  newDate[getNewIndex('DD')] = oldDate[getOldIndex('DD')];
+  newDate[getNewIndex('MM')] = oldDate[getOldIndex('MM')];
+
+  newDate[getNewIndex('YY')] = (getOldIndex('YY') !== -1)
+    ? oldDate[getOldIndex('YY')]
+    : oldDate[getOldIndex('YYYY')].slice(2);
+
+  newDate[getNewIndex('YYYY')] = (getOldIndex('YYYY') !== -1)
+    ? oldDate[getOldIndex('YYYY')]
+    : (oldDate[getOldIndex('YY')] < 30)
+      ? '20' + oldDate[getOldIndex('YY')]
+      : '19' + oldDate[getOldIndex('YY')];
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
