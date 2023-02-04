@@ -65,15 +65,15 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj[fromFormat[i]] = dateSplit[i];
   }
 
-  if (dateObj.YYYY === '' && dateObj.YY >= 30) {
+  if (!dateObj.YYYY && dateObj.YY >= 30) {
     dateObj.YYYY = 19 + dateObj.YY;
   }
 
-  if (dateObj.YYYY === '' && dateObj.YY < 30) {
+  if (!dateObj.YYYY && dateObj.YY < 30) {
     dateObj.YYYY = 20 + dateObj.YY;
   }
 
-  if (dateObj.YY === '') {
+  if (!dateObj.YY) {
     dateObj.YY = dateObj.YYYY.slice(2);
   }
 
