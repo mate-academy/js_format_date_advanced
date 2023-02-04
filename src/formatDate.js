@@ -50,42 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  function getIndex(value) {
+  function getOldIndex(value) {
     return fromFormat.indexOf(value);
+  }
+
+  function getNewIndex(value) {
+    return toFormat.indexOf(value);
   }
 
   const newDate = [];
   const oldDate = date.split(fromFormat[3]);
 
-  for (const item of toFormat) {
-    switch (item) {
-      case ('DD'):
-        newDate.push(oldDate[getIndex('DD')]);
-        break;
+  newDate[getNewIndex('DD')] = oldDate[getOldIndex('DD')];
+  newDate[getNewIndex('MM')] = oldDate[getOldIndex('MM')];
 
-      case ('MM'):
-        newDate.push(oldDate[getIndex('MM')]);
-        break;
+  newDate[getNewIndex('YY')] = (getOldIndex('YY') !== -1)
+    ? oldDate[getOldIndex('YY')]
+    : oldDate[getOldIndex('YYYY')].slice(2);
 
-      case ('YY'):
-        if (getIndex('YY') !== -1) {
-          newDate.push(oldDate[getIndex('YY')]);
-        } else {
-          newDate.push(oldDate[getIndex('YYYY')].slice(2));
-        }
-        break;
-
-      case ('YYYY'):
-        if (getIndex('YYYY') !== -1) {
-          newDate.push(oldDate[getIndex('YYYY')]);
-        } else if (oldDate[getIndex('YY')] < 30) {
-          newDate.push('20' + oldDate[getIndex('YY')]);
-        } else {
-          newDate.push('19' + oldDate[getIndex('YY')]);
-        }
-        break;
-    }
-  }
+  newDate[getNewIndex('YYYY')] = (getOldIndex('YYYY') !== -1)
+    ? oldDate[getOldIndex('YYYY')]
+    : (oldDate[getOldIndex('YY')] < 30)
+      ? '20' + oldDate[getOldIndex('YY')]
+      : '19' + oldDate[getOldIndex('YY')];
 
   return newDate.join(toFormat[3]);
 }
