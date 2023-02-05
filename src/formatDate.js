@@ -65,12 +65,18 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj[fromFormat[i]] = dateSplit[i];
   }
 
-  if (!dateObj.YYYY && dateObj.YY < 30) {
-    dateObj.YYYY = 20 + dateObj.YY;
+  function cutYear(obj) {
+    if (obj.YY < 30) {
+      obj.YYYY = 20 + obj.YY;
+    }
+
+    if (obj.YY >= 30) {
+      obj.YYYY = 19 + obj.YY;
+    }
   }
 
-  if (!dateObj.YYYY && dateObj.YY >= 30) {
-    dateObj.YYYY = 19 + dateObj.YY;
+  if (!dateObj.YYYY) {
+    cutYear(dateObj);
   }
 
   if (!dateObj.YY) {
