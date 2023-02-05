@@ -53,6 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const obj = {};
   const dateArr = date.split(fromFormat[3]);
   const newDate = [];
+  const separator = toFormat.splice(3);
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'YY') {
@@ -62,23 +63,14 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const newFormat of toFormat) {
-    switch (newFormat) {
-      case 'DD':
-        newDate.push(obj[newFormat]);
-        break;
-      case 'MM':
-        newDate.push(obj[newFormat]);
-        break;
-      case 'YYYY':
-        newDate.push(obj[newFormat]);
-        break;
-      case 'YY':
-        newDate.push(obj['YYYY'].slice(-2));
-        break;
+    if (newFormat === 'YY') {
+      newDate.push(obj['YYYY'].slice(-2));
+    } else {
+      newDate.push(obj[newFormat]);
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return newDate.join(separator);
 }
 
 module.exports = formatDate;
