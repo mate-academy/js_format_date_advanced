@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let DDfrom = 0;
+  let MMfrom = 0;
+  let DDto = 0;
+  let MMto = 0;
+  const sep = toFormat[3];
+  const interimObject = {};
+  const lastArray = [];
+  let lastString = '';
+  const dateArray = date.split(fromFormat[3]);
+
+  for (let iFrom = 0; iFrom < fromFormat.length - 1; iFrom++) {
+    for (let iTo = 0; iTo < toFormat.length - 1; iTo++) {
+      if (fromFormat[iFrom] === toFormat[iTo] && fromFormat[iFrom] === 'DD') {
+        DDfrom = iFrom;
+        DDto = iTo;
+      }
+
+      if (fromFormat[iFrom] === toFormat[iTo] && fromFormat[iFrom] === 'MM') {
+        MMfrom = iFrom;
+        MMto = iTo;
+      }
+    }
+  }
+
+  const yearFrom = 3 - DDfrom - MMfrom;
+  const yearTo = 3 - DDto - MMto;
+
+  if (fromFormat[yearFrom].length > toFormat[yearTo].length) {
+    dateArray[yearFrom] = `${+dateArray[yearFrom] % 100}`;
+  }
+
+  if (fromFormat[yearFrom].length < toFormat[yearTo].length) {
+    if (+dateArray[yearFrom] < 30) {
+      dateArray[yearFrom] = '20' + dateArray[yearFrom];
+    } else {
+      dateArray[yearFrom] = '19' + dateArray[yearFrom];
+    }
+  }
+
+  interimObject[DDto] = dateArray[DDfrom];
+  interimObject[MMto] = dateArray[MMfrom];
+  interimObject[yearTo] = dateArray[yearFrom];
+
+  for (const i in interimObject) {
+    if (i === '0') {
+      lastArray.push(interimObject[i]);
+    }
+
+    if (i === '1') {
+      lastArray.push(interimObject[i]);
+    }
+
+    if (i === '2') {
+      lastArray.push(interimObject[i]);
+    }
+  }
+
+  lastString = lastArray.join(sep);
+
+  return lastString;
 }
 
 module.exports = formatDate;
