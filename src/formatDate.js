@@ -57,7 +57,6 @@ function formatDate(date, fromFormat, toFormat) {
   const sep = toFormat[3];
   const interimObject = {};
   const lastArray = [];
-  let lastString = '';
   const dateArray = date.split(fromFormat[3]);
 
   for (let iFrom = 0; iFrom < fromFormat.length - 1; iFrom++) {
@@ -107,9 +106,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  lastString = lastArray.join(sep);
-
-  return lastString;
+  return lastArray.join(sep);
 }
 
 module.exports = formatDate;
