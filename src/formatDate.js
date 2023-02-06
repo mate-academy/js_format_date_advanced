@@ -50,60 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let DDfrom = 0;
-  let MMfrom = 0;
-  let DDto = 0;
-  let MMto = 0;
   const sep = toFormat[3];
   const interimObject = {};
   const lastArray = [];
   const dateArray = date.split(fromFormat[3]);
 
-  for (let iFrom = 0; iFrom < fromFormat.length - 1; iFrom++) {
-    for (let iTo = 0; iTo < toFormat.length - 1; iTo++) {
-      if (fromFormat[iFrom] === toFormat[iTo] && fromFormat[iFrom] === 'DD') {
-        DDfrom = iFrom;
-        DDto = iTo;
-      }
-
-      if (fromFormat[iFrom] === toFormat[iTo] && fromFormat[iFrom] === 'MM') {
-        MMfrom = iFrom;
-        MMto = iTo;
-      }
-    }
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    interimObject[fromFormat[i]] = dateArray[i];
   }
 
-  const yearFrom = 3 - DDfrom - MMfrom;
-  const yearTo = 3 - DDto - MMto;
-
-  if (fromFormat[yearFrom].length > toFormat[yearTo].length) {
-    dateArray[yearFrom] = `${+dateArray[yearFrom] % 100}`;
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    interimObject.YY = interimObject.YYYY.slice(2);
   }
 
-  if (fromFormat[yearFrom].length < toFormat[yearTo].length) {
-    if (+dateArray[yearFrom] < 30) {
-      dateArray[yearFrom] = '20' + dateArray[yearFrom];
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (interimObject.YY < 30) {
+      interimObject.YYYY = '20' + interimObject.YY;
     } else {
-      dateArray[yearFrom] = '19' + dateArray[yearFrom];
+      interimObject.YYYY = '19' + interimObject.YY;
     }
   }
 
-  interimObject[DDto] = dateArray[DDfrom];
-  interimObject[MMto] = dateArray[MMfrom];
-  interimObject[yearTo] = dateArray[yearFrom];
-
-  for (const i in interimObject) {
-    if (i === '0') {
-      lastArray.push(interimObject[i]);
-    }
-
-    if (i === '1') {
-      lastArray.push(interimObject[i]);
-    }
-
-    if (i === '2') {
-      lastArray.push(interimObject[i]);
-    }
+  for (let i = 0; fromFormat.length - 1 > i; i++) {
+    lastArray.push(interimObject[toFormat[i]]);
   }
 
   return lastArray.join(sep);
