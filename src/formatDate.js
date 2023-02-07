@@ -60,13 +60,11 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (objectDate.YYYY) {
     objectDate.YY = objectDate.YYYY.slice(2);
-  }
-
-  if (objectDate.YY < 30) {
-    objectDate.YYYY = '20' + `${objectDate.YY}`;
   } else {
-    objectDate.YYYY = '19' + `${objectDate.YY}`;
-  };
+    objectDate.YYYY = objectDate.YY < 30
+      ? objectDate.YYYY = '20' + `${objectDate.YY}`
+      : objectDate.YYYY = '19' + `${objectDate.YY}`;
+  }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     newDate.push(objectDate[toFormat[i]]);
