@@ -50,42 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [,,, separatorFrom] = fromFormat;
-  const [,,, separatorTo] = toFormat;
-  const currentDataArr = date.split(separatorFrom);
-  const resultData = [];
+  const obgectFrom = Object.assign({}, fromFormat);
+  const { 3: separFrom } = obgectFrom;
+  const obgectTo = Object.assign({}, toFormat);
+  const { 3: separTo } = obgectTo;
+  const arrayDataFrom = date.split(separFrom);
+  const arrayResult = [];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (!fromFormat[i].includes('Y')) {
-      for (let j = 0; j < toFormat.length - 1; j++) {
-        if (fromFormat[i] === toFormat[j]) {
-          resultData[j] = currentDataArr[i];
-        }
+  for (const keyFrom in obgectFrom) {
+    for (const keyTo in obgectTo) {
+      if (obgectFrom[keyFrom] === obgectTo[keyTo]) {
+        arrayResult[keyTo] = arrayDataFrom[keyFrom];
       }
-    } else {
-      for (let j = 0; j < toFormat.length - 1; j++) {
-        if (toFormat[j].includes('Y')) {
-          if (fromFormat[i].length === toFormat[j].length) {
-            resultData[j] = currentDataArr[i];
-          }
 
-          if (fromFormat[i].length > toFormat[j].length) {
-            resultData[j] = currentDataArr[i].slice(-2);
-          }
+      if (obgectFrom[keyFrom].includes('Y') && obgectTo[keyTo].includes('Y')) {
+        if (obgectFrom[keyFrom].length > obgectTo[keyTo].length) {
+          arrayResult[keyTo] = arrayDataFrom[keyFrom].slice(-2);
+        }
 
-          if (fromFormat[i].length < toFormat[j].length) {
-            if (+currentDataArr[i] < 30) {
-              resultData[j] = `20${currentDataArr[i]}`;
-            } else {
-              resultData[j] = `19${currentDataArr[i]}`;
-            }
+        if (obgectFrom[keyFrom].length < obgectTo[keyTo].length) {
+          if (arrayDataFrom[keyFrom] < 30) {
+            arrayResult[keyTo] = `20${arrayDataFrom[keyFrom]}`;
+          } else {
+            arrayResult[keyTo] = `19${arrayDataFrom[keyFrom]}`;
           }
         }
       }
     }
   }
 
-  return resultData.join(separatorTo);
+  arrayResult.length = 3;
+
+  return arrayResult.join(separTo);
 }
 
 module.exports = formatDate;
