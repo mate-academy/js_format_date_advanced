@@ -75,9 +75,13 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const defineYear = () => year < 30
-    ? result.push(20 + year)
-    : result.push(19 + year);
+  const defineYear = () => {
+    if (year < 30) {
+      return result.push(20 + year);
+    }
+
+    return result.push(19 + year);
+  };
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' && year.length === 4) {
