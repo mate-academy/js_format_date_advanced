@@ -51,7 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateFrom = date.split(fromFormat[3]);
-  const dateTo = Array(3);
+  const dateTo = new Array(3);
 
   for (let i = 0; i < 3; i++) {
     if (toFormat.includes(fromFormat[i])) {
