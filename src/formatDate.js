@@ -75,13 +75,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  const defineYear = () => year < 30
+    ? result.push(20 + year)
+    : result.push(19 + year);
+
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' && year.length === 4) {
       result.push(year.slice(-2));
-    } else if (toFormat[i] === 'YYYY' && year < 30 && year.length === 2) {
-      result.push(20 + year);
-    } else if (toFormat[i] === 'YYYY' && year >= 30 && year.length === 2) {
-      result.push(19 + year);
+    } else if (toFormat[i] === 'YYYY' && year.length === 2) {
+      defineYear(year);
     } else if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
       result.push(year);
     }
