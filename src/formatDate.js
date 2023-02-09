@@ -50,38 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const obgectFrom = Object.assign({}, fromFormat);
-  const { 3: separFrom } = obgectFrom;
-  const obgectTo = Object.assign({}, toFormat);
-  const { 3: separTo } = obgectTo;
-  const arrayDataFrom = date.split(separFrom);
+  const [,,, separatorFrom] = fromFormat;
+  const [,,, separatorTo] = toFormat;
+  const dateCurrArray = date.split(separatorFrom);
   const arrayResult = [];
+  const objFrom = {};
+  let resultData = '';
 
-  for (const keyFrom in obgectFrom) {
-    for (const keyTo in obgectTo) {
-      if (obgectFrom[keyFrom] === obgectTo[keyTo]) {
-        arrayResult[keyTo] = arrayDataFrom[keyFrom];
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YY') {
+      fromFormat[i] = 'YYYY';
+
+      if (dateCurrArray[i] < 30) {
+        dateCurrArray[i] = '20' + dateCurrArray[i];
+      } else {
+        dateCurrArray[i] = '19' + dateCurrArray[i];
       }
+    }
 
-      if (obgectFrom[keyFrom].includes('Y') && obgectTo[keyTo].includes('Y')) {
-        if (obgectFrom[keyFrom].length > obgectTo[keyTo].length) {
-          arrayResult[keyTo] = arrayDataFrom[keyFrom].slice(-2);
-        }
+    objFrom[fromFormat[i]] = dateCurrArray[i];
+  }
 
-        if (obgectFrom[keyFrom].length < obgectTo[keyTo].length) {
-          if (arrayDataFrom[keyFrom] < 30) {
-            arrayResult[keyTo] = `20${arrayDataFrom[keyFrom]}`;
-          } else {
-            arrayResult[keyTo] = `19${arrayDataFrom[keyFrom]}`;
-          }
-        }
-      }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] !== 'YY') {
+      arrayResult[i] = objFrom[toFormat[i]];
+    } else {
+      arrayResult[i] = objFrom['YYYY'].slice(-2);
     }
   }
 
-  arrayResult.length = 3;
+  resultData = arrayResult.join(separatorTo);
 
-  return arrayResult.join(separTo);
+  return resultData;
 }
 
 module.exports = formatDate;
