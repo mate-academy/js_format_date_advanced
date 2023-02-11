@@ -62,11 +62,9 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject.YY = dateObject.YYYY.slice(2);
   }
 
-  if (dateObject.YY < 30) {
-    dateObject.YYYY = `20${dateObject.YY}`;
-  } else {
-    dateObject.YYYY = `19${dateObject.YY}`;
-  }
+  dateObject.YYYY = dateObject.YY < 30
+    ? `20${dateObject.YY}`
+    : `19${dateObject.YY}`;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     newDate.push(dateObject[toFormat[i]]);
