@@ -50,7 +50,48 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const dateArray = date.split(fromFormat[3]);
+  // dateArray = ["2012", "12", "21"]
+  const object = {};
+  const newDate = [];
+
+  for (let i = 0; i < 3; i++) {
+    object[fromFormat[i]] = dateArray[i];
+    // добавляем в объект элемент и присваиваем ему - ключ : значение
+    // ['YYYY', 'MM', 'DD', '-'] - из данного массива fromFormat[i]
+    // т.е object = {DD: "21", MM: "12", YYYY: "2012"}
+  };
+
+  if (object.YYYY) {
+    object.YY = object.YYYY.slice(2);
+  };
+  // если в новом object есть ключ YYYY, отрезаем два символа со 2-го;
+  // и так же добавляем его в массив  
+  // {DD: "21", MM: "12", YY: "12", YYYY: "2012"}
+
+  if (object.YY < 30) {
+    object.YYYY = '20' + `${object.YY}`;
+  } else {
+    object.YYYY = '19' + `${object.YY}`;
+  }
+  // При преобразовании из YY в YYYY используйте 20YY,
+  // а если YY < 30, то 19YY
+  // мы как бы изменяем названия ключей в YYYY: 
+  //"2012"; если бы изначально был только формат YY;
+
+  for (let i = 0; i < 3; i++) {
+    newDate.push(object[toFormat[i]]);
+  }
+  // пушим в новый массив ЗНАЧЕНИЯ нашего объекта
+  // по ключам уже из массива toFormat
+  // не включая последний символ ['DD', 'MM', 'YYYY']
+  // Например по ключу DD у нас в объекте  значение 21
+  // получаем массив ["21", "12", "2012"]
+
+  return newDate.join(toFormat[toFormat.length - 1]);
+};
+// Используя метод Join 
+// и зная разделительный символ из массива toFormat[3] = '.'
+// получаем нужную строку из массива;
 
 module.exports = formatDate;
