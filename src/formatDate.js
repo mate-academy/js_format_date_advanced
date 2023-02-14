@@ -49,8 +49,43 @@
  * @returns {string}
  */
 
+function formatYear(year, fromFormat, toFormat) {
+  if (fromFormat === 'YY' && toFormat === 'YYYY') {
+    if (year < 30) {
+      return `20${year}`;
+    } else {
+      return `19${year}`;
+    }
+  } else if (toFormat === 'YY') {
+    return year.slice(-2);
+  } else {
+    return year;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const preparedReceivedDate = date.split(fromFormat[fromFormat.length - 1]);
+
+  const result = toFormat
+    .slice(0, 3)
+    .map((dateFormat) => {
+      const currentIndex = fromFormat.findIndex((format) =>
+        dateFormat.includes('YY')
+          ? format.includes('YY')
+          : format === dateFormat);
+
+      const currentFormat = fromFormat[currentIndex];
+      const foundDate = preparedReceivedDate[currentIndex];
+
+      if (dateFormat.includes('YY')) {
+        return formatYear(foundDate, currentFormat, dateFormat);
+      };
+
+      return foundDate;
+    })
+    .join(toFormat[toFormat.length - 1]);
+
+  return result;
 }
 
 module.exports = formatDate;
