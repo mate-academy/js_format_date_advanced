@@ -50,7 +50,45 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const toFormatClone = [...toFormat];
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormatClone.pop();
+  const dateArr = date.split(fromSeparator);
+  const result = [];
+  const mDate = {
+    year: 0,
+
+    get YY() {
+      return String(this.year % 100);
+    },
+
+    get YYYY() {
+      return String(this.year);
+    },
+
+    set YY(shortYearStr) {
+      const shortYear = Number(shortYearStr);
+      const century = shortYear < 30
+        ? 2000
+        : 1900;
+
+      this.year = century + shortYear;
+    },
+
+    set YYYY(longYear) {
+      this.year = Number(longYear);
+    },
+  };
+
+  for (let i = 0; i < dateArr.length; i++) {
+    mDate[fromFormat[i]] = dateArr[i];
+  }
+
+  for (const part of toFormatClone) {
+    result.push(mDate[part]);
+  }
+
+  return result.join(toSeparator);
 }
 
 module.exports = formatDate;
