@@ -53,6 +53,8 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObject = {};
   const dateSplit = date.split(fromFormat[3]);
   const dateInNewFormatArray = [];
+  const copyOfToFormat = toFormat;
+  const newDateSeparator = copyOfToFormat.pop();
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i].includes('YY')) {
@@ -69,11 +71,11 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject[fromFormat[i]] = dateSplit[i];
   }
 
-  for (const datePart of toFormat.slice(0, 3)) {
+  for (const datePart of copyOfToFormat) {
     dateInNewFormatArray.push(dateObject[datePart]);
   }
 
-  return dateInNewFormatArray.join(toFormat[3]);
+  return dateInNewFormatArray.join(newDateSeparator);
 }
 
 module.exports = formatDate;
