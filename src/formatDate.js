@@ -71,8 +71,6 @@ function formatDate(date, fromFormat, toFormat) {
             ? `20${dateObject[dateFormat]}` : `19${dateObject[dateFormat]}`;
         }
       }
-
-      delete dateObject[dateFormat];
     }
   }
 
