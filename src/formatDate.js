@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
- *   The function can change a separator, reorder the date parts of convert a
+ *   The function can change a sepOlld, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
@@ -49,43 +49,47 @@
  * @returns {string}
  */
 
-function formatYear(year, fromFormat, toFormat) {
-  if (fromFormat === 'YY' && toFormat === 'YYYY') {
-    if (year < 30) {
-      return `20${year}`;
-    } else {
-      return `19${year}`;
-    }
-  } else if (toFormat === 'YY') {
-    return year.slice(-2);
-  } else {
-    return year;
-  }
-}
-
 function formatDate(date, fromFormat, toFormat) {
-  const preparedReceivedDate = date.split(fromFormat[fromFormat.length - 1]);
+  const sepOlld = fromFormat[fromFormat.length - 1];
+  const sepNew = toFormat[toFormat.length - 1];
+  const splitDate = date.split(sepOlld);
 
-  const result = toFormat
-    .slice(0, 3)
-    .map((dateFormat) => {
-      const currentIndex = fromFormat.findIndex((format) =>
-        dateFormat.includes('YY')
-          ? format.includes('YY')
-          : format === dateFormat);
+  const objOlldFormat = {};
+  const objNewFormat = {};
 
-      const currentFormat = fromFormat[currentIndex];
-      const foundDate = preparedReceivedDate[currentIndex];
+  const result = [];
 
-      if (dateFormat.includes('YY')) {
-        return formatYear(foundDate, currentFormat, dateFormat);
-      };
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    objOlldFormat[fromFormat[i]] = splitDate[i];
+  }
 
-      return foundDate;
-    })
-    .join(toFormat[toFormat.length - 1]);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    objNewFormat[toFormat[i]] = objOlldFormat[toFormat[i]];
+  }
 
-  return result;
+  if (
+    objOlldFormat.hasOwnProperty('YYYY')
+    && objNewFormat.hasOwnProperty('YY')
+  ) {
+    objNewFormat.YY = objOlldFormat.YYYY.slice(-2);
+  }
+
+  if (
+    objNewFormat.hasOwnProperty('YYYY')
+    && objOlldFormat.hasOwnProperty('YY')
+  ) {
+    if (objOlldFormat.YY < 30) {
+      objNewFormat.YYYY = `20${objOlldFormat.YY}`;
+    } else {
+      objNewFormat.YYYY = `19${objOlldFormat.YY}`;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result.push(objNewFormat[toFormat[i]]);
+  }
+
+  return result.join(sepNew);
 }
 
 module.exports = formatDate;
