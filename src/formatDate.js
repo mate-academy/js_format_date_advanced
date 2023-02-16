@@ -53,7 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObject = {};
   const dateSplit = date.split(fromFormat[3]);
   const dateInNewFormatArray = [];
-  const copyOfToFormat = toFormat;
+  const copyOfToFormat = [...toFormat];
   const newDateSeparator = copyOfToFormat.pop();
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
