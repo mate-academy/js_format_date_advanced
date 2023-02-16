@@ -60,33 +60,30 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      fromFormat[i] = dateArray[i];
-      year = fromFormat[i];
+      year = dateArray[i];
     }
 
     if (fromFormat[i] === 'MM') {
-      fromFormat[i] = dateArray[i];
-      month = fromFormat[i];
+      month = dateArray[i];
     }
 
     if (fromFormat[i] === 'DD') {
-      fromFormat[i] = dateArray[i];
-      day = fromFormat[i];
+      day = dateArray[i];
     }
   }
-
-  const makeYear = () => {
-    if (year < 30) {
-      return changedDate.push(20 + year);
-    }
-
-    return changedDate.push(19 + year);
-  };
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' && year.length === 4) {
       changedDate.push(year.slice(-2));
     } else if (toFormat[i] === 'YYYY' && year.length === 2) {
+      const makeYear = () => {
+        if (year < 30) {
+          return changedDate.push(20 + year);
+        }
+
+        return changedDate.push(19 + year);
+      };
+
       makeYear(year);
     } else if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
       changedDate.push(year);
