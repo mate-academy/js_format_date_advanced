@@ -65,18 +65,14 @@ function formatDate(date, fromFormat, toFormat) {
       for (const datePart of toFormat) {
         if (datePart.includes('Y') && dateFormat.length > datePart.length) {
           dateObject[datePart] = dateObject[dateFormat].slice(2);
-          delete dateObject[dateFormat];
         } else if (datePart.includes('Y')
           && dateFormat.length < datePart.length) {
-          if (dateObject[dateFormat] < 30) {
-            dateObject[datePart] = `20${dateObject[dateFormat]}`;
-            delete dateObject[dateFormat];
-          } else if (dateObject[dateFormat] >= 30) {
-            dateObject[datePart] = `19${dateObject[dateFormat]}`;
-            delete dateObject[dateFormat];
-          }
+          dateObject[datePart] = dateObject[dateFormat] < 30
+            ? `20${dateObject[dateFormat]}` : `19${dateObject[dateFormat]}`;
         }
       }
+
+      delete dateObject[dateFormat];
     }
   }
 
