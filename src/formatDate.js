@@ -84,20 +84,22 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
+    let current;
+
     switch (toFormat[i]) {
       case 'DD':
-        resultArray.push(day);
+        current = day;
         break;
 
       case 'MM':
-        resultArray.push(month);
+        current = month;
         break;
 
       case 'YY':
         if (year.length === 4) {
           year = year.slice(-2);
         }
-        resultArray.push(year);
+        current = year;
         break;
 
       case 'YYYY':
@@ -108,12 +110,14 @@ function formatDate(date, fromFormat, toFormat) {
             year = '19' + year;
           }
         }
-        resultArray.push(year);
+        current = year;
         break;
 
       default:
         break;
     }
+
+    resultArray.push(current);
   }
 
   return resultArray.join(toSeparator);
