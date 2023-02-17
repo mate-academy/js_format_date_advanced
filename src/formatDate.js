@@ -53,11 +53,12 @@ function formatDate(date, fromFormat, toFormat) {
   let year;
   let month;
   let day;
-  let separator = fromFormat[3];
-  const fromArray = date.split(separator);
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const fromArray = date.split(fromSeparator);
   const resultArray = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     const current = fromArray[i];
 
     switch (fromFormat[i]) {
@@ -82,7 +83,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'DD':
         resultArray.push(day);
@@ -115,9 +116,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  separator = toFormat[3];
-
-  return resultArray.join(separator);
+  return resultArray.join(toSeparator);
 }
 
 module.exports = formatDate;
