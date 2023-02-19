@@ -147,18 +147,11 @@ function getFormatYearFourDigits(date) {
 
     case 2:
     case 1:
-      if (date.year < 30) {
-        date.year += 2000;
+      date.year += date.year < 30
+        ? 2000
+        : 1900;
 
-        return date.year;
-      }
-
-      if (date.year >= 30) {
-        date.year += 1900;
-
-        return date.year;
-      }
-      break;
+      return date.year;
 
     default:
       throw new Error(`Unknown length of year date: ${yearLength}`);
