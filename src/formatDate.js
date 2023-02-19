@@ -100,39 +100,40 @@ function getDesireFormatDate(date, desireFormat) {
 
   for (let j = 0; j < desireFormat.length - 1; j++) {
     const format = desireFormat[j];
+    let nextAdding = 0;
 
     switch (format) {
       case 'DD':
-        newDateViewInArray.push(
-          date.day.toString().length < 2
-            ? date.day.toString().slice(2)
-            : date.day
-        );
+        nextAdding = date.day.toString().length < 2
+          ? +date.day.toString().slice(2)
+          : date.day;
+
         break;
 
       case 'MM':
-        newDateViewInArray.push(
-          date.month.toString().length < 2
-            ? date.month.toString().padStart(2, '0')
-            : date.month
-        );
+        nextAdding = date.month.toString().length < 2
+          ? date.month.toString().padStart(2, '0')
+          : date.month;
+
         break;
 
       case 'YYYY':
-        newDateViewInArray.push(getFormatYearFourDigits(date));
+        nextAdding = getFormatYearFourDigits(date);
+
         break;
 
       case 'YY':
-        newDateViewInArray.push(
-          yearLength === 4
-            ? date.year.toString().slice(2)
-            : date.year
-        );
+        nextAdding = yearLength === 4
+          ? date.year.toString().slice(2)
+          : date.year;
+
         break;
 
       default:
         throw new Error(`Unknown format: ${format}`);
     }
+
+    newDateViewInArray.push(nextAdding);
   }
 
   return newDateViewInArray;
