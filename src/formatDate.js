@@ -51,62 +51,14 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateViewInObject = getCurrentDayMonthYear(date, fromFormat);
-
   const newSeparator = toFormat[toFormat.length - 1];
-  const newDateViewInArray = [];
-
-  for (let j = 0; j < toFormat.length - 1; j++) {
-    const format = toFormat[j];
-
-    if (format === 'DD') {
-      if (dateViewInObject.day.toString().length < 2) {
-        dateViewInObject.day = '0' + dateViewInObject.day.toString();
-      }
-
-      newDateViewInArray.push(dateViewInObject.day);
-    }
-
-    if (format === 'MM') {
-      if (dateViewInObject.month.toString().length < 2) {
-        dateViewInObject.month = '0' + dateViewInObject.month.toString();
-      }
-
-      newDateViewInArray.push(dateViewInObject.month);
-    }
-
-    if (format === 'YYYY') {
-      if (dateViewInObject.year.toString().length === 4) {
-        newDateViewInArray.push(dateViewInObject.year);
-        continue;
-      }
-
-      if (dateViewInObject.year < 30) {
-        dateViewInObject.year += 2000;
-        newDateViewInArray.push(dateViewInObject.year);
-        continue;
-      }
-
-      if (dateViewInObject.year >= 30) {
-        dateViewInObject.year += 1900;
-        newDateViewInArray.push(dateViewInObject.year);
-      }
-    }
-
-    if (format === 'YY') {
-      if (dateViewInObject.year.toString().length === 4) {
-        newDateViewInArray.push(dateViewInObject.year.toString().slice(2));
-        continue;
-      }
-
-      newDateViewInArray.push(dateViewInObject.year);
-    }
-  }
+  const newDateViewInArray = getDesireFormatDate(dateViewInObject, toFormat);
 
   return newDateViewInArray.join(newSeparator);
 }
 
-function getCurrentDayMonthYear(date, format) {
-  const separator = format[format.length - 1];
+function getCurrentDayMonthYear(date, formats) {
+  const separator = formats[formats.length - 1];
   const dateViewInArray = date.split(separator);
 
   const dateViewInObject = {
@@ -115,24 +67,102 @@ function getCurrentDayMonthYear(date, format) {
     year: 0,
   };
 
-  for (let i = 0; i < format.length - 1; i++) {
-    const writing = format[i];
+  for (let i = 0; i < formats.length - 1; i++) {
+    const format = formats[i];
     const amount = +dateViewInArray[i];
 
-    if (writing === 'YY' || writing === 'YYYY') {
-      dateViewInObject.year = amount;
-    }
+    switch (format) {
+      case 'YY':
+      case 'YYYY':
+        dateViewInObject.year = amount;
+        break;
 
-    if (writing === 'DD') {
-      dateViewInObject.day = amount;
-    }
+      case 'DD':
+        dateViewInObject.day = amount;
+        break;
 
-    if (writing === 'MM') {
-      dateViewInObject.month = amount;
+      case 'MM':
+        dateViewInObject.month = amount;
+        break;
+
+      default:
+        throw new Error(`Unknown format: ${format}`);
     }
   }
 
   return dateViewInObject;
+}
+
+function getDesireFormatDate(date, desireFormat) {
+  const newDateViewInArray = [];
+
+  const yearLength = date.year.toString().length;
+
+  for (let j = 0; j < desireFormat.length - 1; j++) {
+    const format = desireFormat[j];
+
+    switch (format) {
+      case 'DD':
+        newDateViewInArray.push(
+          date.day.toString().length < 2
+            ? date.day.toString().slice(2)
+            : date.day
+        );
+        break;
+
+      case 'MM':
+        newDateViewInArray.push(
+          date.month.toString().length < 2
+            ? date.month.toString().padStart(2, '0')
+            : date.month
+        );
+        break;
+
+      case 'YYYY':
+        newDateViewInArray.push(getFormatYearFourDigits(date));
+        break;
+
+      case 'YY':
+        newDateViewInArray.push(
+          yearLength === 4
+            ? date.year.toString().slice(2)
+            : date.year
+        );
+        break;
+
+      default:
+        throw new Error(`Unknown format: ${format}`);
+    }
+  }
+
+  return newDateViewInArray;
+}
+
+function getFormatYearFourDigits(date) {
+  const yearLength = date.year.toString().length;
+
+  switch (yearLength) {
+    case 4:
+      return date.year;
+
+    case 2:
+    case 1:
+      if (date.year < 30) {
+        date.year += 2000;
+
+        return date.year;
+      }
+
+      if (date.year >= 30) {
+        date.year += 1900;
+
+        return date.year;
+      }
+      break;
+
+    default:
+      throw new Error(`Unknown length of year date: ${yearLength}`);
+  }
 }
 
 module.exports = formatDate;
