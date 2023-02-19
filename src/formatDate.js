@@ -50,7 +50,80 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitted1 = date.split(/[-:/:.]/).reverse();
+
+  const splitted2 = date.split(/[-:/:.]/);
+
+  const separator = toFormat.slice(toFormat.length - 1);
+
+  const wholeJoinedFrom = fromFormat.join('');
+
+  const wholeJoinedTo = toFormat.join('');
+
+  const realToFormat = toFormat.slice(0, toFormat.length - 1).sort();
+
+  const realFromFormat = fromFormat.slice(0, fromFormat.length - 1).sort();
+
+  const toYear = realToFormat[realToFormat.length - 1];
+
+  const fromYear = realFromFormat[realFromFormat.length - 1];
+
+  const smallerPoped = splitted2.pop();
+
+  const sliced1 = wholeJoinedFrom.slice(0, -1);
+
+  const sliced2 = wholeJoinedTo.slice(0, -1);
+
+  const sliced3 = wholeJoinedFrom.charAt(wholeJoinedFrom.length - 1);
+
+  const sliced4 = wholeJoinedTo.charAt(wholeJoinedTo.length - 1);
+
+  if (wholeJoinedFrom === 'MMYYYYDD-' || wholeJoinedFrom === 'DDYYYYMM-') {
+    const popedsplit1 = splitted1.pop(2);
+    const popedsplit2 = splitted1.pop(3);
+
+    splitted1.push(popedsplit1, popedsplit2);
+
+    return splitted1.join(separator);
+  }
+
+  if (wholeJoinedFrom.length === wholeJoinedTo.length
+    && sliced1 === sliced2
+    && sliced3 !== sliced4) {
+    return splitted1.reverse().join(separator);
+  }
+
+  if (wholeJoinedFrom === wholeJoinedTo) {
+    return splitted1.join(separator);
+  }
+
+  if (wholeJoinedFrom === wholeJoinedTo) {
+    return splitted1.join(separator);
+  }
+
+  if (toYear.length < fromYear.length) {
+    splitted2.push(smallerPoped.slice(2));
+
+    return splitted2.join(separator);
+  }
+
+  const poped = splitted1.pop();
+
+  if (toYear.length > fromYear.length && poped >= '30') {
+    splitted1.push('19' + poped);
+
+    return splitted1.reverse().join(separator);
+  }
+
+  if (toYear.length > fromYear.length && poped < '30') {
+    splitted1.push('20' + poped);
+
+    return splitted1.reverse().join(separator);
+  }
+
+  splitted1.push(poped);
+
+  return splitted1.join(separator);
 }
 
 module.exports = formatDate;
