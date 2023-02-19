@@ -50,7 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const oldDate = date.split(fromSeparator);
   const newDate = [];
   const dateInfo = {};
 
@@ -85,7 +87,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return newDate.join(toSeparator);
 }
 
 module.exports = formatDate;
