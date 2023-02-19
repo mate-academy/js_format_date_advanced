@@ -50,7 +50,89 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateViewInObject = getCurrentDayMonthYear(date, fromFormat);
+
+  const newSeparator = toFormat[toFormat.length - 1];
+  const newDateViewInArray = [];
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    const format = toFormat[j];
+
+    if (format === 'DD') {
+      if (dateViewInObject.day.toString().length < 2) {
+        dateViewInObject.day = '0' + dateViewInObject.day.toString();
+      }
+
+      newDateViewInArray.push(dateViewInObject.day);
+    }
+
+    if (format === 'MM') {
+      if (dateViewInObject.month.toString().length < 2) {
+        dateViewInObject.month = '0' + dateViewInObject.month.toString();
+      }
+
+      newDateViewInArray.push(dateViewInObject.month);
+    }
+
+    if (format === 'YYYY') {
+      if (dateViewInObject.year.toString().length === 4) {
+        newDateViewInArray.push(dateViewInObject.year);
+        continue;
+      }
+
+      if (dateViewInObject.year < 30) {
+        dateViewInObject.year += 2000;
+        newDateViewInArray.push(dateViewInObject.year);
+        continue;
+      }
+
+      if (dateViewInObject.year >= 30) {
+        dateViewInObject.year += 1900;
+        newDateViewInArray.push(dateViewInObject.year);
+      }
+    }
+
+    if (format === 'YY') {
+      if (dateViewInObject.year.toString().length === 4) {
+        newDateViewInArray.push(dateViewInObject.year.toString().slice(2));
+        continue;
+      }
+
+      newDateViewInArray.push(dateViewInObject.year);
+    }
+  }
+
+  return newDateViewInArray.join(newSeparator);
+}
+
+function getCurrentDayMonthYear(date, format) {
+  const separator = format[format.length - 1];
+  const dateViewInArray = date.split(separator);
+
+  const dateViewInObject = {
+    day: 0,
+    month: 0,
+    year: 0,
+  };
+
+  for (let i = 0; i < format.length - 1; i++) {
+    const writing = format[i];
+    const amount = +dateViewInArray[i];
+
+    if (writing === 'YY' || writing === 'YYYY') {
+      dateViewInObject.year = amount;
+    }
+
+    if (writing === 'DD') {
+      dateViewInObject.day = amount;
+    }
+
+    if (writing === 'MM') {
+      dateViewInObject.month = amount;
+    }
+  }
+
+  return dateViewInObject;
 }
 
 module.exports = formatDate;
