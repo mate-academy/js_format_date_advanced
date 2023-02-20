@@ -50,7 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const splitedDate = date.split(fromSeparator);
+  const newFormat = [];
+  let year, month, day;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        year = splitedDate[i];
+        break;
+
+      case 'MM':
+        month = splitedDate[i];
+        break;
+
+      case 'DD':
+        day = splitedDate[i];
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    if (toFormat[j] === 'DD') {
+      newFormat.push(day);
+      continue;
+    }
+
+    if (toFormat[j] === 'MM') {
+      newFormat.push(month);
+      continue;
+    }
+
+    newFormat.push(getFormatedYear(toFormat[j], year));
+  }
+
+  return newFormat.join(toSeparator);
 }
+
+function getFormatedYear(yearFormat, year) {
+  const isFourYear = yearFormat === 'YYYY';
+  const isLessThirty = year < 30;
+  const isLengthTwo = year.length === 2;
+
+  if (yearFormat === 'YY') {
+    return year.slice(-2);
+  }
+
+  if (isFourYear && isLessThirty && isLengthTwo) {
+    return `20${year}`;
+  }
+
+  if (isFourYear && !isLessThirty && isLengthTwo) {
+    return `19${year}`;
+  }
+
+  if (isFourYear && year.length === 4) {
+    return year;
+  }
+};
 
 module.exports = formatDate;
