@@ -56,35 +56,20 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
   const dateInfo = {};
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YY') {
-      if (oldDate[i] < 30) {
-        dateInfo.YYYY = `20${oldDate[i]}`;
-      } else {
-        dateInfo.YYYY = `19${oldDate[i]}`;
-      }
-    }
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     dateInfo[fromFormat[i]] = oldDate[i];
   }
 
-  for (const point of toFormat) {
-    switch (point) {
-      case 'DD':
-        newDate.push(dateInfo.DD);
-        break;
+  if (!fromFormat.includes('YY')) {
+    dateInfo.YY = dateInfo.YYYY.slice(2);
+  } else {
+    dateInfo.YYYY = dateInfo.YY < 30
+      ? 20 + dateInfo.YY
+      : 19 + dateInfo.YY;
+  }
 
-      case 'MM':
-        newDate.push(dateInfo.MM);
-        break;
-
-      case 'YY':
-        newDate.push(dateInfo.YYYY.slice(-2));
-        break;
-
-      case 'YYYY':
-        newDate.push(dateInfo.YYYY);
-        break;
-    }
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    newDate.push(dateInfo[toFormat[i]]);
   }
 
   return newDate.join(toSeparator);
