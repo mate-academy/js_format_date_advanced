@@ -57,16 +57,17 @@ function formatDate(date, fromFormat, toFormat) {
   let year, month, day;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (true) {
-      case fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY':
+    switch (fromFormat[i]) {
+      case 'YY':
+      case 'YYYY':
         year = splitedDate[i];
         break;
 
-      case fromFormat[i] === 'MM':
+      case 'MM':
         month = splitedDate[i];
         break;
 
-      case fromFormat[i] === 'DD':
+      case 'DD':
         day = splitedDate[i];
         break;
 
