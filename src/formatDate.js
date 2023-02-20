@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrayToFilter = date.split(fromFormat[3]);
+  const orderedArray = [];
+
+  fromFormat.pop();
+
+  fromFormat.forEach(elem => {
+    if (elem === 'YY' || elem === 'YYYY') {
+      const firstCase = toFormat.indexOf('YY');
+      const secondCase = toFormat.indexOf('YYYY');
+
+      orderedArray[Math.max(firstCase, secondCase)]
+      = arrayToFilter[fromFormat.indexOf(elem)];
+    } else {
+      orderedArray[toFormat.indexOf(elem)]
+      = arrayToFilter[fromFormat.indexOf(elem)];
+    }
+  });
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    const endOfYear = orderedArray[toFormat.indexOf('YYYY')];
+
+    orderedArray[toFormat.indexOf('YYYY')]
+    = endOfYear < 30 ? `20` + `${endOfYear}` : `19` + `${endOfYear}`;
+  };
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    const endOfYear = orderedArray[toFormat.indexOf('YY')].slice(-2);
+
+    orderedArray[toFormat.indexOf('YY')] = endOfYear;
+  }
+
+  return orderedArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
