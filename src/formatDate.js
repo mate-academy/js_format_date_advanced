@@ -60,11 +60,11 @@ function formatDate(date, fromFormat, toFormat) {
     dateInfo[fromFormat[i]] = oldDate[i];
 
     if (fromFormat[i] === 'YY') {
-      dateInfo.YYYY = (dateInfo.YY < 30 ? '20' : '19') + dateInfo.YY;
+      dateInfo.YYYY = (oldDate[i] < 30 ? '20' : '19') + oldDate[i];
     }
 
     if (fromFormat[i] === 'YYYY') {
-      dateInfo.YY = dateInfo.YYYY.slice(2);
+      dateInfo.YY = oldDate[i].slice(2);
     }
   }
 
