@@ -60,43 +60,42 @@ function formatDate(date, fromFormat, toFormat) {
   const oldFormatMonthIndex = fromFormat.indexOf('MM');
   const oldFormatDayIndex = fromFormat.indexOf('DD');
 
-  let newDate = '';
   const newDateSplitted = [];
 
-  for (const formatItem of toFormat) {
-    switch (formatItem) {
+  for (let i = 0; i < 3; i++) {
+    let newDateItem = '';
+
+    switch (toFormat[i]) {
       case 'YY':
-        newDateSplitted.push(oldDateSplitted[oldFormatYearIndex].slice(-2));
+        newDateItem = oldDateSplitted[oldFormatYearIndex].slice(-2);
         break;
 
       case 'YYYY':
-        let newDateYear = oldDateSplitted[oldFormatYearIndex];
+        newDateItem = oldDateSplitted[oldFormatYearIndex];
 
-        if (newDateYear.length === 2) {
-          newDateYear = +newDateYear < 30
-            ? '20' + newDateYear
-            : '19' + newDateYear;
+        if (newDateItem.length === 2) {
+          newDateItem = +newDateItem < 30
+            ? '20' + newDateItem
+            : '19' + newDateItem;
         }
-
-        newDateSplitted.push(newDateYear);
         break;
 
       case 'MM':
-        newDateSplitted.push(oldDateSplitted[oldFormatMonthIndex]);
+        newDateItem = oldDateSplitted[oldFormatMonthIndex];
         break;
 
       case 'DD':
-        newDateSplitted.push(oldDateSplitted[oldFormatDayIndex]);
+        newDateItem = oldDateSplitted[oldFormatDayIndex];
         break;
 
       default:
         break;
     }
+
+    newDateSplitted.push(newDateItem);
   }
 
-  newDate = newDateSplitted.join(toFormat[3]);
-
-  return newDate;
+  return newDateSplitted.join(toFormat[3]);
 }
 
 module.exports = formatDate;
