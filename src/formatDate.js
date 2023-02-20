@@ -42,50 +42,6 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- *   // FIRST METOD
-
-  // const sepOlld = fromFormat[fromFormat.length - 1];
-  // const sepNew = toFormat[toFormat.length - 1];
-  // const splitDate = date.split(sepOlld);
-
-  // const objOlldFormat = {};
-  // const objNewFormat = {};
-
-  // const result = [];
-
-  // for (let i = 0; i < fromFormat.length - 1; i++) {
-  //   objOlldFormat[fromFormat[i]] = splitDate[i];
-  // }
-
-  // for (let i = 0; i < toFormat.length - 1; i++) {
-  //   objNewFormat[toFormat[i]] = objOlldFormat[toFormat[i]];
-  // }
-
-  // // if (
-  // //   objOlldFormat.hasOwnProperty('YYYY')
-  // //   && objNewFormat.hasOwnProperty('YY')
-  // // ) {
-  // //   objNewFormat.YY = objOlldFormat.YYYY.slice(-2);
-  // // }
-
-  // if (
-  //   objNewFormat.hasOwnProperty('YYYY')
-  //   && objOlldFormat.hasOwnProperty('YY')
-  // ) {
-  //   if (objOlldFormat.YY < 30) {
-  //     objNewFormat.YYYY = `20${objOlldFormat.YY}`;
-  //   } else {
-  //     objNewFormat.YYYY = `19${objOlldFormat.YY}`;
-  //   }
-  // }
-
-  // for (let i = 0; i < toFormat.length - 1; i++) {
-  //   result.push(objNewFormat[toFormat[i]]);
-  // }
-
-  // console.log(objOlldFormat);
-  // console.log(objNewFormat);
- *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -110,7 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (tempDate['YY'] < 30) {
+    if (tempDate.YY < 30) {
       tempDate.YYYY = `20${tempDate.YY}`;
     } else {
       tempDate.YYYY = `19${tempDate.YY}`;
