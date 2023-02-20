@@ -50,80 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const splitted1 = date.split(/[-:/:.]/).reverse();
+  const dateArr = date.split(/[-:/:.]/);
+  const toFormatSliced = toFormat.slice(0, -1);
+  const separator = toFormat[3];
+  const newDate = [];
+  const mapDate = {
+    [fromFormat[0]]: dateArr[0],
+    [fromFormat[1]]: dateArr[1],
+    [fromFormat[2]]: dateArr[2],
+  };
 
-  const splitted2 = date.split(/[-:/:.]/);
+  for (let i = 0; i < toFormatSliced.length; i++) {
+    const arrayElement = toFormatSliced[i];
 
-  const separator = toFormat.slice(toFormat.length - 1);
-
-  const wholeJoinedFrom = fromFormat.join('');
-
-  const wholeJoinedTo = toFormat.join('');
-
-  const realToFormat = toFormat.slice(0, toFormat.length - 1).sort();
-
-  const realFromFormat = fromFormat.slice(0, fromFormat.length - 1).sort();
-
-  const toYear = realToFormat[realToFormat.length - 1];
-
-  const fromYear = realFromFormat[realFromFormat.length - 1];
-
-  const smallerPoped = splitted2.pop();
-
-  const sliced1 = wholeJoinedFrom.slice(0, -1);
-
-  const sliced2 = wholeJoinedTo.slice(0, -1);
-
-  const sliced3 = wholeJoinedFrom.charAt(wholeJoinedFrom.length - 1);
-
-  const sliced4 = wholeJoinedTo.charAt(wholeJoinedTo.length - 1);
-
-  if (wholeJoinedFrom === 'MMYYYYDD-' || wholeJoinedFrom === 'DDYYYYMM-') {
-    const popedsplit1 = splitted1.pop(2);
-    const popedsplit2 = splitted1.pop(3);
-
-    splitted1.push(popedsplit1, popedsplit2);
-
-    return splitted1.join(separator);
+    for (const key in mapDate) {
+      if (arrayElement === key) {
+        newDate.push(mapDate[key]);
+      } else if (arrayElement === 'YYYY'
+      && key === 'YY' && mapDate[key] >= 30) {
+        newDate.push('19' + mapDate[key]);
+      } else if (arrayElement === 'YYYY'
+      && key === 'YY' && mapDate[key] < 30) {
+        newDate.push('20' + mapDate[key]);
+      } else if (arrayElement === 'YY'
+      && key === 'YYYY') {
+        newDate.push(mapDate[key].slice(2));
+      }
+    }
   }
 
-  if (wholeJoinedFrom.length === wholeJoinedTo.length
-    && sliced1 === sliced2
-    && sliced3 !== sliced4) {
-    return splitted1.reverse().join(separator);
-  }
-
-  if (wholeJoinedFrom === wholeJoinedTo) {
-    return splitted1.join(separator);
-  }
-
-  if (wholeJoinedFrom === wholeJoinedTo) {
-    return splitted1.join(separator);
-  }
-
-  if (toYear.length < fromYear.length) {
-    splitted2.push(smallerPoped.slice(2));
-
-    return splitted2.join(separator);
-  }
-
-  const poped = splitted1.pop();
-
-  if (toYear.length > fromYear.length && poped >= '30') {
-    splitted1.push('19' + poped);
-
-    return splitted1.reverse().join(separator);
-  }
-
-  if (toYear.length > fromYear.length && poped < '30') {
-    splitted1.push('20' + poped);
-
-    return splitted1.reverse().join(separator);
-  }
-
-  splitted1.push(poped);
-
-  return splitted1.join(separator);
+  return newDate.join(separator);
 }
 
 module.exports = formatDate;
