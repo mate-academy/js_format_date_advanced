@@ -58,17 +58,17 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     dateInfo[fromFormat[i]] = oldDate[i];
+
+    if (fromFormat[i] === 'YY') {
+      dateInfo.YYYY = (dateInfo.YY < 30 ? '20' : '19') + dateInfo.YY;
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateInfo.YY = dateInfo.YYYY.slice(2);
+    }
   }
 
-  if (!fromFormat.includes('YY')) {
-    dateInfo.YY = dateInfo.YYYY.slice(2);
-  } else {
-    dateInfo.YYYY = dateInfo.YY < 30
-      ? 20 + dateInfo.YY
-      : 19 + dateInfo.YY;
-  }
-
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     newDate.push(dateInfo[toFormat[i]]);
   }
 
