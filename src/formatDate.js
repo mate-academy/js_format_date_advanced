@@ -50,58 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const switchYearFormat = () => {
-    if (year.length === 2) {
-      if (+year < 30) {
-        year = '20' + year;
-      } else {
-        year = '19' + year;
-      }
-    } else {
-      year = year.slice(2);
+  // function makes YY from YYYY and vice versa
+  const switchYearFormat = (currentYear) => {
+    if (currentYear.length === 2) {
+      return (+currentYear < 30) ? '20' + currentYear : '19' + currentYear;
     }
+
+    return currentYear.slice(2);
   };
 
-  let year, month, day, yearIndex;
+  // creating object as storage and array with dates
+  const dateObject = {};
   const dateItems = date.split(fromFormat[3]);
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    switch (fromFormat[i]) {
-      case 'YYYY':
-      case 'YY':
-        year = dateItems[i];
-        yearIndex = i;
-        break;
-      case 'MM':
-        month = dateItems[i];
-        break;
-      case 'DD':
-        day = dateItems[i];
-        break;
-    }
+  // fill our object with date, month, year separately
+  for (let i = 0; i < dateItems.length; i++) {
+    dateObject[fromFormat[i]] = dateItems[i];
   }
 
-  if (!toFormat.includes(fromFormat[yearIndex])) {
-    switchYearFormat();
+  // adding another year format to our object
+  if (dateObject['YY']) {
+    dateObject['YYYY'] = switchYearFormat(dateObject['YY']);
+  } else {
+    dateObject['YY'] = switchYearFormat(dateObject['YYYY']);
   }
 
+  // create resulting array
   const newDate = [];
 
+  // fill our resulting array with dates in right order
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-      case 'YY':
-        newDate.push(year);
-        break;
-      case 'MM':
-        newDate.push(month);
-        break;
-      case 'DD':
-        newDate.push(day);
-        break;
-    }
+    newDate.push(dateObject[toFormat[i]]);
   }
 
+  // return joined string with separator from toFormat
   return newDate.join(toFormat[3]);
 }
 
