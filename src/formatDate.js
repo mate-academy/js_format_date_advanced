@@ -61,28 +61,27 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      result.push(dateParts['DD']);
-      continue;
-    }
-
-    if (toFormat[i] === 'MM') {
-      result.push(dateParts['MM']);
-      continue;
-    }
-
-    if (!dateParts[toFormat[i]]) {
-      if (dateParts['YY']) {
-        result.push(
-          dateParts['YY'] < 30
-            ? '20' + dateParts['YY']
-            : '19' + dateParts['YY']
-        );
+    switch (true) {
+      case toFormat[i] === 'DD':
+        result.push(dateParts['DD']);
         continue;
-      }
 
-      result.push(dateParts['YYYY'].toString().slice(2, 4));
-      continue;
+      case toFormat[i] === 'MM':
+        result.push(dateParts['MM']);
+        continue;
+
+      case !dateParts[toFormat[i]]:
+        if (dateParts['YY']) {
+          result.push(
+            (dateParts['YY'] < 30
+              ? '20'
+              : '19') + dateParts['YY']
+          );
+          continue;
+        }
+
+        result.push(dateParts['YYYY'].toString().slice(-2));
+        continue;
     }
 
     result.push(dateParts['YY'] || dateParts['YYYY']);
