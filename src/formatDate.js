@@ -50,8 +50,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const referenceDate = date;
-
   const yearIndx = fromFormat.indexOf('YY') === -1
     ? fromFormat.indexOf('YYYY')
     : fromFormat.indexOf('YY');
@@ -59,10 +57,8 @@ function formatDate(date, fromFormat, toFormat) {
   const monthIndx = fromFormat.indexOf('MM');
   const dayIndx = fromFormat.indexOf('DD');
 
-  const referenceDateArr = referenceDate.split(fromFormat[3]);
+  const referenceDateArr = date.split(fromFormat[3]);
 
-  let newDate = '';
-  let newYear = '';
   const newDateArr = [];
 
   for (const item of toFormat) {
@@ -72,12 +68,14 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YYYY':
-        newYear = referenceDateArr[yearIndx];
+        let newYear = referenceDateArr[yearIndx];
 
         if (newYear.length === 2) {
-          newYear = +newYear < 30
-            ? '20' + newYear
-            : '19' + newYear;
+          const centuryPart = +newYear < 30
+            ? '20'
+            : '19';
+
+          newYear = centuryPart + newYear;
         }
 
         newDateArr.push(newYear);
@@ -96,9 +94,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  newDate = newDateArr.join(toFormat[3]);
-
-  return newDate;
+  return newDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
