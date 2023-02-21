@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -5,7 +6,7 @@
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
- *   The function can change a separator, reorder the date parts of convert a
+ *   The function can change a sepOlld, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
@@ -50,7 +51,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = [];
+  const tempDate = {};
+  const sep = fromFormat[fromFormat.length - 1];
+  const tempDateArr = date.split(sep);
+
+  for (let i = 0; i < tempDateArr.length; i++) {
+    tempDate[fromFormat[i]] = tempDateArr[i];
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    tempDate['YY'] = tempDate['YYYY'].slice(-2);
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    (tempDate.YY < 30)
+      ? tempDate.YYYY = `20${tempDate.YY}`
+      : tempDate.YYYY = `19${tempDate.YY}`;
+  }
+
+  for (let i = 0; i < tempDateArr.length; i++) {
+    newDate.push(tempDate[toFormat[i]]);
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
