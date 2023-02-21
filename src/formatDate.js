@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 /**
@@ -50,8 +51,6 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // SECOND METOD
-
   const newDate = [];
   const tempDate = {};
   const sep = fromFormat[fromFormat.length - 1];
@@ -66,11 +65,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (tempDate.YY < 30) {
-      tempDate.YYYY = `20${tempDate.YY}`;
-    } else {
-      tempDate.YYYY = `19${tempDate.YY}`;
-    }
+    (tempDate.YY < 30)
+      ? tempDate.YYYY = `20${tempDate.YY}`
+      : tempDate.YYYY = `19${tempDate.YY}`;
   }
 
   for (let i = 0; i < tempDateArr.length; i++) {
