@@ -80,6 +80,9 @@ function formatDate(date, fromFormat, toFormat) {
       case 'DD':
         day = formatingDate[i];
         break;
+        
+      default:
+        break;
     }
   }
 
@@ -99,6 +102,9 @@ function formatDate(date, fromFormat, toFormat) {
 
       case 'DD':
         newDate[i] = day;
+        break;
+        
+      default:
         break;
     }
   }
