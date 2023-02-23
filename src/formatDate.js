@@ -54,9 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
   const initialDateParts = date.split(fromFormat[3]);
   const dayIndex = fromFormat.findIndex(part => part === 'DD');
   const monthIndex = fromFormat.findIndex(part => part === 'MM');
-  const yearIndex = fromFormat.findIndex(part => part === 'YY') === -1
-    ? fromFormat.findIndex(part => part === 'YYYY')
-    : fromFormat.findIndex(part => part === 'YY');
+  const yearIndex = fromFormat.findIndex(part => part.includes('YY'));
 
   for (const item of toFormat) {
     switch (item) {
