@@ -53,56 +53,22 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
   const toSeparate = toFormat[3];
   const resultDate = [];
-  let month = '';
-  let day = '';
-  let year = '';
+  const dateObject = {};
 
-  for (let i = 0; i < newDate.length; i++) {
-    switch (fromFormat[i]) {
-      case 'MM':
-        month = newDate[i];
-        break;
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateObject[fromFormat[i]] = newDate[i];
 
-      case 'DD':
-        day = newDate[i];
-        break;
+    if (fromFormat[i] === 'YY') {
+      dateObject.YYYY = (newDate[i] < 30 ? '20' : '19') + newDate[i];
+    }
 
-      case 'YY':
-      case 'YYYY':
-        year = newDate[i];
-        break;
+    if (fromFormat[i] === 'YYYY') {
+      dateObject.YY = newDate[i].slice(2);
     }
   }
 
-  for (let i = 0; i < newDate.length; i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-        resultDate[i] = day;
-        break;
-
-      case 'MM':
-        resultDate[i] = month;
-        break;
-
-      case 'YY':
-        if (year.length === 4) {
-          resultDate[i] = year.slice(-2);
-        }
-        break;
-
-      case 'YYYY':
-        if (year.length === 2 && +year < 30) {
-          resultDate[i] = '20' + year;
-          break;
-        }
-
-        if (year.length === 2) {
-          resultDate[i] = '19' + year;
-        } else {
-          resultDate[i] = year;
-        }
-        break;
-    }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    resultDate.push(dateObject[toFormat[i]]);
   }
 
   return resultDate.join(toSeparate);
