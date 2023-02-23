@@ -48,31 +48,21 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  const dateViewInObject = getCurrentDayMonthYear(date, fromFormat);
-  const newSeparator = toFormat[toFormat.length - 1];
-  const newDateViewInArray = getDesireFormatDate(dateViewInObject, toFormat);
+  const fromSeparator = fromFormat.pop();
+  const toSeparator = toFormat.pop();
+  const dateViewInObject = {};
 
-  return newDateViewInArray.join(newSeparator);
-}
-
-function getCurrentDayMonthYear(date, formats) {
-  const separator = formats[formats.length - 1];
-  const dateViewInArray = date.split(separator);
-
-  const dateViewInObject = {
-    day: 0,
-    month: 0,
-    year: 0,
-  };
-
-  for (let i = 0; i < formats.length - 1; i++) {
-    const format = formats[i];
-    const amount = +dateViewInArray[i];
+  fromFormat.forEach((format, i) => {
+    const amount = +date.split(fromSeparator)[i];
 
     switch (format) {
       case 'YY':
+        dateViewInObject.year = amount < 30
+          ? 2000 + amount
+          : 1900 + amount;
+        break;
+
       case 'YYYY':
         dateViewInObject.year = amount;
         break;
@@ -88,75 +78,39 @@ function getCurrentDayMonthYear(date, formats) {
       default:
         throw new Error(`Unknown format: ${format}`);
     }
-  }
+  });
 
-  return dateViewInObject;
-}
-
-function getDesireFormatDate(date, desireFormat) {
-  const newDateViewInArray = [];
-
-  const yearLength = date.year.toString().length;
-
-  for (let j = 0; j < desireFormat.length - 1; j++) {
-    const format = desireFormat[j];
-    let nextAdding = 0;
-
+  const newDateViewInArray = toFormat.map((format) => {
     switch (format) {
-      case 'DD':
-        nextAdding = date.day.toString().length < 2
-          ? +date.day.toString().slice(2)
-          : date.day;
+      case 'YY':
+        const year = dateViewInObject.year % 100;
 
-        break;
-
-      case 'MM':
-        nextAdding = date.month.toString().length < 2
-          ? date.month.toString().padStart(2, '0')
-          : date.month;
-
-        break;
+        return year < 10
+          ? `0${year}`
+          : `${year}`;
 
       case 'YYYY':
-        nextAdding = getFormatYearFourDigits(date);
+        return dateViewInObject.year.toString();
 
-        break;
+      case 'DD':
+        const day = dateViewInObject.day < 10
+          ? `0${dateViewInObject.day}`
+          : `${dateViewInObject.day}`;
 
-      case 'YY':
-        nextAdding = yearLength === 4
-          ? date.year.toString().slice(2)
-          : date.year;
+        return day;
 
-        break;
+      case 'MM':
+        const month = dateViewInObject.month < 10
+          ? `0${dateViewInObject.month}`
+          : `${dateViewInObject.month}`;
 
+        return month;
       default:
         throw new Error(`Unknown format: ${format}`);
     }
+  });
 
-    newDateViewInArray.push(nextAdding);
-  }
-
-  return newDateViewInArray;
-}
-
-function getFormatYearFourDigits(date) {
-  const yearLength = date.year.toString().length;
-
-  switch (yearLength) {
-    case 4:
-      return date.year;
-
-    case 2:
-    case 1:
-      date.year += date.year < 30
-        ? 2000
-        : 1900;
-
-      return date.year;
-
-    default:
-      throw new Error(`Unknown length of year date: ${yearLength}`);
-  }
+  return newDateViewInArray.join(toSeparator);
 }
 
 module.exports = formatDate;
