@@ -50,41 +50,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const initialDate = date.split(fromFormat[3]);
-  const convertedDate = new Array(3);
+  const initDate = date.split(fromFormat[3]);
+  const specDate = {};
 
-  const initialDayIndex = fromFormat.indexOf('DD');
-  const initialMonthIndex = fromFormat.indexOf('MM');
-  const initialYearShort = fromFormat.indexOf('YY') !== -1;
-  const initialYearIndex = Math.max(
-    fromFormat.indexOf('YY'),
-    fromFormat.indexOf('YYYY')
-  );
-
-  const convertedDayIndex = toFormat.indexOf('DD');
-  const convertedMonthIndex = toFormat.indexOf('MM');
-  const convertedYearShort = toFormat.indexOf('YY') !== -1;
-  const convertedYearIndex = Math.max(
-    toFormat.indexOf('YY'),
-    toFormat.indexOf('YYYY')
-  );
-
-  convertedDate[convertedDayIndex] = initialDate[initialDayIndex];
-  convertedDate[convertedMonthIndex] = initialDate[initialMonthIndex];
-
-  if (initialYearShort && !convertedYearShort) {
-    if (initialDate[initialYearIndex] < 30) {
-      convertedDate[convertedYearIndex] = '20' + initialDate[initialYearIndex];
-    } else {
-      convertedDate[convertedYearIndex] = '19' + initialDate[initialYearIndex];
-    }
-  } else if (!initialYearShort && convertedYearShort) {
-    convertedDate[convertedYearIndex] = initialDate[initialYearIndex].slice(2);
-  } else {
-    convertedDate[convertedYearIndex] = initialDate[initialYearIndex];
+  for (let i = 0; i < 3; i++) {
+    specDate[fromFormat[i]] = initDate[i];
   }
 
-  return convertedDate.join(toFormat[3]);
+  if (specDate.hasOwnProperty('YY')) {
+    specDate.YYYY = (specDate.YY < 30 ? '20' : '19') + specDate['YY'];
+  } else {
+    specDate.YY = specDate.YYYY.slice(2);
+  }
+
+  const formatedDate = [];
+
+  for (let i = 0; i < 3; i++) {
+    formatedDate.push(specDate[toFormat[i]]);
+  }
+
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
