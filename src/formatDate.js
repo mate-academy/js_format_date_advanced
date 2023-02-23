@@ -8,30 +8,34 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const fromFormatCopy = [...fromFormat].slice(0, -1);
+  const toFormatCopy = [...toFormat].slice(0, -1);
+  const dateParts = date.split(fromSeparator);
   const dateViewInObject = {};
 
-  fromFormat.forEach((format, i) => {
-    const amount = +date.split(fromSeparator)[i];
+  fromFormatCopy.forEach((format, i) => {
+    const amount = dateParts[i];
 
     switch (format) {
       case 'YY':
-        dateViewInObject.year = amount < 30
-          ? 2000 + amount
-          : 1900 + amount;
+        dateViewInObject.YYYY = +amount < 30
+          ? '20' + amount
+          : '19' + amount;
         break;
 
       case 'YYYY':
-        dateViewInObject.year = amount;
+        dateViewInObject.YY = amount.toString().slice(-2);
+        dateViewInObject.YYYY = amount;
         break;
 
       case 'DD':
-        dateViewInObject.day = amount;
+        dateViewInObject.DD = amount;
         break;
 
       case 'MM':
-        dateViewInObject.month = amount;
+        dateViewInObject.MM = amount;
         break;
 
       default:
@@ -39,37 +43,13 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
-  const newDateViewInArray = toFormat.map((format) => {
-    switch (format) {
-      case 'YY':
-        const year = dateViewInObject.year % 100;
+  return toFormatCopy
+    .reduce((formatedDate, format) => {
+      formatedDate.push(dateViewInObject[format]);
 
-        return year < 10
-          ? `0${year}`
-          : `${year}`;
-
-      case 'YYYY':
-        return dateViewInObject.year.toString();
-
-      case 'DD':
-        const day = dateViewInObject.day < 10
-          ? `0${dateViewInObject.day}`
-          : `${dateViewInObject.day}`;
-
-        return day;
-
-      case 'MM':
-        const month = dateViewInObject.month < 10
-          ? `0${dateViewInObject.month}`
-          : `${dateViewInObject.month}`;
-
-        return month;
-      default:
-        throw new Error(`Unknown format: ${format}`);
-    }
-  });
-
-  return newDateViewInArray.join(toSeparator);
+      return formatedDate;
+    }, [])
+    .join(toSeparator);
 }
 
 module.exports = formatDate;
