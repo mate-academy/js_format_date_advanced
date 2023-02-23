@@ -56,52 +56,35 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'DD':
-        dateComponents.day = dateSplitted[i];
+        dateComponents.DD = dateSplitted[i];
         break;
       case 'MM':
-        dateComponents.month = dateSplitted[i];
+        dateComponents.MM = dateSplitted[i];
         break;
       case 'YY':
-        if (dateSplitted[i] < 30) {
-          dateComponents.year = '20' + dateSplitted[i];
-        } else {
-          dateComponents.year = '19' + dateSplitted[i];
-        }
+        dateComponents.YY = dateSplitted[i];
+
+        dateComponents.YYYY = dateSplitted[i] < 30
+          ? '20' + dateSplitted[i]
+          : '19' + dateSplitted[i];
         break;
       case 'YYYY':
-        dateComponents.year = dateSplitted[i];
+        dateComponents.YYYY = dateSplitted[i];
+        dateComponents.YY = dateSplitted[i].slice(2);
+
         break;
       default:
         break;
     }
   }
 
-  let result = '';
+  const result = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-        result += dateComponents.day;
-        break;
-      case 'MM':
-        result += dateComponents.month;
-        break;
-      case 'YY':
-        result += dateComponents.year.slice(2);
-        break;
-      case 'YYYY':
-        result += dateComponents.year;
-        break;
-      default:
-        break;
-    }
-
-    if (i < toFormat.length - 2) {
-      result += toFormat[3];
-    }
+    result.push(dateComponents[toFormat[i]]);
   }
 
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
