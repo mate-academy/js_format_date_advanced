@@ -50,25 +50,22 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const outputDateArray = [];
-  const initialDateArray = date.split(fromFormat[3]);
-  const dayIndex = fromFormat.indexOf('DD');
-  const monthIndex = fromFormat.indexOf('MM');
-  const yearIndex = fromFormat.indexOf('YY') === -1
-    ? fromFormat.indexOf('YYYY')
-    : fromFormat.indexOf('YY');
-
-
-
+  const outputDateParts = [];
+  const initialDateParts = date.split(fromFormat[3]);
+  const dayIndex = fromFormat.findIndex(part => part === 'DD');
+  const monthIndex = fromFormat.findIndex(part => part === 'MM');
+  const yearIndex = fromFormat.findIndex(part => part === 'YY') === -1
+    ? fromFormat.findIndex(part => part === 'YYYY')
+    : fromFormat.findIndex(part => part === 'YY');
 
   for (const item of toFormat) {
     switch (item) {
       case 'YY':
-        outputDateArray.push(initialDateArray[yearIndex].slice(-2));
+        outputDateParts.push(initialDateParts[yearIndex].slice(-2));
         break;
 
       case 'YYYY':
-        let createdYear = initialDateArray[yearIndex];
+        let createdYear = initialDateParts[yearIndex];
 
         if (createdYear.length === 2) {
           const yearFormat = +createdYear < 30
@@ -78,21 +75,20 @@ function formatDate(date, fromFormat, toFormat) {
           createdYear = yearFormat + createdYear;
         }
 
-        outputDateArray.push(createdYear);
+        outputDateParts.push(createdYear);
         break;
 
       case 'DD':
-        outputDateArray.push(initialDateArray[dayIndex]);
+        outputDateParts.push(initialDateParts[dayIndex]);
         break;
 
       case 'MM':
-        outputDateArray.push(initialDateArray[monthIndex]);
+        outputDateParts.push(initialDateParts[monthIndex]);
         break;
-
     }
   }
 
-  return outputDateArray.join(toFormat[3]);
+  return outputDateParts.join(toFormat[3]);
 }
 
 module.exports = formatDate;
