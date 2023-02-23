@@ -64,11 +64,11 @@ function formatDate(date, fromFormat, toFormat) {
     switch (true) {
       case toFormat[i] === 'DD':
         result.push(dateParts['DD']);
-        continue;
+        break;
 
       case toFormat[i] === 'MM':
         result.push(dateParts['MM']);
-        continue;
+        break;
 
       case !dateParts[toFormat[i]]:
         if (dateParts['YY']) {
@@ -77,14 +77,15 @@ function formatDate(date, fromFormat, toFormat) {
               ? '20'
               : '19') + dateParts['YY']
           );
-          continue;
+          break;
         }
 
         result.push(dateParts['YYYY'].toString().slice(-2));
-        continue;
-    }
+        break;
 
-    result.push(dateParts['YY'] || dateParts['YYYY']);
+      default:
+        result.push(dateParts['YY'] || dateParts['YYYY']);
+    }
   }
 
   return result.join(toFormat[3]);
