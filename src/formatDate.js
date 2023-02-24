@@ -63,38 +63,34 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let i = 0; i < lastIndex; i++) {
-    let current = '';
-
     switch (toFormat[i]) {
       case 'DD':
-        current = oldDay;
+        result.push(oldDay);
         break;
 
       case 'MM':
-        current = oldMonth;
+        result.push(oldMonth);
         break;
 
       case 'YY':
-        current = oldYear.length > 2
-          ? current = oldYear.slice(2)
-          : current = oldYear;
+        const yearWithTwoChars = oldYear.length === 2
+          ? oldYear
+          : oldYear.toString().slice(2, 4);
+
+        result.push(yearWithTwoChars);
         break;
 
       case 'YYYY':
-        if (oldYear.length < 4) {
-          current = Number(oldYear >= 30)
-            ? current = String(19 + oldYear)
-            : current = String(20 + oldYear);
-          break;
-        }
+        const sentury = oldYear.length === 4
+          ? oldYear
+          : +oldYear >= 30 ? 19 + oldYear : 20 + oldYear;
 
-        current = oldYear;
+        result.push(sentury);
         break;
 
       default:
         break;
     }
-    result.push(current);
   }
 
   return result.join(newSeparator);
