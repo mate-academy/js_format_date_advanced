@@ -73,7 +73,7 @@ function formatDate(date, fromFormat, toFormat) {
     newFormat.push(dateObj[toFormat[i]]);
   }
 
-  return newFormat.join(toFormat[3]);
+  return newFormat.join(toFormat[3])
 }
 
 module.exports = formatDate;
