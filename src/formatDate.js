@@ -53,84 +53,53 @@ function formatDate(date, fromFormat, toFormat) {
   const dateElements = date.split(fromFormat[fromFormat.length - 1]);
   const separator = toFormat[toFormat.length - 1];
   const resultingDate = [];
+  const dateObject = {};
 
-  let yearFromIndex = 0;
-  let monthFromIndex = 0;
-  let dayFromIndex = 0;
-  let yearToIndex = 0;
-  let monthToIndex = 0;
-  let dayToIndex = 0;
-
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YY':
-        yearFromIndex = i;
+        dateObject['YY'] = dateElements[i];
         break;
 
       case 'YYYY':
-        yearFromIndex = i;
+        dateObject['YYYY'] = dateElements[i];
         break;
 
       case 'MM':
-        monthFromIndex = i;
+        dateObject['MM'] = dateElements[i];
         break;
 
       case 'DD':
-        dayFromIndex = i;
+        dateObject['DD'] = dateElements[i];
         break;
     }
   }
+
+  normalizeYear();
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (toFormat[i]) {
-      case 'YY':
-        yearToIndex = i;
-        break;
-
-      case 'YYYY':
-        yearToIndex = i;
-        break;
-
-      case 'MM':
-        monthToIndex = i;
-        break;
-
-      case 'DD':
-        dayToIndex = i;
-        break;
-    }
+    resultingDate.push(dateObject[toFormat[i]]);
   }
-
-  dateElements[yearFromIndex] = normalizeYears(dateElements[yearFromIndex]);
-
-  resultingDate[yearToIndex] = dateElements[yearFromIndex];
-  resultingDate[monthToIndex] = dateElements[monthFromIndex];
-  resultingDate[dayToIndex] = dateElements[dayFromIndex];
 
   return resultingDate.join(separator);
 
-  function normalizeYears(year) {
-    const yearFormat = toFormat[yearToIndex];
+  function normalizeYear() {
+    const yearFrom = fromFormat.find(item => item.includes('Y'));
+    const yearTo = toFormat.find(item => item.includes('Y'));
 
-    switch (yearFormat) {
-      case 'YY':
-        if (year.length > 2) {
-          return year.slice(2);
-        }
-        break;
-
-      case 'YYYY':
-        if (year.length < 4 && year < 30) {
-          return `20${year}`;
-        }
-
-        if (year.length < 4 && year >= 30) {
-          return `19${year}`;
-        }
-        break;
+    if (yearTo.length < yearFrom.length) {
+      dateObject[yearTo] = dateObject[yearFrom].slice(2);
+      delete dateObject[yearFrom];
     }
 
-    return year;
+    if (yearTo.length > yearFrom.length) {
+      dateObject[yearTo]
+        = dateObject[yearFrom] < 30
+          ? `20${dateObject[yearFrom]}`
+          : `19${dateObject[yearFrom]}`;
+
+      delete dateObject[yearFrom];
+    }
   }
 }
 
