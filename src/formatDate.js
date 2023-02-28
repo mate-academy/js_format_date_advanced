@@ -53,29 +53,42 @@ function formatDate(date, fromFormat, toFormat) {
   const resultedDate = [];
   const separatorFrom = fromFormat[3];
   const separatorTo = toFormat[3];
+  const separatedDate = date.split(separatorFrom);
 
-  const separatedDate = date.split((separatorFrom));
-  let currentYear = separatedDate[fromFormat.indexOf('YY')]
+  const currentYear = separatedDate[fromFormat.indexOf('YY')]
     || separatedDate[fromFormat.indexOf('YYYY')];
+  const dateComponents = ['MM', 'DD', 'YY', 'YYYY'];
 
-  resultedDate[toFormat.indexOf('MM')]
-    = separatedDate[fromFormat.indexOf('MM')];
+  dateComponents.forEach((component, index) => {
+    const fromIndex = fromFormat.indexOf(component);
+    const toIndex = toFormat.indexOf(component);
 
-  resultedDate[toFormat.indexOf('DD')]
-    = separatedDate[fromFormat.indexOf('DD')];
-
-  if (toFormat.includes('YYYY')) {
-    if (fromFormat.includes('YY')) {
-      currentYear = currentYear < 30 ? `20${currentYear}` : `19${currentYear}`;
+    if (fromIndex !== -1 && toIndex !== -1) {
+      resultedDate[toIndex] = separatedDate[fromIndex];
     }
-    resultedDate[toFormat.indexOf('YYYY')] = currentYear;
+  });
+
+  const indexOfYYYY = toFormat.indexOf('YYYY');
+  const indexOfYY = toFormat.indexOf('YY');
+
+  if (indexOfYYYY !== -1) {
+    const prefix = fromFormat.includes('YY')
+      ? (currentYear < 30 ? '20' : '19')
+      : '';
+
+    resultedDate[indexOfYYYY] = prefix + currentYear;
   }
 
-  if (toFormat.includes('YY')) {
-    if (fromFormat.includes('YYYY')) {
-      currentYear = currentYear.slice(-2);
+  const isFullYear = fromFormat.includes('YYYY');
+
+  if (indexOfYY !== -1) {
+    const currentYearShort = currentYear.slice(-2);
+
+    if (isFullYear) {
+      resultedDate[indexOfYY] = currentYearShort;
+    } else {
+      resultedDate[indexOfYY] = currentYearShort.padStart('YY'.length, '0');
     }
-    resultedDate[toFormat.indexOf('YY')] = currentYear;
   }
 
   return resultedDate.join(separatorTo);
