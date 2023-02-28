@@ -50,51 +50,28 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromFormatSeparator = fromFormat[fromFormat.length - 1];
-  const toFormatSeparator = toFormat[toFormat.length - 1];
+  const fromFormatSeparator = fromFormat[3];
+  const toFormatSeparator = toFormat[3];
   const newDate = date.split(fromFormatSeparator);
   const result = [];
-  let year,
-    month,
-    day;
+  const dateObject = {};
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      fromFormat[i] = newDate[i];
-      year = fromFormat[i];
-    }
-
-    if (fromFormat[i] === 'MM') {
-      fromFormat[i] = newDate[i];
-      month = fromFormat[i];
-    }
-
-    if (fromFormat[i] === 'DD') {
-      fromFormat[i] = newDate[i];
-      day = fromFormat[i];
-    }
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateObject[fromFormat[i]] = newDate[i];
   }
 
-  const defineWhatYear = () => year < 30
-    ? result.push(20 + year)
-    : result.push(19 + year);
+  if (dateObject.hasOwnProperty('YYYY')) {
+    dateObject.YY = dateObject.YYYY.slice(2);
+  }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YY' && year.length === 4) {
-      result.push(year.slice(-2));
-    } else if (toFormat[i] === 'YYYY' && year.length === 2) {
-      defineWhatYear(year);
-    } else if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      result.push(year);
-    }
+  if (dateObject.YY < 30) {
+    dateObject.YYYY = '20' + dateObject.YY;
+  } else {
+    dateObject.YYYY = '19' + dateObject.YY;
+  }
 
-    if (toFormat[i] === 'MM') {
-      result.push(month);
-    }
-
-    if (toFormat[i] === 'DD') {
-      result.push(day);
-    }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    result.push(dateObject[toFormat[i]]);
   }
 
   return result.join(toFormatSeparator);
