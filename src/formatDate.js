@@ -56,9 +56,11 @@ function formatDate(date, fromFormat, toFormat) {
   const fromArr = date.split(oldSeparator);
   const lastIndex = toFormat.length - 1;
 
-  const oldDay = fromArr[fromFormat.findIndex((item) => item.includes('D'))];
-  const oldMonth = fromArr[fromFormat.findIndex((item) => item.includes('M'))];
-  const oldYear = fromArr[fromFormat.findIndex((item) => item.includes('Y'))];
+  const getItem = (mask) =>
+    fromArr[fromFormat.findIndex((item) => item.includes(mask))];
+  const oldDay = getItem('D');
+  const oldMonth = getItem('M');
+  const oldYear = getItem('Y');
 
   const result = [];
 
@@ -75,17 +77,17 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YY':
         const yearWithTwoChars = oldYear.length === 2
           ? oldYear
-          : oldYear.toString().slice(2, 4);
+          : oldYear.toString().slice(-2);
 
         result.push(yearWithTwoChars);
         break;
 
       case 'YYYY':
-        const sentury = oldYear.length === 4
+        const year = oldYear.length === 4
           ? oldYear
-          : +oldYear >= 30 ? 19 + oldYear : 20 + oldYear;
+          : (+oldYear >= 30 ? 19 : 20) + oldYear;
 
-        result.push(sentury);
+        result.push(year);
         break;
 
       default:
