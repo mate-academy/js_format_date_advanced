@@ -69,19 +69,20 @@ function formatDate(date, fromFormat, toFormat) {
   });
 
   const indexOfYYYY = toFormat.indexOf('YYYY');
-  const indexOfYY = toFormat.indexOf('YY');
+  const yearFormat = currentYear < 30 ? '20' : '19';
 
   if (indexOfYYYY !== -1) {
     const prefix = fromFormat.includes('YY')
-      ? (currentYear < 30 ? '20' : '19')
+      ? yearFormat
       : '';
 
     resultedDate[indexOfYYYY] = prefix + currentYear;
   }
 
+  const indexOfYY = toFormat.indexOf('YY');
   const isFullYear = fromFormat.includes('YYYY');
 
-  if (indexOfYY !== -1) {
+  if (indexOfYY !== 0) {
     const currentYearShort = currentYear.slice(-2);
 
     if (isFullYear) {
