@@ -55,35 +55,34 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (!dateParts[fromFormat[i]]) {
-      dateParts[fromFormat[i]] = datePartArr[i];
-    }
+    dateParts[fromFormat[i]] = datePartArr[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    switch (true) {
-      case toFormat[i] === 'DD':
+    switch (toFormat[i]) {
+      case 'DD':
         result.push(dateParts['DD']);
         break;
 
-      case toFormat[i] === 'MM':
+      case 'MM':
         result.push(dateParts['MM']);
         break;
 
-      case !dateParts[toFormat[i]]:
-        if (dateParts['YY']) {
-          result.push(
-            (dateParts['YY'] < 30
-              ? '20'
-              : '19') + dateParts['YY']
-          );
+      default:
+        if (!dateParts[toFormat[i]]) {
+          if (dateParts['YY']) {
+            result.push(
+              (dateParts['YY'] < 30
+                ? '20'
+                : '19') + dateParts['YY']
+            );
+            break;
+          }
+
+          result.push(dateParts['YYYY'].toString().slice(-2));
           break;
         }
 
-        result.push(dateParts['YYYY'].toString().slice(-2));
-        break;
-
-      default:
         result.push(dateParts['YY'] || dateParts['YYYY']);
     }
   }
