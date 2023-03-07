@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[3]);
+  const toIndexDD = toFormat.lastIndexOf('DD');
+  const toIndexMM = toFormat.lastIndexOf('MM');
+  const fromIndexDD = fromFormat.lastIndexOf('DD');
+  const fromIndexMM = fromFormat.lastIndexOf('MM');
+  let fromIndexYY = 0;
+  let toIndexYY = 0;
+  const newDate = [];
+
+  fromFormat.forEach((el, i) => {
+    if (el === 'YY' || el === 'YYYY') {
+      fromIndexYY = i;
+    }
+  });
+
+  toFormat.forEach((el, i) => {
+    if (el === 'YY' || el === 'YYYY') {
+      toIndexYY = i;
+    }
+  });
+
+  if (fromFormat[fromIndexYY].length === 4
+    && toFormat[toIndexYY].length === 2) {
+    arrDate[fromIndexYY] = arrDate[fromIndexYY].slice(2);
+  }
+
+  if (fromFormat[fromIndexYY].length === 2
+    && toFormat[toIndexYY].length === 4 && arrDate[fromIndexYY] < 30) {
+    arrDate[fromIndexYY] = '20' + arrDate[fromIndexYY];
+  }
+
+  if (fromFormat[fromIndexYY].length === 2
+    && toFormat[toIndexYY].length === 4 && arrDate[fromIndexYY].length !== 4) {
+    arrDate[fromIndexYY] = '19' + arrDate[fromIndexYY];
+  }
+
+  newDate[toIndexDD] = arrDate[fromIndexDD];
+  newDate[toIndexMM] = arrDate[fromIndexMM];
+  newDate[toIndexYY] = arrDate[fromIndexYY];
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
