@@ -51,15 +51,13 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const resultedDate = [];
-  const separatorFrom = fromFormat[3];
-  const separatorTo = toFormat[3];
-  const separatedDate = date.split(separatorFrom);
+  const separatedDate = date.split(fromFormat[3]);
 
   const currentYear = separatedDate[fromFormat.indexOf('YY')]
     || separatedDate[fromFormat.indexOf('YYYY')];
-  const dateComponents = ['MM', 'DD', 'YY', 'YYYY'];
+  const dateComponents = toFormat.slice(0, -1);
 
-  dateComponents.forEach((component, index) => {
+  dateComponents.forEach((component) => {
     const fromIndex = fromFormat.indexOf(component);
     const toIndex = toFormat.indexOf(component);
 
@@ -68,31 +66,36 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
-  const indexOfYYYY = toFormat.indexOf('YYYY');
-  const yearFormat = currentYear < 30 ? '20' : '19';
+  const yearFormat = currentYear < 30
+    ? '20'
+    : '19';
 
-  if (indexOfYYYY !== -1) {
-    const prefix = fromFormat.includes('YY')
-      ? yearFormat
-      : '';
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
 
-    resultedDate[indexOfYYYY] = prefix + currentYear;
-  }
+        resultedDate[i] = (
+          fromFormat.includes('YY')
+            ? yearFormat
+            : ''
+        ) + currentYear;
+        break;
 
-  const indexOfYY = toFormat.indexOf('YY');
-  const isFullYear = fromFormat.includes('YYYY');
+      case 'YY':
+        const indexOfYY = toFormat.indexOf('YY');
 
-  if (indexOfYY !== 0) {
-    const currentYearShort = currentYear.slice(-2);
+        if (indexOfYY !== -1) {
+          resultedDate[indexOfYY] = currentYear.slice(-2);
+        }
 
-    if (isFullYear) {
-      resultedDate[indexOfYY] = currentYearShort;
-    } else {
-      resultedDate[indexOfYY] = currentYearShort.padStart('YY'.length, '0');
+        break;
+
+      default:
+        break;
     }
   }
 
-  return resultedDate.join(separatorTo);
+  return resultedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
