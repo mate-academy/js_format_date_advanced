@@ -80,11 +80,8 @@ function formatDate(date, fromFormat, toFormat) {
         case 'YY':
         case 'YYYY':
           if (toFormat[i] === 'YYYY' && year.length === 2) {
-            if (+year < 30) {
-              year = '20' + year;
-            } else {
-              year = '19' + year;
-            }
+              year = +year < 30 ? '20' + year : '19' + year;
+      
           } else if (toFormat[i] === 'YY' && year.length === 4) {
             year = year.slice(2, year.length);
           }
