@@ -49,33 +49,32 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dateCopy = date.split(fromFormat[3]);
+  const dateObject = {};
+  let newFormat = [];
 
-  let newArray = Array.from(toFormat.slice(0, 3));
+  for (let i = 0; i < 3; i++) {
+    dateObject[fromFormat[i]] = date.split(fromFormat[3])[i];
+  }
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    for (let y = 0; y < toFormat.length - 1; y++) {
-      if (fromFormat[i] === toFormat[y]) {
-        newArray[y] = dateCopy[i];
-      }
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')){
+    if (dateObject.YY < 30) {
+      dateObject.YYYY = '20' + dateObject.YY;
+    }
 
-      if (fromFormat[i] === 'YYYY' && toFormat[y] === 'YY') {
-        newArray[y] = dateCopy[i].slice(2, 4);
-      }
-
-      if (fromFormat[i] === 'YY' && toFormat[y] === 'YYYY') {
-        if (dateCopy[i] < 30) {
-        newArray[y] = `20${dateCopy[i]}`;
-        }
-
-        if (dateCopy[i] >= 30) {
-          newArray[y] = `19${dateCopy[i]}`;
-        }
-      }
+    if (dateObject.YY >= 30) {
+      dateObject.YYYY = '19' + dateObject.YY;
     }
   }
 
-  return newArray.join(toFormat[3]);
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')){
+    dateObject.YY = dateObject.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    newFormat[i] = dateObject[toFormat[i]];
+  }
+
+  return newFormat.join(toFormat[3]);
 }
 
 module.exports = formatDate;
