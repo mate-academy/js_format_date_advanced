@@ -50,7 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const arrDate = date.split(fromFormat[3]);
+  const objDate = {};
+  const separator = toFormat[3];
+
+  for (let i = 0; i < 3; i++) {
+    objDate[fromFormat[i]] = arrDate[i];
+  }
+
+  const normalizedDate = normalizeYear({ ...objDate }, toFormat);
+
+  return `${normalizedDate[toFormat[0]]}${separator}${
+    normalizedDate[toFormat[1]]
+  }${separator}${normalizedDate[toFormat[2]]}`;
+}
+
+function normalizeYear(date, format) {
+  const year = date.YY || date.YYYY;
+  const shortFormat = format.includes('YY');
+  let updYear = '';
+
+  if (year.length === 4 && shortFormat) {
+    updYear = year.substr(2);
+
+    return { ...date, YY: updYear };
+  } else if (year.length === 2 && !shortFormat) {
+    const sentury = year < 30 ? '20' : '19';
+
+    updYear = sentury + year;
+
+    return { ...date, YYYY: updYear };
+  }
+
+  return date;
 }
 
 module.exports = formatDate;
