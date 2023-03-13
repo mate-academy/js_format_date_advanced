@@ -58,11 +58,11 @@ function formatDate(date, fromFormat, toFormat) {
     objDate[fromFormat[i]] = arrDate[i];
   }
 
-  normalizeYear(objDate, toFormat);
+  const normalizedDate = normalizeYear({ ...objDate }, toFormat);
 
-  return `${objDate[toFormat[0]]}${separator}${
-    objDate[toFormat[1]]
-  }${separator}${objDate[toFormat[2]]}`;
+  return `${normalizedDate[toFormat[0]]}${separator}${
+    normalizedDate[toFormat[1]]
+  }${separator}${normalizedDate[toFormat[2]]}`;
 }
 
 function normalizeYear(date, format) {
@@ -73,15 +73,16 @@ function normalizeYear(date, format) {
   if (year.length === 4 && shortFormat) {
     updYear = year.substr(2);
 
-    delete date.YYYY;
-    date.YY = updYear;
+    return { ...date, YY: updYear };
   } else if (year.length === 2 && !shortFormat) {
     const sentury = year < 30 ? '20' : '19';
 
     updYear = sentury + year;
-    delete date.YY;
-    date.YYYY = updYear;
+
+    return { ...date, YYYY: updYear };
   }
+
+  return date;
 }
 
 module.exports = formatDate;
