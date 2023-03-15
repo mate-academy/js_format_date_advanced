@@ -50,9 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date;
-  // 3 is always the index of the separator
-  const oldDateSplitted = oldDate.split(fromFormat[3]);
+  const oldDateSplitted = date.split(fromFormat[3]);
 
   const oldFormatYearIndex = fromFormat.indexOf('YY') === -1
     ? fromFormat.indexOf('YYYY')
@@ -74,9 +72,11 @@ function formatDate(date, fromFormat, toFormat) {
         newDateItem = oldDateSplitted[oldFormatYearIndex];
 
         if (newDateItem.length === 2) {
-          newDateItem = +newDateItem < 30
-            ? '20' + newDateItem
-            : '19' + newDateItem;
+          const prefix = +newDateItem < 30
+            ? '20'
+            : 19;
+
+          newDateItem = prefix + newDateItem;
         }
         break;
 
