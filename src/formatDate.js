@@ -50,7 +50,73 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
 
+  const oldDate = date.split(oldSeparator);
+  let day, month, year;
+
+  let indexYear, indexMonth, indexDay;
+
+  for (const elem of fromFormat) {
+    switch (elem) {
+      case 'YY':
+      case 'YYYY':
+        indexYear = fromFormat.indexOf(elem);
+        year = oldDate[indexYear];
+        break;
+      case 'MM':
+        indexMonth = fromFormat.indexOf(elem);
+        month = oldDate[indexMonth];
+        break;
+      case 'DD':
+        indexDay = fromFormat.indexOf(elem);
+        day = oldDate[indexDay];
+    }
+  }
+
+  let indexYearNew;
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      indexYearNew = i;
+    }
+  }
+
+  const lastNumbers = (oldDate[indexYear]).slice(-2);
+
+  if (year.length <= toFormat[indexYearNew].length) {
+    if (+lastNumbers < 30) {
+      year = '20' + lastNumbers;
+    } else {
+      year = '19' + lastNumbers;
+    }
+  } else {
+    year = lastNumbers;
+  }
+
+  toFormat.pop();
+
+  let res = '';
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        res += year;
+        break;
+      case 'MM':
+        res += month;
+        break;
+      default:
+        res += day;
+    };
+
+    if (i !== toFormat.length - 1) {
+      res += newSeparator;
+    }
+  }
+
+  return res;
+};
 module.exports = formatDate;
