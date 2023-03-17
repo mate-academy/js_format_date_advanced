@@ -50,7 +50,115 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [one, two, three, separator] = fromFormat;
+  const [a, b, c] = date.split(separator);
+  const [, , , finalSwparator] = toFormat;
+
+  const fromFormatObject = {
+    uno: [one, a],
+    duo: [two, b],
+    tree: [three, c],
+  };
+
+  for (const el of toFormat) {
+    if (el.startsWith('Y')) {
+      for (const key in fromFormatObject) {
+        if (fromFormatObject[key].includes('YY')
+        || fromFormatObject[key].includes('YYYY')) {
+          fromFormatObject[key].push(el);
+        }
+      }
+    }
+
+    if (el.startsWith('M')) {
+      for (const key in fromFormatObject) {
+        if (fromFormatObject[key].includes('MM')) {
+          fromFormatObject[key].push(el);
+        }
+      }
+    }
+
+    if (el.startsWith('D')) {
+      for (const key in fromFormatObject) {
+        if (fromFormatObject[key].includes('DD')) {
+          fromFormatObject[key].push(el);
+        }
+      }
+    }
+  }
+
+  for (const item in fromFormatObject) {
+    let [fromStr, fromYear, toStr] = fromFormatObject[item]; // eslint-disable-line
+    const fLength = fromStr.length;
+    const tLength = toStr.length;
+
+    if (fromStr.startsWith('Y')
+      && toStr.length === 4
+      && fromYear >= 30
+      && fLength !== tLength) {
+      fromStr = fromStr.padStart(4, 'Y');
+      fromYear = fromYear.padStart(4, '19');
+    }
+
+    if (fromStr.startsWith('Y')
+    && toStr.length === 2
+    && fromYear <= 30
+    && fLength !== tLength) {
+      fromStr = fromStr.slice(0, 2);
+      fromYear = fromYear.slice(2);
+    }
+
+    if (fromStr.startsWith('Y')
+    && toStr.length === 2
+    && fromYear > 30
+    && fLength !== tLength) {
+      fromStr = fromStr.slice(0, 2);
+      fromYear = fromYear.slice(2);
+    }
+
+    if (fromStr.startsWith('Y')
+    && toStr.length === 4
+    && fromYear < 30
+    && fLength !== tLength) {
+      fromStr = fromStr.padStart(4, 'Y');
+      fromYear = fromYear.padStart(4, '20');
+    }
+
+    fromFormatObject[item] = [fromStr, fromYear, toStr];
+  }
+
+  const comparedObject = {
+    first: [toFormat.indexOf(fromFormatObject.uno[0]),
+      fromFormatObject.uno[1]],
+    second: [toFormat.indexOf(fromFormatObject.duo[0]),
+      fromFormatObject.duo[1]],
+    third: [toFormat.indexOf(fromFormatObject.tree[0]),
+      fromFormatObject.tree[1]],
+  };
+
+  const colection = {
+    first: null,
+    second: null,
+    third: null,
+  };
+
+  for (const key in comparedObject) {
+    const [temp, value] = comparedObject[key];
+
+    if (temp === 0) {
+      colection.first = value;
+    }
+
+    if (temp === 1) {
+      colection.second = value;
+    }
+
+    if (temp === 2) {
+      colection.third = value;
+    }
+  }
+
+  return `${colection.first}${finalSwparator}${colection.second}${finalSwparator}${colection.third}`;
 }
 
 module.exports = formatDate;
