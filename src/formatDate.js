@@ -48,9 +48,28 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+  const dateArray = date.split(oldSeparator);
+  const dateObj = {
+    [fromFormat[0]]: dateArray[0],
+    [fromFormat[1]]: dateArray[1],
+    [fromFormat[2]]: dateArray[2],
+  };
+
+  const year = dateObj['YYYY'] || dateObj['YY'];
+
+  dateObj['YY'] = year.substring(year.length - 2);
+
+  const nn = +dateObj['YY'];
+  const cc = 2029 - nn;
+  let ss = '' + cc;
+
+  ss = ss.slice(0, 2);
+  dateObj['YYYY'] = ss + dateObj['YY'];
+
+  return `${dateObj[toFormat[0]]}${newSeparator}${dateObj[toFormat[1]]}${newSeparator}${dateObj[toFormat[2]]}`;
 }
 
 module.exports = formatDate;
