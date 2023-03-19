@@ -50,38 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [one, two, three, separator] = fromFormat;
+  const [unitOne, unitTwo, unitThree, separator] = fromFormat;
   const [a, b, c] = date.split(separator);
-  const [, , , finalSwparator] = toFormat;
+  const [, , , finalSeparator] = toFormat;
 
   const fromFormatObject = {
-    uno: [one, a],
-    duo: [two, b],
-    tree: [three, c],
+    firstUnit: [unitOne, a],
+    secondUnit: [unitTwo, b],
+    thirdUnit: [unitThree, c],
   };
 
-  for (const el of toFormat) {
-    if (el.startsWith('Y')) {
+  for (const unitOfTime of toFormat) {
+    if (unitOfTime.startsWith('Y')) {
       for (const key in fromFormatObject) {
         if (fromFormatObject[key].includes('YY')
         || fromFormatObject[key].includes('YYYY')) {
-          fromFormatObject[key].push(el);
+          fromFormatObject[key].push(unitOfTime);
         }
       }
     }
 
-    if (el.startsWith('M')) {
+    if (unitOfTime.startsWith('M')) {
       for (const key in fromFormatObject) {
         if (fromFormatObject[key].includes('MM')) {
-          fromFormatObject[key].push(el);
+          fromFormatObject[key].push(unitOfTime);
         }
       }
     }
 
-    if (el.startsWith('D')) {
+    if (unitOfTime.startsWith('D')) {
       for (const key in fromFormatObject) {
         if (fromFormatObject[key].includes('DD')) {
-          fromFormatObject[key].push(el);
+          fromFormatObject[key].push(unitOfTime);
         }
       }
     }
@@ -128,37 +128,37 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   const comparedObject = {
-    first: [toFormat.indexOf(fromFormatObject.uno[0]),
-      fromFormatObject.uno[1]],
-    second: [toFormat.indexOf(fromFormatObject.duo[0]),
-      fromFormatObject.duo[1]],
-    third: [toFormat.indexOf(fromFormatObject.tree[0]),
-      fromFormatObject.tree[1]],
+    first: [toFormat.indexOf(fromFormatObject.firstUnit[0]),
+      fromFormatObject.firstUnit[1]],
+    second: [toFormat.indexOf(fromFormatObject.secondUnit[0]),
+      fromFormatObject.secondUnit[1]],
+    third: [toFormat.indexOf(fromFormatObject.thirdUnit[0]),
+      fromFormatObject.thirdUnit[1]],
   };
 
-  const colection = {
-    first: null,
-    second: null,
-    third: null,
+  const calculatedValues = {
+    firstCorrectedUnit: null,
+    secondCorrectedUnit: null,
+    thirdCorrectedUnit: null,
   };
 
   for (const key in comparedObject) {
     const [temp, value] = comparedObject[key];
 
     if (temp === 0) {
-      colection.first = value;
+      calculatedValues.firstCorrectedUnit = value;
     }
 
     if (temp === 1) {
-      colection.second = value;
+      calculatedValues.secondCorrectedUnit = value;
     }
 
     if (temp === 2) {
-      colection.third = value;
+      calculatedValues.thirdCorrectedUnit = value;
     }
   }
 
-  return `${colection.first}${finalSwparator}${colection.second}${finalSwparator}${colection.third}`;
+  return `${calculatedValues.firstCorrectedUnit}${finalSeparator}${calculatedValues.secondCorrectedUnit}${finalSeparator}${calculatedValues.thirdCorrectedUnit}`;
 }
 
 module.exports = formatDate;
