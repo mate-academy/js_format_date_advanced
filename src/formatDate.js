@@ -61,32 +61,43 @@ function formatDate(date, fromFormat, toFormat) {
   const newDateFormat = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      newDate.day = givenDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      newDate.month = givenDate[i];
-    } else {
-      newDate.year = givenDate[i];
+    switch (fromFormat[i]) {
+      case 'DD':
+        newDate.day = givenDate[i];
+        break;
+      case 'MM':
+        newDate.month = givenDate[i];
+        break;
+      case 'YYYY':
+      case 'YY':
+        newDate.year = givenDate[i];
+        break;
+      default:
+        return 'wrong data provided';
     }
   }
 
-  const makeFullYear = (year) => {
-    return year < 30 ? `20${year}` : `19${year}`;
-  };
-
   if (newDate.year.length < 4) {
+    const makeFullYear = (year) => {
+      return year < 30 ? `20${year}` : `19${year}`;
+    };
+
     newDate.year = makeFullYear(newDate.year);
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      newDateFormat.push(newDate.day);
-    } else if (toFormat[i] === 'MM') {
-      newDateFormat.push(newDate.month);
-    } else if (toFormat[i] === 'YYYY') {
-      newDateFormat.push(newDate.year);
-    } else {
-      newDateFormat.push(newDate.year.slice(-2));
+    switch (toFormat[i]) {
+      case 'DD':
+        newDateFormat.push(newDate.day);
+        break;
+      case 'MM':
+        newDateFormat.push(newDate.month);
+        break;
+      case 'YYYY':
+        newDateFormat.push(newDate.year);
+        break;
+      default:
+        newDateFormat.push(newDate.year.slice(-2));
     }
   }
 
