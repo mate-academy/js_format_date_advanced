@@ -49,8 +49,59 @@
  * @returns {string}
  */
 
+const makeFullYear = (year) => {
+  return year < 30 ? `20${year}` : `19${year}`;
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const givenSeparator = fromFormat[3];
+  const givenDate = date.split(givenSeparator);
+  const newSeparator = toFormat[3];
+  const newDate = {
+    day: 0,
+    month: 0,
+    year: 0,
+  };
+  const newDateFormat = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        newDate.day = givenDate[i];
+        break;
+      case 'MM':
+        newDate.month = givenDate[i];
+        break;
+      case 'YYYY':
+      case 'YY':
+        newDate.year = givenDate[i];
+        break;
+      default:
+        return 'wrong data provided';
+    }
+  }
+
+  if (newDate.year.length < 4) {
+    newDate.year = makeFullYear(newDate.year);
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        newDateFormat.push(newDate.day);
+        break;
+      case 'MM':
+        newDateFormat.push(newDate.month);
+        break;
+      case 'YYYY':
+        newDateFormat.push(newDate.year);
+        break;
+      default:
+        newDateFormat.push(newDate.year.slice(-2));
+    }
+  }
+
+  return newDateFormat.join(newSeparator);
 }
 
 module.exports = formatDate;
