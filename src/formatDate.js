@@ -58,7 +58,7 @@ function formatDate(date, fromFormat, toFormat) {
   let day;
   const isFormated = [];
 
-  for (let i = 0; i < fromFormat.length; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'YY':
         year = (dateParts[i] < 30 ? '20' : '19') + dateParts[i];
@@ -81,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'YYYY':
         isFormated[i] = year;
