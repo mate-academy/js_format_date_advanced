@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 /**
@@ -68,11 +67,11 @@ function formatDate(date, fromFormat, toFormat) {
       if (!dateStructre[elem] && fromYear > toYear) {
         result[i] = (dateStructre[elem + elem]).slice(2);
       } else if (!dateStructre[elem] && fromYear < toYear) {
-        const formatYear = dateStructre[elem.slice(2)] < yearNow
+        const formatedYear = dateStructre[elem.slice(2)] < yearNow
           ? '20' + dateStructre[elem.slice(2)]
           : '19' + dateStructre[elem.slice(2)];
 
-        result[i] = formatYear;
+        result[i] = formatedYear;
       } else {
         result[i] = dateStructre[elem];
       }
@@ -81,9 +80,5 @@ function formatDate(date, fromFormat, toFormat) {
 
   return result.join(toFormat[3]);
 }
-
-formatDate('97/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['DD', 'MM', 'YYYY', '.']);
 
 module.exports = formatDate;
