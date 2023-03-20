@@ -49,6 +49,10 @@
  * @returns {string}
  */
 
+const makeFullYear = (year) => {
+  return year < 30 ? `20${year}` : `19${year}`;
+};
+
 function formatDate(date, fromFormat, toFormat) {
   const givenSeparator = fromFormat[3];
   const givenDate = date.split(givenSeparator);
@@ -78,10 +82,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (newDate.year.length < 4) {
-    const makeFullYear = (year) => {
-      return year < 30 ? `20${year}` : `19${year}`;
-    };
-
     newDate.year = makeFullYear(newDate.year);
   }
 
