@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 /**
@@ -50,7 +51,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitedDate = date.split(fromFormat[3]);
+  const dateStructre = {
+    [fromFormat[0]]: splitedDate[0],
+    [fromFormat[1]]: splitedDate[1],
+    [fromFormat[2]]: splitedDate[2],
+  };
+
+  const yearNow = new Date().getFullYear() - 2000;
+  const fromYear = fromFormat.indexOf('YY') >= 0 ? 2 : 4;
+  const toYear = toFormat.indexOf('YY') >= 0 ? 2 : 4;
+  const result = [];
+
+  toFormat.forEach((elem, i) => {
+    if (i < 3) {
+      if (!dateStructre[elem] && fromYear > toYear) {
+        result[i] = (dateStructre[elem + elem]).slice(2);
+      } else if (!dateStructre[elem] && fromYear < toYear) {
+        const formatYear = dateStructre[elem.slice(2)] < yearNow
+          ? '20' + dateStructre[elem.slice(2)]
+          : '19' + dateStructre[elem.slice(2)];
+
+        result[i] = formatYear;
+      } else {
+        result[i] = dateStructre[elem];
+      }
+    }
+  });
+
+  return result.join(toFormat[3]);
 }
+
+formatDate('97/02/18',
+  ['YY', 'MM', 'DD', '/'],
+  ['DD', 'MM', 'YYYY', '.']);
 
 module.exports = formatDate;
