@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *   Time flies, standards change. Let's get rid of the routine of changing the
+ * Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
@@ -50,7 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const result = [];
+  const arr = date.split(fromFormat[fromFormat.length - 1]);
+  let day = '';
+  let month = '';
+  let year = '';
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i].includes('Y')) {
+      year = arr[i];
+    }
+
+    if (fromFormat[i].includes('M')) {
+      month = arr[i];
+    }
+
+    if (fromFormat[i].includes('D')) {
+      day = arr[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i].includes('Y')) {
+      if (toFormat[i].length > year.length) {
+        result[i] = (+year < 30) ? `20${year}` : `19${year}`;
+      } else if (toFormat[i].length < year.length) {
+        result[i] = year.slice(2);
+      } else {
+        result[i] = year;
+      }
+    }
+
+    if (toFormat[i].includes('M')) {
+      result[i] = month;
+    }
+
+    if (toFormat[i].includes('D')) {
+      result[i] = day;
+    }
+  }
+
+  return result.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
