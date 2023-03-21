@@ -74,7 +74,7 @@ function formatDate(date, fromFormat, toFormat) {
         if (newDateItem.length === 2) {
           const prefix = +newDateItem < 30
             ? '20'
-            : 19;
+            : '19';
 
           newDateItem = prefix + newDateItem;
         }
