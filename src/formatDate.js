@@ -50,26 +50,27 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const partsOfDate = date.split(fromFormat[3]);
+  const dateSeparatorIndex = 3;
+  const partsOfDate = date.split(fromFormat[dateSeparatorIndex]);
 
   let year;
   let day;
   let month;
 
   for (let i = 0; i < fromFormat.length; i++) {
-    const part = partsOfDate[i];
+    const elementOfDate = partsOfDate[i];
 
     switch (fromFormat[i][0]) {
       case 'Y':
-        year = part;
+        year = elementOfDate;
         break;
 
       case 'D':
-        day = part;
+        day = elementOfDate;
         break;
 
       case 'M':
-        month = part;
+        month = elementOfDate;
         break;
 
       default:
@@ -77,9 +78,17 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const fullYear = year.length < 4 && parseInt(year) < 30
+  const fullYearLength = 4;
+  const centuryBrakePoint = 30;
+
+  let fullYear = year.length < fullYearLength
+  && parseInt(year) < centuryBrakePoint
     ? `20${year}`
     : `19${year}`;
+
+  if (year.length === 4) {
+    fullYear = year;
+  }
 
   const newFormat = toFormat.slice(0, -1);
 
@@ -92,20 +101,17 @@ function formatDate(date, fromFormat, toFormat) {
       newFormat[i] = month;
     }
 
-    if (newFormat[i].startsWith('Y') && newFormat[i].length === year.length) {
-      newFormat[i] = year;
+    if (newFormat[i].startsWith('Y') && newFormat[i].length < fullYear.length) {
+      newFormat[i] = fullYear.slice(2);
     }
 
-    if (newFormat[i].startsWith('Y') && newFormat[i].length < year.length) {
-      newFormat[i] = year.slice(2);
-    }
-
-    if (newFormat[i].startsWith('Y') && newFormat[i].length > year.length) {
+    if (newFormat[i].startsWith('Y')
+    && newFormat[i].length >= fullYear.length) {
       newFormat[i] = fullYear;
     }
   }
 
-  const newDate = newFormat.join(toFormat[3]);
+  const newDate = newFormat.join(toFormat[dateSeparatorIndex]);
 
   return newDate;
 }
