@@ -55,14 +55,11 @@ function formatDate(date, fromFormat, toFormat) {
   const numbersOfDate = date.split(separatorFromFormat);
   const currentFormat = {};
   const correctFormat = [];
-  let i = 0;
-
-  for (const format of fromFormat) {
-    currentFormat[format] = numbersOfDate[i];
-    i++;
-  }
-
   let yearsFormat = 0;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    currentFormat[fromFormat[i]] = numbersOfDate[i];
+  }
 
   for (const newFormat of toFormat) {
     if (!fromFormat.includes(newFormat) && newFormat === 'YY') {
