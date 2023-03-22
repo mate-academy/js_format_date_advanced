@@ -53,25 +53,47 @@ function formatDate(date, fromFormat, toFormat) {
   const dateFromFormat = date.split(fromFormat[3]);
   const dateToFormat = [];
 
-  for (let j = 0; j < 3; j++) {
-    for (let i = 0; i < 3; i++) {
-      if (fromFormat[i].includes(toFormat[j][0])) {
-        dateToFormat.push(dateFromFormat[i]);
-      }
+  let dayIndex = 0;
+  let monthIndex = 0;
+  let yearIndex = 0;
+
+  for (let j = 0; j < dateFromFormat.length; j++) {
+    if (fromFormat[j] === 'DD') {
+      dayIndex = j;
+    }
+
+    if (fromFormat[j] === 'MM') {
+      monthIndex = j;
+    }
+
+    if (fromFormat[j] === 'YY' || fromFormat[j] === 'YYYY') {
+      yearIndex = j;
     }
   }
 
-  for (let n = 0; n < 3; n++) {
-    if (fromFormat[n] === 'YY' && toFormat[n] === 'YYYY') {
-      if (+dateToFormat[n] < 30) {
-        dateToFormat[n] = '20' + dateToFormat[n];
-      } else {
-        dateToFormat[n] = '19' + dateToFormat[n];
-      }
+  for (let i = 0; i < dateFromFormat.length; i++) {
+    if (toFormat[i] === 'DD') {
+      dateToFormat.push(dateFromFormat[dayIndex]);
     }
 
-    if (fromFormat[n] === 'YYYY' && toFormat[n] === 'YY') {
-      dateToFormat[n] = dateToFormat[n].slice(2);
+    if (toFormat[i] === 'MM') {
+      dateToFormat.push(dateFromFormat[monthIndex]);
+    }
+
+    if ((toFormat[i] === 'YYYY' || toFormat[i] === 'YY')
+    && toFormat[i] === fromFormat[yearIndex]) {
+      dateToFormat.push(dateFromFormat[yearIndex]);
+    }
+
+    if (fromFormat[yearIndex] === 'YY' && toFormat[i] === 'YYYY') {
+      /* eslint-disable */
+      (Number(dateFromFormat[yearIndex]) < 30)
+        ? dateToFormat.push('20' + dateFromFormat[yearIndex])
+        : dateToFormat.push('19' + dateFromFormat[yearIndex]);
+    }
+
+    if (fromFormat[yearIndex] === 'YYYY' && toFormat[i] === 'YY') {
+      dateToFormat.push(dateFromFormat[yearIndex].slice(2));
     }
   }
 
