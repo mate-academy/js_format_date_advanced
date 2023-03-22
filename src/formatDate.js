@@ -52,6 +52,9 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateSeparatorIndex = 3;
   const partsOfDate = date.split(fromFormat[dateSeparatorIndex]);
+  const newFormat = toFormat.slice(0, -1);
+  const fullYearLength = 4;
+  const centuryBrakePoint = 30;
 
   let year;
   let day;
@@ -78,19 +81,14 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const fullYearLength = 4;
-  const centuryBrakePoint = 30;
-
   let fullYear = year.length < fullYearLength
-  && parseInt(year) < centuryBrakePoint
+    && parseInt(year) < centuryBrakePoint
     ? `20${year}`
     : `19${year}`;
 
   if (year.length === 4) {
     fullYear = year;
   }
-
-  const newFormat = toFormat.slice(0, -1);
 
   for (let i = 0; i < newFormat.length; i++) {
     if (newFormat[i].startsWith('D')) {
@@ -106,7 +104,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (newFormat[i].startsWith('Y')
-    && newFormat[i].length >= fullYear.length) {
+      && newFormat[i].length >= fullYear.length) {
       newFormat[i] = fullYear;
     }
   }
