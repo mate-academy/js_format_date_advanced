@@ -12,31 +12,31 @@
  *
  * Examples:
  *
- * formatDate(
+ * formatDate(+
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
- * formatDate(
+ * formatDate(+
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.2020'
  *
- * formatDate(
+ * formatDate(+
  *   '18-02-2020',
  *   ['DD', 'MM', 'YYYY', '-'],
  *   ['DD', 'MM', 'YY', '/'],
  * ) // '18/02/20'
  *
- * formatDate(
+ * formatDate(+
  *   '20/02/18',
  *   ['YY', 'MM', 'DD', '/'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
- * formatDate(
+ * formatDate(-
  *   '97/02/18',
  *   ['YY', 'MM', 'DD', '/'],
  *   ['DD', 'MM', 'YYYY', '.'],
@@ -50,7 +50,33 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat.pop();
+  const toSeparator = toFormat.pop();
+  const fromDateArray = date.split(fromSeparator);
+  const toDateArray = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    const indexNew = toFormat.indexOf(fromFormat[i]);
+
+    if (indexNew === -1) {
+      if (toFormat[i] === 'YY') {
+        toDateArray[i] = fromDateArray[i].slice(2);
+      }
+
+      if (toFormat[i] === 'YYYY') {
+        if (Number(fromDateArray[i]) < 30) {
+          toDateArray[i] = '20' + fromDateArray[i];
+        } else {
+          toDateArray[i] = '19' + fromDateArray[i];
+        }
+      }
+    }
+    toDateArray[indexNew] = fromDateArray[i];
+  }
+
+  const dateNew = toDateArray.join(toSeparator);
+
+  return dateNew;
 }
 
 module.exports = formatDate;
