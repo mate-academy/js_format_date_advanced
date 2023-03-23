@@ -50,61 +50,63 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const separator = fromFormat[fromFormat.length - 1];
-  const joiner = toFormat[toFormat.length - 1];
-  const dateArr = date.split(separator);
-  let year = 0;
-  let month = 0;
-  let day = 0;
+  const dateArr = date.split(fromFormat[fromFormat.length - 1]);
+  let year = '';
+  let month = '';
+  let day = '';
   const arr = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      year = dateArr[i];
-    }
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        year = dateArr[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = dateArr[i];
-    }
+      case 'MM':
+        month = dateArr[i];
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      day = dateArr[i];
+      case 'DD':
+        day = dateArr[i];
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'MM') {
-      arr.push(month);
-    }
+    switch (toFormat[i]) {
+      case 'MM':
+        arr.push(month);
+        break;
 
-    if (toFormat[i] === 'DD') {
-      arr.push(day);
-    }
+      case 'DD':
+        arr.push(day);
+        break;
 
-    if (toFormat[i] === 'YYYY') {
-      if (year.length === 2 && year < 30) {
-        arr.push(`20${year}`);
-        continue;
-      }
+      case 'YY':
+        if (year.length === 4) {
+          arr.push(year[2] + year[3]);
+          continue;
+        }
+        arr.push(year);
+        break;
 
-      if (year.length === 2 && year >= 30) {
-        arr.push(`19${year}`);
-        continue;
-      }
+      case 'YYYY':
+        if (year.length === 2 && year < 30) {
+          arr.push(`20${year}`);
+          continue;
+        }
 
-      arr.push(year);
-    }
-
-    if (toFormat[i] === 'YY') {
-      if (year.length === 4) {
-        arr.push(year[2] + year[3]);
-        continue;
-      }
-      arr.push(year);
+        if (year.length === 2 && year >= 30) {
+          arr.push(`19${year}`);
+          continue;
+        }
+        arr.push(year);
+        break;
     }
   }
 
-  const result = arr.join(joiner);
+  const result = arr.join(toFormat[toFormat.length - 1]);
 
   return result;
 }
