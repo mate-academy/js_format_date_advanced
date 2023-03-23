@@ -50,7 +50,29 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateNumbs = date.split(fromFormat[3]);
+  let shortYear = dateNumbs[fromFormat.indexOf('YY')];
+  let longYear = dateNumbs[fromFormat.indexOf('YYYY')];
+  const month = dateNumbs[fromFormat.indexOf('MM')];
+  const day = dateNumbs[fromFormat.indexOf('DD')];
+  const result = [];
+
+  if (fromFormat.indexOf('YY') === -1) {
+    shortYear = longYear[2] + longYear[3];
+  }
+
+  if (+shortYear < 30) {
+    longYear = '20' + shortYear;
+  } else {
+    longYear = '19' + shortYear;
+  }
+
+  result[toFormat.indexOf('YY')] = shortYear;
+  result[toFormat.indexOf('YYYY')] = longYear;
+  result[toFormat.indexOf('MM')] = month;
+  result[toFormat.indexOf('DD')] = day;
+
+  return (result.join(toFormat[3]));
 }
 
 module.exports = formatDate;
