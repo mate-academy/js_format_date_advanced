@@ -51,26 +51,29 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
-  const [year, fromYear, toYear, indexOfYearFrom]
-    = findYears(dateArr, fromFormat, toFormat);
+
+  const indYearFrom = fromFormat.findIndex(el => el[0] === 'Y');
+
+  const year = dateArr[indYearFrom];
+  const fromYear = fromFormat[indYearFrom];
+  const toYear = toFormat[toFormat.findIndex(el => el[0] === 'Y')];
+  const indexOfYearFrom = indYearFrom;
 
   if (fromYear.length > toYear.length) {
     dateArr[indexOfYearFrom] = year.toString().slice(2);
   }
 
-  if (fromYear.length < toYear.length && year < 30) {
-    dateArr[indexOfYearFrom] = '20' + year;
+  if (fromYear.length < toYear.length) {
+    dateArr[indexOfYearFrom] = year < 30
+      ? '20' + year
+      : '19' + year;
   }
 
-  if (fromYear.length < toYear.length && year >= 30) {
-    dateArr[indexOfYearFrom] = '19' + year;
-  }
-
-  return combineDates(dateArr, fromFormat, toFormat);
+  return rearrangeDate(dateArr, fromFormat, toFormat);
 }
 
-function combineDates(date, fromFormat, toFormat) {
-  const res = [];
+function rearrangeDate(date, fromFormat, toFormat) {
+  const rearrangedDate = [];
   let joinWith;
 
   for (const el of toFormat) {
@@ -80,36 +83,12 @@ function combineDates(date, fromFormat, toFormat) {
       continue;
     }
 
-    res.push(date[findPartDate(fromFormat, el[0])]);
+    rearrangedDate.push(
+      date[fromFormat.findIndex(fromPart => fromPart[0] === el[0])]
+    );
   }
 
-  return res.join(joinWith);
-}
-
-function findPartDate(fromFormat, partDate) {
-  for (let i = 0; i < 4; i++) {
-    if (fromFormat[i][0] === partDate) {
-      return i;
-    }
-  }
-}
-
-function findYears(date, fromFormat, toFormat) {
-  const years = [];
-
-  for (let i = 0; i < 4; i++) {
-    if (fromFormat[i][0] === 'Y') {
-      years[0] = date[i];
-      years[1] = fromFormat[i];
-      years[3] = i;
-    }
-
-    if (toFormat[i][0] === 'Y') {
-      years[2] = toFormat[i];
-    }
-  }
-
-  return years;
+  return rearrangedDate.join(joinWith);
 }
 
 module.exports = formatDate;
