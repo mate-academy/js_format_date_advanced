@@ -73,12 +73,6 @@ function formatDate(date, fromFormat, toFormat) {
     mapObj[toFormat[2]]];
 
   return newDate.join(toFormat[3]);
-
-  // for (const value of toFormat) {
-
-  //   if (!mapObj.hasOwnProperty(value)) {
-
-  //   }
 }
 
 module.exports = formatDate;
