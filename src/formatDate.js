@@ -50,7 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const originalDate = date.split(fromFormat[3]);
+  let separator = fromFormat[3];
+  const originalDate = date.split(separator);
   const mapObj = {};
 
   for (let i = 0; i < originalDate.length; i++) {
@@ -69,10 +70,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const newDate = [mapObj[toFormat[0]], mapObj[toFormat[1]],
-    mapObj[toFormat[2]]];
+  const newDate = [];
 
-  return newDate.join(toFormat[3]);
+  separator = toFormat[3];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    newDate.push(mapObj[toFormat[i]]);
+  }
+
+  return newDate.join(separator);
 }
 
 module.exports = formatDate;
