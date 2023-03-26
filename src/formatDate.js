@@ -51,7 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const [ a, b, c, separator ] = fromFormat;
-  const [ , , , newSeparator ] = toFormat;
+  const newSeparator = toFormat[3];
 
   const newData = [];
 
@@ -85,10 +85,18 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case 'YY': newData.push(obj.YYYY);
         break;
+      default:
+        throw new Error('Check input data');
     }
   }
 
   return newData.join(newSeparator);
 }
+
+formatDate(
+  '18-02-2020',
+  ['DD', 'MM', 'YYYY', '-'],
+  ['DD', 'MM', 'YY', '/'],
+); // '18/02/20'
 
 module.exports = formatDate;
