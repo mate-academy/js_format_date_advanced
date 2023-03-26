@@ -50,7 +50,62 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = date;
+  let str = '';
+
+  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
+   && (toFormat[0] === 'YYYY') && (toFormat[2] === 'DD')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+  }
+
+  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
+   && (toFormat[0] === 'YY') && (toFormat[2] === 'DD')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+    str = str.slice(2);
+  }
+
+  if ((fromFormat[0] === 'DD') && (fromFormat[2] === 'YYYY')
+   && (toFormat[0] === 'DD') && (toFormat[2] === 'YY')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+    str = str.slice(0, str.length - 3);
+  }
+
+  if ((fromFormat[0] === 'YY') && (fromFormat[2] === 'DD')
+  && (toFormat[0] === 'YYYY') && (toFormat[2] === 'DD')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+
+    if ((Number(str.slice(0, 2)) < 29) && (Number(str.slice(0, 2)) >= 0)) {
+      str = '20' + str;
+    } else {
+      str = '19' + str;
+    }
+  }
+
+  if ((fromFormat[0] === 'MM') && (fromFormat[2] === 'YYYY')
+  && (toFormat[0] === 'MM') && (toFormat[2] === 'YY')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+    str = newDate.slice(0, 6) + newDate.slice(8);
+  }
+
+  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
+   && (toFormat[0] === 'DD') && (toFormat[2] === 'YYYY')) {
+    str = newDate.replace(fromFormat[3], toFormat[3]);
+    str = str.replace(fromFormat[3], toFormat[3]);
+    str = newDate.slice(8) + newDate.slice(4, 8) + newDate.slice(0, 4);
+  }
+
+  if (str === '') {
+    if (fromFormat[0] === 'MM') {
+      str = newDate.slice(8) + toFormat[3] + newDate.slice(0, 7);
+    }
+  }
+
+  return str;
 }
 
 module.exports = formatDate;
