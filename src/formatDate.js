@@ -50,59 +50,41 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const newDate = date;
-  let str = '';
+  let str = date;
 
-  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
-   && (toFormat[0] === 'YYYY') && (toFormat[2] === 'DD')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
+  if (fromFormat[3] !== toFormat[3]) {
+    str = date.replace(fromFormat[3], toFormat[3]);
     str = str.replace(fromFormat[3], toFormat[3]);
   }
 
-  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
-   && (toFormat[0] === 'YY') && (toFormat[2] === 'DD')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
-    str = str.slice(2);
-  }
+  switch (fromFormat[0]) {
+    case 'YYYY':
+      if ((toFormat[0] === 'DD') && (toFormat[2] === 'YYYY')) {
+        str = date.slice(8) + date.slice(4, 8) + date.slice(0, 4);
+      }
 
-  if ((fromFormat[0] === 'DD') && (fromFormat[2] === 'YYYY')
-   && (toFormat[0] === 'DD') && (toFormat[2] === 'YY')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
-    str = str.slice(0, str.length - 3);
-  }
+      break;
 
-  if ((fromFormat[0] === 'YY') && (fromFormat[2] === 'DD')
-  && (toFormat[0] === 'YYYY') && (toFormat[2] === 'DD')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
+    case 'YY':
+      if ((Number(str.slice(0, 2)) < 29)
+          && (Number(str.slice(0, 2)) >= 0)) {
+        str = '20' + str;
+      } else {
+        str = '19' + str;
+      }
 
-    if ((Number(str.slice(0, 2)) < 29) && (Number(str.slice(0, 2)) >= 0)) {
-      str = '20' + str;
-    } else {
-      str = '19' + str;
-    }
-  }
+      break;
 
-  if ((fromFormat[0] === 'MM') && (fromFormat[2] === 'YYYY')
-  && (toFormat[0] === 'MM') && (toFormat[2] === 'YY')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
-    str = newDate.slice(0, 6) + newDate.slice(8);
-  }
+    case 'MM':
+      if (fromFormat[2] === 'YYYY') {
+        str = date.slice(0, 6) + date.slice(8);
+      }
 
-  if ((fromFormat[0] === 'YYYY') && (fromFormat[2] === 'DD')
-   && (toFormat[0] === 'DD') && (toFormat[2] === 'YYYY')) {
-    str = newDate.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
-    str = newDate.slice(8) + newDate.slice(4, 8) + newDate.slice(0, 4);
-  }
+      if (fromFormat[2] === 'DD') {
+        str = date.slice(8) + toFormat[3] + date.slice(0, 7);
+      }
 
-  if (str === '') {
-    if (fromFormat[0] === 'MM') {
-      str = newDate.slice(8) + toFormat[3] + newDate.slice(0, 7);
-    }
+      break;
   }
 
   return str;
