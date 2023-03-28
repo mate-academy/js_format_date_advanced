@@ -53,41 +53,49 @@ function formatDate(date, fromFormat, toFormat) {
   let str = date;
 
   if (fromFormat[3] !== toFormat[3]) {
-    str = date.replace(fromFormat[3], toFormat[3]);
-    str = str.replace(fromFormat[3], toFormat[3]);
+    switch (fromFormat[3]) {
+      case '-':
+        str = date.replace(/-/g, toFormat[3]);
+        break;
+      case '/':
+        str = date.replace(/\//g, toFormat[3]);
+        break;
+    }
   }
 
-  switch (fromFormat[0]) {
-    case 'YYYY':
-      if ((toFormat[0] === 'DD') && (toFormat[2] === 'YYYY')) {
-        str = date.slice(8) + date.slice(4, 8) + date.slice(0, 4);
-      }
+  for (let i = 0; i <= 2; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        if ((toFormat[i] === 'DD') && (toFormat[i + 2] === 'YYYY')) {
+          str = date.slice(8) + date.slice(4, 8) + date.slice(0, 4);
+        }
 
-      break;
+        break;
 
-    case 'YY':
-      if ((Number(str.slice(0, 2)) < 29)
-          && (Number(str.slice(0, 2)) >= 0)) {
-        str = '20' + str;
-      } else {
-        str = '19' + str;
-      }
+      case 'YY':
+        if ((Number(str.slice(0, 2)) < 29)
+            && (Number(str.slice(0, 2)) >= 0)) {
+          str = '20' + str;
+        } else {
+          str = '19' + str;
+        }
 
-      break;
+        break;
 
-    case 'MM':
-      if (fromFormat[2] === 'YYYY') {
-        str = date.slice(0, 6) + date.slice(8);
-      }
+      case 'MM':
+        if (fromFormat[i + 2] === 'YYYY') {
+          str = date.slice(0, 6) + date.slice(8);
+        }
 
-      if (fromFormat[2] === 'DD') {
-        str = date.slice(8) + toFormat[3] + date.slice(0, 7);
-      }
+        if (fromFormat[i + 2] === 'DD') {
+          str = date.slice(8) + toFormat[3] + date.slice(0, 7);
+        }
 
-      break;
+        break;
+    }
+
+    return str;
   }
-
-  return str;
 }
 
 module.exports = formatDate;
