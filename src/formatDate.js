@@ -53,22 +53,28 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const splited = date.split(fromFormat[3]);
   const dateObj = {};
+  const shortYearRepresentation = 'YY';
+  const longYearRepresentation = 'YYYY';
+  const currentCentury = '20';
+  const twentiethyear = 20;
+  const twentiethCentury = '19';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     dateObj[fromFormat[i]] = splited[i];
   }
 
-  if (dateObj['YYYY'] !== undefined) {
-    dateObj['YY'] = dateObj['YYYY'].substring(2);
+  if (dateObj[longYearRepresentation]) {
+    dateObj[shortYearRepresentation]
+      = dateObj[longYearRepresentation].substring(2);
   } else {
-    let year = dateObj['YY'];
+    let year = dateObj[shortYearRepresentation];
 
-    if (+year > 20) {
-      year = '19' + year;
+    if (+year > twentiethyear) {
+      year = twentiethCentury + year;
     } else {
-      year = '20' + year;
+      year = currentCentury + year;
     }
-    dateObj['YYYY'] = year;
+    dateObj[longYearRepresentation] = year;
   }
 
   const newDateObj = {};
