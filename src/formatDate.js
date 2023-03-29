@@ -69,11 +69,8 @@ function formatDate(date, fromFormat, toFormat) {
   } else {
     let year = dateObj[shortYearRepresentation];
 
-    if (+year > twentiethyear) {
-      year = twentiethCentury + year;
-    } else {
-      year = currentCentury + year;
-    }
+    year = +year > twentiethyear ? twentiethCentury + year
+      : currentCentury + year;
     dateObj[longYearRepresentation] = year;
   }
 
