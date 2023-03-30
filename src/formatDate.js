@@ -51,6 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   let str = date;
+  const century19 = '19';
+  const century20 = '20';
+  const century21 = 29;
 
   if (fromFormat[3] !== toFormat[3]) {
     switch (fromFormat[3]) {
@@ -73,11 +76,11 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        if ((Number(str.slice(0, 2)) < 29)
+        if ((Number(str.slice(0, 2)) < century21)
             && (Number(str.slice(0, 2)) >= 0)) {
-          str = '20' + str;
+          str = century20 + str;
         } else {
-          str = '19' + str;
+          str = century19 + str;
         }
 
         break;
