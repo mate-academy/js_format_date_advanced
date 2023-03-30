@@ -58,17 +58,18 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < arrDate.length; i++) {
     for (let j = 0; j < arrDate.length; j++) {
       if (fromFormat[i].includes(toFormat[j][1])) {
-        if (fromFormat[i] !== toFormat[j] && toFormat[j].includes('Y')) {
-          if (toFormat[j].length === 2) {
-            arrDate[i] = arrDate[i].slice(2);
+        if (fromFormat[i].includes('Y') && fromFormat[i].length < 4) {
+          if (arrDate[i] > 20) {
+            arrDate[i] = '19' + arrDate[i];
           } else {
-            if (arrDate[i] > 20) {
-              arrDate[i] = '19' + arrDate[i];
-            } else {
-              arrDate[i] = '20' + arrDate[i];
-            }
+            arrDate[i] = '20' + arrDate[i];
           }
         }
+
+        if (toFormat[i].includes('Y') && toFormat[i].length === 2) {
+          arrDate[i] = arrDate[i].slice(2);
+        }
+
         res[j] = arrDate[i];
       }
     }
