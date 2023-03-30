@@ -60,42 +60,46 @@ function formatDate(date, fromFormat, toFormat) {
   let year, month, day;
 
   for (let i = 0; i < oldDate.length; i++) {
-    if (oldDate[i] === 'DD') {
-      day = numbers[i];
-    }
+    switch (oldDate[i]) {
+      case 'DD':
+        day = numbers[i];
+        break;
 
-    if (oldDate[i] === 'MM') {
-      month = numbers[i];
-    }
+      case 'MM':
+        month = numbers[i];
+        break;
 
-    if (oldDate[i] === 'YY' || oldDate[i] === 'YYYY') {
-      year = numbers[i];
+      case 'YY':
+        year = numbers[i];
 
-      if (year.length < 4) {
-        if (Number(year) < 30) {
-          year = `20${year}`;
-        } else {
-          year = `19${year}`;
+        if (year.length < 4) {
+          year = Number(year) < 30 ? `20${year}` : `19${year}`;
         }
-      }
+        break;
+
+      case 'YYYY':
+        year = numbers[i];
+        break;
     }
   }
 
   for (let j = 0; j < newDate.length; j++) {
-    if (newDate[j] === 'DD') {
-      result.push(day);
-    }
+    switch (newDate[j]) {
+      case 'DD':
+        result.push(day);
+        break;
 
-    if (newDate[j] === 'MM') {
-      result.push(month);
-    }
+      case 'MM':
+        result.push(month);
+        break;
 
-    if (newDate[j] === 'YYYY') {
-      result.push(year);
-    }
+      case 'YYYY':
+        result.push(year);
+        break;
 
-    if (newDate[j] === 'YY') {
-      result.push(year.slice(-2));
+      case 'YY':
+        result.push(year.slice(-2));
+        break;
     }
   }
 
