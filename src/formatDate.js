@@ -14,11 +14,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (!mapObj.hasOwnProperty('YYYY') && toFormat.includes('YYYY')) {
-    if (mapObj['YY'] < 30) {
-      mapObj['YYYY'] = '20' + mapObj['YY'];
-    } else {
-      mapObj['YYYY'] = '19' + mapObj['YY'];
-    }
+      mapObj['YYYY'] = mapObj['YY'] < 30 ? '20' + mapObj['YY'] : '19' + mapObj['YY'];
   }
 
   const newDate = [];
