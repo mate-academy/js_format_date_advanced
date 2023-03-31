@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let str = date;
+  const century19 = '19';
+  const century20 = '20';
+  const border = 29;
+
+  if (fromFormat[3] !== toFormat[3]) {
+    switch (fromFormat[3]) {
+      case '-':
+        str = date.replace(/-/g, toFormat[3]);
+        break;
+      case '/':
+        str = date.replace(/\//g, toFormat[3]);
+        break;
+    }
+  }
+
+  for (let i = 0; i <= 2; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        if ((toFormat[i] === 'DD') && (toFormat[i + 2] === 'YYYY')) {
+          str = date.slice(8) + date.slice(4, 8) + date.slice(0, 4);
+        }
+
+        break;
+
+      case 'YY':
+        if ((Number(str.slice(0, 2)) < border)
+            && (Number(str.slice(0, 2)) >= 0)) {
+          str = century20 + str;
+        } else {
+          str = century19 + str;
+        }
+
+        break;
+
+      case 'MM':
+        if (fromFormat[i + 2] === 'YYYY') {
+          str = date.slice(0, 6) + date.slice(8);
+        }
+
+        if (fromFormat[i + 2] === 'DD') {
+          str = date.slice(8) + toFormat[3] + date.slice(0, 7);
+        }
+
+        break;
+    }
+
+    return str;
+  }
 }
 
 module.exports = formatDate;
