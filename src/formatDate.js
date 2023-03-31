@@ -50,7 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const inputSeparator = fromFormat[fromFormat.length - 1];
+  const inputDateComponents = date.split(inputSeparator);
+
+  const outputSeparator = toFormat[toFormat.length - 1];
+  const outputDateComponents = [];
+
+  let day = '';
+  let month = '';
+  let year = '';
+  let previousYearFormat = '';
+
+  dateFactory();
+  formatFactory();
+
+  return outputDateComponents.join(outputSeparator);
+
+  function dateFactory() {
+    for (let i = 0; i < fromFormat.length - 1; i++) {
+      if (fromFormat[i] === 'DD') {
+        day = inputDateComponents[i];
+      } else if (fromFormat[i] === 'MM') {
+        month = inputDateComponents[i];
+      } else if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+        year = inputDateComponents[i];
+        previousYearFormat = fromFormat[i];
+      }
+    }
+  }
+
+  function formatFactory() {
+    for (let i = 0; i < toFormat.length - 1; i++) {
+      if (toFormat[i] === 'DD') {
+        outputDateComponents.push(day);
+      } else if (toFormat[i] === 'MM') {
+        outputDateComponents.push(month);
+      } else if (toFormat[i] === previousYearFormat) {
+        outputDateComponents.push(year);
+      } else if (toFormat[i] === 'YY' && previousYearFormat === 'YYYY') {
+        outputDateComponents.push(year.slice(-2));
+      } else {
+        const prefix = year < 30 ? '20' : '19';
+
+        outputDateComponents.push(prefix + year);
+      }
+    }
+  }
 }
 
 module.exports = formatDate;
