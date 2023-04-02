@@ -50,7 +50,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [ a, b, c, separator ] = fromFormat;
+  const newSeparator = toFormat[3];
+
+  const newData = [];
+
+  const arr = date.split(separator);
+
+  const obj = {};
+
+  obj[a] = arr[0];
+  obj[b] = arr[1];
+  obj[c] = arr[2];
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    obj.YYYY = obj.YYYY.substring(2);
+  } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    obj.YYYY = obj.YY < 30 ? `20${obj.YY}` : `19${obj.YY}`;
+  }
+
+  toFormat.length -= 1;
+
+  for (const toFor of toFormat) {
+    switch (toFor) {
+      case 'YYYY':
+      case 'YY': newData.push(obj.YYYY);
+        break;
+      case 'MM': newData.push(obj.MM);
+        break;
+      case 'DD': newData.push(obj.DD);
+        break;
+      default:
+        newData.push('N/A');
+        break;
+    }
+  }
+
+  return newData.join(newSeparator);
 }
+
+formatDate(
+  '18-02-2020',
+  ['DD', 'MM', 'YYYY', '-'],
+  ['DD', 'MM', 'YY', '/'],
+); // '18/02/20'
 
 module.exports = formatDate;
