@@ -50,7 +50,43 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateCopy = date.split(fromFormat[3]);
+  const arr = Array.from(toFormat.slice(0, 3));
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    for (let j = 0; j < toFormat.length - 1; j++) {
+      if (fromFormat[i] === toFormat[j]) {
+        arr[j] = dateCopy[i];
+      }
+
+      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
+        arr[j] = dateCopy[i].slice(2, 4);
+      }
+
+      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
+        if (dateCopy[i] < 30) {
+          arr[j] = `20${dateCopy[i]}`;
+        }
+
+        if (dateCopy[i] >= 30 && dateCopy[i] <= 99) {
+          arr[j] = `19${dateCopy[i]}`;
+        }
+      }
+    }
+  }
+
+  return arr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
+
+/* Час летить, стандарти змінюються. Давайте позбудемося рутини змінювати
+  * формат дати. Створіть функцію `formatDate`, яка приймає рядок `date`,
+  * старий масив fromFormat і новий масив toFormat. Функція повертає
+  * дата вказана в новому форматі.
+  * Функція може змінити роздільник, змінити порядок частин дати у конверті a
+  * рік від 4 цифр до 2 цифр і назад.
+  * Під час конвертації з YYYY на YY просто використовуйте
+  * 2 останні цифри (1997 -> 97).
+  * Під час конвертації з YY на YYYY використовуйте 20YY,
+  * якщо YY < 30, і 19YY в іншому випадку. */
