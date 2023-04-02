@@ -64,29 +64,25 @@ function formatDate(date, fromFormat, toFormat) {
   obj[c] = arr[2];
 
   if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    obj.YYYY = (obj.YYYY).substring(2);
+    obj.YYYY = obj.YYYY.substring(2);
+  } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    obj.YYYY = obj.YY < 30 ? `20${obj.YY}` : `19${obj.YY}`;
   }
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (obj.YY < 30) {
-      obj.YYYY = `20${obj.YY}`;
-    } else {
-      obj.YYYY = `19${obj.YY}`;
-    }
-  }
+  toFormat.length -= 1;
 
   for (const toFor of toFormat) {
     switch (toFor) {
-      case 'YYYY': newData.push(obj.YYYY);
+      case 'YYYY':
+      case 'YY': newData.push(obj.YYYY);
         break;
       case 'MM': newData.push(obj.MM);
         break;
       case 'DD': newData.push(obj.DD);
         break;
-      case 'YY': newData.push(obj.YYYY);
-        break;
       default:
-        throw new Error('Check input data');
+        newData.push('N/A');
+        break;
     }
   }
 
