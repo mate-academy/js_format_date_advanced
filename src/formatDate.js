@@ -61,14 +61,14 @@ function formatDate(date, fromFormat, toFormat) {
   const reFormatedDate = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
-    switch (true) {
-      case fromFormat[i][0] === 'Y':
+    switch (fromFormat[i][0]) {
+      case 'Y':
         year = newDate[i];
         break;
-      case fromFormat[i][0] === 'D':
+      case 'D':
         day = newDate[i];
         break;
-      case fromFormat[i][0] === 'M':
+      case 'M':
         month = newDate[i];
         break;
     }
@@ -77,8 +77,8 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length; i++) {
     divider = toFormat[i];
 
-    switch (true) {
-      case toFormat[i][0] === 'Y':
+    switch (toFormat[i][0]) {
+      case 'Y':
         newYearLength = toFormat[i].length;
 
         if (newYearLength < year.length) {
@@ -86,18 +86,14 @@ function formatDate(date, fromFormat, toFormat) {
         }
 
         if (newYearLength > year.length) {
-          if (year < 30) {
-            year = '20' + year;
-          } else {
-            year = '19' + year;
-          }
+          year = year < 30 ? year = '20' + year : year = '19' + year;
         }
         reFormatedDate[i] = year;
         break;
-      case toFormat[i][0] === 'D':
+      case 'D':
         reFormatedDate[i] = day;
         break;
-      case toFormat[i][0] === 'M':
+      case 'M':
         reFormatedDate[i] = month;
         break;
     }
