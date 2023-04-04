@@ -6,7 +6,7 @@
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
- * year from 4 digits to 2 digits and back.
+ * dateYear from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
  *
@@ -50,32 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const newDate = date.split(fromFormat.pop());
-  const separator = toFormat.pop();
-  const objFromRormat = {};
+  const dataSplit = date.split(fromFormat[3]);
+  const dateYear = dataSplit[fromFormat.indexOf('YYYY')]
+    || dataSplit[fromFormat.indexOf('YY')];
+  const result = [];
 
-  for (let i = 0; i < newDate.length; i++) {
-    objFromRormat[fromFormat[i]] = newDate[i];
-  }
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'MM':
+      case 'DD':
+        result.push(dataSplit[fromFormat.indexOf(toFormat[i])]);
+        break;
 
-  for (let i = 0; i < toFormat.length; i++) {
-    const newFormat = toFormat[i];
-    const oldFormat = fromFormat[i];
-
-    toFormat[i] = objFromRormat[newFormat];
-
-    if (newFormat === 'YYYY' && oldFormat === 'YY') {
-      const k = objFromRormat['YY'];
-
-      toFormat[i] = k < 30 ? 20 + k : 19 + k;
-    }
-
-    if (newFormat === 'YY' && oldFormat === 'YYYY') {
-      toFormat[i] = objFromRormat['YYYY'].slice(2, 4);
+      default:
+        if (toFormat[i].length < dateYear.length) {
+          result.push(dateYear.slice(2, 4));
+        } else if (toFormat[i].length > dateYear.length) {
+          result.push((dateYear < 30 ? 20 : 19) + dateYear);
+        } else {
+          result.push(dateYear);
+        }
     }
   }
 
-  return toFormat.join(separator);
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
