@@ -56,16 +56,18 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < (fromFormat.length - 1); i++) {
     for (let ch = 0; ch < (toFormat.length - 1); ch++) {
-      if (fromFormat[i] === toFormat[ch]) {
-        resultDate[ch] = startDate[i];
-      }
+      switch (true) {
+        case (fromFormat[i] === toFormat[ch]):
+          resultDate[ch] = startDate[i];
+          break;
 
-      if (fromFormat[i] === (toFormat[ch] + toFormat[ch])) {
-        resultDate[ch] = startDate[i].slice(-2);
-      }
+        case (fromFormat[i] === (toFormat[ch] + toFormat[ch])):
+          resultDate[ch] = startDate[i].slice(-2);
+          break;
 
-      if (toFormat[ch] === (fromFormat[i] + fromFormat[i])) {
-        resultDate[ch] = getFullYear(startDate[i]);
+        case (toFormat[ch] === (fromFormat[i] + fromFormat[i])):
+          resultDate[ch] = getFullYear(startDate[i]);
+          break;
       }
     }
   }
