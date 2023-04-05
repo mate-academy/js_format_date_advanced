@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultDate = Array(3);
+  const startDate = date.split(fromFormat[fromFormat.length - 1]);
+  const currentYear = 23;
+
+  for (let i = 0; i < (fromFormat.length - 1); i++) {
+    for (let ch = 0; ch < (toFormat.length - 1); ch++) {
+      if (fromFormat[i] === toFormat[ch]) {
+        resultDate[ch] = startDate[i];
+      }
+
+      if (fromFormat[i] === (toFormat[ch] + toFormat[ch])) {
+        resultDate[ch] = startDate[i].slice(-2);
+      }
+
+      if (toFormat[ch] === (fromFormat[i] + fromFormat[i])) {
+        resultDate[ch] = getFullYear(startDate[i]);
+      }
+    }
+  }
+
+  return resultDate.join(toFormat[toFormat.length - 1]);
+
+  function getFullYear(shortYear) {
+    if (+shortYear > currentYear) {
+      return ('19' + shortYear);
+    }
+
+    return ('20' + shortYear);
+  }
 }
 
 module.exports = formatDate;
