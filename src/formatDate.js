@@ -56,7 +56,7 @@ function formatDate(date, fromFormat, toFormat) {
   const result = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    result[fromFormat[i]] = newDate[i];
+    result[fromFormat[i]] = newDate[i]; // {'YYYY': 2012}
   }
 
   if (result.hasOwnProperty('YYYY')) {
@@ -71,68 +71,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     massive.push(result[toFormat[i]]);
-    console.log(result[toFormat[i]]);
-    console.log(massive);
   }
 
   return massive.join(toFormat[3]);
 }
-
-/* switch (fromFormat[i]) {
-      case 'DD':
-        result[toFormatDay] = newDate[i];
-        break;
-
-      case 'MM':
-        result[toFormatMonth] = newDate[i];
-        break;
-
-      case 'YYYY':
-        if (toFormat.includes('YY')) {
-          result[toFormatYear] = newDate[i].slice(2); // shortYear
-        }
-        result[toFormatYear] = newDate[i];
-        break;
-
-      case 'YY':
-        if (newDate[i] >= 30) {
-          result[toFormatYear] = '19' + newDate[i];
-          break;
-        }
-
-        result[toFormatYear] = '20' + newDate[i];
-        break;
-    } */
-
-// return result.join(separator);
-
-/* const [year, month, day] = date.split(separator);
-
-  // робим об'єкт, ключами кладемо перший масив, значення - числа дати з рядочку
-
-  const obj = {
-    [fromFormatYear]: year,
-    [fromFormatMonth]: month,
-    [fromFormatDay]: day,
-  };
-
-  const lastTwo = obj.fromFormatYear.slice(2);
-
-  for (const key of toFormat) {
-    if (toFormat.includes('YY')) {
-      return lastTwo;
-    }
-
-    if (lastTwo < 30) {
-      obj.fromFormatYear = '20' + lastTwo;
-    }
-
-    if (lastTwo >= 30) {
-      obj.fromFormatYear = '19' + lastTwo;
-    }
-  }
-
-  return newDate.join(separator);
-} */
 
 module.exports = formatDate;
