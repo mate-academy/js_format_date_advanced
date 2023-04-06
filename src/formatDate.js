@@ -48,6 +48,13 @@
  *
  * @returns {string}
  */
+function changeYearLengthFormat(year) {
+  if (year.length < 4) {
+    return `${year < 30 ? 20 : 19}${year}`;
+  }
+
+  return year;
+}
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
@@ -89,14 +96,21 @@ function formatDate(date, fromFormat, toFormat) {
     dateQuote = toFormat[i];
     datePart = currentDate.year;
 
-    if (dateQuote === 'YY') {
-      datePart = datePart.length === 4 ? datePart.slice(2) : datePart;
-    } else if (dateQuote === 'YYYY') {
-      if (datePart.length < 4) {
-        datePart = datePart < 30 ? `${20}${datePart}` : `${19}${datePart}`;
-      }
-    } else {
-      datePart = dateQuote === 'MM' ? currentDate.month : currentDate.day;
+    switch (dateQuote) {
+      case 'MM':
+        datePart = currentDate.month;
+        break;
+      case 'DD':
+        datePart = currentDate.day;
+        break;
+      case 'YY':
+        datePart = datePart.length === 4 ? datePart.slice(2) : datePart;
+        break;
+      case 'YYYY':
+        datePart = changeYearLengthFormat(datePart);
+        break;
+      default:
+        return 'Wrong data format';
     }
 
     finalDateFormat.push(datePart);
