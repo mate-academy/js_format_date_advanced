@@ -91,8 +91,7 @@ function formatDate(date, fromFormat, toFormat) {
   reformatted[newMonthIndex] = numbers[oldMonthIndex];
 
   if (oldYearFull === true && newYearFull === false) {
-    reformatted[newYearIndex]
-    = (numbers[oldYearIndex][2] + numbers[oldYearIndex][3]);
+    reformatted[newYearIndex] = numbers[oldYearIndex].slice(-2);
   } else if (oldYearFull === false && newYearFull === true) {
     reformatted[newYearIndex] = (century + numbers[oldYearIndex]);
   } else {
