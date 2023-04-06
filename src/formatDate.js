@@ -76,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
             this.yearFormat = fromFormat[i];
             break;
           default:
-            console.error(`Wrong format: ${fromFormat[i]}`);
+            throw new Error(`Wrong format: ${fromFormat[i]}`);
         }
       }
     },
@@ -102,7 +102,7 @@ function formatDate(date, fromFormat, toFormat) {
             outputDateComponents.push(outputYear);
             break;
           default:
-            console.error(`Wrong format: ${currentFormat}`);
+            throw new Error(`Wrong format: ${currentFormat}`);
         }
       }
     },
