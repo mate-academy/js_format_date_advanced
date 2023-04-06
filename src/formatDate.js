@@ -6,7 +6,7 @@
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
- * year from 4 digits to 2 digits and back.
+ * data.year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
  *
@@ -55,10 +55,12 @@ function yearFormating(year) {
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const data = {
+    day: '',
+    month: '',
+    year: '',
+  };
 
-  let day;
-  let month;
-  let year;
   const separator = toFormat[toFormat.length - 1];
 
   const oldSeparator = fromFormat[fromFormat.length - 1];
@@ -68,14 +70,14 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'DD':
-        day = currentDate[i];
+        data.day = currentDate[i];
         break;
       case 'MM':
-        month = currentDate[i];
+        data.month = currentDate[i];
         break;
       case 'YY':
       case 'YYYY':
-        year = currentDate[i];
+        data.year = currentDate[i];
         break;
       default:
         return 'Wrong format!';
@@ -85,16 +87,20 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        returnedValue[i] = day;
+        returnedValue[i] = data.day;
         break;
       case 'MM':
-        returnedValue[i] = month;
+        returnedValue[i] = data.month;
         break;
       case 'YY':
-        returnedValue[i] = year.length === 4 ? year.slice(-2) : year;
+        returnedValue[i] = data.year.length === 4
+          ? data.year.slice(-2)
+          : data.year;
         break;
       case 'YYYY':
-        returnedValue[i] = year.length === 4 ? year : yearFormating(year);
+        returnedValue[i] = data.year.length === 4
+          ? data.year
+          : yearFormating(data.year);
         break;
       default:
         return 'Wrong format!';
