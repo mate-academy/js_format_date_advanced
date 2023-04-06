@@ -49,41 +49,55 @@
  * @returns {string}
  */
 
+function getFullYear(year) {
+  return year < 30 ? `20${year}` : `19${year}`;
+}
+
 function formatDate(date, fromFormat, toFormat) {
   const previousSeparator = fromFormat[3];
   const previousDate = date.split(previousSeparator);
   const currentSeparator = toFormat[3];
   const currentDate = [];
-
-  let previousYearFormat = '';
-  let day = '';
-  let month = '';
-  let year = '';
+  const newDate = {
+    day: '',
+    month: '',
+    year: '',
+  };
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = previousDate[i];
-    } else if (fromFormat[i] === 'MM') {
-      month = previousDate[i];
-    } else if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      previousYearFormat = fromFormat[i];
-      year = previousDate[i];
+    switch (fromFormat[i]) {
+      case 'DD':
+        newDate.day = previousDate[i];
+        break;
+      case 'MM':
+        newDate.month = previousDate[i];
+        break;
+      case 'YYYY':
+      case 'YY':
+        newDate.year = previousDate[i];
+        break;
+      default:
+        return 'Wrong date';
     }
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      currentDate.push(day);
-    } else if (toFormat[i] === 'MM') {
-      currentDate.push(month);
-    } else if (toFormat[i] === previousYearFormat) {
-      currentDate.push(year);
-    } else if (toFormat[i] === 'YY' && previousYearFormat === 'YYYY') {
-      currentDate.push(year.slice(-2));
-    } else {
-      const getFullYear = year < 30 ? '20' : '19';
+  if (newDate.year.length < 4) {
+    newDate.year = getFullYear(newDate.year);
+  }
 
-      currentDate.push(getFullYear + year);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        currentDate.push(newDate.day);
+        break;
+      case 'MM':
+        currentDate.push(newDate.month);
+        break;
+      case 'YYYY':
+        currentDate.push(newDate.year);
+        break;
+      default:
+        currentDate.push(newDate.year.slice(-2));
     }
   }
 
