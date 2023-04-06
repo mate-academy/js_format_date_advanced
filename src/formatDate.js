@@ -48,9 +48,75 @@
  *
  * @returns {string}
  */
+function changeYearLengthFormat(year) {
+  if (year.length < 4) {
+    return `${year < 30 ? 20 : 19}${year}`;
+  }
+
+  return year;
+}
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const fromFormatSeparator = fromFormat[fromFormat.length - 1];
+  const toFormatSeparator = toFormat[toFormat.length - 1];
+  const dateParts = date.split(fromFormatSeparator);
+  let dateQuote;
+  let datePart;
+  const finalDateFormat = [];
+  const currentDate = {
+    year: null,
+    month: null,
+    day: null,
+  };
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateQuote = fromFormat[i];
+    datePart = dateParts[i];
+
+    switch (dateQuote) {
+      case 'MM':
+        currentDate.month = datePart;
+        break;
+      case 'DD':
+        currentDate.day = datePart;
+        break;
+      case 'YY':
+        currentDate.year = datePart;
+        break;
+      case 'YYYY':
+        currentDate.year = datePart;
+        break;
+      default:
+        return 'Wrong data format';
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    dateQuote = toFormat[i];
+    datePart = currentDate.year;
+
+    switch (dateQuote) {
+      case 'MM':
+        datePart = currentDate.month;
+        break;
+      case 'DD':
+        datePart = currentDate.day;
+        break;
+      case 'YY':
+        datePart = datePart.length === 4 ? datePart.slice(2) : datePart;
+        break;
+      case 'YYYY':
+        datePart = changeYearLengthFormat(datePart);
+        break;
+      default:
+        return 'Wrong data format';
+    }
+
+    finalDateFormat.push(datePart);
+  }
+
+  return finalDateFormat.join(toFormatSeparator);
 }
 
 module.exports = formatDate;
