@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
@@ -49,8 +48,79 @@
  * @returns {string}
  */
 
+function convertYearFormat(year, previousFormat, targetFormat) {
+  if (previousFormat === targetFormat) {
+    return year;
+  }
+
+  if (targetFormat === 'YY') {
+    return year.slice(-2);
+  }
+
+  const prefix = year < 30 ? '20' : '19';
+
+  return prefix + year;
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const inputSeparator = fromFormat[fromFormat.length - 1];
+  const inputDateComponents = date.split(inputSeparator);
+
+  const outputSeparator = toFormat[toFormat.length - 1];
+  const outputDateComponents = [];
+
+  let yearFormat = '';
+
+  const dateComponents = {
+    day: '',
+    month: '',
+    year: '',
+  };
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        dateComponents.day = inputDateComponents[i];
+        break;
+      case 'MM':
+        dateComponents.month = inputDateComponents[i];
+        break;
+      case 'YY':
+      case 'YYYY':
+        dateComponents.year = inputDateComponents[i];
+        yearFormat = fromFormat[i];
+        break;
+      default:
+        throw new Error(`Wrong format: ${fromFormat[i]}`);
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const currentFormat = toFormat[i];
+
+    switch (currentFormat) {
+      case 'DD':
+        outputDateComponents.push(dateComponents.day);
+        break;
+      case 'MM':
+        outputDateComponents.push(dateComponents.month);
+        break;
+      case 'YY':
+      case 'YYYY':
+        const outputYear = convertYearFormat(
+          dateComponents.year,
+          yearFormat,
+          currentFormat
+        );
+
+        outputDateComponents.push(outputYear);
+        break;
+      default:
+        throw new Error(`Wrong format: ${currentFormat}`);
+    }
+  }
+
+  return outputDateComponents.join(outputSeparator);
 }
 
 module.exports = formatDate;
