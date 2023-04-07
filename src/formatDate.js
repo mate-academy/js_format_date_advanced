@@ -1,5 +1,4 @@
 'use strict';
-/* eslint-disable no-console */
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
@@ -49,6 +48,20 @@
  * @returns {string}
  */
 
+function convertYearFormat(year, previousFormat, targetFormat) {
+  if (previousFormat === targetFormat) {
+    return year;
+  }
+
+  if (targetFormat === 'YY') {
+    return year.slice(-2);
+  }
+
+  const prefix = year < 30 ? '20' : '19';
+
+  return prefix + year;
+}
+
 function formatDate(date, fromFormat, toFormat) {
   const inputSeparator = fromFormat[fromFormat.length - 1];
   const inputDateComponents = date.split(inputSeparator);
@@ -56,73 +69,56 @@ function formatDate(date, fromFormat, toFormat) {
   const outputSeparator = toFormat[toFormat.length - 1];
   const outputDateComponents = [];
 
+  let yearFormat = '';
+
   const dateComponents = {
     day: '',
     month: '',
     year: '',
-    yearFormat: '',
-    dateFactory() {
-      for (let i = 0; i < fromFormat.length - 1; i++) {
-        switch (fromFormat[i]) {
-          case 'DD':
-            this.day = inputDateComponents[i];
-            break;
-          case 'MM':
-            this.month = inputDateComponents[i];
-            break;
-          case 'YY':
-          case 'YYYY':
-            this.year = inputDateComponents[i];
-            this.yearFormat = fromFormat[i];
-            break;
-          default:
-            throw new Error(`Wrong format: ${fromFormat[i]}`);
-        }
-      }
-    },
-    formatFactory() {
-      for (let i = 0; i < toFormat.length - 1; i++) {
-        const currentFormat = toFormat[i];
-
-        switch (currentFormat) {
-          case 'DD':
-            outputDateComponents.push(this.day);
-            break;
-          case 'MM':
-            outputDateComponents.push(this.month);
-            break;
-          case 'YY':
-          case 'YYYY':
-            const outputYear = this.convertYearFormat(
-              this.year,
-              this.yearFormat,
-              currentFormat
-            );
-
-            outputDateComponents.push(outputYear);
-            break;
-          default:
-            throw new Error(`Wrong format: ${currentFormat}`);
-        }
-      }
-    },
-    convertYearFormat(year, previousFormat, targetFormat) {
-      if (previousFormat === targetFormat) {
-        return year;
-      }
-
-      if (targetFormat === 'YY') {
-        return year.slice(-2);
-      }
-
-      const prefix = year < 30 ? '20' : '19';
-
-      return prefix + year;
-    },
   };
 
-  dateComponents.dateFactory();
-  dateComponents.formatFactory();
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        dateComponents.day = inputDateComponents[i];
+        break;
+      case 'MM':
+        dateComponents.month = inputDateComponents[i];
+        break;
+      case 'YY':
+      case 'YYYY':
+        dateComponents.year = inputDateComponents[i];
+        yearFormat = fromFormat[i];
+        break;
+      default:
+        throw new Error(`Wrong format: ${fromFormat[i]}`);
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const currentFormat = toFormat[i];
+
+    switch (currentFormat) {
+      case 'DD':
+        outputDateComponents.push(dateComponents.day);
+        break;
+      case 'MM':
+        outputDateComponents.push(dateComponents.month);
+        break;
+      case 'YY':
+      case 'YYYY':
+        const outputYear = convertYearFormat(
+          dateComponents.year,
+          yearFormat,
+          currentFormat
+        );
+
+        outputDateComponents.push(outputYear);
+        break;
+      default:
+        throw new Error(`Wrong format: ${currentFormat}`);
+    }
+  }
 
   return outputDateComponents.join(outputSeparator);
 }
