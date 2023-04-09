@@ -57,13 +57,15 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     obj[fromFormat[i]] = splitDate[i];
 
-    if (fromFormat[i] !== 'YY') {
-      obj.YY = obj[fromFormat[i]].slice(2, 4);
-    } else {
+    if (fromFormat[i] === 'YY') {
       const date1 = '20' + obj[fromFormat[i]];
       const date2 = '19' + obj[fromFormat[i]];
 
       obj.YYYY = obj[fromFormat[i]] < 30 ? date1 : date2;
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      obj.YY = obj[fromFormat[i]].slice(2, 4);
     }
   }
 
