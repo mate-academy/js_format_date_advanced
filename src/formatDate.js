@@ -50,7 +50,61 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDateParts = date.split(fromFormat[fromFormat.length - 1]);
+  let year, month, day;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const formatPart = fromFormat[i];
+    const value = parseInt(oldDateParts[i], 10);
+
+    if (formatPart === 'YYYY') {
+      year = value;
+    } else if (formatPart === 'YY') {
+      year = value < 30 ? 2000 + value : 1900 + value;
+    } else if (formatPart === 'MM') {
+      month = value;
+    } else if (formatPart === 'DD') {
+      day = value;
+    }
+  }
+
+  let newYear;
+  const yearIndex = toFormat.indexOf('YYYY');
+
+  if (yearIndex !== -1) {
+    newYear = year.toString();
+  } else {
+    newYear = year % 100;
+
+    if (newYear < 10) {
+      newYear = '0' + newYear.toString();
+    }
+  }
+
+  const newDateParts = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const formatPart = toFormat[i];
+
+    if (formatPart === 'YYYY') {
+      newDateParts.push(newYear);
+    } else if (formatPart === 'YY') {
+      newDateParts.push(newYear);
+    } else if (formatPart === 'MM') {
+      const monthStr = month < 10 ? '0' + month.toString() : month.toString();
+
+      newDateParts.push(monthStr);
+    } else if (formatPart === 'DD') {
+      const dayStr = day < 10 ? '0' + day.toString() : day.toString();
+
+      newDateParts.push(dayStr);
+    }
+  }
+
+  const separator = toFormat[toFormat.length - 1];
+  const newDate = newDateParts.join(separator);
+
+  return newDate;
 }
 
 module.exports = formatDate;
