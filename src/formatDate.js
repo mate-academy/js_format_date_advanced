@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 /**
@@ -56,7 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
   const result = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    result[fromFormat[i]] = newDate[i]; // {'YYYY': 2012}
+    result[fromFormat[i]] = newDate[i];
   }
 
   if (result.hasOwnProperty('YYYY')) {
