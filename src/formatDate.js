@@ -50,7 +50,68 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const resultTab = [];
+  const dateObj = {};
+
+  // save date using fromFormat-arg
+  date.split(fromFormat[3], 3).forEach((el, i) => {
+    switch (fromFormat[i][0]) {
+      case 'Y':
+        dateObj.year = toLongYear(el);
+        break;
+
+      case 'M':
+        dateObj.month = el;
+        break;
+
+      case 'D':
+        dateObj.day = el;
+        break;
+
+      default:
+        throw new Error('something went wrong with fromFormat');
+    }
+  });
+
+  // pull new date from toFormat-arg
+  toFormat.slice(0, 3).forEach(el => {
+    switch (el[0]) {
+      case 'Y':
+        resultTab.push(
+          (el.length > 2) ? dateObj.year : toShortYear(dateObj.year)
+        );
+        break;
+
+      case 'M':
+        resultTab.push(dateObj.month);
+        break;
+
+      case 'D':
+        resultTab.push(dateObj.day);
+        break;
+
+      default:
+        throw new Error('something went wrong with toFormat');
+    }
+  });
+
+  return resultTab.join(toFormat[3]);
 }
+
+function toLongYear(el) {
+  if (el.length === 2) {
+    if (el < 30) {
+      return `20${el}`;
+    } else {
+      return `19${el}`;
+    }
+  };
+
+  return el;
+};
+
+function toShortYear(el) {
+  return el.slice(-2);
+};
 
 module.exports = formatDate;
