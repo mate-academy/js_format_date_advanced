@@ -91,7 +91,7 @@ function formatDate(date, fromFormat, toFormat) {
             yearFull = `20${yearFull}`;
           }
         }
-        newDate.push(year);
+        newDate.push(yearFull);
         break;
     }
   }
