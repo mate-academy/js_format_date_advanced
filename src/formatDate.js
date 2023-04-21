@@ -62,11 +62,11 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if ('YYYY' in newDate) {
-    newDate.YY = newDate['YYYY'].slice(-2);
-  } else if (newDate['YY'] < 30) {
-    newDate.YYYY = `20${newDate['YY']}`;
+    newDate.YY = newDate.YYYY.slice(-2);
+  } else if (newDate.YY < 30) {
+    newDate.YYYY = `20${newDate.YY}`;
   } else {
-    newDate.YYYY = `19${newDate['YY']}`;
+    newDate.YYYY = `19${newDate.YY}`;
   }
 
   const orderedDate = [];
