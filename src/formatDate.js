@@ -1,14 +1,15 @@
 'use strict';
 
 /**
- *   Time flies, standards change. Let's get rid of the routine of changing the
- * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array and the new `toFormat` array. Function returns
- * given date in new format.
- *   The function can change a separator, reorder the date parts of convert a
- * year from 4 digits to 2 digits and back.
- *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
- *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
+ * Час летить, змінюються стандарти.Давайте позбумось від рутини зміни
+ * формат дати.Створити функцію `formatdate`, яка приймає рядок` date ',
+ * Старий масив `friformat` та новий масив` toformat`.Функція повертається
+ * Дата в новому форматі.
+ * Функція може змінити сепаратор, переробити частини дати перетворення a
+ * Рік від 4 цифр до 2 цифр і назад.
+ * Під час перетворення з Yyyy в Yy просто
+ * використовуйте 2 останню цифру (1997 -> 97).
+ * При перетворенні з Yy в Yyyy використовуйте 20yy, якщо Yy <30 і 19yy інакше.
  *
  * Examples:
  *
@@ -51,6 +52,32 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dateArr = fromFormat.pop();
+  const newArr = toFormat.pop();
+  const arrDate = date.split(dateArr);
+  const dateObj = {};
+
+  for (let i = 0; i < 3; i++) {
+    dateObj[fromFormat[i]] = arrDate[i];
+  }
+
+  const newDate = [];
+
+  for (const key of toFormat) {
+    if (key === 'YY' && 'YYYY' in dateObj) {
+      newDate.push(dateObj.YYYY.substring(2));
+    } else if (key === 'YYYY' && 'YY' in dateObj) {
+      if (dateObj.YY < 30) {
+        newDate.push(`20${dateObj.YY}`);
+      } else {
+        newDate.push(`19${dateObj.YY}`);
+      }
+    } else {
+      newDate.push(dateObj[key]);
+    }
+  }
+
+  return newDate.join(newArr);
 }
 
 module.exports = formatDate;
