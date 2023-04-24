@@ -55,12 +55,22 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObj = {};
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      dateObj.year = dateParts[i];
-    } else if (fromFormat[i] === 'MM') {
-      dateObj.MM = dateParts[i];
-    } else if (fromFormat[i] === 'DD') {
-      dateObj.DD = dateParts[i];
+    switch (fromFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        dateObj.year = dateParts[i];
+        break;
+
+      case 'MM':
+        dateObj.MM = dateParts[i];
+        break;
+
+      case 'DD':
+        dateObj.DD = dateParts[i];
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -75,12 +85,22 @@ function formatDate(date, fromFormat, toFormat) {
   const newDateParts = [];
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      newDateParts.push(dateObj.year);
-    } else if (toFormat[i] === 'DD') {
-      newDateParts.push(dateObj.DD);
-    } else if (toFormat[i] === 'MM') {
-      newDateParts.push(dateObj.MM);
+    switch (toFormat[i]) {
+      case 'YY':
+      case 'YYYY':
+        newDateParts.push(dateObj.year);
+        break;
+
+      case 'MM':
+        newDateParts.push(dateObj.MM);
+        break;
+
+      case 'DD':
+        newDateParts.push(dateObj.DD);
+        break;
+
+      default:
+        break;
     }
   }
 
