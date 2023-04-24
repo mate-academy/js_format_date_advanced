@@ -58,9 +58,9 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
       dateObj.year = dateParts[i];
     } else if (fromFormat[i] === 'MM') {
-      dateObj.month = dateParts[i];
+      dateObj.MM = dateParts[i];
     } else if (fromFormat[i] === 'DD') {
-      dateObj.day = dateParts[i];
+      dateObj.DD = dateParts[i];
     }
   }
 
@@ -78,9 +78,9 @@ function formatDate(date, fromFormat, toFormat) {
     if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
       newDateParts.push(dateObj.year);
     } else if (toFormat[i] === 'DD') {
-      newDateParts.push(dateObj.day);
+      newDateParts.push(dateObj.DD);
     } else if (toFormat[i] === 'MM') {
-      newDateParts.push(dateObj.month);
+      newDateParts.push(dateObj.MM);
     }
   }
 
