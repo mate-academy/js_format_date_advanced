@@ -50,7 +50,75 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromDelimiter = fromFormat[fromFormat.length - 1];
+  const toDelimiter = toFormat[toFormat.length - 1];
+  const fromDateArr = date.split(fromDelimiter);
+
+  const fromYearIndex = fromFormat.findIndex(part => part === 'YYYY'
+    || part === 'YY');
+  const fromMonthIndex = fromFormat.findIndex(part => part === 'MM');
+  const fromDayIndex = fromFormat.findIndex(part => part === 'DD');
+
+  const toYearIndex = toFormat.findIndex(part => part === 'YYYY'
+    || part === 'YY');
+  const toMonthIndex = toFormat.findIndex(part => part === 'MM');
+  const toDayIndex = toFormat.findIndex(part => part === 'DD');
+
+  const toDateArr = [];
+
+  let toYear = fromDateArr[fromYearIndex];
+
+  if (toFormat[toYearIndex] === 'YY' && fromFormat[fromYearIndex] === 'YYYY') {
+    toYear = fromDateArr[fromYearIndex].slice(-2);
+  }
+
+  if (toFormat[toYearIndex] === 'YYYY' && fromFormat[fromYearIndex] === 'YY') {
+    if (+fromDateArr[fromYearIndex] > 29) {
+      toYear = `19${fromDateArr[fromYearIndex]}`;
+    } else {
+      toYear = `20${fromDateArr[fromYearIndex]}`;
+    }
+  }
+
+  switch (0) {
+    case toYearIndex:
+      toDateArr.push(toYear);
+      break;
+    case toMonthIndex:
+      toDateArr.push(fromDateArr[fromMonthIndex]);
+      break;
+    case toDayIndex:
+      toDateArr.push(fromDateArr[fromDayIndex]);
+      break;
+  }
+
+  switch (1) {
+    case toYearIndex:
+      toDateArr.push(toYear);
+      break;
+    case toMonthIndex:
+      toDateArr.push(fromDateArr[fromMonthIndex]);
+      break;
+    case toDayIndex:
+      toDateArr.push(fromDateArr[fromDayIndex]);
+      break;
+  }
+
+  switch (2) {
+    case toYearIndex:
+      toDateArr.push(toYear);
+      break;
+    case toMonthIndex:
+      toDateArr.push(fromDateArr[fromMonthIndex]);
+      break;
+    case toDayIndex:
+      toDateArr.push(fromDateArr[fromDayIndex]);
+      break;
+  }
+
+  const toDate = toDateArr.join(toDelimiter);
+
+  return toDate;
 }
 
 module.exports = formatDate;
