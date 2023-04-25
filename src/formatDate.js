@@ -80,40 +80,18 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  switch (0) {
-    case toYearIndex:
-      toDateArr.push(toYear);
-      break;
-    case toMonthIndex:
-      toDateArr.push(fromDateArr[fromMonthIndex]);
-      break;
-    case toDayIndex:
-      toDateArr.push(fromDateArr[fromDayIndex]);
-      break;
-  }
-
-  switch (1) {
-    case toYearIndex:
-      toDateArr.push(toYear);
-      break;
-    case toMonthIndex:
-      toDateArr.push(fromDateArr[fromMonthIndex]);
-      break;
-    case toDayIndex:
-      toDateArr.push(fromDateArr[fromDayIndex]);
-      break;
-  }
-
-  switch (2) {
-    case toYearIndex:
-      toDateArr.push(toYear);
-      break;
-    case toMonthIndex:
-      toDateArr.push(fromDateArr[fromMonthIndex]);
-      break;
-    case toDayIndex:
-      toDateArr.push(fromDateArr[fromDayIndex]);
-      break;
+  for (let i = 0; i < 3; i++) {
+    switch (i) {
+      case toYearIndex:
+        toDateArr.push(toYear);
+        break;
+      case toMonthIndex:
+        toDateArr.push(fromDateArr[fromMonthIndex]);
+        break;
+      case toDayIndex:
+        toDateArr.push(fromDateArr[fromDayIndex]);
+        break;
+    }
   }
 
   const toDate = toDateArr.join(toDelimiter);
