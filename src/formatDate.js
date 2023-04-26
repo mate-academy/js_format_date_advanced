@@ -54,12 +54,8 @@ function formatDate(date, fromFormat, toFormat) {
   const parts = date.split(`${fromFormat[3]}`);
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'DD') {
-      result += parts[fromFormat.indexOf('DD')];
-    }
-
-    if (toFormat[i] === 'MM') {
-      result += parts[fromFormat.indexOf('MM')];
+    if (toFormat[i] === 'DD' || toFormat[i] === 'MM') {
+      result += parts[fromFormat.indexOf(toFormat[i])];
     }
 
     if (toFormat[i] === 'YY' && fromFormat.includes('YY')) {
@@ -74,12 +70,8 @@ function formatDate(date, fromFormat, toFormat) {
       result += parts[fromFormat.indexOf('YYYY')].slice(2);
     }
 
-    if (toFormat[i] === 'YYYY' && parts[fromFormat.indexOf('YY')] >= 30) {
-      result += `${19}${parts[fromFormat.indexOf('YY')]}`;
-    }
-
-    if (toFormat[i] === 'YYYY' && parts[fromFormat.indexOf('YY')] < 30) {
-      result += `${20}${parts[fromFormat.indexOf('YY')]}`;
+    if (toFormat[i] === 'YYYY') {
+      result += `${parts[fromFormat.indexOf('YY')] >= 30 ?  19 : 20}${parts[fromFormat.indexOf('YY')]}`;
     }
 
     if (i < 2) {
