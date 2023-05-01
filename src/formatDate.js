@@ -54,7 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const dateInput = {
 
-    dataConverter(format, value) {
+    convertDateComponent(format, value) {
       this[format] = value;
 
       if (format === 'YYYY') {
@@ -67,13 +67,15 @@ function formatDate(date, fromFormat, toFormat) {
     separator: fromFormat[fromFormat.length - 1],
   };
 
+  const dateArray = date.split(dateInput.separator);
+
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      dateInput.dataConverter(
-        fromFormat[i], date.split(dateInput.separator)[i]
+      dateInput.convertDateComponent(
+        fromFormat[i], dateArray[i]
       );
     } else {
-      dateInput[fromFormat[i]] = date.split(dateInput.separator)[i];
+      dateInput[fromFormat[i]] = dateArray[i];
     }
   }
 
