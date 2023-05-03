@@ -71,18 +71,14 @@ function formatDate(date, fromFormat, toFormat) {
   const day = dateArray[dayIndex];
 
   const replacedDate = toFormat.map((format) => {
-    switch (format) {
-      case 'YYYY':
-        return year;
-      case 'YY':
-        return year.slice(-2);
-      case 'MM':
-        return month;
-      case 'DD':
-        return day;
-      default:
-        return format;
-    }
+    const formatOptions = {
+      'YYYY': year,
+      'YY': year.slice(-2),
+      'MM': month,
+      'DD': day,
+    };
+
+    return formatOptions[format];
   });
 
   replacedDate.pop();
