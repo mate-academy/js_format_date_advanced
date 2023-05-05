@@ -77,9 +77,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const updated = Object.values(toObj).join(separator).toString();
+  const result = Object.values(toObj).join(separator).toString();
 
-  return updated;
+  return result;
 }
 
 module.exports = formatDate;
