@@ -53,7 +53,6 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dateArr = date.split(fromFormat[fromFormat.length - 1]);
   const separator = toFormat[toFormat.length - 1];
-  const formatOfDate = [];
   const obj = {};
   let str = '';
 
@@ -61,7 +60,6 @@ function formatDate(date, fromFormat, toFormat) {
     const element = fromFormat[i];
 
     obj[element] = dateArr[i];
-    formatOfDate.push(obj);
   }
 
   for (const item of toFormat) {
