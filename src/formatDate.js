@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formattedDate = Array(3);
+  const dateArr = date.split(fromFormat[3]);
+  const month = dateArr[fromFormat.indexOf('MM')];
+  const day = dateArr[fromFormat.indexOf('DD')];
+  let fullYear;
+  let year;
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    year = dateArr[fromFormat.indexOf('YYYY')].slice(2);
+  } else {
+    year = dateArr[fromFormat.indexOf('YY')];
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (dateArr[fromFormat.indexOf('YY')] < 30) {
+      fullYear = '20' + dateArr[fromFormat.indexOf('YY')];
+    } else {
+      fullYear = '19' + dateArr[fromFormat.indexOf('YY')];
+    }
+  } else {
+    fullYear = dateArr[fromFormat.indexOf('YYYY')];
+  }
+
+  for (const el of toFormat) {
+    if (el === 'YYYY') {
+      formattedDate.fill(
+        fullYear, toFormat.indexOf('YYYY'), toFormat.indexOf('YYYY') + 1
+      );
+    }
+
+    if (el === 'YY') {
+      formattedDate.fill(
+        year, toFormat.indexOf('YY'), toFormat.indexOf('YY') + 1
+      );
+    }
+
+    if (el === 'MM') {
+      formattedDate.fill(
+        month, toFormat.indexOf('MM'), toFormat.indexOf('MM') + 1
+      );
+    }
+
+    if (el === 'DD') {
+      formattedDate.fill(
+        day, toFormat.indexOf('DD'), toFormat.indexOf('DD') + 1
+      );
+    }
+  }
+
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
