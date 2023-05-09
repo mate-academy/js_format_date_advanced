@@ -67,11 +67,11 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (fromFormat[i] === 'YY') {
       if (period < 30) {
-        year = (20 + period);
+        year = '20' + period;
       }
 
       if (period >= 30) {
-        year = (19 + period);
+        year = '19' + period;
       }
     }
 
