@@ -54,7 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
   const oldFormat = fromFormat[3];
   const newFormat = toFormat[3];
 
-  let [year, month, day] = '';
+  let year; let month; let day = '';
 
   for (let i = 0; i < 3; i++) {
     const phase = date.split(oldFormat)[i];
