@@ -43,43 +43,39 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
+ * @param {string[]} oldDate
+ * @param {string[]} newDate
  *
  * @returns {string}
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromFormatSymb = fromFormat.pop();
-  const toFormatSymb = toFormat.pop();
+  const oldDate = fromFormat;
+  const newDate = toFormat;
+  const oldDateSymb = oldDate.pop();
+  const newDateSymb = newDate.pop();
 
-  const dateSplit = date.split(fromFormatSymb);
+  const dateSplit = date.split(oldDateSymb);
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    for (let k = 0; k < toFormat.length; k++) {
-      switch (true) {
-        case fromFormat[i] === toFormat[k]:
-          toFormat[k] = dateSplit[i];
-          break;
-
-        case fromFormat[i] === 'YYYY' && toFormat[k] === 'YY':
-          toFormat[k] = dateSplit[i].slice(2);
-          break;
-
-        case fromFormat[i] === 'YY' && toFormat[k] === 'YYYY':
-          if (+dateSplit[i] >= 30) {
-            toFormat[k] = '19' + dateSplit[i];
-          } else {
-            toFormat[k] = '20' + dateSplit[i];
-          }
-          break;
+  for (let i = 0; i < oldDate.length; i++) {
+    for (let k = 0; k < newDate.length; k++) {
+      if (oldDate[i] === newDate[k]) {
+        newDate[k] = dateSplit[i];
+      } else if (oldDate[i] === 'YYYY' && newDate[k] === 'YY') {
+        newDate[k] = dateSplit[i].slice(2);
+      } else if (oldDate[i] === 'YY' && newDate[k] === 'YYYY') {
+        if (+dateSplit[i] >= 30) {
+          newDate[k] = '19' + dateSplit[i];
+        } else {
+          newDate[k] = '20' + dateSplit[i];
+        }
       }
     }
   }
 
-  const toFormatDate = toFormat.join(toFormatSymb);
+  const newFormatDate = newDate.join(newDateSymb);
 
-  return toFormatDate;
+  return newFormatDate;
 }
 
 module.exports = formatDate;
