@@ -43,8 +43,8 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} oldDate
- * @param {string[]} newDate
+ * @param {string[]} fromFormat
+ * @param {string[]} toFormat
  *
  * @returns {string}
  */
