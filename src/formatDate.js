@@ -53,45 +53,42 @@ function formatDate(date, fromFormat, toFormat) {
   const value = date.split(fromFormat[3]);
   const result = [];
 
-  if (value.join('').length === 6) {
-    for (let i = 0; i < toFormat.length - 1; i++) {
-      if ('YYYY'.includes(toFormat[i])) {
-        for (let k = 0; k < 3; k++) {
-          switch (k) {
-            case toFormat.indexOf('MM'):
-              result.push(value[fromFormat.indexOf('MM')]);
-              break;
+  for (let k = 0; k < 3; k++) {
+    switch (k) {
+      case toFormat.indexOf('MM'):
+        result.push(value[fromFormat.indexOf('MM')]);
+        break;
 
-            case toFormat.indexOf('DD'):
-              result.push(value[fromFormat.indexOf('DD')]);
-              break;
+      case toFormat.indexOf('DD'):
+        result.push(value[fromFormat.indexOf('DD')]);
+        break;
 
-            default:
-              result.push(value[fromFormat.indexOf('YY')]);
-              break;
-          }
+      case toFormat.indexOf('YY'):
+        switch (value.join('').length) {
+          case 6:
+            result.push(value[fromFormat.indexOf('YY')]);
+            break;
+
+          case 8:
+            result.push(value[fromFormat.indexOf('YYYY')]);
+            break;
         }
-      }
-    }
-  } else {
-    for (let i = 0; i < toFormat.length - 1; i++) {
-      if ('YYYY'.includes(toFormat[i])) {
-        for (let k = 0; k < 3; k++) {
-          switch (k) {
-            case toFormat.indexOf('MM'):
-              result.push(value[fromFormat.indexOf('MM')]);
-              break;
+        break;
 
-            case toFormat.indexOf('DD'):
-              result.push(value[fromFormat.indexOf('DD')]);
-              break;
+      case toFormat.indexOf('YYYY'):
+        switch (value.join('').length) {
+          case 6:
+            result.push(value[fromFormat.indexOf('YY')]);
+            break;
 
-            default:
-              result.push(value[fromFormat.indexOf('YYYY')]);
-              break;
-          }
+          case 8:
+            result.push(value[fromFormat.indexOf('YYYY')]);
+            break;
         }
-      }
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -112,7 +109,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return result.join(toFormat[3]);
-  ;
 }
 
 module.exports = formatDate;
