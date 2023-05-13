@@ -51,14 +51,13 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const fromDate = parseFromDate(date, fromFormat);
+  const toDateFormat = [ ...toFormat ];
   const toDate = [];
-  const separator = toFormat[3];
+  const separator = toDateFormat.pop();
 
-  for (let i = 0; i < 3; i++) {
-    const item = toFormat[i];
-
+  for (const item of toDateFormat) {
     if (item === 'YY') {
-      const year = +fromDate['YYYY'];
+      const year = +fromDate.YYYY;
 
       if (year < 2000) {
         toDate.push(year - 1900);
@@ -75,12 +74,12 @@ function formatDate(date, fromFormat, toFormat) {
 
 function parseFromDate(date, dateFormat) {
   const separator = dateFormat[3];
-  const dateArray = date.split(separator);
-  const procesingDate = {};
+  const dateParts = date.split(separator);
+  const processedDate = {};
 
-  for (let i = 0; i < dateArray.length; i++) {
+  for (let i = 0; i < dateParts.length; i++) {
     let key = dateFormat[i];
-    let value = dateArray[i];
+    let value = dateParts[i];
 
     if (key === 'YY') {
       key = 'YYYY';
@@ -92,10 +91,10 @@ function parseFromDate(date, dateFormat) {
       }
     }
 
-    procesingDate[key] = value;
+    processedDate[key] = value;
   }
 
-  return procesingDate;
+  return processedDate;
 }
 
 module.exports = formatDate;
