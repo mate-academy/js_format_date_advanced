@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/*
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
@@ -50,7 +50,82 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = [null, null, null];
+
+  const oldPosition = {
+    separator: fromFormat[3],
+
+    get date() {
+      return fromFormat.indexOf('DD');
+    },
+
+    get month() {
+      return fromFormat.indexOf('MM');
+    },
+
+    get year() {
+      return 3 - this.date - this.month;
+    },
+  };
+
+  const newPosition = {
+    separator: toFormat[3],
+
+    get date() {
+      return toFormat.indexOf('DD');
+    },
+
+    get month() {
+      return toFormat.indexOf('MM');
+    },
+
+    get year() {
+      return 3 - this.date - this.month;
+    },
+
+    get formatYear() {
+      if (toFormat[this.year].length > 2) {
+        return 'YYYY';
+      }
+
+      return 'YY';
+    },
+  };
+
+  const splitDate = date.split(oldPosition.separator);
+
+  newDate[newPosition.date] = splitDate[oldPosition.date];
+  newDate[newPosition.month] = splitDate[oldPosition.month];
+
+  if (newPosition.formatYear === 'YY') {
+    newDate[newPosition.year] = getShortYear(splitDate[oldPosition.year]);
+  }
+
+  if (newPosition.formatYear === 'YYYY') {
+    newDate[newPosition.year] = getFullYear(splitDate[oldPosition.year]);
+  }
+
+  return newDate.join(newPosition.separator);
+}
+
+function getFullYear(year) {
+  if (year.length === 4) {
+    return year;
+  }
+
+  if (year < 30) {
+    return `20${year}`;
+  }
+
+  return `19${year}`;
+}
+
+function getShortYear(year) {
+  if (year.length === 2) {
+    return year;
+  }
+
+  return year.slice(2);
 }
 
 module.exports = formatDate;
