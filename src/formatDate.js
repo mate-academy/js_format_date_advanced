@@ -54,6 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const oldPosition = {
     separator: fromFormat[3],
+    dateSlots: 3,
 
     get date() {
       return fromFormat.indexOf('DD');
@@ -64,12 +65,13 @@ function formatDate(date, fromFormat, toFormat) {
     },
 
     get year() {
-      return 3 - this.date - this.month;
+      return this.dateSlots - this.date - this.month;
     },
   };
 
   const newPosition = {
     separator: toFormat[3],
+    dateSlots: 3,
 
     get date() {
       return toFormat.indexOf('DD');
@@ -80,7 +82,7 @@ function formatDate(date, fromFormat, toFormat) {
     },
 
     get year() {
-      return 3 - this.date - this.month;
+      return this.dateSlots - this.date - this.month;
     },
 
     get formatYear() {
