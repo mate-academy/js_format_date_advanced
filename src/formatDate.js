@@ -49,8 +49,47 @@
  * @returns {string}
  */
 
+// function formatDate(date, fromFormat, toFormat) {
+//   // write code here
+// let parts = date.split(fromFormat[fromFormat.length - 1]);
+// let partOrder = fromFormat.slice(0, -1);
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let result = '';
+  const parts = date.split(`${fromFormat[3]}`);
+
+  function getFormatPart(part) {
+    return parts[fromFormat.indexOf(part)];
+  }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+      case 'MM':
+        result += getFormatPart(toFormat[i]);
+        break;
+      case 'YY':
+        if (fromFormat.includes('YY')) {
+          result += getFormatPart(toFormat[i]);
+        } else if (fromFormat.includes('YYYY')) {
+          result += parts[fromFormat.indexOf('YYYY')].slice(2);
+        }
+        break;
+      case 'YYYY':
+        if (fromFormat.includes('YYYY')) {
+          result += getFormatPart(toFormat[i]);
+        } else if (fromFormat.includes('YY')) {
+          result += `${parts[fromFormat.indexOf('YY')] >= 30 ? 19 : 20}${parts[fromFormat.indexOf('YY')]}`;
+        }
+        break;
+    }
+
+    if (i < 2) {
+      result += toFormat[3];
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
