@@ -42,7 +42,7 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} part
+ * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
  *
