@@ -52,24 +52,30 @@
 function formatDate(date, fromFormat, toFormat) {
   const dateAsObject = {};
   const formatedDate = [];
+  const fromSeparator = fromFormat.slice(-1);
+  const toSeparator = toFormat.slice(-1);
+  const dateAsArray = date.split(fromSeparator);
+  const toDateFormat = toFormat.slice(0, -1);
 
-  date.split(fromFormat.slice(-1)).forEach((e, i) => {
-    if (!toFormat.includes(fromFormat[i])) {
-      const year = fromFormat[i] === 'YY' ? 'YYYY' : 'YY';
+  dateAsArray.forEach((e, i) => {
+    const dateFormat = fromFormat[i];
+
+    if (!toFormat.includes(dateFormat)) {
+      const year = dateFormat === 'YY' ? 'YYYY' : 'YY';
 
       dateAsObject[year] = formatYear(e);
 
       return;
     }
 
-    dateAsObject[fromFormat[i]] = e;
+    dateAsObject[dateFormat] = e;
   });
 
-  toFormat.slice(0, -1).forEach((e) => {
+  toDateFormat.forEach((e) => {
     formatedDate.push(dateAsObject[e]);
   });
 
-  return formatedDate.join(toFormat.slice(-1));
+  return formatedDate.join(toSeparator);
 }
 
 function formatYear(year) {
