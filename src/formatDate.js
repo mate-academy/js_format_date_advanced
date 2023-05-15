@@ -58,9 +58,13 @@ function formatDate(date, fromFormat, toFormat) {
   for (const i of fromFormat) {
     if (i === 'YY' || i === 'YYYY') {
       year += dateArr[fromFormat.indexOf(i)];
-    } else if (i === 'MM') {
+    }
+
+    if (i === 'MM') {
       month += dateArr[fromFormat.indexOf(i)];
-    } else if (i === 'DD') {
+    }
+
+    if (i === 'DD') {
       day += dateArr[fromFormat.indexOf(i)];
     }
   }
@@ -74,10 +78,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (toFormat.includes('YY') && year.length > 2) {
-    year = year.split('');
-    year.shift();
-    year.shift();
-    year = year.join('');
+    year = year.split('').slice(2).join('');
   }
 
   const dateFormated = [];
@@ -85,9 +86,13 @@ function formatDate(date, fromFormat, toFormat) {
   for (const i of toFormat) {
     if (i === 'YY' || i === 'YYYY') {
       dateFormated.push(year);
-    } else if (i === 'DD') {
+    }
+
+    if (i === 'DD') {
       dateFormated.push(day);
-    } else if (i === 'MM') {
+    }
+
+    if (i === 'MM') {
       dateFormated.push(month);
     }
   }
