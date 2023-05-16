@@ -55,17 +55,17 @@ function formatDate(date, fromFormat, toFormat) {
   let month = '';
   let day = '';
 
-  for (const i of fromFormat) {
-    if (i === 'YY' || i === 'YYYY') {
-      year += dateArr[fromFormat.indexOf(i)];
+  for (const element of fromFormat) {
+    if (element === 'YY' || element === 'YYYY') {
+      year += dateArr[fromFormat.indexOf(element)];
     }
 
-    if (i === 'MM') {
-      month += dateArr[fromFormat.indexOf(i)];
+    if (element === 'MM') {
+      month += dateArr[fromFormat.indexOf(element)];
     }
 
-    if (i === 'DD') {
-      day += dateArr[fromFormat.indexOf(i)];
+    if (element === 'DD') {
+      day += dateArr[fromFormat.indexOf(element)];
     }
   }
 
@@ -83,16 +83,16 @@ function formatDate(date, fromFormat, toFormat) {
 
   const dateFormated = [];
 
-  for (const i of toFormat) {
-    if (i === 'YY' || i === 'YYYY') {
+  for (const element of toFormat) {
+    if (element === 'YY' || element === 'YYYY') {
       dateFormated.push(year);
     }
 
-    if (i === 'DD') {
+    if (element === 'DD') {
       dateFormated.push(day);
     }
 
-    if (i === 'MM') {
+    if (element === 'MM') {
       dateFormated.push(month);
     }
   }
