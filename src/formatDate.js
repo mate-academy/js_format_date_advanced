@@ -52,17 +52,17 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
 
-  const arrDate = date.split(fromFormat[3]);
+  const dateComponents = date.split(fromFormat[3]);
   const result = [];
 
-  result[toFormat.indexOf('DD')] = arrDate[fromFormat.indexOf('DD')];
-  result[toFormat.indexOf('MM')] = arrDate[fromFormat.indexOf('MM')];
+  result[toFormat.indexOf('DD')] = dateComponents[fromFormat.indexOf('DD')];
+  result[toFormat.indexOf('MM')] = dateComponents[fromFormat.indexOf('MM')];
 
-  let year = (fromFormat.indexOf('YYYY') === -1)
-    ? arrDate[fromFormat.indexOf('YY')]
-    : arrDate[fromFormat.indexOf('YYYY')];
+  let year = (fromFormat.includes('YYYY'))
+    ? dateComponents[fromFormat.indexOf('YYYY')]
+    : dateComponents[fromFormat.indexOf('YY')];
 
-  if (toFormat.indexOf('YYYY') === -1) {
+  if (!toFormat.includes('YYYY')) {
     year = (year.length > 2) ? year.slice(2, 4) : year;
     result[toFormat.indexOf('YY')] = year;
   } else {
