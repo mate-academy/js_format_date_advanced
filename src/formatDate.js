@@ -1,4 +1,5 @@
-'use strict';
+/* eslint-disable quotes */
+"use strict";
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
@@ -51,6 +52,63 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const res = [];
+  const currentYear = new Date().getFullYear() % 100;
+  const dateArr = date.split(`${fromFormat[fromFormat.length - 1]}`);
+  const dateObg = {
+    year: null,
+    month: null,
+    day: null,
+    separator: null,
+  };
+
+  fromFormat.forEach((item, index) => {
+    switch (true) {
+      case item === "YYYY":
+        dateObg.year = dateArr[index];
+        break;
+      case item === "YY":
+        dateObg.year = dateArr[index].slice(-2);
+        break;
+      case item === "MM":
+        dateObg.month = dateArr[index];
+        break;
+      case item === "DD":
+        dateObg.day = dateArr[index];
+        break;
+      default:
+        dateObg.separator = toFormat[toFormat.length - 1];
+    }
+  });
+
+  toFormat.forEach((item, index) => {
+    switch (true) {
+      case item === "YYYY"
+        && dateObg.year.length === 2
+        && +dateObg.year < currentYear:
+        res[index] = `20${dateObg.year}`;
+        break;
+      case item === "YYYY"
+        && dateObg.year.length === 2
+        && +dateObg.year > currentYear:
+        res[index] = `19${dateObg.year}`;
+        break;
+      case item === "YYYY":
+        res[index] = dateObg.year;
+        break;
+      case item === "YY":
+        res[index] = dateObg.year.slice(-2);
+        break;
+      case item === "MM":
+        res[index] = dateObg.month;
+        break;
+      case item === "DD":
+        res[index] = dateObg.day;
+        break;
+    }
+  });
+
+  return res.join(dateObg.separator);
 }
 
 module.exports = formatDate;
