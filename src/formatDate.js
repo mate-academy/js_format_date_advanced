@@ -54,7 +54,9 @@ function formatDate(date, fromFormat, toFormat) {
   const dateInfo = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateInfo[fromFormat[i]] = date.split(fromFormat[fromFormat.length - 1])[i];
+    const formatKey = fromFormat[i];
+
+    dateInfo[formatKey] = date.split(fromFormat[fromFormat.length - 1])[i];
   }
 
   if (!dateInfo.YYYY && +dateInfo.YY >= 30) {
@@ -70,7 +72,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    newDate.push(dateInfo[toFormat[i]]);
+    const formatKey = toFormat[i];
+
+    newDate.push(dateInfo[formatKey]);
   }
 
   return newDate.join(toFormat[toFormat.length - 1]);
