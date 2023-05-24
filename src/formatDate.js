@@ -69,22 +69,27 @@ function formatDate(date, fromFormat, toFormat) {
   newToFormat.forEach((newDateExpression, index) => {
     const oldDateExpression = newFromFormat[index];
 
-    if (newDateExpression === 'DD') {
-      formattedDateObj['DD'] = dateObj['DD'];
-    } else if (newDateExpression === 'MM') {
-      formattedDateObj['MM'] = dateObj['MM'];
-    } else if (newDateExpression === 'YY') {
-      formattedDateObj['YY'] = dateObj['YYYY'].slice(2);
-    } else if (newDateExpression === 'YYYY') {
-      formattedDateObj['YYYY'] = dateObj['YYYY'];
+    switch (newDateExpression) {
+      case 'DD':
+        formattedDateObj['DD'] = dateObj['DD'];
+        break;
+      case 'MM':
+        formattedDateObj['MM'] = dateObj['MM'];
+        break;
+      case 'YY':
+        formattedDateObj['YY'] = dateObj['YYYY'].slice(2);
+        break;
+      case 'YYYY':
+        formattedDateObj['YYYY'] = dateObj['YYYY'];
 
-      if (oldDateExpression === 'YY') {
-        if (dateObj['YY'] < 30) {
-          formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '20');
-        } else {
-          formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '19');
+        if (oldDateExpression === 'YY') {
+          if (dateObj['YY'] < 30) {
+            formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '20');
+          } else {
+            formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '19');
+          }
         }
-      }
+        break;
     }
   });
 
