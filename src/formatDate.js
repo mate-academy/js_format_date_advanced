@@ -59,39 +59,36 @@ function formatDate(date, fromFormat, toFormat) {
   const newFromFormat = fromFormat.filter(dateExpression =>
     dateExpression !== dateExpression[dateExpression.length - 1]);
 
-  const obj = {};
-  const objFormatted = {};
+  const dateObj = {};
+  const formattedDateObj = {};
 
   for (let i = 0; i < newFromFormat.length; i++) {
-    obj[newFromFormat[i]] = newDateArray[i];
+    dateObj[fromFormat[i]] = newDateArray[i];
   }
 
-  for (let i = 0; i < newToFormat.length; i++) {
-    for (let j = 0; j < newFromFormat.length; j++) {
-      const newDateExpression = newToFormat[i];
-      const oldDateExpression = newFromFormat[j];
+  newToFormat.forEach((newDateExpression, index) => {
+    const oldDateExpression = newFromFormat[index];
 
-      if (newDateExpression === 'DD') {
-        objFormatted['DD'] = obj['DD'];
-      } else if (newDateExpression === 'MM') {
-        objFormatted['MM'] = obj['MM'];
-      } else if (newDateExpression === 'YY') {
-        objFormatted['YY'] = obj['YYYY'].slice(2);
-      } else if (newDateExpression === 'YYYY' && oldDateExpression === 'YYYY') {
-        objFormatted['YYYY'] = obj['YYYY'];
-      } else if (newDateExpression === 'YYYY' && oldDateExpression === 'YY') {
-        if (obj['YY'] < 30) {
-          objFormatted['YYYY'] = obj['YY'].padStart(4, '20');
+    if (newDateExpression === 'DD') {
+      formattedDateObj['DD'] = dateObj['DD'];
+    } else if (newDateExpression === 'MM') {
+      formattedDateObj['MM'] = dateObj['MM'];
+    } else if (newDateExpression === 'YY') {
+      formattedDateObj['YY'] = dateObj['YYYY'].slice(2);
+    } else if (newDateExpression === 'YYYY') {
+      formattedDateObj['YYYY'] = dateObj['YYYY'];
+
+      if (oldDateExpression === 'YY') {
+        if (dateObj['YY'] < 30) {
+          formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '20');
         } else {
-          objFormatted['YYYY'] = obj['YY'].padStart(4, '19');
+          formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '19');
         }
       }
     }
-  }
+  });
 
-  const result = Object.values(objFormatted).join(symbolB);
-
-  return result;
+  return Object.values(formattedDateObj).join(symbolB);
 }
 
 module.exports = formatDate;
