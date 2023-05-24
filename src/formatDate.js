@@ -55,15 +55,16 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     const position = fromFormat.indexOf(toFormat[i]);
+    const yyValue = oldArray[fromFormat.indexOf('YY')];
 
     if (position !== -1) {
       newArray[i] = oldArray[position];
     } else if (toFormat[i].length === 2) {
       newArray[i] = oldArray[i].slice(2);
-    } else if ((toFormat[i].length === 4) && (oldArray[i] < 30)) {
-      newArray[i] = '20' + oldArray[i];
+    } else if ((toFormat[i].length === 4) && (yyValue < 30)) {
+      newArray[i] = '20' + yyValue;
     } else {
-      newArray[i] = '19' + oldArray[i];
+      newArray[i] = '19' + yyValue;
     }
   };
 
