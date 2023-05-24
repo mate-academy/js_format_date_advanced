@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const symbolA = fromFormat[fromFormat.length - 1];
+  const symbolB = toFormat[toFormat.length - 1];
+
+  const newDateArray = date.split(symbolA).join(symbolB).split(symbolB);
+  const newToFormat = toFormat.filter(dateExpression =>
+    dateExpression !== dateExpression[dateExpression.length - 1]);
+  const newFromFormat = fromFormat.filter(dateExpression =>
+    dateExpression !== dateExpression[dateExpression.length - 1]);
+
+  const dateObj = {};
+  const formattedDateObj = {};
+
+  for (let i = 0; i < newFromFormat.length; i++) {
+    dateObj[fromFormat[i]] = newDateArray[i];
+  }
+
+  newToFormat.forEach((newDateExpression, index) => {
+    const oldDateExpression = newFromFormat[index];
+
+    switch (newDateExpression) {
+      case 'DD':
+        formattedDateObj['DD'] = dateObj['DD'];
+        break;
+      case 'MM':
+        formattedDateObj['MM'] = dateObj['MM'];
+        break;
+      case 'YY':
+        formattedDateObj['YY'] = dateObj['YYYY'].slice(2);
+        break;
+      case 'YYYY':
+        formattedDateObj['YYYY'] = dateObj['YYYY'];
+
+        if (oldDateExpression === 'YY') {
+          if (dateObj['YY'] < 30) {
+            formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '20');
+          } else {
+            formattedDateObj['YYYY'] = dateObj['YY'].padStart(4, '19');
+          }
+        }
+        break;
+    }
+  });
+
+  return Object.values(formattedDateObj).join(symbolB);
 }
 
 module.exports = formatDate;
