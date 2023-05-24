@@ -53,10 +53,12 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
   const dateInfo = {};
 
+  const dateParts = date.split(fromFormat[fromFormat.length - 1]);
+
   for (let i = 0; i < fromFormat.length - 1; i++) {
     const formatKey = fromFormat[i];
 
-    dateInfo[formatKey] = date.split(fromFormat[fromFormat.length - 1])[i];
+    dateInfo[formatKey] = dateParts[i];
   }
 
   if (!dateInfo.YYYY && +dateInfo.YY >= 30) {
