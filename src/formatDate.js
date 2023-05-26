@@ -82,8 +82,4 @@ function formatDate(date, fromFormat, toFormat) {
   return formattedDate.join(newSeparator);
 }
 
-// console.log(
-//   formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.'])
-// );
-
 module.exports = formatDate;
