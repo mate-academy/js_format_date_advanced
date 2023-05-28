@@ -50,11 +50,13 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const finalDateArr = [];
+  const newDateArray = [];
   const newDate = date.split(fromFormat[3]);
+  const yearLong = fromFormat.indexOf('YYYY');
+  const yearShort = fromFormat.indexOf('YY');
 
-  if (toFormat[toFormat.lastIndexOf('YYYY')] !== undefined) {
-    let tempDate = newDate[fromFormat.lastIndexOf('YY')];
+  if (toFormat[toFormat.indexOf('YYYY')] !== undefined) {
+    let tempDate = newDate[yearShort];
 
     if (tempDate >= 30) {
       tempDate = Number(tempDate) + 1900;
@@ -62,25 +64,24 @@ function formatDate(date, fromFormat, toFormat) {
       tempDate = Number(tempDate) + 2000;
     }
 
-    newDate[fromFormat.lastIndexOf('YY')] = tempDate;
-    fromFormat[fromFormat.lastIndexOf('YY')] = 'YYYY';
-  } else if (toFormat[toFormat.lastIndexOf('YY')] !== undefined
-  && fromFormat[fromFormat.lastIndexOf('YYYY')] !== undefined) {
-    const tempDate = newDate[fromFormat.lastIndexOf('YYYY')].slice(2, 4);
+    newDate[yearShort] = tempDate;
+    fromFormat[yearShort] = 'YYYY';
+  } else if (toFormat[toFormat.indexOf('YY')] !== undefined
+  && fromFormat[yearLong] !== undefined) {
+    const tempDate = newDate[yearLong].slice(2, 4);
 
-    newDate[fromFormat.lastIndexOf('YYYY')] = tempDate;
-    fromFormat[fromFormat.lastIndexOf('YYYY')] = 'YY';
+    newDate[yearLong] = tempDate;
+    fromFormat[yearLong] = 'YY';
   }
 
   for (const numb in toFormat) {
-    finalDateArr[numb] = newDate[fromFormat.lastIndexOf(toFormat[numb])];
+    newDateArray[numb] = newDate[fromFormat.indexOf(toFormat[numb])];
   }
+  newDateArray.pop();
 
-  finalDateArr.pop();
+  const newFormatDate = newDateArray.join(toFormat[3]);
 
-  const result = finalDateArr.join(toFormat[3]);
-
-  return result;
+  return newFormatDate;
 }
 
 module.exports = formatDate;
