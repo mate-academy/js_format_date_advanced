@@ -63,22 +63,20 @@ function formatDate(date, fromFormat, toFormat) {
   dateGiven = date.split(initialDateSplitter);
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    for (let j = 0; j < fromFormat.length; j++) {
-      if (toFormat[i] === 'YY' && fromFormat[j] === 'YYYY') {
-        result[i] = dateGiven[j].slice(2, 5);
-      }
+    if (toFormat[i] === 'YY') {
+      result[i] = dateGiven[fromFormat.indexOf('YYYY')].slice(2, 5);
+    }
 
-      if (toFormat[i] === 'YYYY' && fromFormat[j] === 'YY') {
-        if (dateGiven[j] < 30) {
-          result[i] = '20' + dateGiven[j];
-        } else {
-          result[i] = '19' + dateGiven[j];
-        }
+    if (toFormat[i] === 'YYYY') {
+      if (dateGiven[fromFormat.indexOf('YY')] < 30) {
+        result[i] = '20' + dateGiven[fromFormat.indexOf('YY')];
+      } else {
+        result[i] = '19' + dateGiven[fromFormat.indexOf('YY')];
       }
+    }
 
-      if (toFormat[i] === fromFormat[j]) {
-        result[i] = dateGiven[j];
-      }
+    if (toFormat[i] === fromFormat[fromFormat.indexOf(toFormat[i])]) {
+      result[i] = dateGiven[fromFormat.indexOf(toFormat[i])];
     }
   }
 
