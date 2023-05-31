@@ -72,10 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
     result[i] = formattedDate[toFormat[i]];
   }
 
-  const formattedResult = result.join(toSeparator);
-
-  return formattedResult.endsWith(toSeparator)
-    ? formattedResult.slice(0, -1) : formattedResult;
+  return result.join(toSeparator);
 }
 
 module.exports = formatDate;
