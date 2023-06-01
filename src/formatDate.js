@@ -65,10 +65,10 @@ function formatDate(date, fromFormat, toFormat) {
       newFormat.push(obj[toFormat[i]]);
     } else if (toFormat[i] === 'YY') {
       newFormat.push(obj['YYYY'].slice(2));
-    } else if (toFormat[i] === 'YYYY' & obj['YY'] < 30) {
-      newFormat.push(20 + obj['YY']);
+    } else if (toFormat[i] === 'YYYY' && obj['YY'] < 30) {
+      newFormat.push(`20${obj['YY']}`);
     } else {
-      newFormat.push(19 + obj['YY']);
+      newFormat.push(`19${obj['YY']}`);
     }
   }
 
