@@ -50,7 +50,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const DELIM = fromFormat.pop();
+  const GLUE = toFormat.pop();
+
+  const PREVIOUS_DATE_POSITION = fromFormat.indexOf('DD');
+  const NEXT_DATE_POSITION = toFormat.indexOf('DD');
+  const PREVIOUS_MONTH_POSITION = fromFormat.indexOf('MM');
+  const NEXT_MONTH_POSITION = toFormat.indexOf('MM');
+  const PREVIOUS_YEAR_POSITION = 3 - PREVIOUS_DATE_POSITION
+    - PREVIOUS_MONTH_POSITION;
+  const NEXT_YEAR_POSITION = 3 - NEXT_DATE_POSITION - NEXT_MONTH_POSITION;
+
+  const PERIOD_NUMBERS = date.split(DELIM);
+
+  const DATE_NUMBER = PERIOD_NUMBERS[PREVIOUS_DATE_POSITION];
+  const MONTH_NUMBER = PERIOD_NUMBERS[PREVIOUS_MONTH_POSITION];
+  let yearNumber = PERIOD_NUMBERS[PREVIOUS_YEAR_POSITION];
+
+  switch (toFormat[NEXT_YEAR_POSITION].length) {
+    case 2:
+      yearNumber = yearNumber.slice(-2);
+      break;
+
+    case 4:
+      if (fromFormat[PREVIOUS_YEAR_POSITION].length === 2) {
+        if (yearNumber < 30) {
+          yearNumber = '20' + yearNumber;
+          break;
+        }
+
+        yearNumber = '19' + yearNumber;
+      }
+  }
+
+  return (
+    PERIOD_NUMBERS.fill(DATE_NUMBER, NEXT_DATE_POSITION, NEXT_DATE_POSITION + 1)
+      .fill(MONTH_NUMBER, NEXT_MONTH_POSITION, NEXT_MONTH_POSITION + 1)
+      .fill(yearNumber, NEXT_YEAR_POSITION, NEXT_YEAR_POSITION + 1).join(GLUE)
+  );
 }
 
 module.exports = formatDate;
