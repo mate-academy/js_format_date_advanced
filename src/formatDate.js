@@ -50,30 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const DELIM = fromFormat.pop();
-  const GLUE = toFormat.pop();
+  const delim = fromFormat.pop();
+  const glue = toFormat.pop();
 
-  const PREVIOUS_DATE_POSITION = fromFormat.indexOf('DD');
-  const NEXT_DATE_POSITION = toFormat.indexOf('DD');
-  const PREVIOUS_MONTH_POSITION = fromFormat.indexOf('MM');
-  const NEXT_MONTH_POSITION = toFormat.indexOf('MM');
-  const PREVIOUS_YEAR_POSITION = 3 - PREVIOUS_DATE_POSITION
-    - PREVIOUS_MONTH_POSITION;
-  const NEXT_YEAR_POSITION = 3 - NEXT_DATE_POSITION - NEXT_MONTH_POSITION;
+  const previousDatePosition = fromFormat.indexOf('DD');
+  const nextDatePosition = toFormat.indexOf('DD');
+  const previousMonthPosition = fromFormat.indexOf('MM');
+  const nextMonthPosition = toFormat.indexOf('MM');
+  const previousYearPosition = 3 - previousDatePosition
+    - previousMonthPosition;
+  const nextYearPosition = 3 - nextDatePosition - nextMonthPosition;
 
-  const PERIOD_NUMBERS = date.split(DELIM);
+  const periodNumbers = date.split(delim);
 
-  const DATE_NUMBER = PERIOD_NUMBERS[PREVIOUS_DATE_POSITION];
-  const MONTH_NUMBER = PERIOD_NUMBERS[PREVIOUS_MONTH_POSITION];
-  let yearNumber = PERIOD_NUMBERS[PREVIOUS_YEAR_POSITION];
+  const dateNumber = periodNumbers[previousDatePosition];
+  const monthNumber = periodNumbers[previousMonthPosition];
+  let yearNumber = periodNumbers[previousYearPosition];
 
-  switch (toFormat[NEXT_YEAR_POSITION].length) {
+  switch (toFormat[nextYearPosition].length) {
     case 2:
       yearNumber = yearNumber.slice(-2);
       break;
 
     case 4:
-      if (fromFormat[PREVIOUS_YEAR_POSITION].length === 2) {
+      if (fromFormat[previousYearPosition].length === 2) {
         if (yearNumber < 30) {
           yearNumber = '20' + yearNumber;
           break;
@@ -84,9 +84,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return (
-    PERIOD_NUMBERS.fill(DATE_NUMBER, NEXT_DATE_POSITION, NEXT_DATE_POSITION + 1)
-      .fill(MONTH_NUMBER, NEXT_MONTH_POSITION, NEXT_MONTH_POSITION + 1)
-      .fill(yearNumber, NEXT_YEAR_POSITION, NEXT_YEAR_POSITION + 1).join(GLUE)
+    periodNumbers.fill(dateNumber, nextDatePosition, nextDatePosition + 1)
+      .fill(monthNumber, nextMonthPosition, nextMonthPosition + 1)
+      .fill(yearNumber, nextYearPosition, nextYearPosition + 1).join(glue)
   );
 }
 
