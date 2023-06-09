@@ -93,7 +93,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (i === 'YY') {
-      newDate.push(YYYY.substr(2));
+      newDate.push(YYYY.substring(2));
     }
 
     if (i === 'MM') {
