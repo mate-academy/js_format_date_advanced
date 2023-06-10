@@ -58,20 +58,25 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YYYY') {
-      YYYY = oldDateArr[i];
-    }
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        YYYY = oldDateArr[i];
+        break;
 
-    if (fromFormat[i] === 'YY') {
-      YY = oldDateArr[i];
-    }
+      case 'YY':
+        YY = oldDateArr[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      MM = oldDateArr[i];
-    }
+      case 'MM':
+        MM = oldDateArr[i];
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      DD = oldDateArr[i];
+      case 'DD':
+        DD = oldDateArr[i];
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -84,24 +89,28 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const i of toFormat) {
-    if (i === 'YYYY') {
-      newDate.push(YYYY);
-    }
+    switch (i) {
+      case 'YYYY':
+        newDate.push(YYYY);
+        break;
 
-    if (i === 'YY' && fromFormat.includes('YY')) {
-      newDate.push(YY);
-    }
+      case 'YY':
+        if (fromFormat.includes('YY')) {
+          newDate.push(YY);
+        }
+        newDate.push(YYYY.substring(2));
+        break;
 
-    if (i === 'YY') {
-      newDate.push(YYYY.substring(2));
-    }
+      case 'MM':
+        newDate.push(MM);
+        break;
 
-    if (i === 'MM') {
-      newDate.push(MM);
-    }
+      case 'DD':
+        newDate.push(DD);
+        break;
 
-    if (i === 'DD') {
-      newDate.push(DD);
+      default:
+        break;
     }
   }
 
