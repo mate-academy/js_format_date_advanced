@@ -59,6 +59,18 @@ function formatDate(date, fromFormat, toFormat) {
     objDate[fromFormat[i]] = partsDate[i];
   }
 
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (objDate['YY'] < 30) {
+      objDate['YYYY'] = '20' + objDate['YY'];
+    } else {
+      objDate['YYYY'] = '19' + objDate['YY'];
+    }
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    objDate['YY'] = objDate['YYYY'].slice(2);
+  }
+
   const newDate = [];
 
   for (const param of toFormat) {
