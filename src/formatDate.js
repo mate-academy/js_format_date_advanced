@@ -54,9 +54,9 @@ function formatDate(date, fromFormat, toFormat) {
   const toSeparator = toFormat[3];
   const splittedDate = date.split(fromSeparator);
   const formattedDate = [];
-  let currentYear = 'Y';
-  let currentMonth = 'M';
-  let currentDay = 'D';
+  let currentYear = '';
+  let currentMonth = '';
+  let currentDay = '';
 
   for (let i = 0; i < fromFormat.length - 1; i += 1) {
     switch (fromFormat[i][0]) {
@@ -78,9 +78,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i += 1) {
-    let year = currentYear.slice(1);
-    const month = currentMonth.slice(1);
-    const day = currentDay.slice(1);
+    let year = currentYear;
+    const month = currentMonth;
+    const day = currentDay;
 
     if (year.length > toFormat[i].length) {
       year = year.slice(2);
@@ -95,15 +95,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     switch (toFormat[i][0]) {
-      case currentYear[0]:
+      case 'Y':
         formattedDate.push(year);
         break;
 
-      case currentMonth[0]:
+      case 'M':
         formattedDate.push(month);
         break;
 
-      case currentDay[0]:
+      case 'D':
         formattedDate.push(day);
         break;
 
