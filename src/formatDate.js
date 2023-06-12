@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const separatorFrom = fromFormat.pop();
   const separatorTo = toFormat.pop();
-  const dateParts = date.split(`${separatorFrom}`);
+  const dateParts = date.split(separatorFrom);
   const dateData = {};
 
   for (const [index, part] of Object.entries(dateParts)) {
@@ -79,7 +79,7 @@ function formatDate(date, fromFormat, toFormat) {
     formatedDate.push(formatedYear);
   }
 
-  return formatedDate.join(`${separatorTo}`);
+  return formatedDate.join(separatorTo);
 }
 
 function formatYear(year, format) {
