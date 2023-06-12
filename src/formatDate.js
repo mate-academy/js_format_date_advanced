@@ -69,6 +69,8 @@ function formatDate(date, fromFormat, toFormat) {
       case 'D':
         currentDay = oldDateArr[index];
         break;
+      default:
+        throw new Error('Invalid format');
     }
   });
 
@@ -92,6 +94,8 @@ function formatDate(date, fromFormat, toFormat) {
       case 'D':
         newDateArr.push(currentDay);
         break;
+      default:
+        throw new Error('Invalid format');
     }
   });
 
