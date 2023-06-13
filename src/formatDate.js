@@ -58,7 +58,7 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDateArr = date.split(oldSeparator);
   const newDateArr = [];
 
-  fromFormat.map((el, index) => {
+  fromFormat.forEach((el, index) => {
     switch (el[0]) {
       case 'Y':
         currentYear = oldDateArr[index];
@@ -74,19 +74,18 @@ function formatDate(date, fromFormat, toFormat) {
     }
   });
 
-  toFormat.map((el) => {
+  toFormat.forEach((el) => {
     switch (el[0]) {
-      case ('Y'):
+      case 'Y':
         if (el.length > currentYear.length) {
-          const year = (+currentYear < 30 ? '20' : '19') + currentYear;
-
-          newDateArr.push(year);
-        } else if (el.length < currentYear.length) {
-          newDateArr.push(currentYear.slice(-2));
-        } else {
-          newDateArr.push(currentYear);
+          currentYear = (+currentYear < 30 ? '20' : '19') + currentYear;
         }
 
+        if (el.length < currentYear.length) {
+          currentYear = currentYear.slice(-2);
+        }
+
+        newDateArr.push(currentYear);
         break;
       case 'M':
         newDateArr.push(currentMonth);
