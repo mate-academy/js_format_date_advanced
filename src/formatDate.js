@@ -57,20 +57,8 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < fromFormat.length; i++) {
     for (let k = 0; k < toFormat.length; k++) {
-      if (fromFormat[i].startsWith('Y') && fromFormat[i].length === 2) {
-        if (toFormat[k].startsWith('Y') && toFormat[k].length === 4) {
-          if (+arrayDate[i] < 30) {
-            resultArr[k] = `20${arrayDate[i]}`;
-          } else {
-            resultArr[k] = `19${arrayDate[i]}`;
-          }
-        }
-      }
-
-      if (fromFormat[i].startsWith('Y') && fromFormat[i].length === 4) {
-        if (toFormat[k].startsWith('Y') && toFormat[k].length === 2) {
-          resultArr[k] = arrayDate[i].slice(2);
-        }
+      if (fromFormat[i].startsWith('Y') && toFormat[k].startsWith('Y')) {
+        resultArr[k] = typeOfYear(arrayDate[i], toFormat[k]);
       }
 
       if (fromFormat[i] === toFormat[k]) {
@@ -80,6 +68,24 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return resultArr.join(newSeparator);
+}
+
+function typeOfYear(year, type) {
+  if (year.length === type.length) {
+    return year;
+  }
+
+  if (type === 'YY') {
+    return year.slice(2);
+  }
+
+  if (type === 'YYYY' && year < 30) {
+    return `20${year}`;
+  }
+
+  if (type === 'YYYY' && year >= 30) {
+    return `19${year}`;
+  }
 }
 
 module.exports = formatDate;
