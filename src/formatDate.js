@@ -107,4 +107,3 @@ function formatDate(date, fromFormat, toFormat) {
 
 module.exports = formatDate;
 
-formatDate('1998-02-18', ['YY', 'MM', 'DD', '-'], ['MM', 'DD', 'YYYY', '/']);
