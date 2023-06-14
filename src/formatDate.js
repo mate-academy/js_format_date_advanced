@@ -50,7 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [ separator, ...oldFormat ] = fromFormat.reverse();
+  const reversedFromFormat = [...fromFormat].reverse();
+  const [separator, ...oldFormat] = reversedFromFormat;
   const newSeparator = toFormat[toFormat.length - 1];
   const arrayDate = date.split(separator).reverse();
   let year = '';
@@ -67,13 +68,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let index = 0; index < toFormat.length - 1; index++) {
     if (toFormat[index].includes('Y')) {
-      const newYear = convertingYear(toFormat[index], year);
+      const newYear = convertYear(toFormat[index], year);
 
-      result += `${newYear}`;
+      result += newYear;
     } else {
       const partDate = oldFormatDate[toFormat[index]];
 
-      result += `${partDate}`;
+      result += partDate;
     }
 
     if (index !== toFormat.length - 2) {
@@ -84,7 +85,7 @@ function formatDate(date, fromFormat, toFormat) {
   return result;
 }
 
-function convertingYear(newFormat, year) {
+function convertYear(newFormat, year) {
   if (year.length === newFormat.length) {
     return year;
   }
