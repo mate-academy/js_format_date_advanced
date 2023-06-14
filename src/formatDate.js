@@ -66,10 +66,10 @@ function formatDate(date, fromFormat, toFormat) {
     objDate.YY = objDate.YYYY.slice(-2);
   }
 
-  if ('YY' in objDate && newFormat.includes('YYYY')) {
-    if (objDate.YY < '30') {
+  if (newFormat.includes('YYYY')) {
+    if (objDate.YY < 30) {
       objDate.YYYY = `20${objDate.YY}`;
-    } else if (objDate.YY >= '30') {
+    } else if (objDate.YY >= 30) {
       objDate.YYYY = `19${objDate.YY}`;
     }
   }
