@@ -95,10 +95,13 @@ function formatDate(date, fromFormat, toFormat) {
       if ((year.length === 4) && (toFormat[n].length === 2)) {
         toFormatDate[n] = year.slice(-2);
       } else if ((year.length === 2) && (toFormat[n].length === 4)) {
-        if (Number(year) < 30) {
-          toFormatDate[n] = '20' + year;
-        } else {
-          toFormatDate[n] = '19' + year;
+        switch (Number(year) < 30) {
+          case true:
+            toFormatDate[n] = '20' + year;
+            break;
+          case false:
+            toFormatDate[n] = '19' + year;
+            break;
         }
       } else {
         toFormatDate[n] = year;
