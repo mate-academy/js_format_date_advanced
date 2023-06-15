@@ -77,8 +77,8 @@ function formatDate(date, fromFormat, toFormat) {
     collectedDateValues[currentDateKey] = currentDateValue;
   }
 
-  for (const part of toFormat) {
-    newDateFormat.push(collectedDateValues[part]);
+  for (const newFormatPart of toFormat) {
+    newDateFormat.push(collectedDateValues[newFormatPart]);
   }
 
   return newDateFormat.join(toSeparator);
