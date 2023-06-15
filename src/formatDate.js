@@ -51,43 +51,34 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateList = date.split(fromFormat[3]);
-  const day = dateList[fromFormat.indexOf('DD')];
-  const month = dateList[fromFormat.indexOf('MM')];
-  let year;
-
-  if (fromFormat.includes('YY')) {
-    year = +dateList[fromFormat.indexOf('YY')];
-  } else {
-    year = +dateList[fromFormat.indexOf('YYYY')];
-  }
-
-  if (
-    fromFormat.includes('YY')
-    && toFormat.includes('YYYY')
-  ) {
-    if (year < 30) {
-      year += 2000;
-    } else if (year < 100) {
-      year += 1900;
-    }
-  }
-
-  if (
-    fromFormat.includes('YYYY')
-    && toFormat.includes('YY')
-  ) {
-    year = String(year).slice(2);
-  }
-
   const newDateList = [];
 
-  for (const format of toFormat) {
-    if (format === 'DD') {
-      newDateList.push(day);
-    } else if (format === 'MM') {
-      newDateList.push(month);
-    } else if (format === 'YY' || format === 'YYYY') {
-      newDateList.push(String(year));
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case `DD`:
+        newDateList.push(dateList[fromFormat.indexOf(`DD`)]);
+        break;
+
+      case `MM`:
+        newDateList.push(dateList[fromFormat.indexOf(`MM`)]);
+        break;
+
+      case `YY`:
+        if (fromFormat.indexOf(`YY`) !== -1) {
+          newDateList.push(dateList[fromFormat.indexOf(`YY`)]);
+        } else {
+          newDateList.push(dateList[fromFormat.indexOf(`YYYY`)].slice(2));
+        }
+        break;
+
+      case `YYYY`:
+        if (fromFormat.indexOf(`YYYY`) !== -1) {
+          newDateList.push(dateList[fromFormat.indexOf(`YYYY`)]);
+        } else if (dateList[fromFormat.indexOf(`YY`)][0] > 2) {
+          newDateList.push(`19` + dateList[fromFormat.indexOf(`YY`)]);
+        } else {
+          newDateList.push(`20` + dateList[fromFormat.indexOf(`YY`)]);
+        }
     }
   }
 
