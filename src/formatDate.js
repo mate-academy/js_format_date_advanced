@@ -50,6 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const SHORT_YEAR_FORMAT = 'YY';
+  const LONG_YEAR_FORMAT = 'YYYY';
+
   const fromSeparator = fromFormat.pop();
   const toSeparator = toFormat.pop();
 
@@ -61,14 +64,14 @@ function formatDate(date, fromFormat, toFormat) {
     const currentDateKey = fromFormat[i];
     const currentDateValue = dateValues[i];
 
-    if (currentDateKey === 'YY') {
-      collectedDateValues['YYYY'] = currentDateValue >= 30
+    if (currentDateKey === SHORT_YEAR_FORMAT) {
+      collectedDateValues[LONG_YEAR_FORMAT] = currentDateValue >= 30
         ? `19${currentDateValue}`
         : `20${currentDateValue}`;
     }
 
-    if (currentDateKey === 'YYYY') {
-      collectedDateValues['YY'] = currentDateValue.slice(2);
+    if (currentDateKey === LONG_YEAR_FORMAT) {
+      collectedDateValues[SHORT_YEAR_FORMAT] = currentDateValue.slice(2);
     }
 
     collectedDateValues[currentDateKey] = currentDateValue;
