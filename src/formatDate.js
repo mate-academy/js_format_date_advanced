@@ -76,26 +76,24 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const currentDate = new Date(year, month - 1, day);
-
   const newDate = [];
 
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'YYYY':
-        newDate.push(currentDate.getFullYear());
+        newDate.push(year);
         break;
 
       case 'YY' :
-        newDate.push(('' + currentDate.getFullYear()).slice(-2));
+        newDate.push(year.toString().slice(-2));
         break;
 
       case 'MM':
-        newDate.push((currentDate.getMonth() + 1).toString().padStart(2, '0'));
+        newDate.push(month);
         break;
 
       case 'DD':
-        newDate.push(currentDate.getDate().toString().padStart(2, '0'));
+        newDate.push(day);
         break;
     }
   }
@@ -106,4 +104,3 @@ function formatDate(date, fromFormat, toFormat) {
 }
 
 module.exports = formatDate;
-
