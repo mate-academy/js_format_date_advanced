@@ -63,8 +63,8 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     let nextPart = dateInfo[toFormat[i][0]];
 
-    if (toFormat[i][0] === 'Y' && changeYear) {
-      nextPart = changeYearFormat(dateInfo[toFormat[i][0]]);
+    if (toFormat[i].startsWith('Y') && changeYear) {
+      nextPart = changeYearFormat(nextPart);
     }
 
     newDate.push(nextPart);
