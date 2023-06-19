@@ -64,7 +64,7 @@ function formatDate(date, fromFormat, toFormat) {
     const part = dateObject[key];
 
     if (toFormat.includes(key)) {
-      formatedDate[key] = part; ;
+      formatedDate[key] = part;
     };
 
     if (!toFormat.includes(key)) {
