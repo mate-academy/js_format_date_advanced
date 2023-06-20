@@ -55,17 +55,13 @@ function formatDate(date, fromFormat, toFormat) {
   let day = '';
   let year = '';
   let month = '';
+  const separators = ['/', '-', '.'];
 
-  if (date.includes('/')) {
-    fromFormatDate = date.split('/');
-  }
-
-  if (date.includes('-')) {
-    fromFormatDate = date.split('-');
-  }
-
-  if (date.includes('.')) {
-    fromFormatDate = date.split('.');
+  for (const separator of separators) {
+    if (date.includes(separator)) {
+      fromFormatDate = date.split(separator);
+      break;
+    }
   }
 
   for (let i = 0; i < fromFormatDate.length; i++) {
