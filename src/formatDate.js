@@ -51,8 +51,10 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[fromFormat.length - 1]);
-  // eslint-disable-next-line max-len
-  const object = Object.fromEntries(fromFormat.slice(0, -1).map((format, index) => [format, dateArray[index]]));
+  const object = Object.fromEntries(fromFormat.slice(0,
+    -1).map(
+    (format, index) => [format, dateArray[index]]
+  ));
   const separator = toFormat[toFormat.length - 1];
 
   const result = toFormat.slice(0, -1).map(format => {
