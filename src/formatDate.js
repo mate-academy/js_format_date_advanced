@@ -49,35 +49,61 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
-  const dateObj = {};
-  const currentYear = new Date().getFullYear().toString();
+ function formatDate(date, fromFormat, toFormat) {
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const oldDate = date.split(fromSeparator);
+  const newDate = [];
 
-  for (let i = 0; i < dateArr.length; i++) {
-    dateObj[fromFormat[i]] = dateArr[i];
+  let year;
+  let month;
+  let day;
+
+  for (const index in fromFormat) {
+    const toFormatPart = fromFormat[index];
+    const oldDatePart = oldDate[index];
+
+    // get date values from old format
+    if (toFormatPart.includes('YY')) {
+      year = oldDatePart;
+    }
+
+    if (toFormatPart.includes('MM')) {
+      month = oldDatePart;
+    }
+
+    if (toFormatPart.includes('DD')) {
+      day = oldDatePart;
+    }
   }
 
-  const fromYearFormat = toFormat.find((el) => el.startsWith('Y'));
-  const toYearFormat = fromFormat.find((el) => el.startsWith('Y'));
-
-  if (fromYearFormat.length === 4 && toYearFormat.length === 2) {
-    dateObj[fromYearFormat]
-      = dateObj[toYearFormat] * 1 > Number(currentYear.slice(-2))
-        ? '19' + dateObj[toYearFormat]
-        : '20' + dateObj[toYearFormat];
+  // check for required format of year
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    year = year < 30 ? `20${year}` : `19${year}`;
   }
 
-  if (fromYearFormat.length === 2 && toYearFormat.length === 4) {
-    dateObj[fromYearFormat] = dateObj[toYearFormat].slice(-2);
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    year = year < 30 ? year - 2000 : year - 1900;
   }
 
-  const properDateString = toFormat
-    .slice(0, -1)
-    .map((el) => dateObj[el])
-    .join(toFormat[toFormat.length - 1]);
+  // set date values into new format
+  for (const toFormatPart of toFormat) {
+    if (toFormatPart.includes('YY')) {
+      newDate.push(year);
+    }
 
-  return properDateString;
+    if (toFormatPart.includes('MM')) {
+      newDate.push(month);
+    }
+
+    if (toFormatPart.includes('DD')) {
+      newDate.push(day);
+    }
+  }
+
+  return newDate.join(toSeparator);
 }
+
+module.exports = formatDate;
 
 module.exports = formatDate;
