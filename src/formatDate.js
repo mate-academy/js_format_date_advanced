@@ -52,7 +52,6 @@
 function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[toFormat.length - 1];
   const oldSeparator = fromFormat[fromFormat.length - 1];
-  const newFormat = toFormat;
 
   const workDate = date.split(oldSeparator);
   let year = parseInt(workDate[fromFormat.indexOf('YYYY')], 10);
@@ -66,14 +65,12 @@ function formatDate(date, fromFormat, toFormat) {
   const month = parseInt(workDate[fromFormat.indexOf('MM')], 10) - 1;
   const day = parseInt(workDate[fromFormat.indexOf('DD')], 10);
 
-  const parseDate = new Date(year, month, day);
-
-  const yearYY = parseDate.getFullYear().toString().slice(-2);
+  const yearYY = year.toString().slice(-2);
 
   const newDate = [];
 
-  for (let i = 0; i < newFormat.length - 1; i++) {
-    const formatToken = newFormat[i];
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const formatToken = toFormat[i];
 
     switch (formatToken) {
       case 'YYYY':
