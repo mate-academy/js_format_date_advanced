@@ -56,29 +56,34 @@ function formatDate(date, fromFormat, toFormat) {
   const resultArray = [];
   let resultDate = '';
 
+  const yearString = 'YYYY';
+  const smallYearString = 'YY';
+  const monthString = 'MM';
+  const dayString = 'DD';
+
   const fromArray = date.split(fromSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
-      case 'YYYY': {
+      case yearString: {
         year = fromArray[i];
 
         break;
       }
 
-      case 'YY': {
+      case smallYearString: {
         smallYear = fromArray[i];
 
         break;
       }
 
-      case 'MM': {
+      case monthString: {
         month = fromArray[i];
 
         break;
       }
 
-      case 'DD': {
+      case dayString: {
         day = fromArray[i];
 
         break;
@@ -92,33 +97,33 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (smallYear !== undefined && smallYear !== null) {
     if (smallYear < 30) {
-      year = 2000 + (+smallYear);
+      year = 2000 + Number(smallYear);
     } else {
-      year = 1900 + (+smallYear);
+      year = 1900 + Number(smallYear);
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
-      case 'YYYY': {
+      case yearString: {
         resultArray.push(year);
 
         break;
       }
 
-      case 'YY': {
+      case smallYearString: {
         resultArray.push(smallYear);
 
         break;
       }
 
-      case 'MM': {
+      case monthString: {
         resultArray.push(month);
 
         break;
       }
 
-      case 'DD': {
+      case dayString: {
         resultArray.push(day);
 
         break;
