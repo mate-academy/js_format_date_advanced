@@ -50,8 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const [ , , , fromSeparator ] = fromFormat;
-  const [ , , , toSeparator ] = toFormat;
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
   let year, smallYear, month, day;
   const resultArray = [];
   let resultDate = '';
@@ -86,15 +86,15 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (year) {
+  if (year !== undefined && year !== null) {
     smallYear = year.slice(2);
   }
 
-  if (smallYear) {
+  if (smallYear !== undefined && smallYear !== null) {
     if (smallYear < 30) {
-      year = 20 + smallYear;
+      year = 2000 + (+smallYear);
     } else {
-      year = 19 + smallYear;
+      year = 1900 + (+smallYear);
     }
   }
 
