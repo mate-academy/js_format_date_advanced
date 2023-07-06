@@ -50,13 +50,13 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldForm = [...fromFormat];
+  const oldFormat = [...fromFormat];
   const oldDate = date.split(fromFormat[3]);
   const newDate = [];
   let century = '';
 
-  let years = oldDate[oldForm.indexOf('YY')]
-  || oldDate[oldForm.indexOf('YYYY')];
+  let years = oldDate[oldFormat.indexOf('YY')]
+  || oldDate[oldFormat.indexOf('YYYY')];
   const indexYears = oldDate.indexOf(years);
   const newYears = toFormat[toFormat.indexOf('YYYY')]
   || toFormat[toFormat.indexOf('YY')];
@@ -64,18 +64,14 @@ function formatDate(date, fromFormat, toFormat) {
   if (newYears.length < years.length) {
     years = years.slice(-2);
   } else if (newYears.length > years.length) {
-    if (+years < 30) {
-      century = '20';
-    } else if (+years >= 30) {
-      century = '19';
-    }
+    century = +years < 30 ? '20' : '19';
     years = century + years;
   }
   oldDate[indexYears] = years;
-  oldForm[indexYears] = newYears;
+  oldFormat[indexYears] = newYears;
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    newDate[i] = oldDate[oldForm.indexOf(toFormat[i])];
+    newDate[i] = oldDate[oldFormat.indexOf(toFormat[i])];
   }
 
   return newDate.join(toFormat[3]);
