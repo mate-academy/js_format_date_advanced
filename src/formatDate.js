@@ -50,7 +50,98 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitedDate = date.split(fromFormat[3]);
+  let year = '';
+  let month = '';
+  let day = '';
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        year = splitedDate[i];
+        break;
+
+      case 'YY':
+        year = splitedDate[i];
+        break;
+
+      case 'MM':
+        month = splitedDate[i];
+        break;
+
+      case 'DD':
+        day = splitedDate[i];
+        break;
+    }
+  }
+
+  const result = [];
+
+  const correctYear = transformYear(year, fromFormat, toFormat);
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        result[result.length] = day;
+        break;
+
+      case 'MM':
+        result[result.length] = month;
+        break;
+
+      case 'YY':
+        result[result.length] = correctYear;
+        break;
+
+      case 'YYYY':
+        result[result.length] = correctYear;
+        break;
+    }
+  }
+
+  return result.join(toFormat[3]);
+};
+
+function transformYear(year, oldFormat, newFormat) {
+  let oldIndex = 0;
+  let newIndex = 0;
+  const correctYear = [];
+
+  correctYear.push(year);
+
+  for (let i = 0; i < oldFormat.length; i++) {
+    if (oldFormat[i] === 'YY' || oldFormat[i] === 'YYYY') {
+      oldIndex += i;
+    }
+  }
+
+  for (let i = 0; i < newFormat.length; i++) {
+    if (newFormat[i] === 'YY' || newFormat[i] === 'YYYY') {
+      newIndex += i;
+    }
+  }
+
+  if (oldFormat[oldIndex] === newFormat[newIndex]) {
+    return year;
+  }
+
+  if (oldFormat[oldIndex] === 'YYYY' && newFormat[newIndex] === 'YY') {
+    const shortYear = year.slice(2, 4);
+
+    return shortYear;
+  }
+
+  if (oldFormat[oldIndex] === 'YY' && newFormat[newIndex] === 'YYYY') {
+    if (year < 30) {
+      correctYear.unshift('20');
+
+      return correctYear.join('');
+    } else {
+      correctYear.unshift('19');
+
+      return correctYear.join('');
+    }
+  }
 }
 
 module.exports = formatDate;
