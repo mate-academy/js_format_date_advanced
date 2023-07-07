@@ -50,7 +50,63 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDelimiter = fromFormat[fromFormat.length - 1];
+  const newDelimiter = toFormat[toFormat.length - 1];
+  const reformattedDate = [];
+
+  const dateParts = date.split(oldDelimiter);
+
+  const dateInfo = {
+    day: 0,
+    month: 0,
+    year: 0,
+  };
+
+  for (let i = 0; i < dateParts.length; i++) {
+    switch (true) {
+      case fromFormat[i] === 'DD':
+        dateInfo.day = dateParts[i];
+        break;
+
+      case fromFormat[i] === 'MM':
+        dateInfo.month = dateParts[i];
+        break;
+
+      case fromFormat[i] === 'YY' && dateParts[i] < 30:
+        dateInfo.year = `${20 + dateParts[i]}`;
+        break;
+
+      case fromFormat[i] === 'YY' && dateParts[i] >= 30:
+        dateInfo.year = `${19 + dateParts[i]}`;
+        break;
+
+      case fromFormat[i] === 'YYYY':
+        dateInfo.year = dateParts[i];
+        break;
+    }
+  }
+
+  for (let i = 0; i < dateParts.length; i++) {
+    switch (true) {
+      case toFormat[i] === 'DD':
+        reformattedDate.push(dateInfo.day);
+        break;
+
+      case toFormat[i] === 'MM':
+        reformattedDate.push(dateInfo.month);
+        break;
+
+      case toFormat[i] === 'YY':
+        reformattedDate.push(dateInfo.year.slice(2, 4));
+        break;
+
+      case toFormat[i] === 'YYYY':
+        reformattedDate.push(dateInfo.year);
+        break;
+    }
+  }
+
+  return reformattedDate.join(newDelimiter);
 }
 
 module.exports = formatDate;
