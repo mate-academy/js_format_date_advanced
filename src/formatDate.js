@@ -60,7 +60,6 @@ function formatDate(date, fromFormat, toFormat) {
     day: 0,
     month: 0,
     year: 0,
-    shortYear: 0,
   };
 
   for (let i = 0; i < dateParts.length; i++) {
@@ -74,18 +73,15 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case fromFormat[i] === 'YY' && dateParts[i] < 30:
-        dateInfo.shortYear = dateParts[i];
         dateInfo.year = `${20 + dateParts[i]}`;
         break;
 
       case fromFormat[i] === 'YY' && dateParts[i] >= 30:
-        dateInfo.shortYear = dateParts[i];
         dateInfo.year = `${19 + dateParts[i]}`;
         break;
 
       case fromFormat[i] === 'YYYY':
         dateInfo.year = dateParts[i];
-        dateInfo.shortYear = dateParts[i].slice(0, 2);
         break;
     }
   }
