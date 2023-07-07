@@ -49,7 +49,7 @@
  * @returns {string}
  */
 
- function formatDate(date, fromFormat, toFormat) {
+function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat[fromFormat.length - 1];
   const toSeparator = toFormat[toFormat.length - 1];
   const oldDate = date.split(fromSeparator);
@@ -63,7 +63,6 @@
     const toFormatPart = fromFormat[index];
     const oldDatePart = oldDate[index];
 
-    // get date values from old format
     if (toFormatPart.includes('YY')) {
       year = oldDatePart;
     }
@@ -77,7 +76,6 @@
     }
   }
 
-  // check for required format of year
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
     year = year < 30 ? `20${year}` : `19${year}`;
   }
@@ -86,7 +84,6 @@
     year = year < 30 ? year - 2000 : year - 1900;
   }
 
-  // set date values into new format
   for (const toFormatPart of toFormat) {
     if (toFormatPart.includes('YY')) {
       newDate.push(year);
