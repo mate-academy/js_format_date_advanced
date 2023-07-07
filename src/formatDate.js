@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
@@ -65,25 +65,25 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < dateParts.length; i++) {
     switch (true) {
-      case fromFormat[i] === "DD":
+      case fromFormat[i] === 'DD':
         dateInfo.day = dateParts[i];
         break;
 
-      case fromFormat[i] === "MM":
+      case fromFormat[i] === 'MM':
         dateInfo.month = dateParts[i];
         break;
 
-      case fromFormat[i] === "YY" && dateParts[i] < 30:
+      case fromFormat[i] === 'YY' && dateParts[i] < 30:
         dateInfo.shortYear = dateParts[i];
         dateInfo.year = `${20 + dateParts[i]}`;
         break;
 
-      case fromFormat[i] === "YY" && dateParts[i] >= 30:
+      case fromFormat[i] === 'YY' && dateParts[i] >= 30:
         dateInfo.shortYear = dateParts[i];
         dateInfo.year = `${19 + dateParts[i]}`;
         break;
 
-      case fromFormat[i] === "YYYY":
+      case fromFormat[i] === 'YYYY':
         dateInfo.year = dateParts[i];
         dateInfo.shortYear = dateParts[i].slice(0, 2);
         break;
@@ -92,19 +92,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < dateParts.length; i++) {
     switch (true) {
-      case toFormat[i] === "DD":
+      case toFormat[i] === 'DD':
         reformattedDate.push(dateInfo.day);
         break;
 
-      case toFormat[i] === "MM":
+      case toFormat[i] === 'MM':
         reformattedDate.push(dateInfo.month);
         break;
 
-      case toFormat[i] === "YY" && dateInfo.shortYear < 30:
+      case toFormat[i] === 'YY':
         reformattedDate.push(dateInfo.year.slice(2, 4));
         break;
 
-      case toFormat[i] === "YYYY":
+      case toFormat[i] === 'YYYY':
         reformattedDate.push(dateInfo.year);
         break;
     }
