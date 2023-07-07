@@ -51,50 +51,59 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const splitedDate = date.split(fromFormat[3]);
-  let year = '';
-  let month = '';
-  let day = '';
+  const partsOfDate = {};
+  const result = [];
 
   for (let i = 0; i < toFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YYYY':
-        year = splitedDate[i];
+        partsOfDate.YYYY = splitedDate[i];
         break;
 
       case 'YY':
-        year = splitedDate[i];
+        partsOfDate.YY = splitedDate[i];
         break;
 
       case 'MM':
-        month = splitedDate[i];
+        partsOfDate.MM = splitedDate[i];
         break;
 
       case 'DD':
-        day = splitedDate[i];
+        partsOfDate.DD = splitedDate[i];
         break;
     }
   }
 
-  const result = [];
+  for (const element in partsOfDate) {
+    if (element === 'YYYY') {
+      partsOfDate.YY = transformYear(
+        partsOfDate.YY || partsOfDate.YYYY, fromFormat, toFormat
+      );
+    }
 
-  const correctYear = transformYear(year, fromFormat, toFormat);
+    if (element === 'YY') {
+      partsOfDate.YYYY = transformYear(
+        partsOfDate.YY || partsOfDate.YYYY, fromFormat, toFormat
+      );
+    }
+  }
 
   for (let i = 0; i < toFormat.length; i++) {
     switch (toFormat[i]) {
       case 'DD':
-        result[result.length] = day;
+        result[result.length] = partsOfDate.DD;
         break;
 
       case 'MM':
-        result[result.length] = month;
+        result[result.length] = partsOfDate.MM;
         break;
 
       case 'YY':
-        result[result.length] = correctYear;
+        result[result.length] = partsOfDate.YY;
         break;
 
       case 'YYYY':
-        result[result.length] = correctYear;
+        result[result.length] = partsOfDate.YYYY;
         break;
     }
   }
@@ -102,46 +111,22 @@ function formatDate(date, fromFormat, toFormat) {
   return result.join(toFormat[3]);
 };
 
-function transformYear(year, oldFormat, newFormat) {
-  let oldIndex = 0;
-  let newIndex = 0;
+function transformYear(year, oldFormat) {
   const correctYear = [];
 
-  correctYear.push(year);
-
   for (let i = 0; i < oldFormat.length; i++) {
-    if (oldFormat[i] === 'YY' || oldFormat[i] === 'YYYY') {
-      oldIndex += i;
+    if (oldFormat[i] === 'YYYY') {
+      correctYear.push(year.slice(2, 4));
+    }
+
+    if (oldFormat[i] === 'YY') {
+      const addition = year < 30 ? '20' : '19';
+
+      correctYear.push(addition + year);
     }
   }
 
-  for (let i = 0; i < newFormat.length; i++) {
-    if (newFormat[i] === 'YY' || newFormat[i] === 'YYYY') {
-      newIndex += i;
-    }
-  }
-
-  if (oldFormat[oldIndex] === newFormat[newIndex]) {
-    return year;
-  }
-
-  if (oldFormat[oldIndex] === 'YYYY' && newFormat[newIndex] === 'YY') {
-    const shortYear = year.slice(2, 4);
-
-    return shortYear;
-  }
-
-  if (oldFormat[oldIndex] === 'YY' && newFormat[newIndex] === 'YYYY') {
-    if (year < 30) {
-      correctYear.unshift('20');
-
-      return correctYear.join('');
-    } else {
-      correctYear.unshift('19');
-
-      return correctYear.join('');
-    }
-  }
+  return correctYear.join('');
 }
 
 module.exports = formatDate;
