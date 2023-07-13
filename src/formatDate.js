@@ -62,8 +62,8 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (partsDate.hasOwnProperty('YY')) {
     partsDate['YYYY'] = (partsDate['YY'] < 30)
-      ? '20' + partsDate['YY']
-      : '19' + partsDate['YY'];
+      ? `20${partsDate['YY']}`
+      : `19${partsDate['YY']}`;
   } else {
     partsDate['YY'] = partsDate['YYYY'].slice(2);
   }
