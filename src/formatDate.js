@@ -50,7 +50,61 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let day = 0;
+  let month = 0;
+  let year = 0;
+  const separator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+  const arrayFromDate = date.split(separator);
+  const newDateArray = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'DD') {
+      day = arrayFromDate[i];
+    };
+
+    if (fromFormat[i] === 'MM') {
+      month = arrayFromDate[i];
+    };
+
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      year = arrayFromDate[i];
+    }
+  };
+
+  for (const element of toFormat) {
+    if (element === 'DD') {
+      newDateArray.push(day);
+    };
+
+    if (element === 'MM') {
+      newDateArray.push(month);
+    };
+
+    if (
+      (element === 'YY' && year.length === 2)
+      || (element === 'YYYY' && year.length === 4)
+    ) {
+      newDateArray.push(year);
+    };
+
+    if (element === 'YY' && year.length === 4) {
+      newDateArray.push(year.slice(2));
+    };
+
+    if (element === 'YYYY' && year.length === 2 && year < 30) {
+      newDateArray.push(`20${year}`);
+    };
+
+    if (element === 'YYYY' && year.length === 2 && year >= 30) {
+      newDateArray.push(`19${year}`);
+    };
+  };
+
+  // eslint-disable-next-line no-console
+  console.log(arrayFromDate, separator);
+
+  return newDateArray.join(newSeparator);
 }
 
 module.exports = formatDate;
