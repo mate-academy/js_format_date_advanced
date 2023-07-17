@@ -51,32 +51,69 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const object = {};
-  const arrDate = date.split(fromFormat[3]);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const maxYear = 30;
 
-  for (let i = 0; i < arrDate.length; i++) {
-    if (fromFormat[i] === 'YY') {
-      if (+arrDate[i] < 30) {
-        arrDate[i] = '20' + arrDate[i];
+  const shortYear = 'YY';
+  const longYear = 'YYYY';
+  const twentiethCentury = '20';
+  const ninetiethCentury = '19';
+  const century = 100;
+
+  const oldObjectDate = {};
+  const oldArrayDate = date.split(oldSeparator);
+  const newArrayDate = [];
+  const lengthOfNewDate = 3;
+
+  for (let i = 0; i < oldArrayDate.length; i++) {
+    if (fromFormat[i] === shortYear) {
+      if (+oldArrayDate[i] < maxYear) {
+        oldArrayDate[i] = twentiethCentury + oldArrayDate[i];
       } else {
-        arrDate[i] = '19' + arrDate[i];
+        oldArrayDate[i] = ninetiethCentury + oldArrayDate[i];
       }
-      fromFormat[i] = 'YYYY';
+      fromFormat[i] = longYear;
     }
-    object[fromFormat[i]] = arrDate[i];
+    oldObjectDate[fromFormat[i]] = oldArrayDate[i];
   }
 
-  const array = [];
-
-  for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'YY') {
-      array.push(object['YYYY'] % 100);
+  for (let i = 0; i < lengthOfNewDate; i++) {
+    if (toFormat[i] === shortYear) {
+      newArrayDate.push(oldObjectDate[longYear] % century);
     } else {
-      array.push(object[toFormat[i]]);
+      newArrayDate.push(oldObjectDate[toFormat[i]]);
     }
   }
 
-  return array.join(toFormat[3]);
+  return newArrayDate.join(newSeparator);
+
+  // const object = {};
+  // const arrDate = date.split(fromFormat[3]);
+
+  // for (let i = 0; i < arrDate.length; i++) {
+  //   if (fromFormat[i] === 'YY') {
+  //     if (+arrDate[i] < 30) {
+  //       arrDate[i] = '20' + arrDate[i];
+  //     } else {
+  //       arrDate[i] = '19' + arrDate[i];
+  //     }
+  //     fromFormat[i] = 'YYYY';
+  //   }
+  //   object[fromFormat[i]] = arrDate[i];
+  // }
+
+  // const array = [];
+
+  // for (let i = 0; i < 3; i++) {
+  //   if (toFormat[i] === 'YY') {
+  //     array.push(object['YYYY'] % 100);
+  //   } else {
+  //     array.push(object[toFormat[i]]);
+  //   }
+  // }
+
+  // return array.join(toFormat[3]);
 }
 
 module.exports = formatDate;
