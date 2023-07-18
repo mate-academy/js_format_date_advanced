@@ -50,60 +50,52 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day = 0;
-  let month = 0;
-  let year = 0;
-  const separator = fromFormat[fromFormat.length - 1];
-  const newSeparator = toFormat[toFormat.length - 1];
-  const arrayFromDate = date.split(separator);
-  const newDateArray = [];
+  const currentSeporator = fromFormat[fromFormat.length - 1];
+  const splitedCurrentDate = date.split(currentSeporator);
+  const resultSeporator = toFormat[toFormat.length - 1];
+  const resultDate = [];
+  const currentDate = {};
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'DD') {
-      day = arrayFromDate[i];
-    };
-
-    if (fromFormat[i] === 'MM') {
-      month = arrayFromDate[i];
-    };
-
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = arrayFromDate[i];
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        currentDate.day = splitedCurrentDate[i];
+        break;
+      case 'MM':
+        currentDate.month = splitedCurrentDate[i];
+        break;
+      default:
+        currentDate.year = splitedCurrentDate[i];
     }
-  };
+  }
 
-  for (const element of toFormat) {
-    if (element === 'DD') {
-      newDateArray.push(day);
-    };
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        resultDate.push(currentDate.day);
+        break;
+      case 'MM':
+        resultDate.push(currentDate.month);
+        break;
+      case 'YY':
+        resultDate.push(
+          currentDate.year.length === 2
+            ? currentDate.year
+            : currentDate.year.slice(2)
+        );
+        break;
+      case 'YYYY':
+        resultDate.push(
+          currentDate.year.length === 4
+            ? currentDate.year
+            : +currentDate.year < 30
+              ? `20${currentDate.year}`
+              : `19${currentDate.year}`
+        );
+    }
+  }
 
-    if (element === 'MM') {
-      newDateArray.push(month);
-    };
-
-    if (
-
-      (element === 'YY' && year.length === 2)
-      || (element === 'YYYY' && year.length === 4)
-    ) {
-      newDateArray.push(year);
-    };
-
-    if (element === 'YY' && year.length === 4) {
-      newDateArray.push(year.slice(2));
-    };
-
-    if (element === 'YYYY' && year.length === 2 && year < 30) {
-      newDateArray.push(`20${year}`);
-    };
-
-    if (element === 'YYYY' && year.length === 2 && year >= 30) {
-      newDateArray.push(`19${year}`);
-    };
-  };
-
-
-  return newDateArray.join(newSeparator);
+  return resultDate.join(resultSeporator);
 }
 
 module.exports = formatDate;
