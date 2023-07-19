@@ -1,6 +1,47 @@
 'use strict';
 
 /**
+
+Час летить, стандарти змінюються. Давайте позбудемося рутини зміни формату дати.
+Створіть функцію formatDate, яка приймає рядок date, масив fromFormat
+ зі старим форматом
+та масив toFormat з новим форматом. Функція повертає дату у новому форматі.
+Функція може змінювати роздільник, переставляти частини дати або
+перетворювати рік
+з 4 цифр на 2 цифри і навпаки.
+При конвертації з формату YYYY в YY використовуйте лише останні
+ 2 цифри (1997 -> 97).
+При конвертації з формату YY в YYYY використовуйте 20YY, якщо
+ YY < 30, і 19YY у протилежному випадку.
+Приклади:
+formatDate(
+'2020-02-18',
+['YYYY', 'MM', 'DD', '-'],
+['YYYY', 'MM', 'DD', '.'],
+) // '2020.02.18'
+formatDate(
+'2020-02-18',
+['YYYY', 'MM', 'DD', '-'],
+['DD', 'MM', 'YYYY', '.'],
+) // '18.02.2020'
+formatDate(
+'18-02-2020',
+['DD', 'MM', 'YYYY', '-'],
+['DD', 'MM', 'YY', '/'],
+) // '18/02/20'
+formatDate(
+'20/02/18',
+['YY', 'MM', 'DD', '/'],
+['YYYY', 'MM', 'DD', '.'],
+) // '2020.02.18'
+formatDate(
+'97/02/18',
+['YY', 'MM', 'DD', '/'],
+['DD', 'MM', 'YYYY', '.'],
+) // '18.02.1997'
+*/
+
+/**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
@@ -50,7 +91,49 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(fromFormat[fromFormat.length - 1]);
+
+  const formatMap = {};
+
+  fromFormat.forEach((token, index) => {
+    formatMap[token] = dateParts[index];
+  });
+
+  const convertedParts = [];
+
+  toFormat.forEach(token => {
+    if (token === 'YYYY') {
+      const year = formatMap['YYYY'];
+
+      if (year !== undefined) {
+        convertedParts.push(year);
+      } else {
+        const shortYear = formatMap['YY'];
+
+        if (shortYear < 30) {
+          convertedParts.push('20' + shortYear);
+        } else {
+          convertedParts.push('19' + shortYear);
+        }
+      }
+    } else if (token === 'YY') {
+      const year = formatMap['YYYY'];
+
+      if (year !== undefined) {
+        convertedParts.push(year.substring(2));
+      } else {
+        convertedParts.push(formatMap['YY']);
+      }
+    } else {
+      convertedParts.push(formatMap[token]);
+    }
+  });
+
+  let formattedDate = convertedParts.join(toFormat[toFormat.length - 1]);
+
+  formattedDate = formattedDate.slice(0, -1);
+
+  return formattedDate;
 }
 
 module.exports = formatDate;
