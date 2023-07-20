@@ -56,11 +56,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < dateArr.length; i++) {
     if (fromFormat[i] === 'YY') {
-      if (dateArr[i] < '30') {
-        dateArr[i] = '20' + dateArr[i];
-      } else {
-        dateArr[i] = '19' + dateArr[i];
-      }
+      dateArr[i] = dateArr[i] < 30 ? '20' + dateArr[i] : '19' + dateArr[i];
       fromFormat[i] = 'YYYY';
     }
     dateObj[fromFormat[i]] = dateArr[i];
