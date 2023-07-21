@@ -52,18 +52,20 @@
 function formatDate(date, fromFormat, toFormat) {
   const objectDate = {};
   const separatorToFormat = toFormat[toFormat.length - 1];
-  const separatorFromFormat = fromFormat[toFormat.length - 1];
+  const separatorFromFormat = fromFormat[fromFormat.length - 1];
   const arrayDate = date.split(separatorFromFormat);
   const result = [];
 
-  for (let i = 0; i < arrayDate.length; i++) {
-    objectDate[fromFormat[i]] = arrayDate[i];
-  }
+  arrayDate.forEach((item, i) => {
+    objectDate[fromFormat[i]] = item;
+  });
 
   if ('YYYY' in objectDate) {
     objectDate['YY'] = objectDate['YYYY'].slice(2);
   } else {
-    objectDate['YYYY'] = objectDate['YY'] < 30 ? `20${objectDate['YY']}` : `19${objectDate['YY']}`;
+    const prefix = +objectDate['YY'] < 30 ? '20' : '19';
+
+    objectDate['YYYY'] = prefix + objectDate['YY'];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
