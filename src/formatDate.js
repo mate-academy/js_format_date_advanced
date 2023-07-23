@@ -61,12 +61,10 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
       day = arrDate[i];
-      // console.log(day);
     }
 
     if (fromFormat[i] === 'MM') {
       month = arrDate[i];
-      // console.log(month);
     }
 
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
