@@ -52,7 +52,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const signFrom = fromFormat[3];
   const signTo = toFormat[3];
-  const dateToArr = date.split(signFrom);
+  const dateArr = date.split(signFrom);
   const partsDate = [];
 
   const yearIndex = fromFormat.includes('YYYY')
@@ -61,15 +61,15 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const index of toFormat) {
     if (index === 'YYYY') {
-      const year = dateToArr[yearIndex];
+      const year = dateArr[yearIndex];
 
       partsDate.push(formatYear(year));
     } else if (index === 'YY') {
-      const year = dateToArr[yearIndex];
+      const year = dateArr[yearIndex];
 
       partsDate.push(formatYear(year));
     } else {
-      partsDate.push(dateToArr[fromFormat.indexOf(index)]);
+      partsDate.push(dateArr[fromFormat.indexOf(index)]);
     }
   }
 
