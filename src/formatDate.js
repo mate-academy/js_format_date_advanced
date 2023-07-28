@@ -50,34 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat.pop());
-  const correctDate = [];
-  let tempString = '';
+  const formatedDate = Array(3).fill();
+  const dateArr = date.split(fromFormat[3]);
 
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (fromFormat[j].slice(0, 2) === toFormat[i].slice(0, 2)) {
-        if (fromFormat[j].length === toFormat[i].length) {
-          correctDate[i] = dateArr[j];
-        } else if (fromFormat[j].length > toFormat[i].length) {
-          tempString = dateArr[j].slice(2);
-          correctDate[i] = tempString;
-        } else {
-          if (dateArr[j] < 30) {
-            tempString = `20${dateArr[j]}`;
-            correctDate[i] = tempString;
-          } else {
-            tempString = `19${dateArr[j]}`;
-            correctDate[i] = tempString;
-          }
-        }
-      }
-    }
+  formatedDate[fromToIndex('Y')[1]] = toYear(dateArr, fromFormat, toFormat);
+  formatedDate[fromToIndex('M')[1]] = dateArr[fromToIndex('M')[0]];
+  formatedDate[fromToIndex('D')[1]] = dateArr[fromToIndex('D')[0]];
+
+  function fromToIndex(letters) {
+    const fromIndex = fromFormat.indexOf(fromFormat.filter(el =>
+      el.includes(letters))[0]);
+    const toIndex = toFormat.indexOf(toFormat.filter(el =>
+      el.includes(letters))[0]);
+
+    return [fromIndex, toIndex];
   }
 
-  const result = correctDate.join(toFormat.pop());
+  function toYear(year, from, to) {
+    if (from[fromToIndex('Y')[0]].length < to[fromToIndex('Y')[1]].length) {
+      return year[fromToIndex('Y')[0]] < 30 ? `20${year[fromToIndex('Y')[0]]}`
+        : `19${year[fromToIndex('Y')[0]]}`;
+    }
 
-  return result;
+    if (from[fromToIndex('Y')[0]].length > to[fromToIndex('Y')[1]].length) {
+      return year[fromToIndex('Y')[0]].slice(2);
+    }
+
+    return year[fromToIndex('Y')[0]];
+  }
+
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
