@@ -50,7 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const formatedDate = Array(3).fill();
+  const dateArr = date.split(fromFormat[3]);
+
+  formatedDate[fromToIndex('Y')[1]] = toYear(dateArr, fromFormat, toFormat);
+  formatedDate[fromToIndex('M')[1]] = dateArr[fromToIndex('M')[0]];
+  formatedDate[fromToIndex('D')[1]] = dateArr[fromToIndex('D')[0]];
+
+  function fromToIndex(letters) {
+    const fromIndex = fromFormat.indexOf(fromFormat.filter(el =>
+      el.includes(letters))[0]);
+    const toIndex = toFormat.indexOf(toFormat.filter(el =>
+      el.includes(letters))[0]);
+
+    return [fromIndex, toIndex];
+  }
+
+  function toYear(year, from, to) {
+    if (from[fromToIndex('Y')[0]].length < to[fromToIndex('Y')[1]].length) {
+      return year[fromToIndex('Y')[0]] < 30 ? `20${year[fromToIndex('Y')[0]]}`
+        : `19${year[fromToIndex('Y')[0]]}`;
+    }
+
+    if (from[fromToIndex('Y')[0]].length > to[fromToIndex('Y')[1]].length) {
+      return year[fromToIndex('Y')[0]].slice(2);
+    }
+
+    return year[fromToIndex('Y')[0]];
+  }
+
+  return formatedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
