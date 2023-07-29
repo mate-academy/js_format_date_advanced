@@ -62,9 +62,6 @@ function formatDate(date, fromFormat, toFormat) {
 
   const year = 'YY';
   const longYear = 'YYYY';
-  // const month = 'MM';
-  // const day = 'DD';
-  // const form = [];
 
   const correctIndexFrom = indexFrom < 0 ? indexLongFrom : indexFrom;
   const correctIndexTo = indexTo < 0 ? indexLongTo : indexTo;
@@ -81,7 +78,7 @@ function formatDate(date, fromFormat, toFormat) {
   if (fromFormat[correctIndexFrom] === year
     && toFormat[correctIndexTo] === longYear) {
     if (Number(main[correctIndexFrom]) < 30) {
-      data = '20' + main[correctIndexFrom]; // Не прибавляет
+      data = '20' + main[correctIndexFrom];
     }
 
     if (Number(main[correctIndexFrom]) >= 30) {
