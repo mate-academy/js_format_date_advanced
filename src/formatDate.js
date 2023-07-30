@@ -50,9 +50,13 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let day = '';
-  let month = '';
-  let year = '';
+  const partsOfDays = {
+    day: '',
+    month: '',
+    year: '',
+  };
+
+  let { day, month, year } = partsOfDays;
 
   const separator = toFormat[toFormat.length - 1];
 
