@@ -47,40 +47,45 @@
  * @param {string[]} toFormat
  *
  * @returns {string}
- */
+*/
+
+function handlerYears(from, to, year) {
+  if (from.length > to.length) {
+    return year.slice(2);
+  } else if (to.length > from.length && +year >= 30) {
+    return '19' + year;
+  } else if (to.length > from.length && +year < 30) {
+    return '20' + year;
+  } else {
+    return year;
+  }
+}
 
 function formatDate(date, fromFormat, toFormat) {
-  const arrayWithDate = date.split(fromFormat[3]);
+  const separatorOldFormat = fromFormat[3];
+  const separatorNewFormat = toFormat[3];
+  const arrayWithDate = date.split(separatorOldFormat);
   const objWithDate = {};
   const result = [];
   const indexOfOldFormatYear = fromFormat.indexOf('YY') === -1
     ? fromFormat.indexOf('YYYY') : fromFormat.indexOf('YY');
   const indexOfNewFormatYear = toFormat.indexOf('YY') === -1
     ? toFormat.indexOf('YYYY') : toFormat.indexOf('YY');
+  const newFormatDate = toFormat.slice(0, -1);
 
   for (let i = 0; i < arrayWithDate.length; i++) {
     objWithDate[fromFormat[i]] = arrayWithDate[i];
   }
 
-  for (const dateEl of toFormat.slice(0, -1)) {
+  for (const dateEl of newFormatDate) {
     result.push(objWithDate[dateEl]);
   }
 
-  handlerYears(fromFormat[indexOfOldFormatYear],
+  result[indexOfNewFormatYear] = handlerYears(fromFormat[indexOfOldFormatYear],
     toFormat[indexOfNewFormatYear],
-    arrayWithDate[indexOfNewFormatYear]);
+    arrayWithDate[indexOfOldFormatYear]);
 
-  function handlerYears(from, to, year) {
-    if (from.length > to.length) {
-      result[indexOfNewFormatYear] = year.slice(2);
-    } else if (to.length > from.length && +year >= 30) {
-      result[indexOfNewFormatYear] = '19' + year;
-    } else if (to.length > from.length && +year < 30) {
-      result[indexOfNewFormatYear] = '20' + year;
-    }
-  }
-
-  return result.join(toFormat[3]);
+  return result.join(separatorNewFormat);
 }
 
 module.exports = formatDate;
