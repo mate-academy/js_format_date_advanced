@@ -70,12 +70,14 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  const formYear = (year >= 30 ? '19' : '20') + year;
+
   for (const format of toFormat) {
     if (format.includes('Y')) {
-      if (format.length < year.length) {
+      if (format.length <= year.length) {
         newDate.push(year.slice(2));
       } else {
-        newDate.push(year.padStart(format.length, year >= 30 ? '19' : '20'));
+        newDate.push(formYear);
       }
     }
 
