@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newFormatDate = '';
+
+  const oldDateSeparator = fromFormat[3];
+  const newDateSeparator = toFormat[3];
+  const oldDate = date.split(oldDateSeparator);
+  let oldYear;
+  const month = oldDate[fromFormat.indexOf('MM')];
+  const day = oldDate[fromFormat.indexOf('DD')];
+  let newYear;
+  const lastElementInNewDate = toFormat[2];
+
+  // finding year in old format date and converting it to new format
+  if (fromFormat.includes('YYYY')) {
+    oldYear = oldDate[fromFormat.indexOf('YYYY')];
+
+    newYear = oldYear;
+
+    if (toFormat.includes('YY')) {
+      newYear = oldYear.slice(2);
+    }
+  }
+
+  if (fromFormat.includes('YY')) {
+    oldYear = oldDate[fromFormat.indexOf('YY')];
+
+    newYear = oldYear;
+
+    if (toFormat.includes('YYYY')) {
+      if (+oldYear < 30) {
+        newYear = `20${oldYear}`;
+      } else {
+        newYear = `19${oldYear}`;
+      }
+    }
+  }
+
+  for (const element of toFormat) {
+    switch (element) {
+      case 'YYYY':
+        newFormatDate += newYear;
+        break;
+
+      case 'YY':
+        newFormatDate += newYear;
+        break;
+
+      case 'MM':
+        newFormatDate += month;
+        break;
+
+      case 'DD':
+        newFormatDate += day;
+        break;
+    }
+
+    if (element !== lastElementInNewDate && element !== newDateSeparator) {
+      newFormatDate += newDateSeparator;
+    }
+  }
+
+  return newFormatDate;
 }
 
 module.exports = formatDate;
