@@ -60,29 +60,36 @@ function formatDate(date, fromFormat, toFormat) {
   const day = oldDate[fromFormat.indexOf('DD')];
   let newYear;
   const lastElementInNewDate = toFormat[2];
+  const FOUR_DIGITS_YEAR = 'YYYY';
+  const TWO_DIGITS_YEAR = 'YY';
+  const TWENTY_CENTURY = 20;
+  const NINETEENTH_CENTURY = 19;
 
-  // finding year in old format date and converting it to new format
-  if (fromFormat.includes('YYYY')) {
-    oldYear = oldDate[fromFormat.indexOf('YYYY')];
+  for (const format of fromFormat) {
+    if (format[0] === 'Y') {
+      oldYear = getOldYear(format, fromFormat, oldDate);
 
-    newYear = oldYear;
+      if (format === FOUR_DIGITS_YEAR) {
+        newYear = oldYear;
 
-    if (toFormat.includes('YY')) {
-      newYear = oldYear.slice(2);
-    }
-  }
-
-  if (fromFormat.includes('YY')) {
-    oldYear = oldDate[fromFormat.indexOf('YY')];
-
-    newYear = oldYear;
-
-    if (toFormat.includes('YYYY')) {
-      if (+oldYear < 30) {
-        newYear = `20${oldYear}`;
-      } else {
-        newYear = `19${oldYear}`;
+        if (toFormat.includes(TWO_DIGITS_YEAR)) {
+          newYear = oldYear.slice(2);
+        }
       }
+
+      if (format === TWO_DIGITS_YEAR) {
+        newYear = oldYear;
+
+        if (toFormat.includes(FOUR_DIGITS_YEAR)) {
+          if (+oldYear < 30) {
+            newYear = `${TWENTY_CENTURY}${oldYear}`;
+          } else {
+            newYear = `${NINETEENTH_CENTURY}${oldYear}`;
+          }
+        }
+      }
+
+      break;
     }
   }
 
@@ -111,6 +118,10 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newFormatDate;
+}
+
+function getOldYear(yearFormat, fromFormat, oldDate) {
+  return oldDate[fromFormat.indexOf(yearFormat)];
 }
 
 module.exports = formatDate;
