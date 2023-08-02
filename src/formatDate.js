@@ -51,17 +51,19 @@
 
 function formatDate(date, fromFormat, toFormat) {
   let newFormatDate = '';
-
+  const FOUR_SYMBOLS_YEAR = 'YYYY';
+  const TWO_SYMBOLS_YEAR = 'YY';
+  const TWO_SYMBOLS_MONTH = 'MM';
+  const TWO_SYMBOLS_DAY = 'DD';
   const oldDateSeparator = fromFormat[3];
   const newDateSeparator = toFormat[3];
   const oldDate = date.split(oldDateSeparator);
   let oldYear;
-  const month = oldDate[fromFormat.indexOf('MM')];
-  const day = oldDate[fromFormat.indexOf('DD')];
+  const month = oldDate[fromFormat.indexOf(TWO_SYMBOLS_MONTH)];
+  const day = oldDate[fromFormat.indexOf(TWO_SYMBOLS_DAY)];
   let newYear;
   const lastElementInNewDate = toFormat[2];
-  const FOUR_DIGITS_YEAR = 'YYYY';
-  const TWO_DIGITS_YEAR = 'YY';
+
   const TWENTY_CENTURY = 20;
   const NINETEENTH_CENTURY = 19;
 
@@ -69,18 +71,18 @@ function formatDate(date, fromFormat, toFormat) {
     if (format[0] === 'Y') {
       oldYear = getOldYear(format, fromFormat, oldDate);
 
-      if (format === FOUR_DIGITS_YEAR) {
+      if (format === FOUR_SYMBOLS_YEAR) {
         newYear = oldYear;
 
-        if (toFormat.includes(TWO_DIGITS_YEAR)) {
+        if (toFormat.includes(TWO_SYMBOLS_YEAR)) {
           newYear = oldYear.slice(2);
         }
       }
 
-      if (format === TWO_DIGITS_YEAR) {
+      if (format === TWO_SYMBOLS_YEAR) {
         newYear = oldYear;
 
-        if (toFormat.includes(FOUR_DIGITS_YEAR)) {
+        if (toFormat.includes(FOUR_SYMBOLS_YEAR)) {
           if (+oldYear < 30) {
             newYear = `${TWENTY_CENTURY}${oldYear}`;
           } else {
@@ -95,19 +97,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const element of toFormat) {
     switch (element) {
-      case 'YYYY':
+      case FOUR_SYMBOLS_YEAR:
         newFormatDate += newYear;
         break;
 
-      case 'YY':
+      case TWO_SYMBOLS_YEAR:
         newFormatDate += newYear;
         break;
 
-      case 'MM':
+      case TWO_SYMBOLS_MONTH:
         newFormatDate += month;
         break;
 
-      case 'DD':
+      case TWO_SYMBOLS_DAY:
         newFormatDate += day;
         break;
     }
