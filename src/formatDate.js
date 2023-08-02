@@ -50,7 +50,80 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let newFormatDate = '';
+  const FOUR_SYMBOLS_YEAR = 'YYYY';
+  const TWO_SYMBOLS_YEAR = 'YY';
+  const TWO_SYMBOLS_MONTH = 'MM';
+  const TWO_SYMBOLS_DAY = 'DD';
+  const oldDateSeparator = fromFormat[3];
+  const newDateSeparator = toFormat[3];
+  const oldDate = date.split(oldDateSeparator);
+  let oldYear;
+  const month = oldDate[fromFormat.indexOf(TWO_SYMBOLS_MONTH)];
+  const day = oldDate[fromFormat.indexOf(TWO_SYMBOLS_DAY)];
+  let newYear;
+  const lastElementInNewDate = toFormat[2];
+
+  const TWENTY_CENTURY = 20;
+  const NINETEENTH_CENTURY = 19;
+
+  for (const format of fromFormat) {
+    if (format[0] === 'Y') {
+      oldYear = getOldYear(format, fromFormat, oldDate);
+
+      if (format === FOUR_SYMBOLS_YEAR) {
+        newYear = oldYear;
+
+        if (toFormat.includes(TWO_SYMBOLS_YEAR)) {
+          newYear = oldYear.slice(2);
+        }
+      }
+
+      if (format === TWO_SYMBOLS_YEAR) {
+        newYear = oldYear;
+
+        if (toFormat.includes(FOUR_SYMBOLS_YEAR)) {
+          if (+oldYear < 30) {
+            newYear = `${TWENTY_CENTURY}${oldYear}`;
+          } else {
+            newYear = `${NINETEENTH_CENTURY}${oldYear}`;
+          }
+        }
+      }
+
+      break;
+    }
+  }
+
+  for (const element of toFormat) {
+    switch (element) {
+      case FOUR_SYMBOLS_YEAR:
+        newFormatDate += newYear;
+        break;
+
+      case TWO_SYMBOLS_YEAR:
+        newFormatDate += newYear;
+        break;
+
+      case TWO_SYMBOLS_MONTH:
+        newFormatDate += month;
+        break;
+
+      case TWO_SYMBOLS_DAY:
+        newFormatDate += day;
+        break;
+    }
+
+    if (element !== lastElementInNewDate && element !== newDateSeparator) {
+      newFormatDate += newDateSeparator;
+    }
+  }
+
+  return newFormatDate;
+}
+
+function getOldYear(yearFormat, fromFormat, oldDate) {
+  return oldDate[fromFormat.indexOf(yearFormat)];
 }
 
 module.exports = formatDate;
