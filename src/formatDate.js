@@ -51,6 +51,45 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const splittedDate = date.split(fromFormat[3]);
+  const formattedDate = [];
+
+  const newIndexes = {};
+  const oldIndexes = {};
+
+  fromFormat.forEach((value, index) => {
+    if (index <= 2) {
+      oldIndexes[value] = index;
+    }
+  });
+
+  toFormat.forEach((value, index) => {
+    if (index <= 2) {
+      newIndexes[value] = index;
+    }
+  });
+
+  // In case of old format was with YY year, we changing our year
+  // and property name for our convenience
+  if (oldIndexes.hasOwnProperty('YY') && newIndexes.hasOwnProperty('YYYY')) {
+    splittedDate[oldIndexes.YY] = splittedDate[oldIndexes.YY] >= 24
+      ? '19' + splittedDate[oldIndexes.YY] : '20' + splittedDate[oldIndexes.YY];
+    oldIndexes['YYYY'] = oldIndexes['YY'];
+    delete oldIndexes['YY'];
+  } else if (oldIndexes.hasOwnProperty('YYYY')
+  // In case of old format was with YYYY year,
+  // we changing our year and property name for our convenience
+    && newIndexes.hasOwnProperty('YY')) {
+    splittedDate[oldIndexes.YYYY] = splittedDate[oldIndexes.YYYY].slice(2, 4);
+    oldIndexes['YY'] = oldIndexes['YYYY'];
+    delete oldIndexes['YYYY'];
+  }
+
+  for (const key in newIndexes) {
+    formattedDate[newIndexes[key]] = splittedDate[oldIndexes[key]];
+  }
+
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
