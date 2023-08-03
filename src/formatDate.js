@@ -48,9 +48,16 @@
  *
  * @returns {string}
  */
+const CENTURY_INDICATOR = 30;
+const CENTURY_21 = '20';
+const CENTURY_20 = '19';
+const YEAR_FORMAT_OF_4 = 'YYYY';
+const YEAR_FORMAT_OF_2 = 'YY';
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const dateArray = date.split(fromSeparator);
   const newDateArray = [];
 
   formatYear(fromFormat, toFormat, dateArray);
@@ -59,13 +66,14 @@ function formatDate(date, fromFormat, toFormat) {
     newDateArray[i] = dateArray[fromFormat.indexOf(toFormat[i])];
   }
 
-  return newDateArray.join(toFormat[3]);
+  return newDateArray.join(toSeparator);
 }
 
 function formatYear(fromFormat, toFormat, dateArray) {
-  const fromYearIndex = fromFormat.indexOf('YY')
-  + fromFormat.indexOf('YYYY') + 1;
-  const toYearIndex = toFormat.indexOf('YY') + toFormat.indexOf('YYYY') + 1;
+  const fromYearIndex = fromFormat.indexOf(YEAR_FORMAT_OF_2)
+  + fromFormat.indexOf(YEAR_FORMAT_OF_4) + 1;
+  const toYearIndex = toFormat.indexOf(YEAR_FORMAT_OF_2)
+  + toFormat.indexOf(YEAR_FORMAT_OF_4) + 1;
 
   if (fromFormat[fromYearIndex] === toFormat[toYearIndex]) {
     return;
@@ -73,13 +81,13 @@ function formatYear(fromFormat, toFormat, dateArray) {
 
   fromFormat[fromYearIndex] = toFormat[toYearIndex];
 
-  if (fromFormat[fromYearIndex] === 'YYYY') {
-    if (+dateArray[fromYearIndex] < 30) {
-      dateArray[fromYearIndex] = '20' + dateArray[fromYearIndex];
+  if (fromFormat[fromYearIndex] === YEAR_FORMAT_OF_4) {
+    if (+dateArray[fromYearIndex] < CENTURY_INDICATOR) {
+      dateArray[fromYearIndex] = CENTURY_21 + dateArray[fromYearIndex];
 
       return;
     }
-    dateArray[fromYearIndex] = '19' + dateArray[fromYearIndex];
+    dateArray[fromYearIndex] = CENTURY_20 + dateArray[fromYearIndex];
 
     return;
   }
