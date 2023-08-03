@@ -61,17 +61,17 @@ function formatDate(date, fromFormat, toFormat) {
     fromFormatObj[fromFormat[i]] = separateValue[i];
   }
 
-  if (fromFormatObj.hasOwnProperty('YYYY')) {
-    fromFormatObj.YY = fromFormatObj.YYYY.slice(2);
-  }
-
-  if (fromFormatObj.YY < BORDER_OF_THE_AGES) {
-    fromFormatObj['YYYY'] = PRESENT_CENTURY + fromFormatObj.YY;
-  } else {
-    fromFormatObj.YYYY = LAST_CENTURY + fromFormatObj.YY;
-  }
-
   for (let i = 0; i < toFormat.length - 1; i++) {
+    if (fromFormatObj.hasOwnProperty('YYYY')) {
+      fromFormatObj.YY = fromFormatObj.YYYY.slice(2);
+    }
+
+    if (fromFormatObj.YY < BORDER_OF_THE_AGES) {
+      fromFormatObj['YYYY'] = PRESENT_CENTURY + fromFormatObj.YY;
+    } else {
+      fromFormatObj.YYYY = LAST_CENTURY + fromFormatObj.YY;
+    }
+
     resultFormatDate.push(fromFormatObj[toFormat[i]]);
   }
 
