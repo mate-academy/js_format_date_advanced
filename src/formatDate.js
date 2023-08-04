@@ -64,8 +64,6 @@ function formatDate(date, fromFormat, toFormat) {
 
     switch (keyChar) {
       case 'D':
-        resultArray.push(fromMp[keyChar]);
-        break;
       case 'M':
         resultArray.push(fromMp[keyChar]);
         break;
