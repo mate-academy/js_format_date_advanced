@@ -61,7 +61,8 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const splittedDate = date.split(fromFormat[3]);
   const formattedDate = [];
-  const CENTURY_CHANGE_YEAR = 30;
+  const CURRENT_DATE = new Date();
+  const CURRENT_YEAR = Number(CURRENT_DATE.getFullYear().toFixed().slice(-2));
 
   const newIndexes = {};
   const oldIndexes = {};
@@ -74,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (oldIndexes.hasOwnProperty('YY') && newIndexes.hasOwnProperty('YYYY')) {
     splittedDate[oldIndexes.YY] = splittedDate[oldIndexes.YY]
-    >= CENTURY_CHANGE_YEAR
+    >= CURRENT_YEAR
       ? '19' + splittedDate[oldIndexes.YY]
       : '20' + splittedDate[oldIndexes.YY];
     oldIndexes['YYYY'] = oldIndexes['YY'];
