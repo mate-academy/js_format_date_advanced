@@ -49,8 +49,34 @@
  * @returns {string}
  */
 
+const formatYear = (date) => {
+  const LIMIT_YEAR = 30;
+  const newDate = { ...date };
+
+  if (Object.prototype.hasOwnProperty.call(newDate, 'YYYY')) {
+    newDate['YY'] = newDate['YYYY'].slice(-2);
+  } else {
+    newDate['YYYY'] = newDate['YY']
+      .padStart(4, newDate['YY'] < LIMIT_YEAR ? '20' : '19');
+  }
+
+  return newDate;
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitDate = date.split(fromFormat.slice(-1));
+  const dates = splitDate.reduce((obj, unit, i) => {
+    obj[fromFormat[i]] = unit;
+
+    return obj;
+  }, {});
+
+  // Лучше мутировать этот объект или делать копию как сейчас?
+  const yearFormated = formatYear(dates);
+
+  return toFormat
+    .slice(0, -1).map((unit) => yearFormated[unit])
+    .join(toFormat.slice(-1));
 }
 
 module.exports = formatDate;
