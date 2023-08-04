@@ -49,38 +49,41 @@
  * @returns {string}
  */
 
+function getFormatIndexes(array, object) {
+  array.forEach((value, index) => {
+    if (index <= 2) {
+      object[value] = index;
+    }
+  });
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const splittedDate = date.split(fromFormat[3]);
   const formattedDate = [];
+  const CENTURY_CHANGE_YEAR = 30;
 
   const newIndexes = {};
   const oldIndexes = {};
 
-  fromFormat.forEach((value, index) => {
-    if (index <= 2) {
-      oldIndexes[value] = index;
-    }
-  });
-
-  toFormat.forEach((value, index) => {
-    if (index <= 2) {
-      newIndexes[value] = index;
-    }
-  });
+  getFormatIndexes(fromFormat, oldIndexes);
+  getFormatIndexes(toFormat, newIndexes);
 
   // In case of old format was with YY year, we changing our year
-  // and property name for our convenience
+  // and its property name in oldIndexes object.
+
   if (oldIndexes.hasOwnProperty('YY') && newIndexes.hasOwnProperty('YYYY')) {
-    splittedDate[oldIndexes.YY] = splittedDate[oldIndexes.YY] >= 24
-      ? '19' + splittedDate[oldIndexes.YY] : '20' + splittedDate[oldIndexes.YY];
+    splittedDate[oldIndexes.YY] = splittedDate[oldIndexes.YY]
+    >= CENTURY_CHANGE_YEAR
+      ? '19' + splittedDate[oldIndexes.YY]
+      : '20' + splittedDate[oldIndexes.YY];
     oldIndexes['YYYY'] = oldIndexes['YY'];
     delete oldIndexes['YY'];
   } else if (oldIndexes.hasOwnProperty('YYYY')
-  // In case of old format was with YYYY year,
-  // we changing our year and property name for our convenience
-    && newIndexes.hasOwnProperty('YY')) {
-    splittedDate[oldIndexes.YYYY] = splittedDate[oldIndexes.YYYY].slice(2, 4);
+  && newIndexes.hasOwnProperty('YY')) {
+    // In case of old format was with YYYY year,
+    // we changing our year and its property name in oldIndexes object.
+    splittedDate[oldIndexes.YYYY] = splittedDate[oldIndexes.YYYY].slice(-2);
     oldIndexes['YY'] = oldIndexes['YYYY'];
     delete oldIndexes['YYYY'];
   }
