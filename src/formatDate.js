@@ -42,6 +42,9 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
+ *
+ *
+ *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -50,7 +53,65 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const prefixYear = (yearBefore, newFormat) => {
+    const yearUpdateFormat
+      = newFormat.filter(partDate => partDate.includes('YY'))[0];
+
+    const previousCentury = '19';
+    const currentCentury = '20';
+
+    if (yearBefore.toString().length > yearUpdateFormat.length) {
+      return yearBefore.slice(-2);
+    }
+
+    if (yearBefore.length === yearUpdateFormat.length) {
+      return yearBefore;
+    }
+
+    if (yearUpdateFormat.length === 4 && yearBefore >= 30) {
+      return previousCentury + yearBefore;
+    }
+
+    if (yearUpdateFormat.length === 4 && yearBefore < 30) {
+      return currentCentury + yearBefore;
+    }
+
+    return yearBefore;
+  };
+
+  let newFormatDate = '';
+
+  for (let i = 0; i < toFormat.length; i++) {
+    const dateArr = date.split(fromFormat[3]);
+    const indexYY = fromFormat.indexOf('YY') !== -1
+      ? fromFormat.indexOf('YY')
+      : fromFormat.indexOf('YYYY');
+
+    const indexMM = fromFormat.indexOf('MM');
+    const indexDD = fromFormat.indexOf('DD');
+
+    const day = dateArr[indexDD];
+    const month = dateArr[indexMM];
+    const year = dateArr[indexYY];
+
+    const separator = toFormat[toFormat.length - 1];
+
+    if (toFormat[i] === 'DD') {
+      newFormatDate += day + separator;
+    }
+
+    if (toFormat[i] === 'MM') {
+      newFormatDate += month + separator;
+    }
+
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      const yearUpdate = prefixYear(year, toFormat);
+
+      newFormatDate += yearUpdate + separator;
+    }
+  }
+
+  return newFormatDate.slice(0, newFormatDate.length - 1);
 }
 
 module.exports = formatDate;
