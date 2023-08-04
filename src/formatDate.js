@@ -50,14 +50,14 @@
  */
 
 const formatYear = (date) => {
-  const LIMIT_YEAR = 30;
+  const CURRENT_YEAR = Number(`${new Date().getFullYear()}`.slice(-2));
   const newDate = { ...date };
 
   if (Object.prototype.hasOwnProperty.call(newDate, 'YYYY')) {
     newDate['YY'] = newDate['YYYY'].slice(-2);
   } else {
     newDate['YYYY'] = newDate['YY']
-      .padStart(4, newDate['YY'] < LIMIT_YEAR ? '20' : '19');
+      .padStart(4, newDate['YY'] < CURRENT_YEAR ? '20' : '19');
   }
 
   return newDate;
