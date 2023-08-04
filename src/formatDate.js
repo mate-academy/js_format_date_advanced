@@ -50,7 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let FORMAT_YEAR = '';
+  let FORMAT_MONTH = '';
+  let FORMAT_DAY = '';
+  const dateFormatNew = [];
+
+  const splitOldDate = fromFormat[fromFormat.length - 1];
+  const splitNewDate = toFormat[toFormat.length - 1];
+
+  const dateFormatOld = date.split(splitOldDate);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const elementArray = fromFormat[i];
+
+    if (elementArray === 'YYYY') {
+      FORMAT_YEAR = dateFormatOld[i];
+    } else if (elementArray === 'YY') {
+      FORMAT_YEAR = dateFormatOld[i];
+    } else if (elementArray === 'MM') {
+      FORMAT_MONTH = dateFormatOld[i];
+    } else if (elementArray === 'DD') {
+      FORMAT_DAY = dateFormatOld[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const elementArray = toFormat[i];
+
+    if (elementArray === 'YYYY') {
+      let changeFormatYear = FORMAT_YEAR;
+
+      if (FORMAT_YEAR.length === 2) {
+        changeFormatYear = FORMAT_YEAR < 30
+          ? '20' + FORMAT_YEAR
+          : '19' + FORMAT_YEAR;
+
+        dateFormatNew.push(changeFormatYear);
+      } else {
+        dateFormatNew.push(changeFormatYear);
+      }
+
+      ;
+    } else if (elementArray === 'YY') {
+      const changeFormatYear = FORMAT_YEAR.split('').slice(2, 4).join('');
+
+      dateFormatNew.push(changeFormatYear);
+    } else if (elementArray === 'MM') {
+      dateFormatNew.push(FORMAT_MONTH);
+    } else if (elementArray === 'DD') {
+      dateFormatNew.push(FORMAT_DAY);
+    }
+  }
+
+  return dateFormatNew.join(splitNewDate);
 }
 
 module.exports = formatDate;
