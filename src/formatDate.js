@@ -49,8 +49,45 @@
  * @returns {string}
  */
 
+const getYearIndex
+  = format => format.findIndex((elem) => elem === 'YY' || elem === 'YYYY');
+
+function getYear(format, year) {
+  if (format === 'YYYY') {
+    return +year >= 30 ? +year + 1900 : +year + 2000;
+  } else {
+    return +year >= 30 ? +year - 1900 : +year - 2000;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dateValues = date.split(fromFormat[3]);
+
+  const dateObj = {
+    [fromFormat[0]]: dateValues[0],
+    [fromFormat[1]]: dateValues[1],
+    [fromFormat[2]]: dateValues[2],
+  };
+
+  const yearToFormat
+    = toFormat[getYearIndex(toFormat)];
+
+  const yearFromFormat
+    = fromFormat[getYearIndex(fromFormat)];
+
+  if (!dateObj[yearToFormat]) {
+    dateObj[yearToFormat] = getYear(yearToFormat, dateObj[yearFromFormat]);
+    delete dateObj[yearFromFormat];
+  }
+
+  let newDate = toFormat.slice(0, -1).join(toFormat[3]);
+
+  for (const key in dateObj) {
+    newDate = newDate.replace(key, dateObj[key]);
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
