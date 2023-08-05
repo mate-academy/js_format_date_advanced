@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const YEAR_FORMAT_4 = 'YYYY';
+  const YEAR_FORMAT_2 = 'YY';
+  const MONTH_FORMAT = 'MM';
+  const DAY_FORMAT = 'DD';
+
+  const yearIndexOld = fromFormat.indexOf(YEAR_FORMAT_4) >= 0
+    ? fromFormat.indexOf(YEAR_FORMAT_4) : fromFormat.indexOf(YEAR_FORMAT_2);
+  const dayIndexOld = fromFormat.indexOf(DAY_FORMAT);
+  const monthIndexOld = fromFormat.indexOf(MONTH_FORMAT);
+
+  const yearIndexNew = toFormat.indexOf(YEAR_FORMAT_4) >= 0
+    ? toFormat.indexOf(YEAR_FORMAT_4) : toFormat.indexOf(YEAR_FORMAT_2);
+  const dayIndexNew = toFormat.indexOf(DAY_FORMAT);
+  const monthIndexNew = toFormat.indexOf(MONTH_FORMAT);
+
+  const reBuildedDateFormat = date.split(fromFormat[3]);
+
+  const monthValue = reBuildedDateFormat[monthIndexOld];
+  const dayValue = reBuildedDateFormat[dayIndexOld];
+  let yearValue = reBuildedDateFormat[yearIndexOld];
+
+  const formatYearOld = fromFormat[yearIndexOld];
+  const formatYearNew = toFormat[yearIndexNew];
+
+  if (formatYearOld === YEAR_FORMAT_4) {
+    if (formatYearNew !== YEAR_FORMAT_4) {
+      yearValue = yearValue.substring(2);
+    }
+  } else {
+    if (formatYearNew === YEAR_FORMAT_4) {
+      yearValue = (parseInt(yearValue) < 30 ? '20' : '19') + yearValue;
+    }
+  }
+
+  const newDate = [];
+
+  const separator = toFormat[3];
+
+  newDate[yearIndexNew] = yearValue;
+  newDate[dayIndexNew] = dayValue;
+  newDate[monthIndexNew] = monthValue;
+
+  return newDate.join(separator);
+
 }
 
 module.exports = formatDate;
