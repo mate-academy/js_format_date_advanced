@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const CENTURY_21 = '20';
+  const CENTURY_20 = '19';
+  const dateArr = date.split(`${fromFormat[3]}`);
+  const expectedDate = [];
+  let month, day, shortYear, longYear;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'MM':
+        month = dateArr[i];
+        break;
+      case 'DD':
+        day = dateArr[i];
+        break;
+      case 'YY':
+        shortYear = dateArr[i];
+        break;
+      case 'YYYY':
+        longYear = dateArr[i];
+        break;
+    }
+  }
+
+  if (shortYear === undefined) {
+    shortYear = longYear.slice(2, 4);
+  } else if (longYear === undefined) {
+    if (shortYear < 30) {
+      longYear = CENTURY_21 + shortYear;
+    } else {
+      longYear = CENTURY_20 + shortYear;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'MM':
+        expectedDate.push(month);
+        break;
+      case 'DD':
+        expectedDate.push(day);
+        break;
+      case 'YY':
+        expectedDate.push(shortYear);
+        break;
+      case 'YYYY':
+        expectedDate.push(longYear);
+        break;
+    }
+  }
+
+  return expectedDate.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
