@@ -52,6 +52,8 @@
 function formatDate(date, fromFormat, toFormat) {
   const FORMAT_DIVIDER_INDEX = 3;
   const MAX_YEAR_TO_APPEAR = 30;
+  const TWENTIETH_CENTURY = '20';
+  const NINETEENTH_CENTURY = '19';
   const oldDate = date.split(fromFormat[FORMAT_DIVIDER_INDEX]);
   const oldDateCopmonets = {};
   const dateNew = [];
@@ -62,9 +64,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (oldDateCopmonets.YY) {
     if (oldDateCopmonets.YY < MAX_YEAR_TO_APPEAR) {
-      oldDateCopmonets.YYYY = '20' + oldDateCopmonets.YY;
+      oldDateCopmonets.YYYY = TWENTIETH_CENTURY + oldDateCopmonets.YY;
     } else {
-      oldDateCopmonets.YYYY = '19' + oldDateCopmonets.YY;
+      oldDateCopmonets.YYYY = NINETEENTH_CENTURY + oldDateCopmonets.YY;
     }
   }
 
