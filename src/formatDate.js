@@ -48,9 +48,34 @@
  *
  * @returns {string}
  */
-
+/* eslint-disable no-console */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const FORMAT_DIVIDER_INDEX = 3;
+  const MAX_YEAR_TO_APPEAR = 30;
+  const oldDate = date.split(fromFormat[FORMAT_DIVIDER_INDEX]);
+  const oldDateCopmonets = {};
+  const dateNew = [];
 
+  for (let i = 0; i < FORMAT_DIVIDER_INDEX; i++) {
+    oldDateCopmonets[fromFormat[i]] = oldDate[i];
+  }
+
+  if (oldDateCopmonets.YY) {
+    if (oldDateCopmonets.YY < MAX_YEAR_TO_APPEAR) {
+      oldDateCopmonets.YYYY = '20' + oldDateCopmonets.YY;
+    } else {
+      oldDateCopmonets.YYYY = '19' + oldDateCopmonets.YY;
+    }
+  }
+
+  if (oldDateCopmonets.YYYY) {
+    oldDateCopmonets.YY = oldDateCopmonets.YYYY.slice(2);
+  }
+
+  for (let i = 0; i < FORMAT_DIVIDER_INDEX; i++) {
+    dateNew[i] = oldDateCopmonets[toFormat[i]];
+  }
+
+  return dateNew.join(toFormat[FORMAT_DIVIDER_INDEX]);
+}
 module.exports = formatDate;
