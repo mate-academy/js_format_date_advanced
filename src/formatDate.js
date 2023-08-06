@@ -49,19 +49,19 @@
  * @returns {string}
  */
 
-function formatDate(date, fromForm, toForm) {
-  const oldSeparator = fromForm[fromForm.length - 1];
-  const newSeparator = toForm[toForm.length - 1];
+function formatDate(date, fromFormat, toFormat) {
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
   const arrFromDate = date.split(oldSeparator);
   const arrResultDate = [];
 
-  for (let i = 0; i < toForm.length - 1; i++) {
-    for (let j = 0; j < fromForm.length - 1; j++) {
-      if (toForm[i][0] === fromForm[j][0]) {
-        if (toForm[i][0] === 'Y' && toForm[i] !== fromForm[j]
-          && toForm[i].length === 4) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    for (let j = 0; j < fromFormat.length - 1; j++) {
+      if (toFormat[i][0] === fromFormat[j][0]) {
+        if (toFormat[i][0] === 'Y' && toFormat[i] !== fromFormat[j]
+          && toFormat[i].length === 4) {
           arrResultDate[i] = arrFromDate[j] < 30 ? `20${arrFromDate[j]}` : `19${arrFromDate[j]}`;
-        } else if (toForm[i][0] === 'Y' && toForm[i].length === 2) {
+        } else if (toFormat[i][0] === 'Y' && toFormat[i].length === 2) {
           arrResultDate[i] = arrFromDate[j].slice(-2);
         } else {
           arrResultDate[i] = arrFromDate[j];
