@@ -56,8 +56,9 @@ const DAY_FORMAT = 'DD';
 
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
-  const yearIndex = fromFormat.indexOf('YYYY') === -1
-    ? fromFormat.indexOf('YY') : fromFormat.indexOf('YYYY');
+  const yearIndex = fromFormat.indexOf(YEAR_FORMAT_BIG) === -1
+    ? fromFormat.indexOf(YEAR_FORMAT_SMALL)
+    : fromFormat.indexOf(YEAR_FORMAT_BIG);
   const year = dateParts[yearIndex];
   const yearShort = year.slice(-2);
   const formattedDate = [];
