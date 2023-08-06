@@ -49,6 +49,11 @@
  * @returns {string}
  */
 
+const YEAR_FORMAT_BIG = 'YYYY';
+const YEAR_FORMAT_SMALL = 'YY';
+const MONTH_FORMAT = 'MM';
+const DAY_FORMAT = 'DD';
+
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
   const yearIndex = fromFormat.indexOf('YYYY') === -1
@@ -58,24 +63,24 @@ function formatDate(date, fromFormat, toFormat) {
   const formattedDate = [];
 
   toFormat.forEach((item) => {
-    if (item === 'YY') {
+    if (item === YEAR_FORMAT_SMALL) {
       formattedDate.push(yearShort);
     }
 
-    if (item === 'YYYY') {
+    if (item === YEAR_FORMAT_BIG) {
       const formattedYear = Number(yearShort) < 30 ? `20${yearShort}` : `19${yearShort}`;
 
       formattedDate.push(formattedYear);
     }
 
-    if (item === 'DD') {
-      const dayIndex = fromFormat.indexOf('DD');
+    if (item === DAY_FORMAT) {
+      const dayIndex = fromFormat.indexOf(DAY_FORMAT);
 
       formattedDate.push(dateParts[dayIndex]);
     }
 
-    if (item === 'MM') {
-      const monthIndex = fromFormat.indexOf('MM');
+    if (item === MONTH_FORMAT) {
+      const monthIndex = fromFormat.indexOf(MONTH_FORMAT);
 
       formattedDate.push(dateParts[monthIndex]);
     }
