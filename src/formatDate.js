@@ -50,59 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let FORMAT_YEAR = '';
-  let FORMAT_MONTH = '';
-  let FORMAT_DAY = '';
+  const CENTURE_XXI = '20';
+  const CENTURE_XX = '19';
+  let year = '';
+  let month = '';
+  let day = '';
   const dateFormatNew = [];
 
-  const splitOldDate = fromFormat[fromFormat.length - 1];
-  const splitNewDate = toFormat[toFormat.length - 1];
+  const separatorOld = fromFormat[fromFormat.length - 1];
+  const separatorNew = toFormat[toFormat.length - 1];
 
-  const dateFormatOld = date.split(splitOldDate);
+  const dataValuesOld = date.split(separatorOld);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    const elementArray = fromFormat[i];
+    const part = fromFormat[i];
 
-    if (elementArray === 'YYYY') {
-      FORMAT_YEAR = dateFormatOld[i];
-    } else if (elementArray === 'YY') {
-      FORMAT_YEAR = dateFormatOld[i];
-    } else if (elementArray === 'MM') {
-      FORMAT_MONTH = dateFormatOld[i];
-    } else if (elementArray === 'DD') {
-      FORMAT_DAY = dateFormatOld[i];
+    switch (part) {
+      case 'YY':
+      case 'YYYY':
+        year = dataValuesOld[i];
+        break;
+      case 'MM':
+        month = dataValuesOld[i];
+        break;
+      case 'DD':
+        day = dataValuesOld[i];
+        break;
+      default:
+        return `Unknown date format ${part}`;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    const elementArray = toFormat[i];
+    const part = toFormat[i];
+    let changeYear = year;
 
-    if (elementArray === 'YYYY') {
-      let changeFormatYear = FORMAT_YEAR;
-
-      if (FORMAT_YEAR.length === 2) {
-        changeFormatYear = FORMAT_YEAR < 30
-          ? '20' + FORMAT_YEAR
-          : '19' + FORMAT_YEAR;
-
-        dateFormatNew.push(changeFormatYear);
-      } else {
-        dateFormatNew.push(changeFormatYear);
-      }
-
-      ;
-    } else if (elementArray === 'YY') {
-      const changeFormatYear = FORMAT_YEAR.split('').slice(2, 4).join('');
-
-      dateFormatNew.push(changeFormatYear);
-    } else if (elementArray === 'MM') {
-      dateFormatNew.push(FORMAT_MONTH);
-    } else if (elementArray === 'DD') {
-      dateFormatNew.push(FORMAT_DAY);
+    switch (part) {
+      case 'YYYY':
+        if (year.length === 2) {
+          changeYear = year < 30
+            ? CENTURE_XXI + year
+            : CENTURE_XX + year;
+        }
+        dateFormatNew.push(changeYear);
+        break;
+      case 'YY':
+        changeYear = year.split('').slice(2, 4).join('');
+        dateFormatNew.push(changeYear);
+        break;
+      case 'MM':
+        dateFormatNew.push(month);
+        break;
+      case 'DD':
+        dateFormatNew.push(day);
+        break;
+      default:
+        return `Unknown date format ${part}`;
     }
   }
 
-  return dateFormatNew.join(splitNewDate);
+  return dateFormatNew.join(separatorNew);
 }
 
 module.exports = formatDate;
