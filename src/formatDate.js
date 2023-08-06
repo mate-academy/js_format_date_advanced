@@ -3,7 +3,7 @@
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array and the new `toFormat` array. Function returns
+ * the old `fromForm` array and the new `toForm` array. Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
@@ -43,14 +43,34 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
+ * @param {string[]} fromForm
+ * @param {string[]} toForm
  *
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+function formatDate(date, fromForm, toForm) {
+  const oldSeparator = fromForm[fromForm.length - 1];
+  const newSeparator = toForm[toForm.length - 1];
+  const arrFromDate = date.split(oldSeparator);
+  const arrResultDate = [];
+
+  for (let i = 0; i < toForm.length - 1; i++) {
+    for (let j = 0; j < fromForm.length - 1; j++) {
+      if (toForm[i][0] === fromForm[j][0]) {
+        if (toForm[i][0] === 'Y' && toForm[i] !== fromForm[j]
+          && toForm[i].length === 4) {
+          arrResultDate[i] = arrFromDate[j] < 30 ? `20${arrFromDate[j]}` : `19${arrFromDate[j]}`;
+        } else if (toForm[i][0] === 'Y' && toForm[i].length === 2) {
+          arrResultDate[i] = arrFromDate[j].slice(-2);
+        } else {
+          arrResultDate[i] = arrFromDate[j];
+        }
+      }
+    }
+  }
+
+  return arrResultDate.join(newSeparator);
 }
 
 module.exports = formatDate;
