@@ -50,7 +50,48 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let dateToArr = [];
+  const dateObject = {};
+  const newFormatOfDate = [];
+  let newFormatOfDateToReturn = '';
+
+  for (let i = fromFormat.length - 1; i >= 0; i--) {
+    if (i === fromFormat.length - 1) {
+      dateToArr = date.split(fromFormat[i]);
+      dateObject.separator = fromFormat[i];
+    } else {
+      dateObject[fromFormat[i]] = dateToArr[i];
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (!toFormat[i].includes('Y') && i !== toFormat.length - 1) {
+      if (dateObject.hasOwnProperty(toFormat[i])) {
+        newFormatOfDate.push(dateObject[toFormat[i]]);
+      };
+    } else if (toFormat[i].includes('Y')) {
+      if (dateObject.hasOwnProperty(toFormat[i])) {
+        newFormatOfDate.push(dateObject[toFormat[i]]);
+      } else {
+        for (const key of Object.keys(dateObject)) {
+          if (key.includes('Y')) {
+            if (key.length === 2) {
+              dateObject[key] = (dateObject[key] < 30) ? '20' + dateObject[key]
+                : '19' + dateObject[key];
+              newFormatOfDate.push(dateObject[key]);
+            } else {
+              dateObject[key] = dateObject[key].split('').slice(2).join('');
+              newFormatOfDate.push(dateObject[key]);
+            }
+          }
+        }
+      }
+    } else {
+      newFormatOfDateToReturn = newFormatOfDate.join(toFormat[i]);
+    }
+  }
+
+  return newFormatOfDateToReturn;
 }
 
 module.exports = formatDate;
