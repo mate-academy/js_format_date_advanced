@@ -63,20 +63,22 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const datePart in objDateFrom) {
+    const dateValue = objDateFrom[datePart];
+
     if (toFormat.includes(datePart)) {
-      arrDateTo[toFormat.indexOf(datePart)] = objDateFrom[datePart];
+      arrDateTo[toFormat.indexOf(datePart)] = dateValue;
       continue;
     }
 
     if (datePart.length === 4) {
-      arrDateTo[toFormat.indexOf('YY')] = objDateFrom[datePart].slice(2);
+      arrDateTo[toFormat.indexOf('YY')] = dateValue.slice(2);
       continue;
     }
 
     if (datePart.length === 2) {
-      arrDateTo[toFormat.indexOf('YYYY')] = objDateFrom[datePart] < 30
-        ? '20' + objDateFrom[datePart]
-        : '19' + objDateFrom[datePart];
+      arrDateTo[toFormat.indexOf('YYYY')] = dateValue < 30
+        ? '20' + dateValue
+        : '19' + dateValue;
     }
   }
 
