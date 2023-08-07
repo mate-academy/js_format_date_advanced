@@ -3,7 +3,7 @@
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromForm` array and the new `toForm` array. Function returns
+ * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
@@ -43,8 +43,8 @@
  * ) // '18.02.1997'
  *
  * @param {string} date
- * @param {string[]} fromForm
- * @param {string[]} toForm
+ * @param {string[]} fromFormat
+ * @param {string[]} toFormat
  *
  * @returns {string}
  */
