@@ -50,8 +50,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const splitDate = date.split(fromFormat[3]);
-  const fromMp = splitDate.reduce(
+  const dateSeparator = fromFormat[3];
+  const splitDate = date.split(dateSeparator);
+  const dateMap = splitDate.reduce(
     (acc, nextVal, index) => ({ ...acc,
       [fromFormat[index].charAt(0)]: nextVal }),
     {}
@@ -65,21 +66,19 @@ function formatDate(date, fromFormat, toFormat) {
     switch (keyChar) {
       case 'D':
       case 'M':
-        resultArray.push(fromMp[keyChar]);
+        resultArray.push(dateMap[keyChar]);
         break;
       case 'Y':
-        if (fromMp[keyChar].length === 4 && key.length === 2) {
-          fromMp[keyChar] = fromMp[keyChar].slice(2);
+        if (dateMap[keyChar].length === 4 && key.length === 2) {
+          dateMap[keyChar] = dateMap[keyChar].slice(2);
         }
 
-        if (fromMp[keyChar].length === 2 && key.length === 4) {
-          if (Number(fromMp[keyChar]) >= 30) {
-            fromMp[keyChar] = '19' + fromMp[keyChar];
-          } else {
-            fromMp[keyChar] = '20' + fromMp[keyChar];
-          }
+        if (dateMap[keyChar].length === 2 && key.length === 4) {
+          const year = Number(dateMap[keyChar]) >= 30 ? '19' : '20';
+
+          dateMap[keyChar] = `${year}${dateMap[keyChar]}`;
         }
-        resultArray.push(fromMp[keyChar]);
+        resultArray.push(dateMap[keyChar]);
         break;
     }
   }
