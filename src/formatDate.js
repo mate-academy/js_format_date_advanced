@@ -66,7 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (nrmlzedYear.length !== toFormat[toYearIndex].length) {
     if (nrmlzedYear.length > toFormat[toYearIndex].length) {
-      nrmlzedYear = nrmlzedYear[2] + nrmlzedYear[3];
+      nrmlzedYear = nrmlzedYear.slice(2);
     } else {
       if (+nrmlzedYear >= 30) {
         nrmlzedYear = '19' + nrmlzedYear;
