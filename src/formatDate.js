@@ -48,9 +48,55 @@
  *
  * @returns {string}
  */
+const CENTURY_INDICATOR = 30;
+const CENTURY_21 = '20';
+const CENTURY_20 = '19';
+const YEAR_FORMAT_OF_4 = 'YYYY';
+const YEAR_FORMAT_OF_2 = 'YY';
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const currentSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const splitedDate = date.split(currentSeparator);
+  const formatedDate = [];
+
+  formatYear(fromFormat, toFormat, splitedDate);
+
+  for (let i = 0; i < splitedDate.length; i++) {
+    formatedDate[i] = findFormatIndex(splitedDate, fromFormat, toFormat, i);
+  }
+
+  return formatedDate.join(newSeparator);
+}
+
+function findFormatIndex(splitedDate, oldFormat, newFormat, i) {
+  return splitedDate[oldFormat.indexOf(newFormat[i])];
+}
+
+function formatYear(fromFormat, toFormat, splitedDate) {
+  const fromYearIndex = fromFormat.indexOf(YEAR_FORMAT_OF_2)
+  + fromFormat.indexOf(YEAR_FORMAT_OF_4) + 1;
+  const toYearIndex = toFormat.indexOf(YEAR_FORMAT_OF_2)
+  + toFormat.indexOf(YEAR_FORMAT_OF_4) + 1;
+
+  if (fromFormat[fromYearIndex] === toFormat[toYearIndex]) {
+    return;
+  }
+
+  fromFormat[fromYearIndex] = toFormat[toYearIndex];
+
+  if (fromFormat[fromYearIndex] === YEAR_FORMAT_OF_4) {
+    if (+splitedDate[fromYearIndex] < CENTURY_INDICATOR) {
+      splitedDate[fromYearIndex] = CENTURY_21 + splitedDate[fromYearIndex];
+
+      return;
+    }
+    splitedDate[fromYearIndex] = CENTURY_20 + splitedDate[fromYearIndex];
+
+    return;
+  }
+
+  splitedDate[fromYearIndex] = splitedDate[fromYearIndex].slice(2);
 }
 
 module.exports = formatDate;
