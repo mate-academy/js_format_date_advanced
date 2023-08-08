@@ -49,9 +49,9 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat[fromFormat.length - 1];
-  const newSeparator = toFormat[toFormat.length - 1];
+const formatDate = (date, fromFormat, toFormat) => {
+  const [oldSeparator] = fromFormat.slice(-1);
+  const [newSeparator] = toFormat.slice(-1);
   const arrFromDate = date.split(oldSeparator);
   const arrResultDate = [];
 
