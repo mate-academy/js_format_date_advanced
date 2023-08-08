@@ -45,21 +45,18 @@
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
- *formatDate.js
+ *
  * @returns {string}
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let newFormatDate = '';
+  const newFormatDate = [];
   let newDay = '';
   let newMonth = '';
   let newYear = '';
   const newSeparator = toFormat[3];
-
-  let oldDateSplit = [];
-  let oldYear = '';
-
-  oldDateSplit = date.split(fromFormat[3]);
+  let oldYear;
+  const oldDateSplit = date.split(fromFormat[3]);
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
@@ -75,37 +72,38 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (const elem of toFormat) {
-    if (elem === 'DD') {
-      newFormatDate += (newDay + newSeparator);
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'DD') {
+      newFormatDate[i] = newDay;
     }
 
-    if (elem === 'MM') {
-      newFormatDate += (newMonth + newSeparator);
+    if (toFormat[i] === 'MM') {
+      // newFormatDate += (newMonth + newSeparator);
+      newFormatDate[i] = newMonth;
     }
 
-    if (elem.slice(0, 2) === 'YY') {
-      if (elem.length === oldYear.length) {
+    if (toFormat[i].slice(0, 2) === 'YY') {
+      if (toFormat[i].length === oldYear.length) {
         newYear = oldYear;
       }
 
-      if (elem.length < oldYear.length) {
+      if (toFormat[i].length < oldYear.length) {
         newYear = oldYear.slice(2, 4);
       }
 
-      if (elem.length > oldYear.length) {
-        if (oldYear < '30') {
+      if (toFormat[i].length > oldYear.length) {
+        if (+oldYear < 30) {
           newYear = '20' + oldYear;
         } else {
           newYear = '19' + oldYear;
         }
       }
 
-      newFormatDate += (newYear + newSeparator);
+      newFormatDate[i] = newYear;
     }
   }
 
-  return newFormatDate.slice(0, (newFormatDate.length - 1));
+  return newFormatDate.join(newSeparator);
 }
 
 module.exports = formatDate;
