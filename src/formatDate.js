@@ -49,8 +49,32 @@
  * @returns {string}
  */
 
+const formatYear = (date) => {
+  const CURRENT_YEAR = 30;
+
+  if (Object.prototype.hasOwnProperty.call(date, 'YYYY')) {
+    date['YY'] = date['YYYY'].slice(-2);
+  } else {
+    date['YYYY'] = date['YY']
+      .padStart(4, date['YY'] < CURRENT_YEAR ? '20' : '19');
+  }
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitDate = date.split(fromFormat[3]);
+  const dates = splitDate.reduce((obj, unit, i) => {
+    obj[fromFormat[i]] = unit;
+
+    return obj;
+  }, {});
+
+  formatYear(dates);
+
+  return toFormat
+    .slice(0, -1)
+    .map((unit) => dates[unit])
+    .join(toFormat
+      .slice(-1));
 }
 
 module.exports = formatDate;
