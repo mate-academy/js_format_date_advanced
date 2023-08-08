@@ -49,71 +49,46 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const oldSeparator = fromFormat[3];
-  const newSeparator = toFormat[3];
-  const maxYear = 30;
-
+function getFullDate(date, referenceDate) {
   const shortYear = 'YY';
   const longYear = 'YYYY';
+  const convertYear = 30;
   const twentiethCentury = '20';
   const ninetiethCentury = '19';
-  const century = 100;
 
-  const oldObjectDate = {};
-  const oldArrayDate = date.split(oldSeparator);
-  const newArrayDate = [];
-  const lengthOfNewDate = 3;
+  const newDate = date.reduce((dateObject, element, index) => {
+    dateObject[referenceDate[index]] = element;
 
-  for (let i = 0; i < oldArrayDate.length; i++) {
-    if (fromFormat[i] === shortYear) {
-      if (+oldArrayDate[i] < maxYear) {
-        oldArrayDate[i] = twentiethCentury + oldArrayDate[i];
-      } else {
-        oldArrayDate[i] = ninetiethCentury + oldArrayDate[i];
-      }
-      fromFormat[i] = longYear;
-    }
-    oldObjectDate[fromFormat[i]] = oldArrayDate[i];
-  }
+    return dateObject;
+  }, {});
 
-  for (let i = 0; i < lengthOfNewDate; i++) {
-    if (toFormat[i] === shortYear) {
-      newArrayDate.push(oldObjectDate[longYear] % century);
+  if (newDate.hasOwnProperty(longYear)) {
+    newDate[shortYear] = newDate[longYear].slice(-2);
+  } else {
+    const currentYear = newDate[shortYear];
+
+    if (+currentYear < convertYear) {
+      newDate[longYear] = twentiethCentury + currentYear;
     } else {
-      newArrayDate.push(oldObjectDate[toFormat[i]]);
+      newDate[longYear] = ninetiethCentury + currentYear;
     }
   }
 
-  return newArrayDate.join(newSeparator);
+  return newDate;
+}
 
-  // const object = {};
-  // const arrDate = date.split(fromFormat[3]);
+function formatDate(date, fromFormat, toFormat) {
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
 
-  // for (let i = 0; i < arrDate.length; i++) {
-  //   if (fromFormat[i] === 'YY') {
-  //     if (+arrDate[i] < 30) {
-  //       arrDate[i] = '20' + arrDate[i];
-  //     } else {
-  //       arrDate[i] = '19' + arrDate[i];
-  //     }
-  //     fromFormat[i] = 'YYYY';
-  //   }
-  //   object[fromFormat[i]] = arrDate[i];
-  // }
+  const splitDate = date.split(oldSeparator);
+  const oldFormatDate = getFullDate(splitDate, fromFormat);
 
-  // const array = [];
+  const newFormatDate = toFormat.slice(0, -1)
+    .map(element => oldFormatDate[element])
+    .join(newSeparator);
 
-  // for (let i = 0; i < 3; i++) {
-  //   if (toFormat[i] === 'YY') {
-  //     array.push(object['YYYY'] % 100);
-  //   } else {
-  //     array.push(object[toFormat[i]]);
-  //   }
-  // }
-
-  // return array.join(toFormat[3]);
+  return newFormatDate;
 }
 
 module.exports = formatDate;
