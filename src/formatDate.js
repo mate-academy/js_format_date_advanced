@@ -63,22 +63,14 @@ function formatDate(date, fromFormat, toFormat) {
   const separatedDate = date.split(oldSeparator);
   const newFormatDateArr = [];
 
-  function getIndex(arr, type) {
-    return arr.indexOf(type);
-  }
-
-  function findIndex(arr, type1, type2) {
-    return arr.findIndex(item => item.includes(type1) || item.includes(type2));
-  }
-
-  const indexOfDayOld = getIndex(fromFormat, TYPE_OF_DAY);
-  const indexOfMonthOld = getIndex(fromFormat, TYPE_OF_MONTH);
+  const indexOfDayOld = fromFormat.indexOf(TYPE_OF_DAY);
+  const indexOfMonthOld = fromFormat.indexOf(TYPE_OF_MONTH);
   const indexOfYearOld = findIndex(
     fromFormat, TYPE_OF_YEAR_LONG, TYPE_OF_YEAR_SHORT
   );
 
-  const indexOfDayNew = getIndex(toFormat, TYPE_OF_DAY);
-  const indexOfMonthNew = getIndex(toFormat, TYPE_OF_MONTH);
+  const indexOfDayNew = toFormat.indexOf(TYPE_OF_DAY);
+  const indexOfMonthNew = toFormat.indexOf(TYPE_OF_MONTH);
   const indexOfYearNew = findIndex(
     toFormat, TYPE_OF_YEAR_LONG, TYPE_OF_YEAR_SHORT
   );
@@ -87,26 +79,22 @@ function formatDate(date, fromFormat, toFormat) {
   newFormatDateArr[indexOfMonthNew] = separatedDate[indexOfMonthOld];
   newFormatDateArr[indexOfDayNew] = separatedDate[indexOfDayOld];
 
-  const isShortYear = toFormat[indexOfYearNew].includes(TYPE_OF_YEAR_SHORT);
+  const isLongYear = toFormat[indexOfYearNew].includes(TYPE_OF_YEAR_LONG);
   const shortYear = newFormatDateArr[indexOfYearNew].slice(-2);
 
-  if (isShortYear) {
-    newFormatDateArr[indexOfYearNew] = shortYear;
-  }
-
-  const isLongYear = toFormat[indexOfYearNew].includes(TYPE_OF_YEAR_LONG);
+  newFormatDateArr[indexOfYearNew] = shortYear;
 
   if (isLongYear) {
-    newFormatDateArr[indexOfYearNew] = shortYear;
-
-    if (shortYear < LIMIT_YEAR) {
-      newFormatDateArr[indexOfYearNew] = CENTURE_21 + shortYear;
-    } else {
-      newFormatDateArr[indexOfYearNew] = CENTURE_20 + shortYear;
-    }
+    newFormatDateArr[indexOfYearNew] = shortYear < LIMIT_YEAR
+      ? CENTURE_21 + shortYear
+      : CENTURE_20 + shortYear;
   }
 
   return newFormatDateArr.join(newSeparator);
+}
+
+function findIndex(arr, type1, type2) {
+  return arr.findIndex(item => item.includes(type1) || item.includes(type2));
 }
 
 module.exports = formatDate;
