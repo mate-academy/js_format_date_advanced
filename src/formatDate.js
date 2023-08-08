@@ -72,10 +72,12 @@ function formatDate(date, fromFormat, toFormat) {
       } else {
         yearInput = inputDate[i];
       }
+      continue;
     }
 
     if (fromFormat[i].includes(formatMonth)) {
       monthInput = inputDate[i];
+      continue;
     }
 
     if (fromFormat[i].includes(formatDay)) {
