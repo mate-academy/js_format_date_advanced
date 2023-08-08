@@ -50,33 +50,31 @@
  */
 
 const formatYear = (date) => {
-  const CURRENT_YEAR = Number(`${new Date().getFullYear()}`.slice(-2));
-  const newDate = { ...date };
+  const CURRENT_YEAR = 30;
 
-  if (Object.prototype.hasOwnProperty.call(newDate, 'YYYY')) {
-    newDate['YY'] = newDate['YYYY'].slice(-2);
+  if (Object.prototype.hasOwnProperty.call(date, 'YYYY')) {
+    date['YY'] = date['YYYY'].slice(-2);
   } else {
-    newDate['YYYY'] = newDate['YY']
-      .padStart(4, newDate['YY'] < CURRENT_YEAR ? '20' : '19');
+    date['YYYY'] = date['YY']
+      .padStart(4, date['YY'] < CURRENT_YEAR ? '20' : '19');
   }
-
-  return newDate;
 };
 
 function formatDate(date, fromFormat, toFormat) {
-  const splitDate = date.split(fromFormat.slice(-1));
+  const splitDate = date.split(fromFormat[3]);
   const dates = splitDate.reduce((obj, unit, i) => {
     obj[fromFormat[i]] = unit;
 
     return obj;
   }, {});
 
-  // Лучше мутировать этот объект или делать копию как сейчас?
-  const yearFormated = formatYear(dates);
+  formatYear(dates);
 
   return toFormat
-    .slice(0, -1).map((unit) => yearFormated[unit])
-    .join(toFormat.slice(-1));
+    .slice(0, -1)
+    .map((unit) => dates[unit])
+    .join(toFormat
+      .slice(-1));
 }
 
 module.exports = formatDate;
