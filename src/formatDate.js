@@ -50,67 +50,63 @@
  */
 
 function getNewFormatYear(fromFormYear, toFormYear, oldFormatYear) {
-  let newFormatYear = oldFormatYear;
-
   if (fromFormYear.length > toFormYear.length) {
-    newFormatYear = oldFormatYear.slice(2);
+    return oldFormatYear.slice(2);
   }
 
   if (fromFormYear.length < toFormYear.length) {
-    newFormatYear = oldFormatYear < 30
-      ? 20 + '' + oldFormatYear
-      : 19 + '' + oldFormatYear;
+    const newFormattedYear = oldFormatYear < 30
+      ? '20' + oldFormatYear
+      : '19' + oldFormatYear;
+
+    return newFormattedYear;
   }
 
-  return newFormatYear;
+  return oldFormatYear;
 }
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateInNewFormat = [];
-  const formatDates = date.split(fromFormat[3]);
+  const formattedDate = [];
+  const splittedOldDate = date.split(fromFormat[3]);
+  const shortYearFormat = 'YY';
+  const longYearFormat = 'YYYY';
 
-  const yearIndexFromFormat = fromFormat.indexOf('YY') >= 0
-    ? fromFormat.indexOf('YY')
-    : fromFormat.indexOf('YYYY');
+  const yearIndexFromFormat = Math.max(fromFormat.indexOf(shortYearFormat),
+    fromFormat.indexOf(longYearFormat));
 
-  const yearIndexToFormat = toFormat.indexOf('YY') >= 0
-    ? toFormat.indexOf('YY')
-    : toFormat.indexOf('YYYY');
+  const yearIndexToFormat = Math.max(toFormat.indexOf(shortYearFormat),
+    toFormat.indexOf(longYearFormat));
 
   const yearFromFormat = fromFormat[yearIndexFromFormat];
   const yearToFormat = toFormat[yearIndexToFormat];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'DD': {
-        dateInNewFormat[i] = formatDates[fromFormat.indexOf('DD')];
+        formattedDate[i] = splittedOldDate[fromFormat.indexOf('DD')];
         break;
       }
 
       case 'MM': {
-        dateInNewFormat[i] = formatDates[fromFormat.indexOf('MM')];
+        formattedDate[i] = splittedOldDate[fromFormat.indexOf('MM')];
         break;
       }
 
-      case 'YY': {
-        dateInNewFormat[i] = getNewFormatYear(yearFromFormat, yearToFormat,
-          formatDates[yearIndexFromFormat]);
-        break;
-      }
-
-      case 'YYYY': {
-        dateInNewFormat[i] = getNewFormatYear(yearFromFormat, yearToFormat,
-          formatDates[yearIndexFromFormat]);
+      case shortYearFormat: {
+        formattedDate[i] = getNewFormatYear(yearFromFormat, yearToFormat,
+          splittedOldDate[yearIndexFromFormat]);
         break;
       }
 
       default: {
+        formattedDate[i] = getNewFormatYear(yearFromFormat, yearToFormat,
+          splittedOldDate[yearIndexFromFormat]);
         break;
       }
     }
   }
 
-  return dateInNewFormat.join(toFormat[3]);
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
