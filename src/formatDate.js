@@ -50,39 +50,47 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const FULL_YEAR = 'YYYY';
+  const SHORT_YEAR = 'YY';
+
+  const TWENTIETH_CENTURY = '20';
+  const NINETIETH_CENTURY = '19';
+
+  const CONVERT_YEAR = 30;
+
   const separatorFrom = fromFormat[3];
   const separatorTo = toFormat[3];
 
-  const arrDateFrom = date.split(separatorFrom);
+  const splittedDateFrom = date.split(separatorFrom);
   const objDateFrom = {};
 
-  const arrDateTo = [];
+  const formattedDateTo = [];
 
-  for (let i = 0; i < arrDateFrom.length; i++) {
-    objDateFrom[fromFormat[i]] = arrDateFrom[i];
+  for (let i = 0; i < splittedDateFrom.length; i++) {
+    objDateFrom[fromFormat[i]] = splittedDateFrom[i];
   }
 
   for (const datePart in objDateFrom) {
     const dateValue = objDateFrom[datePart];
 
     if (toFormat.includes(datePart)) {
-      arrDateTo[toFormat.indexOf(datePart)] = dateValue;
+      formattedDateTo[toFormat.indexOf(datePart)] = dateValue;
       continue;
     }
 
-    if (datePart.length === 4) {
-      arrDateTo[toFormat.indexOf('YY')] = dateValue.slice(2);
+    if (datePart.length === FULL_YEAR.length) {
+      formattedDateTo[toFormat.indexOf(SHORT_YEAR)] = dateValue.slice(2);
       continue;
     }
 
-    if (datePart.length === 2) {
-      arrDateTo[toFormat.indexOf('YYYY')] = dateValue < 30
-        ? '20' + dateValue
-        : '19' + dateValue;
+    if (datePart.length === SHORT_YEAR.length) {
+      formattedDateTo[toFormat.indexOf(FULL_YEAR)] = dateValue < CONVERT_YEAR
+        ? TWENTIETH_CENTURY + dateValue
+        : NINETIETH_CENTURY + dateValue;
     }
   }
 
-  return arrDateTo.join(separatorTo);
+  return formattedDateTo.join(separatorTo);
 }
 
 module.exports = formatDate;
