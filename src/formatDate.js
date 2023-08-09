@@ -1,5 +1,12 @@
 'use strict';
 
+const YEAR_FORMAT_SHORT = 'YY';
+const YEAR_FORMAT_LONG = 'YYYY';
+const SEPARATOR_OFFSET = -1;
+const CENTURY_THRESHOLD = 30;
+const CENTURY_PREFIX_20 = 19;
+const CENTURY_PREFIX_21 = 20;
+
 /**
  * @param {string} date
  * @param {string[]} fromFormat
@@ -18,13 +25,6 @@ function formatDate(date, fromFormat, toFormat) {
  * @returns {Object}
  */
 function parseDate(date, format) {
-  const YEAR_FORMAT_SHORT = 'YY';
-  const YEAR_FORMAT_LONG = 'YYYY';
-  const SEPARATOR_OFFSET = -1;
-  const CENTURY_THRESHOLD = 30;
-  const CENTURY_PREFIX_20 = 19;
-  const CENTURY_PREFIX_21 = 20;
-
   const parts = format.slice(0, SEPARATOR_OFFSET);
   const separator = format.slice(SEPARATOR_OFFSET);
   const values = date.split(separator);
@@ -55,8 +55,6 @@ function parseDate(date, format) {
  * @returns {string}
  */
 function arrangeDate(data, format) {
-  const SEPARATOR_OFFSET = -1;
-
   const parts = format.slice(0, SEPARATOR_OFFSET);
   const separator = format.slice(SEPARATOR_OFFSET);
   const values = [];
