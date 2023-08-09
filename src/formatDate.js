@@ -50,37 +50,43 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
-  const oldDateSorted = {};
-  let newDate = '';
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const TWO_DIGIT_YEAR = 'YY';
+  const FOUR_DIGIT_YEAR = 'YYYY';
+  const splittedDate = date.split(oldSeparator);
+  const sortedDate = {};
+  let formattedDate = '';
 
   for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'YY' && toFormat.includes('YYYY')) {
+    if (fromFormat[i] === TWO_DIGIT_YEAR
+      && toFormat.includes(FOUR_DIGIT_YEAR)) {
       let yearModulator = '20';
 
-      if (+dateArray[i] >= 30) {
+      if (+splittedDate[i] >= 30) {
         yearModulator = '19';
       }
 
-      oldDateSorted['YYYY'] = yearModulator + dateArray[i];
+      sortedDate[FOUR_DIGIT_YEAR] = yearModulator + splittedDate[i];
       continue;
     }
 
-    if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
-      oldDateSorted['YY'] = dateArray[i].slice(2);
+    if (fromFormat[i] === FOUR_DIGIT_YEAR
+      && toFormat.includes(TWO_DIGIT_YEAR)) {
+      sortedDate[TWO_DIGIT_YEAR] = splittedDate[i].slice(2);
       continue;
     }
 
-    oldDateSorted[fromFormat[i]] = dateArray[i];
+    sortedDate[fromFormat[i]] = splittedDate[i];
   }
 
   for (let i = 0; i < 2; i++) {
-    newDate += oldDateSorted[toFormat[i]] + toFormat[3];
+    formattedDate += sortedDate[toFormat[i]] + newSeparator;
   }
 
-  newDate += oldDateSorted[toFormat[2]];
+  formattedDate += sortedDate[toFormat[2]];
 
-  return newDate;
+  return formattedDate;
 }
 
 module.exports = formatDate;
