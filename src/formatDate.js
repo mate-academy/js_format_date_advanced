@@ -49,15 +49,15 @@
  * @returns {string}
  */
 
+const CURRENT_CENTURY = '20';
+const PREVIOUS_CENTURY = '19';
+const CENTURY_INDICATOR = 30;
+
 function formatDate(date, fromFormat, toFormat) {
   const newDate = date.split(fromFormat[3]);
   const datePart = {};
   const formattedDate = [];
-
-  const currentCentury = '20';
-  const previousCentury = '19';
-
-  const CENTURY_INDICATOR = 30;
+  const toFormatExceptLast = toFormat.slice(0, -1);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     datePart[fromFormat[i]] = newDate[i];
@@ -68,13 +68,13 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (datePart.YY >= CENTURY_INDICATOR) {
-    datePart.YYYY = previousCentury + datePart.YY;
+    datePart.YYYY = PREVIOUS_CENTURY + datePart.YY;
   } else {
-    datePart.YYYY = currentCentury + datePart.YY;
+    datePart.YYYY = CURRENT_CENTURY + datePart.YY;
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    formattedDate.push(datePart[toFormat[i]]);
+  for (const format of toFormatExceptLast) {
+    formattedDate.push(datePart[format]);
   }
 
   return formattedDate.join(toFormat[3]);
