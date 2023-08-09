@@ -49,8 +49,45 @@
  * @returns {string}
  */
 
+function getFullDate(date, referenceDate) {
+  const SHORT_YEAR = 'YY';
+  const LONG_YEAR = 'YYYY';
+  const CONVERT_YEAR = 30;
+  const TWENTIETH_CENTURY = '20';
+  const NINETIETH_CENTURY = '19';
+
+  const newDate = date.reduce((dateObject, element, index) => {
+    dateObject[referenceDate[index]] = element;
+
+    return dateObject;
+  }, {});
+
+  if (newDate.hasOwnProperty(LONG_YEAR)) {
+    newDate[SHORT_YEAR] = newDate[LONG_YEAR].slice(-2);
+  } else {
+    const currentYear = newDate[SHORT_YEAR];
+    const currentCentury = +currentYear < CONVERT_YEAR
+      ? TWENTIETH_CENTURY
+      : NINETIETH_CENTURY;
+
+    newDate[LONG_YEAR] = currentCentury + currentYear;
+  }
+
+  return newDate;
+}
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+
+  const splittedDate = date.split(oldSeparator);
+  const oldFormatedDate = getFullDate(splittedDate, fromFormat);
+
+  const newFormatDate = toFormat.slice(0, -1)
+    .map(element => oldFormatedDate[element])
+    .join(newSeparator);
+
+  return newFormatDate;
 }
 
 module.exports = formatDate;
