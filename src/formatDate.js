@@ -50,11 +50,11 @@
  */
 
 function getFullDate(date, referenceDate) {
-  const shortYear = 'YY';
-  const longYear = 'YYYY';
-  const convertYear = 30;
-  const twentiethCentury = '20';
-  const ninetiethCentury = '19';
+  const SHORT_YEAR = 'YY';
+  const LONG_YEAR = 'YYYY';
+  const CONVERT_YEAR = 30;
+  const TWENTIETH_CENTURY = '20';
+  const NINETIETH_CENTURY = '19';
 
   const newDate = date.reduce((dateObject, element, index) => {
     dateObject[referenceDate[index]] = element;
@@ -62,16 +62,15 @@ function getFullDate(date, referenceDate) {
     return dateObject;
   }, {});
 
-  if (newDate.hasOwnProperty(longYear)) {
-    newDate[shortYear] = newDate[longYear].slice(-2);
+  if (newDate.hasOwnProperty(LONG_YEAR)) {
+    newDate[SHORT_YEAR] = newDate[LONG_YEAR].slice(-2);
   } else {
-    const currentYear = newDate[shortYear];
+    const currentYear = newDate[SHORT_YEAR];
+    const currentCentury = +currentYear < CONVERT_YEAR
+      ? TWENTIETH_CENTURY
+      : NINETIETH_CENTURY;
 
-    if (+currentYear < convertYear) {
-      newDate[longYear] = twentiethCentury + currentYear;
-    } else {
-      newDate[longYear] = ninetiethCentury + currentYear;
-    }
+    newDate[LONG_YEAR] = currentCentury + currentYear;
   }
 
   return newDate;
@@ -81,11 +80,11 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
 
-  const splitDate = date.split(oldSeparator);
-  const oldFormatDate = getFullDate(splitDate, fromFormat);
+  const splittedDate = date.split(oldSeparator);
+  const oldFormatedDate = getFullDate(splittedDate, fromFormat);
 
   const newFormatDate = toFormat.slice(0, -1)
-    .map(element => oldFormatDate[element])
+    .map(element => oldFormatedDate[element])
     .join(newSeparator);
 
   return newFormatDate;
