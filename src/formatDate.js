@@ -50,37 +50,42 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
+  const splittedOldDate = date.split(fromFormat[3]);
   const toSeparator = toFormat[3];
-  const newDate = [];
+  const formattedDate = [];
 
-  const dayIndex = fromFormat.indexOf('DD');
-  const monthIndex = fromFormat.indexOf('MM');
-  const yearIndex = fromFormat.length - 1 - (dayIndex + monthIndex);
+  const MONTH_FORMAT = 'MM';
+  const DAY_FORMAT = 'DD';
+  const CENTURY_19 = '19';
+  const CENTURY_20 = '20';
 
-  const toDayIndex = toFormat.indexOf('DD');
-  const toMonthIndex = toFormat.indexOf('MM');
+  const oldDayIndex = fromFormat.indexOf(DAY_FORMAT);
+  const oldMonthIndex = fromFormat.indexOf(MONTH_FORMAT);
+  const oldYearIndex = fromFormat.length - 1 - (oldDayIndex + oldMonthIndex);
+
+  const toDayIndex = toFormat.indexOf(DAY_FORMAT);
+  const toMonthIndex = toFormat.indexOf(MONTH_FORMAT);
   const toYearIndex = toFormat.length - 1 - (toDayIndex + toMonthIndex);
 
-  let nrmlzedYear = oldDate[yearIndex];
+  let normalizedYear = splittedOldDate[oldYearIndex];
 
-  if (nrmlzedYear.length !== toFormat[toYearIndex].length) {
-    if (nrmlzedYear.length > toFormat[toYearIndex].length) {
-      nrmlzedYear = nrmlzedYear.slice(2);
+  if (normalizedYear.length !== toFormat[toYearIndex].length) {
+    if (normalizedYear.length > toFormat[toYearIndex].length) {
+      normalizedYear = normalizedYear.slice(2);
     } else {
-      if (+nrmlzedYear >= 30) {
-        nrmlzedYear = '19' + nrmlzedYear;
+      if (+normalizedYear >= 30) {
+        normalizedYear = CENTURY_19 + normalizedYear;
       } else {
-        nrmlzedYear = '20' + nrmlzedYear;
+        normalizedYear = CENTURY_20 + normalizedYear;
       }
     }
   }
 
-  newDate[toDayIndex] = oldDate[dayIndex];
-  newDate[toYearIndex] = nrmlzedYear;
-  newDate[toMonthIndex] = oldDate[monthIndex];
+  formattedDate[toDayIndex] = splittedOldDate[oldDayIndex];
+  formattedDate[toYearIndex] = normalizedYear;
+  formattedDate[toMonthIndex] = splittedOldDate[oldMonthIndex];
 
-  return newDate.join(toSeparator);
+  return formattedDate.join(toSeparator);
 }
 
 module.exports = formatDate;
