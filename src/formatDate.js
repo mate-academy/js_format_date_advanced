@@ -48,59 +48,61 @@
  *
  * @returns {string}
  */
+const CENTURY_21 = '20';
+const CENTURY_20 = '19';
+const MONTH_ACRONYM = 'MM';
+const DAY_ACRONYM = 'DD';
+const SHORT_YEAR_ACRONYM = 'YY';
+const LONG_YEAR_ACRONYM = 'YYYY';
 
 function formatDate(date, fromFormat, toFormat) {
-  const CENTURY_21 = '20';
-  const CENTURY_20 = '19';
-  const dateArr = date.split(`${fromFormat[3]}`);
+  const dateArr = date.split(fromFormat[3]);
   const expectedDate = [];
   let month, day, shortYear, longYear;
 
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
-      case 'MM':
+      case MONTH_ACRONYM:
         month = dateArr[i];
         break;
-      case 'DD':
+      case DAY_ACRONYM:
         day = dateArr[i];
         break;
-      case 'YY':
+      case SHORT_YEAR_ACRONYM:
         shortYear = dateArr[i];
         break;
-      case 'YYYY':
+      case LONG_YEAR_ACRONYM:
         longYear = dateArr[i];
         break;
     }
   }
 
-  if (shortYear === undefined) {
+  if (!shortYear) {
     shortYear = longYear.slice(2, 4);
-  } else if (longYear === undefined) {
-    if (shortYear < 30) {
-      longYear = CENTURY_21 + shortYear;
-    } else {
-      longYear = CENTURY_20 + shortYear;
-    }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
-    switch (toFormat[i]) {
-      case 'MM':
+  if (!longYear) {
+    longYear = shortYear < 30 ? CENTURY_21 + shortYear : CENTURY_20 + shortYear;
+  }
+
+  for (const item of toFormat) {
+    switch (item) {
+      case MONTH_ACRONYM:
         expectedDate.push(month);
         break;
-      case 'DD':
+      case DAY_ACRONYM:
         expectedDate.push(day);
         break;
-      case 'YY':
+      case SHORT_YEAR_ACRONYM:
         expectedDate.push(shortYear);
         break;
-      case 'YYYY':
+      case LONG_YEAR_ACRONYM:
         expectedDate.push(longYear);
         break;
     }
   }
 
-  return expectedDate.join(`${toFormat[3]}`);
+  return expectedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
