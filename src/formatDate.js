@@ -62,32 +62,34 @@ function formatDate(date, fromFormat, toFormat) {
   const year = dateParts[yearIndex];
   const yearShort = year.slice(-2);
   const formattedDate = [];
+  const toFormatArr = toFormat.slice(0, 3);
 
-  toFormat.forEach((item) => {
-    if (item === YEAR_FORMAT_SMALL) {
-      formattedDate.push(yearShort);
-    }
+  toFormatArr.forEach((item) => {
+    switch (item) {
+      case YEAR_FORMAT_SMALL:
+        formattedDate.push(yearShort);
+        break;
+      case YEAR_FORMAT_BIG:
+        const formattedYear = Number(yearShort) < 30 ? `20${yearShort}` : `19${yearShort}`;
 
-    if (item === YEAR_FORMAT_BIG) {
-      const formattedYear = Number(yearShort) < 30 ? `20${yearShort}` : `19${yearShort}`;
+        formattedDate.push(formattedYear);
+        break;
+      case DAY_FORMAT:
+        const dayIndex = fromFormat.indexOf(DAY_FORMAT);
 
-      formattedDate.push(formattedYear);
-    }
+        formattedDate.push(dateParts[dayIndex]);
+        break;
+      case MONTH_FORMAT:
+        const monthIndex = fromFormat.indexOf(MONTH_FORMAT);
 
-    if (item === DAY_FORMAT) {
-      const dayIndex = fromFormat.indexOf(DAY_FORMAT);
-
-      formattedDate.push(dateParts[dayIndex]);
-    }
-
-    if (item === MONTH_FORMAT) {
-      const monthIndex = fromFormat.indexOf(MONTH_FORMAT);
-
-      formattedDate.push(dateParts[monthIndex]);
+        formattedDate.push(dateParts[monthIndex]);
+        break;
+      default:
+        throw new Error('Wrong format');
     }
   });
 
-  return formattedDate.join(toFormat[toFormat.length - 1]);
+  return formattedDate.join(toFormat.slice(-1));
 }
 
 module.exports = formatDate;
