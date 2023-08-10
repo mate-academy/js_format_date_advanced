@@ -70,19 +70,13 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case SHORT_YEAR_ACRONYM:
         shortYear = dateArr[i];
+        longYear = shortYear < 30 ? `${CENTURY_21}${shortYear}` : `${CENTURY_20}${shortYear}`;
         break;
       case LONG_YEAR_ACRONYM:
         longYear = dateArr[i];
+        shortYear = longYear.slice(2, 4);
         break;
     }
-  }
-
-  if (!shortYear) {
-    shortYear = longYear.slice(2, 4);
-  }
-
-  if (!longYear) {
-    longYear = shortYear < 30 ? CENTURY_21 + shortYear : CENTURY_20 + shortYear;
   }
 
   for (const item of toFormat) {
