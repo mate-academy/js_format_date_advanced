@@ -53,13 +53,13 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const yearFormatYY = 'YY';
-  const yearFormatYYYY = 'YYYY';
-  const dayFormat = 'DD';
-  const monthFormat = 'MM';
+  const YEAR_FORMAT_YY = 'YY';
+  const YEAR_FORMAT_YYYY = 'YYYY';
+  const DAY_FORMAT = 'DD';
+  const MONTH_FORMAT = 'MM';
   const getPrefixYear = (yearBefore, newFormat) => {
     const yearUpdateFormat
-      = newFormat.find(partDate => partDate.includes(yearFormatYY));
+      = newFormat.find(partDate => partDate.includes(YEAR_FORMAT_YY));
 
     if (yearBefore.length === yearUpdateFormat.length) {
       return yearBefore;
@@ -67,14 +67,14 @@ function formatDate(date, fromFormat, toFormat) {
 
     const PREVIOUS_CENTURY = '19';
     const CURRENT_CENTURY = '20';
-    const toDetermineCentury = 30;
+    const TO_DETERMINE_CENTURY = 30;
 
     if (yearBefore.toString().length > yearUpdateFormat.length) {
       return yearBefore.slice(-2);
     }
 
     if (yearUpdateFormat.length === 4) {
-      const century = yearBefore < toDetermineCentury
+      const century = yearBefore < TO_DETERMINE_CENTURY
         ? CURRENT_CENTURY
         : PREVIOUS_CENTURY;
 
@@ -83,29 +83,29 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   const newFormatDate = [];
-  const splittedOldDate = date.split(fromFormat[fromFormat.length - 1]);
+  const SPLITTED_OLD_DATE = date.split(fromFormat[fromFormat.length - 1]);
   const indexYY = fromFormat
     .findIndex((partDate) =>
-      partDate === yearFormatYY || partDate === yearFormatYYYY);
+      partDate === YEAR_FORMAT_YY || partDate === YEAR_FORMAT_YYYY);
 
-  const indexForMounth = fromFormat.indexOf(monthFormat);
-  const indexForDay = fromFormat.indexOf(dayFormat);
+  const indexForMounth = fromFormat.indexOf(MONTH_FORMAT);
+  const indexForDay = fromFormat.indexOf(DAY_FORMAT);
 
-  const day = splittedOldDate[indexForDay];
-  const month = splittedOldDate[indexForMounth];
-  const year = splittedOldDate[indexYY];
+  const day = SPLITTED_OLD_DATE[indexForDay];
+  const month = SPLITTED_OLD_DATE[indexForMounth];
+  const year = SPLITTED_OLD_DATE[indexYY];
   const SEPARATOR_INDEX = toFormat[toFormat.length - 1];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === dayFormat) {
+    if (toFormat[i] === DAY_FORMAT) {
       newFormatDate.push(day);
     }
 
-    if (toFormat[i] === monthFormat) {
+    if (toFormat[i] === MONTH_FORMAT) {
       newFormatDate.push(month);
     }
 
-    if (toFormat[i] === yearFormatYY || toFormat[i] === yearFormatYYYY) {
+    if (toFormat[i] === YEAR_FORMAT_YY || toFormat[i] === YEAR_FORMAT_YYYY) {
       const yearUpdate = getPrefixYear(year, toFormat);
 
       newFormatDate.push(yearUpdate);
