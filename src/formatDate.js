@@ -48,9 +48,55 @@
  *
  * @returns {string}
  */
+const CENTURY_21 = '20';
+const CENTURY_20 = '19';
+const MONTH_ACRONYM = 'MM';
+const DAY_ACRONYM = 'DD';
+const SHORT_YEAR_ACRONYM = 'YY';
+const LONG_YEAR_ACRONYM = 'YYYY';
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[3]);
+  const expectedDate = [];
+  let month, day, shortYear, longYear;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case MONTH_ACRONYM:
+        month = dateArr[i];
+        break;
+      case DAY_ACRONYM:
+        day = dateArr[i];
+        break;
+      case SHORT_YEAR_ACRONYM:
+        shortYear = dateArr[i];
+        longYear = shortYear < 30 ? `${CENTURY_21}${shortYear}` : `${CENTURY_20}${shortYear}`;
+        break;
+      case LONG_YEAR_ACRONYM:
+        longYear = dateArr[i];
+        shortYear = longYear.slice(2, 4);
+        break;
+    }
+  }
+
+  for (const item of toFormat) {
+    switch (item) {
+      case MONTH_ACRONYM:
+        expectedDate.push(month);
+        break;
+      case DAY_ACRONYM:
+        expectedDate.push(day);
+        break;
+      case SHORT_YEAR_ACRONYM:
+        expectedDate.push(shortYear);
+        break;
+      case LONG_YEAR_ACRONYM:
+        expectedDate.push(longYear);
+        break;
+    }
+  }
+
+  return expectedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
