@@ -96,17 +96,16 @@ function formatDate(date, fromFormat, toFormat) {
   const year = splettedOldDate[indexYY];
   const separatorIndex = toFormat[toFormat.length - 1];
 
-  for (const partDate of toFormat.length) {
-    if (toFormat[partDate] === DAY_FORMAT) {
+  for (const format of toFormat) {
+    if (format === DAY_FORMAT) {
       newFormatDate.push(day);
     }
 
-    if (toFormat[partDate] === MONTH_FORMAT) {
+    if (format === MONTH_FORMAT) {
       newFormatDate.push(month);
     }
 
-    if (toFormat[partDate] === YEAR_FORMAT_YY
-      || toFormat[partDate] === YEAR_FORMAT_YYYY) {
+    if (format === YEAR_FORMAT_YY || format === YEAR_FORMAT_YYYY) {
       const yearUpdate = getPrefixYear(year, toFormat);
 
       newFormatDate.push(yearUpdate);
