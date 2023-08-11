@@ -69,15 +69,17 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const formYear = (year >= 30 ? '19' : '20') + year;
-
   for (const format of toFormat) {
     if (format.includes('Y')) {
-      newDate.push(format.length < year.length
-        ? year.slice(2)
-        : format.length === year.length
-          ? year
-          : formYear);
+      if (format.length < year.length) {
+        newDate.push(year.slice(2));
+      } else if (format.length === year.length) {
+        newDate.push(year);
+      } else {
+        const formYear = (year >= 30 ? '19' : '20') + year;
+
+        newDate.push(formYear);
+      }
     }
 
     if (format.includes('M')) {
