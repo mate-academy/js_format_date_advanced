@@ -48,9 +48,51 @@
  *
  * @returns {string}
  */
+const YEAR_FORMAT_4 = 'YYYY';
+const YEAR_FORMAT_2 = 'YY';
+const DAY_FORMAT = 'DD';
+const MONTH_FORMAT = 'MM';
+const SEPARATOR_POSITION = 3;
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(fromFormat[3]);
+  const newDate = [];
+
+  newDate[getYearIndex(toFormat)]
+  = getYearValue(dateParts[getYearIndex(fromFormat)], fromFormat, toFormat);
+  newDate[getDayIndex(toFormat)] = dateParts[getDayIndex(fromFormat)];
+  newDate[getMonthIndex(toFormat)] = dateParts[getMonthIndex(fromFormat)];
+
+  return newDate.join(toFormat[SEPARATOR_POSITION]);
+}
+
+function getDayIndex(dateFormat) {
+  return dateFormat.indexOf(DAY_FORMAT);
+}
+
+function getMonthIndex(dateFormat) {
+  return dateFormat.indexOf(MONTH_FORMAT);
+}
+
+function getYearIndex(dateSet) {
+  return dateSet.indexOf(YEAR_FORMAT_4) >= 0
+    ? dateSet.indexOf(YEAR_FORMAT_4) : dateSet.indexOf(YEAR_FORMAT_2);
+}
+
+function getYearValue(value, fromFormat, toFormat) {
+  const formatYearOld = fromFormat[getYearIndex(fromFormat)];
+  const formatYearNew = toFormat[getYearIndex(toFormat)];
+  let yearValue = value;
+
+  if (formatYearOld === YEAR_FORMAT_4
+    && formatYearNew !== YEAR_FORMAT_4) {
+    yearValue = yearValue.substring(2);
+  } else if (formatYearOld !== YEAR_FORMAT_4
+    && formatYearNew === YEAR_FORMAT_4) {
+    yearValue = (parseInt(yearValue) < 30 ? '20' : '19') + yearValue;
+  }
+
+  return yearValue;
 }
 
 module.exports = formatDate;
