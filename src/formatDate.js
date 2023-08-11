@@ -72,15 +72,11 @@ const getPrefixYear = (yearBefore, newFormat) => {
     return yearBefore.slice(-2);
   }
 
-  if (yearUpdateFormat.length === 4) {
-    const century = yearBefore < TO_DETERMINE_CENTURY
-      ? CURRENT_CENTURY
-      : PREVIOUS_CENTURY;
+  const century = yearBefore < TO_DETERMINE_CENTURY
+    ? CURRENT_CENTURY
+    : PREVIOUS_CENTURY;
 
-    return century + yearBefore;
-  }
-
-  return yearBefore;
+  return century + yearBefore;
 };
 
 function formatDate(date, fromFormat, toFormat) {
