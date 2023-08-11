@@ -50,7 +50,10 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const eachDate = date.split(fromFormat[fromFormat.length - 1]);
+  const OLD_SEPARATOR = fromFormat[fromFormat.length - 1];
+  const NEW_SEPARATOR = toFormat[toFormat.length - 1];
+
+  const eachDate = date.split(OLD_SEPARATOR);
   const correctDate = [];
 
   for (let i = 0; i < eachDate.length; i++) {
@@ -59,24 +62,29 @@ function formatDate(date, fromFormat, toFormat) {
     correctDate[correctIndex] = eachDate[i];
   }
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    correctDate[toFormat.indexOf('YY')]
-      = eachDate[fromFormat.indexOf('YYYY')] % 100;
+  const IF_FROM_FORMAT_HAVE_YYYY = fromFormat.includes('YYYY');
+  const IF_FROM_FORMAT_HAVE_YY = fromFormat.includes('YY');
+  const IF_TO_FORMAT_HAVE_YY = toFormat.includes('YY');
+  const IF_TO_FORMAT_HAVE_YYYY = toFormat.includes('YYYY');
+
+  const TO_FORMAT_YYYY_INDEX = toFormat.indexOf('YYYY');
+  const TO_FORMAT_YY_INDEX = toFormat.indexOf('YY');
+  const FROM_FORMAT_YYYY_INDEX = fromFormat.indexOf('YYYY');
+  const FROM_FORMAT_YY_INDEX = fromFormat.indexOf('YY');
+
+  if (IF_FROM_FORMAT_HAVE_YYYY && IF_TO_FORMAT_HAVE_YY) {
+    correctDate[TO_FORMAT_YY_INDEX]
+      = eachDate[FROM_FORMAT_YYYY_INDEX] % 100;
   }
 
-  if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
-    if (eachDate[fromFormat.indexOf('YY')] < 30) {
-      correctDate[toFormat.indexOf('YYYY')]
-        = '20' + eachDate[fromFormat.indexOf('YY')];
-    }
+  if (IF_TO_FORMAT_HAVE_YYYY && IF_FROM_FORMAT_HAVE_YY) {
+    const century = eachDate[FROM_FORMAT_YY_INDEX] < 30 ? '20' : '19';
 
-    if (eachDate[fromFormat.indexOf('YY')] >= 30) {
-      correctDate[toFormat.indexOf('YYYY')]
-        = '19' + eachDate[fromFormat.indexOf('YY')];
-    }
+    correctDate[TO_FORMAT_YYYY_INDEX]
+      = century + eachDate[FROM_FORMAT_YY_INDEX];
   }
 
-  return correctDate.join(toFormat[toFormat.length - 1]);
+  return correctDate.join(NEW_SEPARATOR);
 }
 
 module.exports = formatDate;
