@@ -42,6 +42,9 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
+ *
+ *
+ *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -49,8 +52,65 @@
  * @returns {string}
  */
 
+const YEAR_FORMAT_YY = 'YY';
+const YEAR_FORMAT_YYYY = 'YYYY';
+const DAY_FORMAT = 'DD';
+const MONTH_FORMAT = 'MM';
+const PREVIOUS_CENTURY = '19';
+const CURRENT_CENTURY = '20';
+const TO_DETERMINE_CENTURY = 30;
+
+const getPrefixYear = (yearBefore, newFormat) => {
+  const yearUpdateFormat
+    = newFormat.find(partDate => partDate.includes(YEAR_FORMAT_YY));
+
+  if (yearBefore.length === yearUpdateFormat.length) {
+    return yearBefore;
+  }
+
+  if (yearBefore.toString().length > yearUpdateFormat.length) {
+    return yearBefore.slice(-2);
+  }
+
+  const century = yearBefore < TO_DETERMINE_CENTURY
+    ? CURRENT_CENTURY
+    : PREVIOUS_CENTURY;
+
+  return century + yearBefore;
+};
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newFormatDate = [];
+  const splettedOldDate = date.split(fromFormat[fromFormat.length - 1]);
+  const indexYY = fromFormat
+    .findIndex((partDate) =>
+      partDate === YEAR_FORMAT_YY || partDate === YEAR_FORMAT_YYYY);
+
+  const indexForMounth = fromFormat.indexOf(MONTH_FORMAT);
+  const indexForDay = fromFormat.indexOf(DAY_FORMAT);
+
+  const day = splettedOldDate[indexForDay];
+  const month = splettedOldDate[indexForMounth];
+  const year = splettedOldDate[indexYY];
+  const separatorIndex = toFormat[toFormat.length - 1];
+
+  for (const format of toFormat) {
+    if (format === DAY_FORMAT) {
+      newFormatDate.push(day);
+    }
+
+    if (format === MONTH_FORMAT) {
+      newFormatDate.push(month);
+    }
+
+    if (format === YEAR_FORMAT_YY || format === YEAR_FORMAT_YYYY) {
+      const yearUpdate = getPrefixYear(year, toFormat);
+
+      newFormatDate.push(yearUpdate);
+    }
+  }
+
+  return newFormatDate.join(separatorIndex);
 }
 
 module.exports = formatDate;
