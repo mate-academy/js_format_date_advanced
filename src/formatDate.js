@@ -79,6 +79,8 @@ const getPrefixYear = (yearBefore, newFormat) => {
 
     return century + yearBefore;
   }
+
+  return yearBefore;
 };
 
 function formatDate(date, fromFormat, toFormat) {
