@@ -80,6 +80,7 @@ function formatDate(date, fromFormat, toFormat) {
         }
         resultArray.push(dateMap[keyChar]);
         break;
+      default:
     }
   }
 
