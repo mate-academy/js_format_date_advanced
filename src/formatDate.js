@@ -60,7 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
   const separatorOld = fromFormat[fromFormat.length - 1];
   const separatorNew = toFormat[toFormat.length - 1];
 
-  const dataValuesOld = date.split(separatorOld);
+  const dateValuesOld = date.split(separatorOld);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     const part = fromFormat[i];
@@ -68,13 +68,13 @@ function formatDate(date, fromFormat, toFormat) {
     switch (part) {
       case 'YY':
       case 'YYYY':
-        year = dataValuesOld[i];
+        year = dateValuesOld[i];
         break;
       case 'MM':
-        month = dataValuesOld[i];
+        month = dateValuesOld[i];
         break;
       case 'DD':
-        day = dataValuesOld[i];
+        day = dateValuesOld[i];
         break;
       default:
         return `Unknown date format ${part}`;
