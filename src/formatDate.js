@@ -55,7 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
   let year = '';
   let month = '';
   let day = '';
-  const dateFormatNew = [];
+  const dateValuesNew = [];
 
   const separatorOld = fromFormat[fromFormat.length - 1];
   const separatorNew = toFormat[toFormat.length - 1];
@@ -89,27 +89,26 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YYYY':
         if (year.length === 2) {
           changeYear = year < 30
-            ? CENTURE_XXI + year
-            : CENTURE_XX + year;
+            ? `${CENTURE_XXI}${year}`
+            : `${CENTURE_XX}${year}`;
         }
-        dateFormatNew.push(changeYear);
+        dateValuesNew.push(changeYear);
         break;
       case 'YY':
-        changeYear = year.split('').slice(2, 4).join('');
-        dateFormatNew.push(changeYear);
+        dateValuesNew.push(year.substring(2));
         break;
       case 'MM':
-        dateFormatNew.push(month);
+        dateValuesNew.push(month);
         break;
       case 'DD':
-        dateFormatNew.push(day);
+        dateValuesNew.push(day);
         break;
       default:
         return `Unknown date format ${part}`;
     }
   }
 
-  return dateFormatNew.join(separatorNew);
+  return dateValuesNew.join(separatorNew);
 }
 
 module.exports = formatDate;
