@@ -68,9 +68,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (currentFormat.includes('YY') && desiredFormat.includes('YYYY')) {
     if (year < 30) {
-      year = '20' + year;
+      year = `20${year}`;
     } else {
-      year = '19' + year;
+      year = `19${year}`;
     }
   }
 
@@ -79,16 +79,21 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < desiredFormat.length; i++) {
-    if (desiredFormat[i] === 'DD') {
-      result.push(day);
-    }
+    switch (true) {
+      case desiredFormat[i] === 'DD':
+        result.push(day);
+        break;
 
-    if (desiredFormat[i] === 'MM') {
-      result.push(month);
-    }
+      case desiredFormat[i] === 'MM':
+        result.push(month);
+        break;
 
-    if (desiredFormat[i] === 'YY' || desiredFormat[i] === 'YYYY') {
-      result.push(year);
+      case desiredFormat[i] === 'YY' || desiredFormat[i] === 'YYYY':
+        result.push(year);
+        break;
+
+      default:
+        return 'Wrong date';
     }
   }
 
