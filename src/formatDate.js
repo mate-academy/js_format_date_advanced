@@ -48,9 +48,48 @@
  *
  * @returns {string}
  */
+const TWO_DIGIT_YEAR = 'YY';
+const FOUR_DIGIT_YEAR = 'YYYY';
+const XX_CENTURY = '19';
+const XXI_CENTURY = '20';
+const CONVERSION_LIMIT = 30;
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const splittedDate = date.split(oldSeparator);
+  const sortedDate = {};
+  let formattedDate = '';
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === TWO_DIGIT_YEAR
+      && toFormat.includes(FOUR_DIGIT_YEAR)) {
+      let yearModulator = XXI_CENTURY;
+
+      if (+splittedDate[i] >= CONVERSION_LIMIT) {
+        yearModulator = XX_CENTURY;
+      }
+
+      sortedDate[FOUR_DIGIT_YEAR] = yearModulator + splittedDate[i];
+      continue;
+    }
+
+    if (fromFormat[i] === FOUR_DIGIT_YEAR
+      && toFormat.includes(TWO_DIGIT_YEAR)) {
+      sortedDate[TWO_DIGIT_YEAR] = splittedDate[i].slice(2);
+      continue;
+    }
+
+    sortedDate[fromFormat[i]] = splittedDate[i];
+  }
+
+  for (let i = 0; i < 2; i++) {
+    formattedDate += sortedDate[toFormat[i]] + newSeparator;
+  }
+
+  formattedDate += sortedDate[toFormat[2]];
+
+  return formattedDate;
 }
 
 module.exports = formatDate;
