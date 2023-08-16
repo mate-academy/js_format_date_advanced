@@ -48,6 +48,12 @@
  *
  * @returns {string}
  */
+const DAY_SIGN = 'DD';
+const MONTH_SIGN = 'MM';
+const YEAR_SIGN = 'YYYY';
+const YEAR_SIGN_SHORT = 'YY';
+const CENTURY_19 = '19';
+const CENTURY_20 = '20';
 
 function formatDate(date, fromFormat, toFormat) {
   const oldFormatDate = date.split(fromFormat[3]);
@@ -60,44 +66,44 @@ function formatDate(date, fromFormat, toFormat) {
     yearIndex;
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].includes('Y')) {
+    if (fromFormat[i].includes(YEAR_SIGN_SHORT)) {
       year = oldFormatDate[i];
       oldYearLength = fromFormat[i].length;
     }
 
-    if (fromFormat[i].includes('M')) {
+    if (fromFormat[i].includes(MONTH_SIGN)) {
       month = oldFormatDate[i];
     }
 
-    if (fromFormat[i].includes('D')) {
+    if (fromFormat[i].includes(DAY_SIGN)) {
       day = oldFormatDate[i];
     }
   }
 
   for (const part of toFormat) {
-    if (part.includes('Y')) {
+    if (part.includes(YEAR_SIGN_SHORT)) {
       newYearLength = part.length;
     }
   }
 
   if (newYearLength === 2) {
-    yearIndex = toFormat.indexOf('YY');
+    yearIndex = toFormat.indexOf(YEAR_SIGN_SHORT);
     newFormatDate[yearIndex] = year.slice(2);
   } else {
-    yearIndex = toFormat.indexOf('YYYY');
+    yearIndex = toFormat.indexOf(YEAR_SIGN);
     newFormatDate[yearIndex] = year;
   }
 
   if (oldYearLength === 2 && newYearLength === 4) {
-    newFormatDate[yearIndex] = '20' + year;
+    newFormatDate[yearIndex] = CENTURY_20 + year;
 
     if (year >= 30) {
-      newFormatDate[yearIndex] = '19' + year;
+      newFormatDate[yearIndex] = CENTURY_19 + year;
     }
   }
 
-  const monthIndex = toFormat.indexOf('MM');
-  const dayIndex = toFormat.indexOf('DD');
+  const monthIndex = toFormat.indexOf(MONTH_SIGN);
+  const dayIndex = toFormat.indexOf(DAY_SIGN);
 
   newFormatDate[monthIndex] = month;
   newFormatDate[dayIndex] = day;
