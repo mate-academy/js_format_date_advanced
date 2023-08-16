@@ -54,6 +54,9 @@ function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat[3];
   const TWO_DIGIT_YEAR = 'YY';
   const FOUR_DIGIT_YEAR = 'YYYY';
+  const XX_CENTURY = '19';
+  const XXI_CENTURY = '20';
+  const CONVERSION_LIMIT = '30';
   const splittedDate = date.split(oldSeparator);
   const sortedDate = {};
   let formattedDate = '';
@@ -61,10 +64,10 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < 3; i++) {
     if (fromFormat[i] === TWO_DIGIT_YEAR
       && toFormat.includes(FOUR_DIGIT_YEAR)) {
-      let yearModulator = '20';
+      let yearModulator = XXI_CENTURY;
 
-      if (+splittedDate[i] >= 30) {
-        yearModulator = '19';
+      if (+splittedDate[i] >= CONVERSION_LIMIT) {
+        yearModulator = XX_CENTURY;
       }
 
       sortedDate[FOUR_DIGIT_YEAR] = yearModulator + splittedDate[i];
