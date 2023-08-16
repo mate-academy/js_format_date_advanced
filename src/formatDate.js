@@ -48,15 +48,15 @@
  *
  * @returns {string}
  */
+const TWO_DIGIT_YEAR = 'YY';
+const FOUR_DIGIT_YEAR = 'YYYY';
+const XX_CENTURY = '19';
+const XXI_CENTURY = '20';
+const CONVERSION_LIMIT = 30;
 
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
-  const TWO_DIGIT_YEAR = 'YY';
-  const FOUR_DIGIT_YEAR = 'YYYY';
-  const XX_CENTURY = '19';
-  const XXI_CENTURY = '20';
-  const CONVERSION_LIMIT = '30';
   const splittedDate = date.split(oldSeparator);
   const sortedDate = {};
   let formattedDate = '';
