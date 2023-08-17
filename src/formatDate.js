@@ -50,46 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  let dateToArr = [];
+  const dateToArr = date.split(fromFormat[3]);
   const dateObject = {};
   const newFormatOfDate = [];
   let newFormatOfDateToReturn = '';
+  const LONG_FORMAT = 'YYYY';
+  const SHORT_FORMAT = 'YY';
+  let year = '';
 
-  for (let i = fromFormat.length - 1; i >= 0; i--) {
-    if (i === fromFormat.length - 1) {
-      dateToArr = date.split(fromFormat[i]);
-      dateObject.separator = fromFormat[i];
+  fromFormat.forEach((el, i) => {
+    if (i < 3) {
+      dateObject[el] = dateToArr[i];
     } else {
-      dateObject[fromFormat[i]] = dateToArr[i];
+      dateObject.separator = el;
     }
-  }
+  });
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (!toFormat[i].includes('Y') && i !== toFormat.length - 1) {
-      if (dateObject.hasOwnProperty(toFormat[i])) {
-        newFormatOfDate.push(dateObject[toFormat[i]]);
-      };
-    } else if (toFormat[i].includes('Y')) {
-      if (dateObject.hasOwnProperty(toFormat[i])) {
-        newFormatOfDate.push(dateObject[toFormat[i]]);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const curentValue = toFormat[i];
+
+    if (curentValue in dateObject) {
+      newFormatOfDate.push(dateObject[curentValue]);
+    } else {
+      if (toFormat[i] === SHORT_FORMAT) {
+        year = dateObject[LONG_FORMAT].slice(2);
       } else {
-        for (const key of Object.keys(dateObject)) {
-          if (key.includes('Y')) {
-            if (key.length === 2) {
-              dateObject[key] = (dateObject[key] < 30) ? '20' + dateObject[key]
-                : '19' + dateObject[key];
-              newFormatOfDate.push(dateObject[key]);
-            } else {
-              dateObject[key] = dateObject[key].split('').slice(2).join('');
-              newFormatOfDate.push(dateObject[key]);
-            }
-          }
-        }
+        year = (dateObject[SHORT_FORMAT] < 30)
+          ? '20' + dateObject[SHORT_FORMAT]
+          : '19' + dateObject[SHORT_FORMAT];
       }
-    } else {
-      newFormatOfDateToReturn = newFormatOfDate.join(toFormat[i]);
+      newFormatOfDate.push(year);
     }
   }
+
+  newFormatOfDateToReturn = newFormatOfDate.join(toFormat[3]);
 
   return newFormatOfDateToReturn;
 }
