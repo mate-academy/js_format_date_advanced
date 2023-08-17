@@ -48,9 +48,74 @@
  *
  * @returns {string}
  */
+const DAY_SIGN = 'DD';
+const MONTH_SIGN = 'MM';
+const YEAR_SIGN = 'YYYY';
+const YEAR_SIGN_SHORT = 'YY';
+const CENTURY_19 = '19';
+const CENTURY_20 = '20';
+const MARK_OF_19_CENTURY_BEGINNING = 30;
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const oldFormattedDate = date.split(oldSeparator);
+  const newFormattedDate = [];
+  let newYearLength = 0;
+  let oldYearLength = 0;
+  let year,
+    month,
+    day,
+    yearIndex;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    const element = oldFormattedDate[i];
+
+    if (fromFormat[i].includes(YEAR_SIGN_SHORT)) {
+      year = element;
+      oldYearLength = fromFormat[i].length;
+    }
+
+    if (fromFormat[i].includes(MONTH_SIGN)) {
+      month = element;
+    }
+
+    if (fromFormat[i].includes(DAY_SIGN)) {
+      day = element;
+    }
+  }
+
+  for (const part of toFormat) {
+    if (part.includes(YEAR_SIGN_SHORT)) {
+      newYearLength = part.length;
+    }
+  }
+
+  if (newYearLength === 2) {
+    yearIndex = toFormat.indexOf(YEAR_SIGN_SHORT);
+    newFormattedDate[yearIndex] = year.slice(2);
+  } else {
+    yearIndex = toFormat.indexOf(YEAR_SIGN);
+    newFormattedDate[yearIndex] = year;
+  }
+
+  if (oldYearLength === 2 && newYearLength === 4) {
+    newFormattedDate[yearIndex] = CENTURY_20 + year;
+
+    const currentCentury = year >= MARK_OF_19_CENTURY_BEGINNING
+      ? CENTURY_19
+      : CENTURY_20;
+
+    newFormattedDate[yearIndex] = currentCentury + year;
+  }
+
+  const monthIndex = toFormat.indexOf(MONTH_SIGN);
+  const dayIndex = toFormat.indexOf(DAY_SIGN);
+
+  newFormattedDate[monthIndex] = month;
+  newFormattedDate[dayIndex] = day;
+
+  return newFormattedDate.join(newSeparator);
 }
 
 module.exports = formatDate;
