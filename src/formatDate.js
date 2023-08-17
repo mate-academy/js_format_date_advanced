@@ -54,10 +54,13 @@ const YEAR_SIGN = 'YYYY';
 const YEAR_SIGN_SHORT = 'YY';
 const CENTURY_19 = '19';
 const CENTURY_20 = '20';
+const MARK_OF_19_CENTURY_BEGINNING = 30;
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldFormatDate = date.split(fromFormat[3]);
-  const newFormatDate = [];
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const oldFormattedDate = date.split(oldSeparator);
+  const newFormattedDate = [];
   let newYearLength = 0;
   let oldYearLength = 0;
   let year,
@@ -66,17 +69,19 @@ function formatDate(date, fromFormat, toFormat) {
     yearIndex;
 
   for (let i = 0; i < fromFormat.length; i++) {
+    const element = oldFormattedDate[i];
+
     if (fromFormat[i].includes(YEAR_SIGN_SHORT)) {
-      year = oldFormatDate[i];
+      year = element;
       oldYearLength = fromFormat[i].length;
     }
 
     if (fromFormat[i].includes(MONTH_SIGN)) {
-      month = oldFormatDate[i];
+      month = element;
     }
 
     if (fromFormat[i].includes(DAY_SIGN)) {
-      day = oldFormatDate[i];
+      day = element;
     }
   }
 
@@ -88,27 +93,29 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (newYearLength === 2) {
     yearIndex = toFormat.indexOf(YEAR_SIGN_SHORT);
-    newFormatDate[yearIndex] = year.slice(2);
+    newFormattedDate[yearIndex] = year.slice(2);
   } else {
     yearIndex = toFormat.indexOf(YEAR_SIGN);
-    newFormatDate[yearIndex] = year;
+    newFormattedDate[yearIndex] = year;
   }
 
   if (oldYearLength === 2 && newYearLength === 4) {
-    newFormatDate[yearIndex] = CENTURY_20 + year;
+    newFormattedDate[yearIndex] = CENTURY_20 + year;
 
-    if (year >= 30) {
-      newFormatDate[yearIndex] = CENTURY_19 + year;
-    }
+    const currentCentury = year >= MARK_OF_19_CENTURY_BEGINNING
+      ? CENTURY_19
+      : CENTURY_20;
+
+    newFormattedDate[yearIndex] = currentCentury + year;
   }
 
   const monthIndex = toFormat.indexOf(MONTH_SIGN);
   const dayIndex = toFormat.indexOf(DAY_SIGN);
 
-  newFormatDate[monthIndex] = month;
-  newFormatDate[dayIndex] = day;
+  newFormattedDate[monthIndex] = month;
+  newFormattedDate[dayIndex] = day;
 
-  return newFormatDate.join(toFormat[3]);
+  return newFormattedDate.join(newSeparator);
 }
 
 module.exports = formatDate;
