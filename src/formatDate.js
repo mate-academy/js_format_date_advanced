@@ -59,8 +59,8 @@ const LIMIT_YEAR = 30;
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
-  const dateArr = date.split(oldSeparator);
-  const newDateArr = [];
+  const oldSplittedDate = date.split(oldSeparator);
+  const newFormattedDate = [];
 
   const oldDayIndex = getIndex(TYPE_OF_DAY, fromFormat);
   const oldMonthIndex = getIndex(TYPE_OF_MONTH, fromFormat);
@@ -74,19 +74,20 @@ function formatDate(date, fromFormat, toFormat) {
     toFormat, TYPE_OF_YEAR_SHORT, TYPE_OF_YEAR_LONG
   );
 
-  newDateArr[newDayIndex] = dateArr[oldDayIndex];
-  newDateArr[newMonthIndex] = dateArr[oldMonthIndex];
-  newDateArr[newYearIndex] = dateArr[oldYearIndex].slice(-2);
+  newFormattedDate[newDayIndex] = oldSplittedDate[oldDayIndex];
+  newFormattedDate[newMonthIndex] = oldSplittedDate[oldMonthIndex];
+  newFormattedDate[newYearIndex] = oldSplittedDate[oldYearIndex].slice(-2);
 
   if (toFormat[newYearIndex] === TYPE_OF_YEAR_LONG) {
-    if (newDateArr[newYearIndex] < LIMIT_YEAR) {
-      newDateArr[newYearIndex] = CENTURE_21 + newDateArr[newYearIndex];
-    } else {
-      newDateArr[newYearIndex] = CENTURE_20 + newDateArr[newYearIndex];
-    }
+    const currentCentury = newFormattedDate[newYearIndex] < LIMIT_YEAR
+      ? CENTURE_21
+      : CENTURE_20;
+
+    newFormattedDate[newYearIndex]
+    = currentCentury + newFormattedDate[newYearIndex];
   }
 
-  return newDateArr.join(newSeparator);
+  return newFormattedDate.join(newSeparator);
 }
 
 function getYearIndex(arr, shortYear, longYear) {
