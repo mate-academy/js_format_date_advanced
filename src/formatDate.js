@@ -49,8 +49,41 @@
  * @returns {string}
  */
 
+// console.log(formatDate(
+//   '20/02/18',
+//   ['YY', 'MM', 'DD', '/'],
+//   ['YYYY', 'MM', 'DD', '-'],
+// ));
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const calendar = {
+    formatYear(format) {
+      if (this.hasOwnProperty('YYYY') && format === 'YY') {
+        this['YY'] = this['YYYY'].slice(2, 4);
+        delete this['YYYY'];
+      } else if (this.hasOwnProperty('YY') && format === 'YYYY') {
+        this['YYYY'] = this['YY'] <= 20 ? '20' + this['YY'] : '19' + this['YY'];
+        delete this['YY'];
+      }
+    },
+  };
 
+  const toSeparator = toFormat[3];
+  const fromSeparator = fromFormat[3];
+  const newDate = date.split(fromSeparator);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    calendar[fromFormat[i]] = newDate[i];
+  }
+
+  const result = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      calendar.formatYear(toFormat[i]);
+    }
+    result.push(calendar[toFormat[i]]);
+  }
+
+  return result.join(toSeparator);
+}
 module.exports = formatDate;
