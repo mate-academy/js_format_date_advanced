@@ -48,13 +48,8 @@
  *
  * @returns {string}
  */
-
-// console.log(formatDate(
-//   '20/02/18',
-//   ['YY', 'MM', 'DD', '/'],
-//   ['YYYY', 'MM', 'DD', '-'],
-// ));
 function formatDate(date, fromFormat, toFormat) {
+
   const calendar = {
     formatYear(format) {
       if (this.hasOwnProperty('YYYY') && format === 'YY') {
