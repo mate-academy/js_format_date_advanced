@@ -61,15 +61,13 @@ function formatDate(date, fromFormat, toFormat) {
     mapping[fromFormat[i]] = dateParts[i];
   }
 
-  if (mapping['YY'] && !mapping['YYYY']) {
-    if (parseInt(mapping['YY']) < 30) {
-      mapping['YYYY'] = '20' + mapping['YY'];
-    } else {
-      mapping['YYYY'] = '19' + mapping['YY'];
-    }
+  if (mapping['YY']) {
+    mapping['YYYY'] = parseInt(mapping['YY']) < 30
+      ? '20' + mapping['YY']
+      : '19' + mapping['YY'];
   }
 
-  if (mapping['YYYY'] && !mapping['YY']) {
+  if (mapping['YYYY']) {
     mapping['YY'] = mapping['YYYY'].slice(-2);
   }
 
