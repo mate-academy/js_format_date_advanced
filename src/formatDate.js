@@ -52,28 +52,20 @@
 function formatDate(date, fromFormat, toFormat) {
   const divider = fromFormat[fromFormat.length - 1];
   const dateParts = date.split(divider);
-  let yearIndex = 0;
-
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].includes('YY')) {
-      yearIndex = i;
-      break;
-    } else if (fromFormat[i].includes('YYYY')) {
-      yearIndex = i;
-      break;
-    }
-  }
+  const yearIndex = fromFormat.indexOf('YYYY') !== -1
+    ? fromFormat.indexOf('YYYY')
+    : fromFormat.indexOf('YY');
 
   const year = dateParts[yearIndex];
-  let year2 = '';
+  let shortYear = '';
 
   if (year.length === 4) {
-    year2 = year.slice(2);
+    shortYear = year.slice(2);
   } else {
-    year2 = year;
+    shortYear = year;
   }
 
-  const year4 = year2 < 30 ? `20${year2}` : `19${year2}`;
+  const fullYear = shortYear < 30 ? `20${shortYear}` : `19${shortYear}`;
 
   const monthIndex = fromFormat.indexOf('MM');
   const month = dateParts[monthIndex];
@@ -81,19 +73,11 @@ function formatDate(date, fromFormat, toFormat) {
   const dayIndex = fromFormat.indexOf('DD');
   const day = dateParts[dayIndex];
 
-  let newYearIndex = 0;
+  const newYearIndex = toFormat.indexOf('YYYY') !== -1
+    ? toFormat.indexOf('YYYY')
+    : toFormat.indexOf('YY');
 
-  for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i].includes('YY')) {
-      newYearIndex = i;
-      break;
-    } else if (toFormat[i].includes('YYYY')) {
-      newYearIndex = i;
-      break;
-    }
-  }
-
-  const newYear = toFormat.includes('YY') ? year2 : year4;
+  const newYear = toFormat.includes('YY') ? shortYear : fullYear;
 
   const newMonthIndex = toFormat.indexOf('MM');
   const newMonth = month;
