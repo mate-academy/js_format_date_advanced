@@ -53,23 +53,23 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[fromFormat.length - 1]);
   const newDate = [];
   const newSeparator = toFormat.slice(-1);
-  let day;
-  let month;
-  let year;
+  const dateObject = {};
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i].includes('D')) {
-      day = dateArray[i];
+      dateObject.day = dateArray[i];
     }
 
     if (fromFormat[i].includes('M')) {
-      month = dateArray[i];
+      dateObject.month = dateArray[i];
     }
 
     if (fromFormat[i].includes('Y')) {
-      year = dateArray[i];
+      dateObject.year = dateArray[i];
     }
   }
+
+  const { day, month, year } = dateObject;
 
   for (const format of toFormat) {
     if (format.includes('Y')) {
