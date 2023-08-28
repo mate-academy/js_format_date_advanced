@@ -27,7 +27,7 @@
  * formatDate(
  *   '18-02-2020',
  *   ['DD', 'MM', 'YYYY', '-'],
- *   ['DD', 'MM', 'YY', '/'],
+ *   ['DD', 'MM', 'YY', '/'],`
  * ) // '18/02/20'
  *
  * formatDate(
@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const divider = fromFormat[fromFormat.length - 1];
+  const dateParts = date.split(divider);
+  const yearIndex = fromFormat.indexOf('YYYY') !== -1
+    ? fromFormat.indexOf('YYYY')
+    : fromFormat.indexOf('YY');
+
+  const year = dateParts[yearIndex];
+  let shortYear = '';
+
+  if (year.length === 4) {
+    shortYear = year.slice(2);
+  } else {
+    shortYear = year;
+  }
+
+  const fullYear = shortYear < 30 ? `20${shortYear}` : `19${shortYear}`;
+
+  const monthIndex = fromFormat.indexOf('MM');
+  const month = dateParts[monthIndex];
+
+  const dayIndex = fromFormat.indexOf('DD');
+  const day = dateParts[dayIndex];
+
+  const newYearIndex = toFormat.indexOf('YYYY') !== -1
+    ? toFormat.indexOf('YYYY')
+    : toFormat.indexOf('YY');
+
+  const newYear = toFormat.includes('YY') ? shortYear : fullYear;
+
+  const newMonthIndex = toFormat.indexOf('MM');
+  const newMonth = month;
+
+  const newDayIndex = toFormat.indexOf('DD');
+  const newDay = day;
+
+  const newDivider = toFormat[toFormat.length - 1];
+
+  const newDate = [];
+
+  newDate[newYearIndex] = newYear;
+  newDate[newMonthIndex] = newMonth;
+  newDate[newDayIndex] = newDay;
+
+  return newDate.join(newDivider);
 }
 
 module.exports = formatDate;
