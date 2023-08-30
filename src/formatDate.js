@@ -50,7 +50,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldFormat = fromFormat.slice(0, 3);
+  const oldSeparator = fromFormat.slice(-1);
+
+  const newFormat = toFormat.slice(0, 3);
+  const newSeparator = toFormat.slice(-1);
+
+  const oldDateParts = date.split(oldSeparator);
+  const newDateParts = [];
+  let newIndex = 0;
+
+  for (let i = 0; i < oldDateParts.length; i++) {
+    switch (oldFormat[i]) {
+      case 'YYYY':
+        newIndex = newFormat.indexOf(oldFormat[i]);
+
+        if (newIndex >= 0) {
+          newDateParts[newIndex] = oldDateParts[i];
+        }
+
+        if (newIndex < 0) {
+          newIndex = newFormat.indexOf('YY');
+          newDateParts[newIndex] = oldDateParts[i].slice(-2);
+        }
+
+        break;
+
+      case 'YY':
+        newIndex = newFormat.indexOf(oldFormat[i]);
+
+        if (newIndex >= 0) {
+          newDateParts[newIndex] = oldDateParts[i];
+        }
+
+        if (newIndex < 0) {
+          newIndex = newFormat.indexOf('YYYY');
+
+          if (oldDateParts[i] < 30) {
+            newDateParts[newIndex] = '20' + oldDateParts[i];
+          } else {
+            newDateParts[newIndex] = '19' + oldDateParts[i];
+          }
+        }
+
+        break;
+
+      case 'MM':
+        newIndex = newFormat.indexOf(oldFormat[i]);
+        newDateParts[newIndex] = oldDateParts[i];
+        break;
+
+      case 'DD':
+        newIndex = newFormat.indexOf(oldFormat[i]);
+        newDateParts[newIndex] = oldDateParts[i];
+        break;
+
+      default:
+        throw new Error('Unknown format');
+    }
+  }
+
+  return newDateParts.join(newSeparator);
 }
 
 module.exports = formatDate;
