@@ -51,6 +51,61 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  // write code here
+  let dateArr = [];
+
+  if (date.includes('-')) {
+    dateArr = date.split('-');
+  } else if (date.includes('.')) {
+    dateArr = date.split('.');
+  } else if (date.includes('/')) {
+    dateArr = date.split('/');
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YY') === false) {
+    for (let i = 0; i < fromFormat.length; i++) {
+      if (fromFormat[i] === 'YY') {
+        fromFormat[i] = 'YYYY';
+
+        if (dateArr[i] < 30) {
+          dateArr[i] = '20' + dateArr[i];
+        } else {
+          dateArr[i] = '19' + dateArr[i];
+        }
+      }
+    }
+  } else if (fromFormat.includes('YYYY')
+    && toFormat.includes('YYYY') === false) {
+    for (let i = 0; i < fromFormat.length; i++) {
+      if (fromFormat[i] === 'YYYY') {
+        fromFormat[i] = 'YY';
+
+        dateArr[i] = dateArr[i].slice(2);
+      }
+    }
+  }
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] !== toFormat[i]) {
+      for (let j = 0; j < toFormat.length - 1; j++) {
+        if (fromFormat[i] === toFormat[j]) {
+          const tempFormatVal = fromFormat[i];
+
+          fromFormat[i] = fromFormat[j];
+
+          fromFormat[j] = tempFormatVal;
+
+          const tempDateVal = dateArr[i];
+
+          dateArr[i] = dateArr[j];
+
+          dateArr[j] = tempDateVal;
+        }
+      }
+    }
+  }
+
+  return dateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
