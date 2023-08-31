@@ -80,13 +80,11 @@ function formatDate(date, fromFormat, toFormat) {
     fromDates[keyYearTo] = fromDates[keyYearFrom].toString().slice(2);
   }
 
-  if (keyYearFrom.length < keyYearTo.length && fromDates[keyYearFrom] < 30) {
-    fromDates[keyYearTo] = `20${fromDates[keyYearFrom]}`;
-  }
+  fromDates[keyYearTo] = keyYearFrom.length < keyYearTo.length && fromDates[keyYearFrom] < 30 ? `20${fromDates[keyYearFrom]}`
+    : fromDates[keyYearTo];
 
-  if (keyYearFrom.length < keyYearTo.length && fromDates[keyYearFrom] >= 30) {
-    fromDates[keyYearTo] = `19${fromDates[keyYearFrom]}`;
-  }
+  fromDates[keyYearTo] = keyYearFrom.length < keyYearTo.length && fromDates[keyYearFrom] >= 30 ? `19${fromDates[keyYearFrom]}`
+    : fromDates[keyYearTo];
 
   return `${fromDates[toFormat[0]]}${separator}` + `${fromDates[toFormat[1]]}${separator}` + `${fromDates[toFormat[2]]}`;
 }
