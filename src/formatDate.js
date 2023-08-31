@@ -51,21 +51,24 @@
 
 function formatDate(date, fromFormat, toFormat) {
   let result = [];
-
+  const fourYears = 'YYYY';
+  const twoYears = 'YY';
+  const days = 'DD';
+  const months = 'MM';
   const partsDate = date.split(fromFormat[fromFormat.length - 1]);
 
   const info = {};
 
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
-      case 'YY':
-      case 'YYYY':
+      case twoYears:
+      case fourYears:
         info.year = partsDate[i];
         break;
-      case 'MM':
+      case months:
         info.month = partsDate[i];
         break;
-      case 'DD':
+      case days:
         info.day = partsDate[i];
         break;
     }
@@ -74,9 +77,9 @@ function formatDate(date, fromFormat, toFormat) {
   let currentYear;
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY' && info.year.length === 4) {
+    if (toFormat[i] === fourYears && info.year.length === 4) {
       result.push(info.year);
-    } else if (toFormat[i] === 'YYYY' && info.year.length === 2) {
+    } else if (toFormat[i] === fourYears && info.year.length === 2) {
       if (info.year < 30) {
         currentYear = 20;
       } else {
@@ -84,11 +87,11 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       result.push(currentYear + info.year);
-    } else if (toFormat[i] === 'DD') {
+    } else if (toFormat[i] === days) {
       result.push(info.day);
-    } else if (toFormat[i] === 'MM') {
+    } else if (toFormat[i] === months) {
       result.push(info.month);
-    } else if (toFormat[i] === 'YY') {
+    } else if (toFormat[i] === twoYears) {
       result.push(info.year.slice(-2));
     }
 
