@@ -56,31 +56,31 @@ function formatDate(date, fromFormat, toFormat) {
   const mounth = dateParts[fromFormat.indexOf('MM')];
   const day = dateParts[fromFormat.indexOf('DD')];
 
-  let frmtdDate = '';
+  let toFormatDate = '';
 
   for (let i = 0, len = SEPARATOR_INDEX - 1; ; i++) {
     switch (toFormat[i]) {
       case 'YYYY':
         if (yearLong !== undefined) {
-          frmtdDate += yearLong;
+          toFormatDate += yearLong;
           break;
         }
 
-        frmtdDate += (+yearShort >= 30 ? '19' : '20') + yearShort;
+        toFormatDate += (+yearShort >= 30 ? '19' : '20') + yearShort;
         break;
       case 'YY':
         if (yearShort !== undefined) {
-          frmtdDate += yearShort;
+          toFormatDate += yearShort;
           break;
         }
 
-        frmtdDate += yearLong.slice(2);
+        toFormatDate += yearLong.slice(2);
         break;
       case 'MM':
-        frmtdDate += mounth;
+        toFormatDate += mounth;
         break;
       case 'DD':
-        frmtdDate += day;
+        toFormatDate += day;
         break;
 
       default:
@@ -91,10 +91,10 @@ function formatDate(date, fromFormat, toFormat) {
       break;
     }
 
-    frmtdDate += toFormat[SEPARATOR_INDEX];
+    toFormatDate += toFormat[SEPARATOR_INDEX];
   }
 
-  return frmtdDate;
+  return toFormatDate;
 }
 
 module.exports = formatDate;
