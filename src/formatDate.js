@@ -66,12 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
           break;
         }
 
-        if (+yearShort >= 30) {
-          frmtdDate += '19' + yearShort;
-          break;
-        }
-
-        frmtdDate += '20' + yearShort;
+        frmtdDate += (+yearShort >= 30 ? '19' : '20') + yearShort;
         break;
       case 'YY':
         if (yearShort !== undefined) {
