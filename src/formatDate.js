@@ -48,9 +48,53 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const SEPARATOR_INDEX = 3;
+  const dateParts = date.split(fromFormat[SEPARATOR_INDEX]);
+  const yearShort = dateParts[fromFormat.indexOf('YY')];
+  const yearLong = dateParts[fromFormat.indexOf('YYYY')];
+  const mounth = dateParts[fromFormat.indexOf('MM')];
+  const day = dateParts[fromFormat.indexOf('DD')];
+
+  let toFormatDate = '';
+
+  for (let i = 0, len = SEPARATOR_INDEX - 1; ; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (yearLong !== undefined) {
+          toFormatDate += yearLong;
+          break;
+        }
+
+        toFormatDate += (+yearShort >= 30 ? '19' : '20') + yearShort;
+        break;
+      case 'YY':
+        if (yearShort !== undefined) {
+          toFormatDate += yearShort;
+          break;
+        }
+
+        toFormatDate += yearLong.slice(2);
+        break;
+      case 'MM':
+        toFormatDate += mounth;
+        break;
+      case 'DD':
+        toFormatDate += day;
+        break;
+
+      default:
+        return undefined;
+    }
+
+    if (i >= len) {
+      break;
+    }
+
+    toFormatDate += toFormat[SEPARATOR_INDEX];
+  }
+
+  return toFormatDate;
 }
 
 module.exports = formatDate;
