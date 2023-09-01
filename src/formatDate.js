@@ -49,8 +49,67 @@
  * @returns {string}
  */
 
+function checkFormat(array) {
+  let yearPosition = -1;
+  let yearFromFormat = -1;
+
+  const monthPosition = array.indexOf('MM');
+  const dayPosition = array.indexOf('DD');
+
+  if (array.indexOf('YY') === -1) {
+    yearPosition = array.indexOf('YYYY');
+    yearFromFormat = 0;
+  } else {
+    yearPosition = array.indexOf('YY');
+    yearFromFormat = 1;
+  }
+
+  return [yearPosition, monthPosition, dayPosition, yearFromFormat];
+}
+
+function changeYearFormat(year, fromFormat, toFormat) {
+  switch (true) {
+    case (fromFormat === toFormat):
+      return year;
+
+    case (fromFormat > toFormat):
+
+      if (+year < 30) {
+        return 20 + year;
+      } else {
+        return 19 + year;
+      }
+
+    case (fromFormat < toFormat):
+      return year.slice(-2);
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+
+  const dateArray = date.split(fromFormat[3]);
+  const yearFromPosition = checkFormat(fromFormat)[0];
+  const yearFromFormat = checkFormat(fromFormat)[3];
+  const monthFromPosition = checkFormat(fromFormat)[1];
+  const dayFromPosition = checkFormat(fromFormat)[2];
+  const yearToPosition = checkFormat(toFormat)[0];
+  const yearToFormat = checkFormat(toFormat)[3];
+  const monthToPosition = checkFormat(toFormat)[1];
+  const dayToPosition = checkFormat(toFormat)[2];
+
+  const resultDate = new Array(3);
+
+  resultDate[yearToPosition] = changeYearFormat(
+    dateArray[yearFromPosition],
+    yearFromFormat, yearToFormat
+  );
+  resultDate[monthToPosition] = dateArray[monthFromPosition];
+  resultDate[dayToPosition] = dateArray[dayFromPosition];
+
+  const resultStringDate = resultDate.join(toFormat[3]);
+
+  return resultStringDate;
 }
 
 module.exports = formatDate;
