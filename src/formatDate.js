@@ -77,12 +77,14 @@ function formatDate(date, fromFormat, toFormat) {
         result += year.length === 4 ? year.slice(-2) : year;
         break;
       case LONG_YEAR_ABBR:
-        result
-          += year.length === 4
-            ? year
-            : year >= MAX_YEAR
-              ? `19${year}`
-              : `20${year}`;
+        if (year.length === 4) {
+          result += year;
+          break;
+        } else if (year >= MAX_YEAR) {
+          result += `19${year}`;
+          break;
+        }
+        result += `20${year}`;
         break;
       case MONTH_ABBR:
         result += month;
