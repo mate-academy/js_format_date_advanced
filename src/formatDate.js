@@ -81,8 +81,8 @@ function formatDate(date, fromFormat, toFormat) {
           += year.length === 4
             ? year
             : year >= MAX_YEAR
-              ? '19' + year
-              : '20' + year;
+              ? `19${year}`
+              : `20${year}`;
         break;
       case MONTH_ABBR:
         result += month;
@@ -91,7 +91,7 @@ function formatDate(date, fromFormat, toFormat) {
         result += day;
         break;
       default:
-        break;
+        throw new Error(`${toFormat[i]} is invalid format`);
     }
 
     if (i !== toFormat.length - 2) {
