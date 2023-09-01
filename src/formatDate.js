@@ -50,7 +50,56 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // ABBR stands for `ABBREVIATION`
+  const SHORT_YEAR_ABBR = 'YY';
+  const LONG_YEAR_ABBR = 'YYYY';
+  const MONTH_ABBR = 'MM';
+  const DAY_ABBR = 'DD';
+  const SEPARATOR_INDEX = 3;
+  const MAX_YEAR = 30;
+
+  const dateArray = date.split(fromFormat[SEPARATOR_INDEX]);
+  const getYearFormatIndex = (format) => {
+    return format.indexOf(SHORT_YEAR_ABBR) !== -1
+      ? format.indexOf(SHORT_YEAR_ABBR)
+      : format.indexOf(LONG_YEAR_ABBR);
+  };
+
+  const year = dateArray[getYearFormatIndex(fromFormat)];
+  const month = dateArray[fromFormat.indexOf(MONTH_ABBR)];
+  const day = dateArray[fromFormat.indexOf(DAY_ABBR)];
+
+  let result = '';
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case SHORT_YEAR_ABBR:
+        result += year.length === 4 ? year.slice(-2) : year;
+        break;
+      case LONG_YEAR_ABBR:
+        result
+          += year.length === 4
+            ? year
+            : year >= MAX_YEAR
+              ? '19' + year
+              : '20' + year;
+        break;
+      case MONTH_ABBR:
+        result += month;
+        break;
+      case DAY_ABBR:
+        result += day;
+        break;
+      default:
+        break;
+    }
+
+    if (i !== toFormat.length - 2) {
+      result += toFormat[SEPARATOR_INDEX];
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
