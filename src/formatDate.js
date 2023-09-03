@@ -52,6 +52,11 @@
 function formatDate(date, fromFormat, toFormat) {
   const parts = date.split(fromFormat[fromFormat.length - 1]);
   const formattedParts = [];
+  const yyyy = 'YYYY';
+  const yy = 'YY';
+  const belongOurTime = 30;
+  const twentyCentury = '20';
+  const nineteenCentury = '19';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     const formatPart = toFormat[i];
@@ -60,11 +65,11 @@ function formatDate(date, fromFormat, toFormat) {
     if (fromIndex !== -1) {
       formattedParts.push(parts[fromIndex]);
     } else {
-      if (formatPart === 'YYYY' && fromFormat.includes('YY')) {
+      if (formatPart === yyyy && fromFormat.includes(yy)) {
         const year = parseInt(parts[i], 10);
 
-        formattedParts.push(year < 30 ? '20' + parts[i]
-          : '19' + parts[i]);
+        formattedParts.push(year < belongOurTime ? twentyCentury + parts[i]
+          : nineteenCentury + parts[i]);
       } else {
         formattedParts.push(parts[i].slice(2));
       }
