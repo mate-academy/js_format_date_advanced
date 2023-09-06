@@ -50,14 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // console.log(date);
-  // console.log(fromFormat);
-  // console.log(toFormat);
-
-  const obj = {
+  const calendar = {
     convertYearTo(format) {
-      // console.log(this);
-
       if (this.hasOwnProperty('YYYY') && format === 'YY') {
         this['YY'] = this['YYYY'].slice(2, 4);
         delete this['YYYY'];
@@ -67,20 +61,24 @@ function formatDate(date, fromFormat, toFormat) {
         this['YYYY'] = this['YY'] <= 20 ? '20' + this['YY'] : '19' + this['YY'];
         delete this['YY'];
       }
+
+      if (!format) {
+        throw new Error('Format is wrong');
+      }
     },
   };
   const dateArray = date.split(fromFormat[3]);
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    obj[fromFormat[i]] = dateArray[i];
+    calendar[fromFormat[i]] = dateArray[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      obj.convertYearTo(toFormat[i]);
+      calendar.convertYearTo(toFormat[i]);
     }
-    result.push(obj[toFormat[i]]);
+    result.push(calendar[toFormat[i]]);
   }
 
   return result.join(toFormat[3]);
