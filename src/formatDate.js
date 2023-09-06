@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const calendar = {
+    convertYearTo(format) {
+      if (this.hasOwnProperty('YYYY') && format === 'YY') {
+        this['YY'] = this['YYYY'].slice(2, 4);
+        delete this['YYYY'];
+      }
+
+      if (this.hasOwnProperty('YY') && format === 'YYYY') {
+        this['YYYY'] = this['YY'] <= 20 ? '20' + this['YY'] : '19' + this['YY'];
+        delete this['YY'];
+      }
+
+      if (!format) {
+        throw new Error('Format is wrong');
+      }
+    },
+  };
+  const dateArray = date.split(fromFormat[3]);
+  const result = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    calendar[fromFormat[i]] = dateArray[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      calendar.convertYearTo(toFormat[i]);
+    }
+    result.push(calendar[toFormat[i]]);
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
