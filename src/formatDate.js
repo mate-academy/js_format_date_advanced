@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const YEAR = 'YY';
+  const FULL_YEAR = 'YYYY';
+  const OLD_SEPARATOR = fromFormat[3];
+  const NEW_SEPARATOR = toFormat[3];
+
+  const splitDate = date.split(OLD_SEPARATOR);
+
+  const newDate = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+
+    for (let j = 0; j < fromFormat.length - 1; j++) {
+      if (toFormat[i] === fromFormat[j]) {
+        newDate[i] = splitDate[j];
+        break;
+      }
+
+      else if (fromFormat[j] === FULL_YEAR && toFormat[i] === YEAR) {
+        newDate[i] = splitDate[j] % 100;
+      }
+
+      else if (fromFormat[j] === YEAR && toFormat[i] === FULL_YEAR) {
+        newDate[i] = convertToYYYY(splitDate[j]);
+      }
+    }
+  }
+
+  return  newDate.join(NEW_SEPARATOR);
 }
+
+function convertToYYYY(yy) {
+  if (yy >= 0 && yy <= 99) {
+    if (yy < 30) {
+      return 20 + yy;
+    } else {
+      return 19 + yy;
+    }
+  }
+}
+
+formatDate(
+  '2012-12-21',
+  ['YYYY', 'MM', 'DD', '-'],
+  ['DD', 'MM', 'YYYY', '-'],
+);
 
 module.exports = formatDate;
