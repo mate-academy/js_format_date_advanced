@@ -51,30 +51,34 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArray = date.split(fromFormat[fromFormat.length - 1]);
+  const yearLong = 'YYYY';
+  const yearShort = 'YY';
+
+  const formatSlice = toFormat.slice(0, 3);
 
   const result = [];
 
-  for (let i = 0; i < toFormat.slice(0, 3).length; i++) {
+  for (let i = 0; i < formatSlice.length; i++) {
     const value = toFormat[i];
     let currentValue = value;
 
-    if (value === 'YYYY') {
-      currentValue = 'YY';
+    if (value === yearLong) {
+      currentValue = yearShort;
     }
 
     const fromIndex = fromFormat
       .findIndex((fromValue) => fromValue.includes(currentValue));
     let newValue = dateArray[fromIndex];
 
-    if (value === 'YYYY' && newValue.length === 2) {
+    if (value === yearLong && newValue.length === 2) {
       if (newValue < 30) {
-        newValue = '20' + newValue;
+        newValue = `20${newValue}`;
       } else {
-        newValue = '19' + newValue;
+        newValue = `19${newValue}`;
       }
     }
 
-    if (value === 'YY' && newValue.length === 4) {
+    if (value === yearShort && newValue.length === 4) {
       newValue = newValue.slice(2);
     }
 
