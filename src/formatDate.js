@@ -49,6 +49,20 @@
  * @returns {string}
  */
 
+function formatYear(year, fromFormat, toFormat) {
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    return year.slice(2);
+  } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (year < 30) {
+      return `20${year}`;
+    } else {
+      return `19${year}`;
+    }
+  }
+
+  return year;
+}
+
 function formatDate(date, fromFormat, toFormat) {
   const formattedDateArr = [];
   let formattedYear;
@@ -57,39 +71,28 @@ function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
 
   for (let i = 0; i < dateParts.length; i++) {
-    if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-      if (i === fromFormat.indexOf('YYYY')) {
-        formattedYear = dateParts[i].slice(2);
-      }
-    } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-      if (i === fromFormat.indexOf('YY')) {
-        if (dateParts[i] < 30) {
-          formattedYear = `20${dateParts[i]}`;
-        } else {
-          formattedYear = `19${dateParts[i]}`;
-        }
-      }
-    } else if (i === fromFormat.indexOf('YY')
-    || i === fromFormat.indexOf('YYYY')) {
-      formattedYear = dateParts[i];
-    }
-
-    if (i === fromFormat.indexOf('MM')) {
+    if (i === fromFormat.indexOf('YYYY')) {
+      formattedYear = formatYear(dateParts[i], fromFormat, toFormat);
+    } else if (i === fromFormat.indexOf('YY')) {
+      formattedYear = formatYear(dateParts[i], fromFormat, toFormat);
+    } else if (i === fromFormat.indexOf('MM')) {
       month = dateParts[i];
-    }
-
-    if (i === fromFormat.indexOf('DD')) {
+    } else if (i === fromFormat.indexOf('DD')) {
       day = dateParts[i];
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      formattedDateArr.push(day);
-    } else if (toFormat[i] === 'MM') {
-      formattedDateArr.push(month);
-    } else {
-      formattedDateArr.push(formattedYear);
+    switch (toFormat[i]) {
+      case 'DD':
+        formattedDateArr.push(day);
+        break;
+      case 'MM':
+        formattedDateArr.push(month);
+        break;
+      default:
+        formattedDateArr.push(formattedYear);
+        break;
     }
   }
 
