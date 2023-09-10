@@ -90,7 +90,6 @@ function formatDate(date, fromFormat, toFormat) {
   const resultArr = arrOut.splice(0);
 
   return resultArr.join(SPLITTER_OUT);
-
 }
 
 module.exports = formatDate;
