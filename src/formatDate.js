@@ -51,6 +51,8 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const fullYear = 'YYYY';
+  const partYear = 'YY';
   const dataArray = date.split(fromFormat[3]);
   const newDataFormat = [];
 
@@ -58,10 +60,7 @@ function formatDate(date, fromFormat, toFormat) {
     const twoToFullDigitYear
     = dataArray[fromFormat.indexOf(toFormat[i].slice(-2))];
 
-    // const fullToTwoLastDigitYear
-    // = dataArray[fromFormat.indexOf(`YY${toFormat[i]}`)].slice(-2);
-
-    if (toFormat[i] === 'YYYY' && !fromFormat.includes('YYYY')) {
+    if (toFormat[i] === fullYear && !fromFormat.includes(fullYear)) {
       if (twoToFullDigitYear < 30) {
         newDataFormat.push(
           `20${twoToFullDigitYear}`
@@ -71,7 +70,7 @@ function formatDate(date, fromFormat, toFormat) {
           `19${twoToFullDigitYear}`
         );
       }
-    } else if (toFormat[i] === 'YY' && fromFormat.includes('YYYY')) {
+    } else if (toFormat[i] === partYear && fromFormat.includes(fullYear)) {
       newDataFormat.push(
         dataArray[fromFormat.indexOf(`YY${toFormat[i]}`)].slice(-2)
       );
