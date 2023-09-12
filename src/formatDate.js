@@ -52,40 +52,44 @@
 function formatDate(date, fromFormat, toFormat) {
   const SPLITTER_IN = fromFormat[3];
   const SPLITTER_OUT = toFormat[3];
+  const YEAR_2_SYM = 'YY';
+  const YEAR_4_SYM = 'YYYY';
+  const MONTH_SYM = 'MM';
+  const DAY_SYM = 'DD';
   const compDateArrIn = date.split(SPLITTER_IN);
   const arrOut = [];
 
   let yearStrIn2;
   let yearStrIn4;
-  const monthStrIn = compDateArrIn[fromFormat.indexOf('MM')];
+  const monthStrIn = compDateArrIn[fromFormat.indexOf(MONTH_SYM)];
   const dayStrIn = compDateArrIn[fromFormat.indexOf('DD')];
 
-  if (fromFormat.includes('YY')) {
-    const index = fromFormat.indexOf('YY');
+  if (fromFormat.includes(YEAR_2_SYM)) {
+    const index = fromFormat.indexOf(YEAR_2_SYM);
 
     yearStrIn2 = compDateArrIn[index];
 
-    if (yearStrIn4 === undefined && Number(compDateArrIn[index]) < 30) {
+    if (!yearStrIn4 && Number(compDateArrIn[index]) < 30) {
       yearStrIn4 = 20 + yearStrIn2;
     } else {
       yearStrIn4 = 19 + yearStrIn2;
     }
   }
 
-  if (fromFormat.includes('YYYY')) {
-    const index = fromFormat.indexOf('YYYY');
+  if (fromFormat.includes(YEAR_4_SYM)) {
+    const index = fromFormat.indexOf(YEAR_4_SYM);
 
     yearStrIn4 = compDateArrIn[index];
 
-    if (yearStrIn2 === undefined) {
+    if (!yearStrIn2) {
       yearStrIn2 = yearStrIn4.slice(yearStrIn4.length - 2);
     }
   }
 
-  arrOut[toFormat.indexOf('YYYY')] = yearStrIn4;
-  arrOut[toFormat.indexOf('YY')] = yearStrIn2;
-  arrOut[toFormat.indexOf('DD')] = dayStrIn;
-  arrOut[toFormat.indexOf('MM')] = monthStrIn;
+  arrOut[toFormat.indexOf(YEAR_4_SYM)] = yearStrIn4;
+  arrOut[toFormat.indexOf(YEAR_2_SYM)] = yearStrIn2;
+  arrOut[toFormat.indexOf(DAY_SYM)] = dayStrIn;
+  arrOut[toFormat.indexOf(MONTH_SYM)] = monthStrIn;
 
   const resultArr = arrOut.splice(0);
 
