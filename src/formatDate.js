@@ -50,7 +50,50 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const SPLITTER_IN = fromFormat[3];
+  const SPLITTER_OUT = toFormat[3];
+  const YEAR_2_SYM = 'YY';
+  const YEAR_4_SYM = 'YYYY';
+  const MONTH_SYM = 'MM';
+  const DAY_SYM = 'DD';
+  const compDateArrIn = date.split(SPLITTER_IN);
+  const arrOut = [];
+
+  let yearStrIn2;
+  let yearStrIn4;
+  const monthStrIn = compDateArrIn[fromFormat.indexOf(MONTH_SYM)];
+  const dayStrIn = compDateArrIn[fromFormat.indexOf('DD')];
+
+  if (fromFormat.includes(YEAR_2_SYM)) {
+    const index = fromFormat.indexOf(YEAR_2_SYM);
+
+    yearStrIn2 = compDateArrIn[index];
+
+    if (!yearStrIn4 && Number(compDateArrIn[index]) < 30) {
+      yearStrIn4 = 20 + yearStrIn2;
+    } else {
+      yearStrIn4 = 19 + yearStrIn2;
+    }
+  }
+
+  if (fromFormat.includes(YEAR_4_SYM)) {
+    const index = fromFormat.indexOf(YEAR_4_SYM);
+
+    yearStrIn4 = compDateArrIn[index];
+
+    if (!yearStrIn2) {
+      yearStrIn2 = yearStrIn4.slice(yearStrIn4.length - 2);
+    }
+  }
+
+  arrOut[toFormat.indexOf(YEAR_4_SYM)] = yearStrIn4;
+  arrOut[toFormat.indexOf(YEAR_2_SYM)] = yearStrIn2;
+  arrOut[toFormat.indexOf(DAY_SYM)] = dayStrIn;
+  arrOut[toFormat.indexOf(MONTH_SYM)] = monthStrIn;
+
+  const resultArr = arrOut.splice(0);
+
+  return resultArr.join(SPLITTER_OUT);
 }
 
 module.exports = formatDate;
