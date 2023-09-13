@@ -49,23 +49,48 @@
  * @returns {string}
  */
 
+/* eslint-disable no-console */
 function formatDate(date, fromFormat, toFormat) {
-  const fromFormatObj = {};
-  const toFormatObj = {};
-  const resultArr = [];
-  const newDate = date.split(fromFormat[3]);
+  const dateArray = date.split(fromFormat[3]);
+  const result = [];
 
-  for (let i = 0; i < newDate.length; i++) {
-    fromFormatObj[fromFormat[i]] = newDate[i];
+  const day = dateArray[fromFormat.indexOf('DD')];
+  const month = dateArray[fromFormat.indexOf('MM')];
+  let year;
+
+  if (fromFormat.includes('YYYY')) {
+    year = dateArray[fromFormat.indexOf('YYYY')];
+  } else {
+    year = dateArray[fromFormat.indexOf('YY')];
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (year < 30) {
+      year = '20' + year;
+    } else {
+      year = '19' + year;
+    }
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    year = year.slice(2);
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    toFormatObj[toFormat[i]] = fromFormatObj[toFormat[i]];
+    if (toFormat[i] === 'DD') {
+      result.push(day);
+    }
 
-    if (toFormatObj[i] === 'YY' && fromFormatObj[i] === 'YYYY') {
-      resultArr.push(fromFormatObj['YYYY'].slice(-2));
+    if (toFormat[i] === 'MM') {
+      result.push(month);
+    }
+
+    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
+      result.push(year);
     }
   }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
