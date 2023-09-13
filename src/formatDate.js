@@ -49,8 +49,43 @@
  * @returns {string}
  */
 
+/* eslint-disable no-console */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+  const result = [];
+
+  const day = dateArray[fromFormat.indexOf('DD')];
+  const month = dateArray[fromFormat.indexOf('MM')];
+  let year;
+
+  year = fromFormat.includes('YYYY')
+    ? dateArray[fromFormat.indexOf('YYYY')]
+    : dateArray[fromFormat.indexOf('YY')];
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    year = year < 30 ? '20' + year : '19' + year;
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    year = year.slice(2);
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        result.push(day);
+        break;
+      case 'MM':
+        result.push(month);
+        break;
+      case 'YY':
+      case 'YYYY':
+        result.push(year);
+        break;
+    }
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
