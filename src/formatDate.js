@@ -51,6 +51,7 @@
 
 function formatDate(date, fromFormat, toFormat) {
   let dateSeparator = '/';
+  const SEPARATOR_INDEX = 3;
 
   if (date.includes('-')) {
     dateSeparator = '-';
@@ -62,7 +63,7 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObject = {};
   const result = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < SEPARATOR_INDEX; i++) {
     dateObject[fromFormat[i]] = dateArray[i];
   }
 
@@ -80,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
     delete dateObject.YYYY;
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < SEPARATOR_INDEX; i++) {
     for (const dateKey in dateObject) {
       if (toFormat[i] === dateKey) {
         result.push(dateObject[dateKey]);
@@ -88,7 +89,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return result.join(toFormat[3]);
+  return result.join(toFormat[SEPARATOR_INDEX]);
 }
 
 module.exports = formatDate;
