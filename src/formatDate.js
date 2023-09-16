@@ -64,7 +64,7 @@ function formatDate(date, fromFormat, toFormat) {
       result.push(fromatObj[toFormat[i]]);
     } else if (toFormat[i] === 'YY') {
       result.push(fromatObj['YYYY'].slice(2));
-    } else if ((toFormat[i] === 'YYYY') & (fromatObj['YY'] < 30)) {
+    } else if ((toFormat[i] === 'YYYY') && (fromatObj['YY'] < 30)) {
       result.push(20 + fromatObj['YY']);
     } else {
       result.push(19 + fromatObj['YY']);
