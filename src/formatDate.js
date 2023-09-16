@@ -50,7 +50,64 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat.pop();
+  const toSeparator = toFormat.pop();
+  const toFormatDateString = toFormat.join('');
+  const fromFormatDateString = fromFormat.join('');
+
+  let result = '';
+
+  const convertYear = (value) => (value < 30 ? `20${value}` : `19${value}`);
+
+  if (toFormatDateString === 'YYYYMMDD') {
+    if (fromFormatDateString === 'YYYYMMDD') {
+      result = date.split(fromSeparator).join(toSeparator);
+    }
+
+    if (fromFormatDateString === 'YYMMDD') {
+      const [year, month, day] = date.split(fromSeparator);
+
+      result = convertYear(year) + toSeparator + month + toSeparator + day;
+    }
+  }
+
+  if (toFormatDateString === 'DDMMYYYY') {
+    if (fromFormatDateString === 'YYYYMMDD') {
+      const [year, month, day] = date.split(fromSeparator);
+
+      result = day + toSeparator + month + toSeparator + year;
+    }
+
+    if (fromFormatDateString === 'MMYYYYDD') {
+      const [month, year, day] = date.split(fromSeparator);
+
+      result = day + toSeparator + month + toSeparator + year;
+    }
+
+    if (fromFormatDateString === 'YYMMDD') {
+      const [year, month, day] = date.split(fromSeparator);
+
+      result = day + toSeparator + month + toSeparator + convertYear(year);
+    }
+  }
+
+  if (toFormatDateString === 'DDMMYY') {
+    if (fromFormatDateString === 'DDMMYYYY') {
+      const [day, month, year] = date.split(fromSeparator);
+
+      result = day + toSeparator + month + toSeparator + year;
+    }
+  }
+
+  if (toFormatDateString === 'MMDDYY') {
+    if (fromFormatDateString === 'MMDDYYYY') {
+      const [month, day, year] = date.split(fromSeparator);
+
+      result = month + toSeparator + day + toSeparator + year.substring(2, 4);
+    }
+  }
+
+  return result;
 }
 
 module.exports = formatDate;
