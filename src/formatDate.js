@@ -48,66 +48,30 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
-  const toFormatDateString = toFormat.join('');
-  const fromFormatDateString = fromFormat.join('');
+  const dateToArr = date.split(fromFormat[3]);
 
-  let result = '';
+  const fromatObj = {};
 
-  const convertYear = (value) => (value < 30 ? `20${value}` : `19${value}`);
+  const result = [];
 
-  if (toFormatDateString === 'YYYYMMDD') {
-    if (fromFormatDateString === 'YYYYMMDD') {
-      result = date.split(fromSeparator).join(toSeparator);
-    }
+  for (let i = 0; i < fromFormat.length; i++) {
+    fromatObj[fromFormat[i]] = dateToArr[i];
+  }
 
-    if (fromFormatDateString === 'YYMMDD') {
-      const [year, month, day] = date.split(fromSeparator);
-
-      result = convertYear(year) + toSeparator + month + toSeparator + day;
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (toFormat[i] in fromatObj) {
+      result.push(fromatObj[toFormat[i]]);
+    } else if (toFormat[i] === 'YY') {
+      result.push(fromatObj['YYYY'].slice(2));
+    } else if ((toFormat[i] === 'YYYY') & (fromatObj['YY'] < 30)) {
+      result.push(20 + fromatObj['YY']);
+    } else {
+      result.push(19 + fromatObj['YY']);
     }
   }
 
-  if (toFormatDateString === 'DDMMYYYY') {
-    if (fromFormatDateString === 'YYYYMMDD') {
-      const [year, month, day] = date.split(fromSeparator);
-
-      result = day + toSeparator + month + toSeparator + year;
-    }
-
-    if (fromFormatDateString === 'MMYYYYDD') {
-      const [month, year, day] = date.split(fromSeparator);
-
-      result = day + toSeparator + month + toSeparator + year;
-    }
-
-    if (fromFormatDateString === 'YYMMDD') {
-      const [year, month, day] = date.split(fromSeparator);
-
-      result = day + toSeparator + month + toSeparator + convertYear(year);
-    }
-  }
-
-  if (toFormatDateString === 'DDMMYY') {
-    if (fromFormatDateString === 'DDMMYYYY') {
-      const [day, month, year] = date.split(fromSeparator);
-
-      result = day + toSeparator + month + toSeparator + year;
-    }
-  }
-
-  if (toFormatDateString === 'MMDDYY') {
-    if (fromFormatDateString === 'MMDDYYYY') {
-      const [month, day, year] = date.split(fromSeparator);
-
-      result = month + toSeparator + day + toSeparator + year.substring(2, 4);
-    }
-  }
-
-  return result;
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
