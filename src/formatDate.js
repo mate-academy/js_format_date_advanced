@@ -57,19 +57,33 @@ function formatDate(date, fromFormat, toFormat) {
   const resultArray = [];
   let resultString = '';
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    for (let j = 0; j < fromFormat.length - 1; j++) {
-      if (toFormat[i] === fromFormat[j]) {
+  const PREFIX_PREVIOUS_CENTURY = 19;
+  const PREFIX_THIS_CENTURY = 20;
+  const TWO_SYMBOL_YEAR_FORMATE = 2;
+  const FOUR_SYMBOL_YEAR_FORMATE = 4;
+  const FORMAT_LENGTH = 3;
+
+  for (let i = 0; i < FORMAT_LENGTH; i++) {
+    for (let j = 0; j < FORMAT_LENGTH; j++) {
+      if (
+        toFormat[i] === fromFormat[j]
+      ) {
         resultArray.push(dateArray[j]);
-      } else if (toFormat[i].includes('Y') && fromFormat[j].includes('Y')) {
-        if (fromFormat[j].length === 4 && toFormat[i].length === 2) {
+      } else if (
+        toFormat[i].includes('Y')
+        && fromFormat[j].includes('Y')
+      ) {
+        if (
+          fromFormat[j].length === FOUR_SYMBOL_YEAR_FORMATE
+          && toFormat[i].length === TWO_SYMBOL_YEAR_FORMATE
+        ) {
           resultArray.push(dateArray[j].slice(2));
         } else {
-          if (dateArray[j] >= 30) {
-            resultArray.push(19 + dateArray[j]);
-          } else {
-            resultArray.push(20 + dateArray[j]);
-          }
+          resultArray.push(
+            dateArray[j] >= 30
+              ? PREFIX_PREVIOUS_CENTURY + dateArray[j]
+              : PREFIX_THIS_CENTURY + dateArray[j]
+          );
         }
       }
     }
