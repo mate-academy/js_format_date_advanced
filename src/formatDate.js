@@ -42,15 +42,33 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
+//  * @param {string} date
+//  * @param {string[]} fromFormat
+//  * @param {string[]} toFormat
+//  *
+//  * @returns {string}
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const newDate = date.split(fromFormat[3]);
+  const dayPart = {};
+  const res = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dayPart[fromFormat[i]] = newDate[i];
+  }
+
+  if (dayPart.YYYY) {
+    dayPart.YY = dayPart.YYYY.slice(-2);
+  }
+
+  dayPart.YYYY = dayPart.YY >= 30 ? 19 + dayPart.YY : 20 + dayPart.YY;
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    res.push(dayPart[toFormat[j]]);
+  }
+
+  return res.join(toFormat[3]);
 }
 
 module.exports = formatDate;
