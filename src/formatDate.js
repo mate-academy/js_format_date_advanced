@@ -56,7 +56,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const formattedDate = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     const currentPart = toFormat[i];
     const indexFrom = fromFormat.indexOf(currentPart);
 
@@ -67,11 +67,9 @@ function formatDate(date, fromFormat, toFormat) {
         const index = fromFormat.indexOf('YY');
         const year = +dateArray[index];
 
-        if (year < 30) {
-          formattedDate.push('20' + dateArray[index]);
-        } else {
-          formattedDate.push('19' + dateArray[index]);
-        }
+        formattedDate.push(year < 30
+          ? '20' + dateArray[index]
+          : '19' + dateArray[index]);
       } else {
         const index = fromFormat.indexOf('YYYY');
 
