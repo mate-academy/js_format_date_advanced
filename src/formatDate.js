@@ -50,7 +50,44 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const division = fromFormat[fromFormat.length - 1];
+  const dividedDate = date.split(division);
+
+  const formatMap = {};
+
+  fromFormat.forEach((part, index) => {
+    if (part !== division) {
+      formatMap[part] = dividedDate[index];
+    }
+  });
+
+  let year = formatMap['YYYY'] || formatMap['YY'];
+  const month = formatMap['MM'];
+  const day = formatMap['DD'];
+
+  if (formatMap['YY']) {
+    year = parseInt(year, 10);
+
+    if (year < 30) {
+      year = '20' + year;
+    } else {
+      year = '19' + year;
+    }
+  }
+
+  const reorderedDate = toFormat.map((part) => {
+    if (part === 'YYYY' || part === 'YY') {
+      return year;
+    } else if (part === 'MM') {
+      return month;
+    } else if (part === 'DD') {
+      return day;
+    } else {
+      return part;
+    }
+  });
+
+  return reorderedDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
