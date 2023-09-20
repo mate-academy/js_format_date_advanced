@@ -3,7 +3,7 @@
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
  * date format. Create a `formatDate` function that accepts the `date` string,
- * the old `fromFormat` array and the new `toFormat` array. Function returns
+ * the new `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
  *   The function can change a separator, reorder the date parts of convert a
  * year from 4 digits to 2 digits and back.
@@ -50,7 +50,78 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const SEPARATOR_POSITION = 3;
+  const YEARS_LIMIT = 30;
+  const CURRENT_CENTURY = '20';
+  const PREVIOUS_CENTURY = '19';
+  const YEARS = 'YY';
+  const MONTHS = 'MM';
+  const DAYS = 'DD';
+
+  const newSeparator = toFormat[SEPARATOR_POSITION];
+  const oldIndexes = {
+    year: null,
+    month: null,
+    day: null,
+    separator: fromFormat[3],
+  };
+  const newData = [];
+
+  const yearsHandler = (prevFormat, newFormat, value) => {
+    if (prevFormat.length === newFormat.length) {
+      return value;
+    }
+
+    if (prevFormat.length < newFormat.length) {
+      if (value < YEARS_LIMIT) {
+        return CURRENT_CENTURY + value;
+      }
+
+      return PREVIOUS_CENTURY + value;
+    }
+
+    if (prevFormat.length > newFormat.length) {
+      return value.slice(-2);
+    }
+  };
+
+  const oldItems = date.split(oldIndexes.separator);
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === DAYS) {
+      oldIndexes.day = i;
+    }
+
+    if (fromFormat[i] === MONTHS) {
+      oldIndexes.month = i;
+    }
+
+    if (fromFormat[i].includes(YEARS)) {
+      oldIndexes.year = i;
+    }
+  }
+
+  for (const element of toFormat) {
+    if (element.includes(YEARS)) {
+      const newYear = yearsHandler(
+        fromFormat[oldIndexes.year],
+        element,
+        oldItems[oldIndexes.year]
+      );
+
+      newData.push(newYear);
+    }
+
+    if (element.includes(MONTHS)) {
+      newData.push(oldItems[oldIndexes.month]);
+    }
+
+    if (element.includes(DAYS)) {
+      newData.push(oldItems[oldIndexes.day]);
+    }
+  }
+
+  return newData.join(newSeparator);
 }
 
 module.exports = formatDate;
