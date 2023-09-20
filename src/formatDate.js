@@ -53,25 +53,25 @@ function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(/\D+/);
   let formattedDate = '';
   let year;
+  const indicateCentury = 30;
+  const century19 = '19';
+  const century20 = '20';
 
   toFormat.forEach((format, i) => {
     switch (format) {
       case 'YYYY':
-        if (fromFormat.indexOf('YYYY') !== -1) {
-          year = dateParts[fromFormat.indexOf('YYYY')];
-        } else {
-          year = dateParts[fromFormat.indexOf('YY')];
-        }
+        year = fromFormat.indexOf('YYYY') !== -1
+          ? year = dateParts[fromFormat.indexOf('YYYY')]
+          : year = dateParts[fromFormat.indexOf('YY')];
 
-        formattedDate += year.length === 2 ? (year < 30) ? '20' + year
-          : '19' + year : year;
+        formattedDate += year.length === 2 ? (year < indicateCentury)
+          ? century20 + year
+          : century19 + year : year;
         break;
       case 'YY':
-        if (fromFormat.indexOf('YYYY') !== -1) {
-          year = dateParts[fromFormat.indexOf('YYYY')];
-        } else {
-          year = dateParts[fromFormat.indexOf('YY')];
-        }
+        year = fromFormat.indexOf('YYYY') !== -1
+          ? year = dateParts[fromFormat.indexOf('YYYY')]
+          : year = dateParts[fromFormat.indexOf('YY')];
 
         formattedDate += year.length === 4 ? year.slice(2) : year;
 
@@ -86,9 +86,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
     }
 
-    if (i < toFormat.length - 2) {
-      formattedDate += toFormat[3];
-    }
+    formattedDate += i < toFormat.length - 2 ? toFormat[3] : '';
   });
 
   return formattedDate;
