@@ -66,10 +66,12 @@ function formatDate(date, fromFormat, toFormat) {
       if (currentPart === 'YYYY' && fromFormat.includes('YY')) {
         const index = fromFormat.indexOf('YY');
         const year = +dateArray[index];
+        const nineteenthCentury = '19';
+        const twentiethCentury = '20';
 
         formattedDate.push(year < 30
-          ? '20' + dateArray[index]
-          : '19' + dateArray[index]);
+          ? twentiethCentury + dateArray[index]
+          : nineteenthCentury + dateArray[index]);
       } else {
         const index = fromFormat.indexOf('YYYY');
 
