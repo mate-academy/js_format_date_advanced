@@ -50,7 +50,48 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(/\D+/);
+  let formattedDate = '';
+  let year;
+
+  toFormat.forEach((format, i) => {
+    switch (format) {
+      case 'YYYY':
+        if (fromFormat.indexOf('YYYY') !== -1) {
+          year = dateParts[fromFormat.indexOf('YYYY')];
+        } else {
+          year = dateParts[fromFormat.indexOf('YY')];
+        }
+
+        formattedDate += year.length === 2 ? (year < 30) ? '20' + year
+          : '19' + year : year;
+        break;
+      case 'YY':
+        if (fromFormat.indexOf('YYYY') !== -1) {
+          year = dateParts[fromFormat.indexOf('YYYY')];
+        } else {
+          year = dateParts[fromFormat.indexOf('YY')];
+        }
+
+        formattedDate += year.length === 4 ? year.slice(2) : year;
+
+        break;
+      case 'DD':
+        formattedDate += dateParts[fromFormat.indexOf('DD')];
+        break;
+      case 'MM':
+        formattedDate += dateParts[fromFormat.indexOf('MM')];
+        break;
+      default:
+        break;
+    }
+
+    if (i < toFormat.length - 2) {
+      formattedDate += toFormat[3];
+    }
+  });
+
+  return formattedDate;
 }
 
 module.exports = formatDate;
