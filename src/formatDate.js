@@ -66,17 +66,21 @@ function formatDate(date, fromFormat, toFormat) {
   const day = formatMap['DD'];
 
   if (year) {
-    if (year.length === 4 && fromFormat.includes('YYYY')
-    && toFormat.includes('YY')) {
+    if (year.length === 4 && toFormat.includes('YY')) {
       year = year.substring(2);
-    } else if (year.length === 2
-      && fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    } else if (year === '00' && toFormat.includes('YYYY')) {
+      year = 2000;
+    } else if (year.length === 2 && toFormat.includes('YYYY')) {
       year = parseInt(year, 10);
 
+      if (year === 2000) {
+        return;
+      }
+
       if (year < 30) {
-        year = '20' + year.toString().padStart(2, '0');
+        year = '20' + year;
       } else {
-        year = '19' + year.toString().padStart(2, '0');
+        year = '19' + year;
       }
     }
   }
