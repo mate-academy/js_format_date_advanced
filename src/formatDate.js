@@ -65,29 +65,37 @@ function formatDate(date, fromFormat, toFormat) {
   const month = formatMap['MM'];
   const day = formatMap['DD'];
 
-  if (formatMap['YY']) {
-    year = parseInt(year, 10);
+  if (year) {
+    if (year.length === 4 && fromFormat.includes('YYYY')
+    && toFormat.includes('YY')) {
+      year = year.substring(2);
+    } else if (year.length === 2
+      && fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+      year = parseInt(year, 10);
 
-    if (year < 30) {
-      year = '20' + year;
-    } else {
-      year = '19' + year;
+      if (year < 30) {
+        year = '20' + year.toString().padStart(2, '0');
+      } else {
+        year = '19' + year.toString().padStart(2, '0');
+      }
     }
   }
 
-  const reorderedDate = toFormat.map((part) => {
-    if (part === 'YYYY' || part === 'YY') {
-      return year;
-    } else if (part === 'MM') {
-      return month;
-    } else if (part === 'DD') {
-      return day;
-    } else {
-      return part;
-    }
-  });
+  const formattedDateParts = [];
 
-  return reorderedDate.join(toFormat[toFormat.length - 1]);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+      formattedDateParts.push(year);
+    } else if (toFormat[i] === 'MM') {
+      formattedDateParts.push(month);
+    } else if (toFormat[i] === 'DD') {
+      formattedDateParts.push(day);
+    }
+  }
+
+  const formattedDate = formattedDateParts.join(toFormat[toFormat.length - 1]);
+
+  return formattedDate;
 }
 
 module.exports = formatDate;
