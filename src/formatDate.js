@@ -50,7 +50,91 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const SEPARATOR_INDEX = 3;
+  const YEAR_LIMIT = 30;
+  const CENTURY_21 = 20;
+  const CENTURY_20 = 19;
+
+  const dateStorage = {
+    day: null,
+    month: null,
+    year: null,
+
+    oldFormat: date.split(fromFormat[SEPARATOR_INDEX]),
+    newFormat: [],
+  };
+
+  const { oldFormat, newFormat } = dateStorage;
+  let { day, month, year } = dateStorage;
+
+  for (let i = 0; i < SEPARATOR_INDEX; i++) {
+    switch (fromFormat[i]) {
+      case 'DD':
+        day = oldFormat[i];
+        break;
+
+      case 'MM':
+        month = oldFormat[i];
+        break;
+
+      case 'YY':
+        year = normalizeYear(oldFormat[i]);
+        break;
+
+      case 'YYYY':
+        year = normalizeYear(oldFormat[i]);
+        break;
+    }
+  }
+
+  for (let i = 0; i < SEPARATOR_INDEX; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        newFormat[i] = day;
+        break;
+
+      case 'MM':
+        newFormat[i] = month;
+        break;
+
+      case 'YY':
+        newFormat[i] = year;
+        break;
+
+      case 'YYYY':
+        newFormat[i] = year;
+        break;
+    }
+  }
+
+  return newFormat.join(toFormat[SEPARATOR_INDEX]);
+
+  function normalizeYear(value) {
+    const oldLengthYear = getLengthYear(fromFormat.slice(0, -1));
+    const newLengthYear = getLengthYear(toFormat.slice(0, -1));
+
+    if (oldLengthYear < newLengthYear) {
+      if (+value < YEAR_LIMIT) {
+        return `${CENTURY_21}${value}`;
+      }
+
+      return `${CENTURY_20}${value}`;
+    }
+
+    if (oldLengthYear > newLengthYear) {
+      return value.slice(-2);
+    }
+
+    return value;
+  }
+
+  function getLengthYear(dateFormat) {
+    for (const element of dateFormat) {
+      if (element.includes('Y')) {
+        return element.length;
+      }
+    }
+  }
 }
 
 module.exports = formatDate;
