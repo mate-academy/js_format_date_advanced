@@ -50,47 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const YEAR_PERIOD = 30;
+
   const separatorFrom = fromFormat[fromFormat.length - 1];
   const separatorTo = toFormat[toFormat.length - 1];
   const dateArray = date.split(separatorFrom);
-
-  // console.log(dateArray);
-
   const dateObject = {};
+  const formattedDate = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
     dateObject[fromFormat[i]] = dateArray[i];
   }
-  // console.log(dateObject);
-
-  const formattedDate = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    // console.log(toFormat[i]);
-    // const key = toFormat[i]
-    let value = dateObject[toFormat[i]];
-    // console.log('value', value)
-    // console.log('i', key)
-    // console.log('v',value)
+    const key = toFormat[i];
+    let value = dateObject[key];
+    const fullYearFormat = dateObject.YYYY;
+    const halfYearFormat = dateObject.YY;
 
     if (value === undefined) {
-      // console.log('hi')
-      if (toFormat[i] === 'YY') {
-        // console.log('YES')
-        value = dateObject.YYYY.slice(2);
+      if (key === 'YY') {
+        value = fullYearFormat.slice(2);
       } else {
-        value = +dateObject.YY < 30 ? `20${dateObject.YY}` : `19${dateObject.YY}`;
+        value = +halfYearFormat < YEAR_PERIOD ? `20${halfYearFormat}` : `19${halfYearFormat}`;
       }
     }
-    // console.log(value)
-
-    // if (key === 'YY') {
-    //   if(value.length === 4) {
-    //     value = value.slice(2)
-    //   } else {
-    //     value = +value < 30 ? `20${value}` : `19${value}`;
-    //   }
-    // }
 
     formattedDate.push(value);
   }
