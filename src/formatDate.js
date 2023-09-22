@@ -57,14 +57,11 @@ function formatDate(date, fromFormat, toFormat) {
   const MONTH_MARK = 'MM';
 
   const givenDate = date.split(separator);
-  let day;
-  let month;
-  let year;
 
-let day = '';
-let month = '';
-let year = '';
-let oldYearFormat = '';
+  let day = '';
+  let month = '';
+  let year = '';
+  let oldYearFormat = '';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
