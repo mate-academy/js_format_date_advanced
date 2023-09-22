@@ -55,6 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const DAY_MARK = 'DD';
   const MONTH_MARK = 'MM';
+  const YEAR_MARK = 'YY';
 
   const givenDate = date.split(separator);
 
@@ -95,12 +96,8 @@ function formatDate(date, fromFormat, toFormat) {
       default:
         // check if year formats are the same
         if (oldYearFormat !== toFormat[i]) {
-          if (oldYearFormat === 'YY') {
-            if (+year >= 30) {
-              year = '' + 19 + year;
-            } else {
-              year = '' + 20 + year;
-            }
+          if (oldYearFormat === YEAR_MARK) {
+            year = (year >= 30) ? ('19' + year) : ('20' + year);
           } else {
             year = year.slice(2);
           }
