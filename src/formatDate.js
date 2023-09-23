@@ -50,6 +50,14 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  if (fromFormat.length !== 4
+    || toFormat.length !== 4
+    || !fromFormat
+    || !toFormat
+    || !date) {
+    throw new Error('Enter valid arguments');
+  }
+
   const fromSeparator = fromFormat[fromFormat.length - 1];
   const toSeparator = toFormat[toFormat.length - 1];
   const dateParts = date.split(fromSeparator);
