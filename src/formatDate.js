@@ -50,7 +50,68 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  if (!date
+    || !fromFormat
+    || !toFormat
+    || typeof date !== 'string'
+    || typeof fromFormat !== 'object'
+    || typeof toFormat !== 'object'
+    || fromFormat.length !== 4
+    || toFormat.length !== 4) {
+    throw new Error('Please provide valid date, fromFormat, and toFormat '
+    + 'arguments. fromFormat and toFormat must be objects with a length of 4.');
+  }
+
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
+  const dateParts = date.split(fromSeparator);
+  const dateMap = new Map();
+  const formatedOutput = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const format = fromFormat[i];
+    const datePart = dateParts[i];
+
+    if (format === 'YY' || format === 'YYYY') {
+      let year = datePart;
+
+      if (year.length < 4) {
+        year = convertYear(year);
+      }
+
+      dateMap.set('YY', year.slice(-2));
+      dateMap.set('YYYY', year);
+    } else {
+      dateMap.set(format, datePart);
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    formatedOutput.push(dateMap.get(toFormat[i]));
+  }
+
+  return formatedOutput.join(toSeparator);
+}
+
+function convertYear(yearString) {
+  if (typeof yearString !== 'string'
+  || yearString.length < 1) {
+    throw new Error('Enter valid arguments');
+  }
+
+  const currentYear = new Date().getFullYear();
+  const century = Math.floor(currentYear / 100) * 100;
+  let fullYear = parseInt(yearString, 10) + century;
+
+  if (yearString.length > 2) {
+    return yearString.slice(-2);
+  }
+
+  while (fullYear > currentYear) {
+    fullYear -= 100;
+  }
+
+  return fullYear.toString();
 }
 
 module.exports = formatDate;
