@@ -90,6 +90,10 @@ function formatDate(date, fromFormat, toFormat) {
 }
 
 function convertYear(yearString) {
+  if (typeof yearString !== 'string') {
+    throw new Error('Enter valid arguments');
+  }
+
   const currentYear = new Date().getFullYear();
   const century = Math.floor(currentYear / 100) * 100;
   let fullYear = parseInt(yearString, 10) + century;
