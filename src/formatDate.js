@@ -56,6 +56,9 @@ function formatDate(date, fromFormat, toFormat) {
   const LAST_DIGITS = 30;
   const CURRENT_CENTURY_YEAR = '20';
   const PREVIOUS_CENTURY_YEAR = '19';
+  const SHORT_YEAR = 'YY';
+  const LONG_YEAR = 'YYYY';
+  
   const stringItems = date.split(fromFormat[SEPARATOR_INDEX]);
   const newDate = [];
 
