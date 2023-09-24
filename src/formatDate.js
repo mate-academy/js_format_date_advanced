@@ -50,7 +50,58 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const SEPARATOR_INDEX = 3;
+  const START_ITERATION = 0;
+  const END_ITERATION = 3;
+  const LAST_DIGITS = 30;
+  const CURRENT_CENTURY_YEAR = '20';
+  const PREVIOUS_CENTURY_YEAR = '19';
+  const SHORT_YEAR = 'YY';
+  const LONG_YEAR = 'YYYY';
+  
+  const stringItems = date.split(fromFormat[SEPARATOR_INDEX]);
+  const newDate = [];
+
+  for (let i = START_ITERATION; i < END_ITERATION; i++) {
+    let toFormatItem = toFormat[i];
+
+    if (!fromFormat.includes(toFormatItem)) {
+      switch (toFormatItem) {
+        case LONG_YEAR:
+          toFormatItem = SHORT_YEAR;
+
+          const currentYear = stringItems[fromFormat.indexOf(SHORT_YEAR)];
+
+          stringItems[fromFormat.indexOf(SHORT_YEAR)]
+            = currentYear < LAST_DIGITS
+              ? CURRENT_CENTURY_YEAR + currentYear
+              : PREVIOUS_CENTURY_YEAR + currentYear;
+          break;
+
+        case SHORT_YEAR:
+          toFormatItem = LONG_YEAR;
+
+          const currentYearLong = stringItems[fromFormat.indexOf(LONG_YEAR)];
+
+          stringItems[fromFormat.indexOf(LONG_YEAR)]
+            = currentYearLong.slice(2);
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    const fromFormatIndex = fromFormat.indexOf(toFormatItem);
+    const item = stringItems[fromFormatIndex];
+
+    newDate.push(item);
+  }
+
+  return newDate.join(toFormat[SEPARATOR_INDEX]);
 }
+
+const SHORT_YEAR = 'YY';
+const LONG_YEAR = 'YYYY';
 
 module.exports = formatDate;
