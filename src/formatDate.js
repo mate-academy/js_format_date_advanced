@@ -53,34 +53,45 @@ function formatDate(date, fromFormat, toFormat) {
   const SEPARATOR_INDEX = 3;
   const START_ITERATION = 0;
   const END_ITERATION = 3;
+  const LAST_DIGITS = 30;
+  const CURRENT_CENTURY_YEAR = '20';
+  const PREVIOUS_CENTURY_YEAR = '19';
   const stringItems = date.split(fromFormat[SEPARATOR_INDEX]);
   const newDate = [];
 
   for (let i = START_ITERATION; i < END_ITERATION; i++) {
     let toFormatItem = toFormat[i];
 
-    if (!fromFormat.includes(toFormatItem)) {
-      const SHORT_YEAR = 'YY';
-      const LONG_YEAR = 'YYYY';
+    switch (true) {
+      case !fromFormat.includes(toFormatItem):
+        const SHORT_YEAR = 'YY';
+        const LONG_YEAR = 'YYYY';
 
-      if (toFormatItem === LONG_YEAR) {
-        toFormatItem = SHORT_YEAR;
+        switch (toFormatItem) {
+          case LONG_YEAR:
+            toFormatItem = SHORT_YEAR;
 
-        const currentYear = stringItems[fromFormat.indexOf(SHORT_YEAR)];
-        const LAST_DIGITS = 30;
-        const CURRENT_CENTURY_YEAR = '20';
-        const PREVIOUS_CENTURY_YEAR = '19';
+            const currentYear = stringItems[fromFormat.indexOf(SHORT_YEAR)];
 
-        stringItems[fromFormat.indexOf(SHORT_YEAR)] = currentYear < LAST_DIGITS
-          ? CURRENT_CENTURY_YEAR + currentYear
-          : PREVIOUS_CENTURY_YEAR + currentYear;
-      } else if (toFormatItem === SHORT_YEAR) {
-        toFormatItem = LONG_YEAR;
+            stringItems[fromFormat.indexOf(SHORT_YEAR)]
+            = currentYear < LAST_DIGITS
+                ? CURRENT_CENTURY_YEAR + currentYear
+                : PREVIOUS_CENTURY_YEAR + currentYear;
+            break;
 
-        const currentYear = stringItems[fromFormat.indexOf(LONG_YEAR)];
+          case SHORT_YEAR:
+            toFormatItem = LONG_YEAR;
 
-        stringItems[fromFormat.indexOf(LONG_YEAR)] = currentYear.slice(2);
-      }
+            const currentYearLong = stringItems[fromFormat.indexOf(LONG_YEAR)];
+
+            stringItems[fromFormat.indexOf(LONG_YEAR)]
+            = currentYearLong.slice(2);
+            break;
+        }
+        break;
+
+      default:
+        break;
     }
 
     const fromFormatIndex = fromFormat.indexOf(toFormatItem);
