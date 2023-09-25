@@ -50,38 +50,24 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateSplited = date.split(fromFormat[fromFormat.length - 1]);
-  const oldDateStructured = {};
-  const result = [];
+  const fromSeparator = fromFormat.pop();
+  const toSeparator = toFormat.pop();
+  const DateArray = date.split(fromSeparator);
+  const dateObject = {};
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const yyIndex = fromFormat.indexOf('YY');
-
-    fromFormat[yyIndex] = 'YYYY';
-
-    if (dateSplited[yyIndex] < 30) {
-      dateSplited[yyIndex] = '20' + dateSplited[yyIndex];
-    } else {
-      dateSplited[yyIndex] = '19' + dateSplited[yyIndex];
-    }
+  for (let i = 0; i < DateArray.length; i++) {
+    dateObject[fromFormat[i]] = DateArray[i];
   }
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const yyIndex = fromFormat.indexOf('YYYY');
-
-    fromFormat[yyIndex] = 'YY';
-    dateSplited[yyIndex] = dateSplited[yyIndex].slice(2);
+  if (dateObject['YYYY'] && toFormat.includes('YY')) {
+    dateObject['YY'] = dateObject['YYYY'].slice(-2);
+  } else if (dateObject['YY'] && toFormat.includes('YYYY')) {
+    dateObject['YYYY'] = dateObject['YY'] < 30
+      ? '20' + dateObject['YY']
+      : '19' + dateObject['YY'];
   }
 
-  for (let i = 0; i < dateSplited.length; i++) {
-    oldDateStructured[fromFormat[i]] = dateSplited[i];
-  }
-
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    result.push(oldDateStructured[toFormat[i]]);
-  }
-
-  return result.join(toFormat[toFormat.length - 1]);
+  return toFormat.map(part => dateObject[part]).join(toSeparator);
 }
 
 module.exports = formatDate;
