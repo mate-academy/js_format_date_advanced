@@ -52,11 +52,11 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat.pop();
   const toSeparator = toFormat.pop();
-  const DateArray = date.split(fromSeparator);
+  const dateArray = date.split(fromSeparator);
   const dateObject = {};
 
-  for (let i = 0; i < DateArray.length; i++) {
-    dateObject[fromFormat[i]] = DateArray[i];
+  for (let i = 0; i < dateArray.length; i++) {
+    dateObject[fromFormat[i]] = dateArray[i];
   }
 
   if (dateObject['YYYY'] && toFormat.includes('YY')) {
