@@ -54,6 +54,10 @@ function formatDate(date, fromFormat, toFormat) {
   const YEAR_LIMIT = 30;
   const CENTURY_21 = 20;
   const CENTURY_20 = 19;
+  const DAY = 'DD';
+  const MONTH = 'MM';
+  const YEAR_SHORT = 'YY';
+  const YEAR_LONG = 'YYYY';
 
   const dateStorage = {
     day: null,
@@ -69,41 +73,47 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < SEPARATOR_INDEX; i++) {
     switch (fromFormat[i]) {
-      case 'DD':
+      case DAY:
         day = oldFormat[i];
         break;
 
-      case 'MM':
+      case MONTH:
         month = oldFormat[i];
         break;
 
-      case 'YY':
+      case YEAR_SHORT:
         year = normalizeYear(oldFormat[i]);
         break;
 
-      case 'YYYY':
+      case YEAR_LONG:
         year = normalizeYear(oldFormat[i]);
         break;
+
+      default:
+        throw new Error('Not valid \'fromFormat\' variable');
     }
   }
 
   for (let i = 0; i < SEPARATOR_INDEX; i++) {
     switch (toFormat[i]) {
-      case 'DD':
+      case DAY:
         newFormat[i] = day;
         break;
 
-      case 'MM':
+      case MONTH:
         newFormat[i] = month;
         break;
 
-      case 'YY':
+      case YEAR_SHORT:
         newFormat[i] = year;
         break;
 
-      case 'YYYY':
+      case YEAR_LONG:
         newFormat[i] = year;
         break;
+
+      default:
+        throw new Error('Not valid \'toFormat\' variable');
     }
   }
 
@@ -130,7 +140,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   function getLengthYear(dateFormat) {
     for (const element of dateFormat) {
-      if (element.includes('Y')) {
+      if (element.includes(YEAR_SHORT)) {
         return element.length;
       }
     }
