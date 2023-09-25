@@ -49,8 +49,37 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+const formatDate = (date, fromFormat, toFormat) => {
+  const fromDivider = fromFormat[3];
+  const toDivider = toFormat[3];
+  const fromCode = fromFormat.slice(0, 3);
+  const toCode = toFormat.slice(0, 3);
+  const dateArray = date.split(fromDivider);
+  const result = [];
+
+  const dateMap = toCode.reduce((acc, e, i) => {
+    acc[e[0]] = [e, i];
+
+    return acc;
+  }, {});
+
+  for (let i = 0; i < fromCode.length; i++) {
+    const char = fromCode[i][0];
+    const [ code, index ] = dateMap[char];
+
+    if (char !== 'Y') {
+      result[index] = dateArray[i];
+      continue;
+    }
+
+    const century = (+dateArray[i].slice(-2) < 30) ? '20' : '19';
+
+    result[index] = code.length < 3
+      ? dateArray[i].slice(code.length)
+      : dateArray[i].padStart(code.length, century);
+  };
+
+  return result.join(toDivider);
+};
 
 module.exports = formatDate;
