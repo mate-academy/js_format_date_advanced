@@ -56,23 +56,24 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   if (toFormat.join('').length !== fromFormat.join('').length) {
-    for (let i = 0; i < fromFormat.length - 1; i++) {
+    for (let i = 0; i < 3; i++) {
       const value = fromFormat[i];
 
-      if (value === 'YY') {
-        if (+arrDate[i] >= 30) {
+      switch (true) {
+        case value === 'YY' && +arrDate[i] >= 30:
           arrDate.unshift('19' + arrDate[i]);
           fromFormat.unshift('YYYY');
           break;
-        } else {
+
+        case value === 'YY' && +arrDate[i] < 30:
           arrDate.unshift('20' + arrDate[i]);
           fromFormat.unshift('YYYY');
           break;
-        }
-      } else if (value.length === 4) {
-        fromFormat.unshift('YY');
-        arrDate.unshift(arrDate[i].slice(2));
-        break;
+
+        case value.length === 4:
+          fromFormat.unshift('YY');
+          arrDate.unshift(arrDate[i].slice(2));
+          break;
       }
     }
   }
