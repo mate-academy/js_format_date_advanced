@@ -50,7 +50,69 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const splittedDate = date.split(oldSeparator);
+  let year = 0;
+  let month = 0;
+  let day = 0;
+  const formattedDate = [];
+
+  for (let i = 0; i < 3; i++) {
+    if (fromFormat[i] === 'YYYY') {
+      year = splittedDate[i];
+    }
+
+    if (fromFormat[i] === 'YY') {
+      year = splittedDate[i];
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = splittedDate[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = splittedDate[i];
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (toFormat[i] === 'YYYY') {
+      if (year.length === 2) {
+        if (year < 23) {
+          formattedDate[i] = `20${year}`;
+        } else {
+          formattedDate[i] = `19${year}`;
+        }
+      } else {
+        formattedDate[i] = year;
+      }
+    }
+
+    if (toFormat[i] === 'YY') {
+      if (year.length === 4) {
+        formattedDate[i] = year.slice(-2);
+      } else {
+        formattedDate[i] = year;
+      }
+    }
+
+    if (toFormat[i] === 'MM') {
+      formattedDate[i] = month;
+    }
+
+    if (toFormat[i] === 'DD') {
+      formattedDate[i] = day;
+    }
+  }
+
+  return formattedDate.join(newSeparator);
 }
+
+// console.log(formatDate(
+//   '2020-02-18',
+//   ['YYYY', 'MM', 'DD', '-'],
+//   ['YYYY', 'MM', 'DD', '.'],
+// )); // '2020.02.18'
 
 module.exports = formatDate;
