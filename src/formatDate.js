@@ -50,7 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFrom = fromFormat.pop();
+  const separatorTo = toFormat.pop();
+  const arreyFromDate = date.split(separatorFrom);
+  let changedDate = '';
+
+  for (let i = 0; i < toFormat.length; i++) {
+    for (const fromItem of fromFormat) {
+      const indexFrom = fromFormat.indexOf(fromItem);
+
+      if (toFormat[i] === fromItem) {
+        if (i > 0) {
+          changedDate += separatorTo;
+        }
+        changedDate += arreyFromDate[indexFrom];
+      }
+
+      if (
+        toFormat[i].includes('Y')
+        && fromItem.includes('Y')
+        && toFormat[i].length !== fromItem.length
+      ) {
+        const fromItemFormat = toFormat[i];
+
+        if (i > 0) {
+          changedDate += separatorTo;
+        }
+
+        const normalizedYear = getNormalizeYear(
+          arreyFromDate[indexFrom], fromItemFormat
+        );
+
+        changedDate += normalizedYear;
+      }
+    }
+  }
+
+  return changedDate;
+}
+
+function getNormalizeYear(yearFrom, toFormat, index) {
+  if (toFormat.length > yearFrom.toString().length) {
+    if (yearFrom >= 30) {
+      return `19${yearFrom}`;
+    }
+
+    return `20${yearFrom}`;
+  }
+
+  return yearFrom.split('').slice(2).join('');
 }
 
 module.exports = formatDate;
