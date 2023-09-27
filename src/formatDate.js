@@ -109,10 +109,4 @@ function formatDate(date, fromFormat, toFormat) {
   return formattedDate.join(newSeparator);
 }
 
-// console.log(formatDate(
-//   '2020-02-18',
-//   ['YYYY', 'MM', 'DD', '-'],
-//   ['YYYY', 'MM', 'DD', '.'],
-// )); // '2020.02.18'
-
 module.exports = formatDate;
