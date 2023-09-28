@@ -55,7 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const formatCal = {};
 
-  fromFormat.forEach((part, index) => {
+  fromFormat.split(divisionMark).forEach((part, index) => {
     if (part !== divisionMark) {
       formatCal[part] = dividedDate[index];
     }
@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
   const month = formatCal['MM'];
   const day = formatCal['DD'];
 
-  if (year) {
+  function transformYear() {
     if (year.length === 4 && toFormat.includes('YY')) {
       year = year.substring(2);
     } else if (year === '00' && toFormat.includes('YYYY')) {
@@ -85,21 +85,30 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  if (year) {
+    transformYear();
+  }
+
   const dateParts = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
-      dateParts.push(year);
-    } else if (toFormat[i] === 'MM') {
-      dateParts.push(month);
-    } else if (toFormat[i] === 'DD') {
-      dateParts.push(day);
+    switch (toFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        dateParts.push(year);
+        break;
+      case 'MM':
+        dateParts.push(month);
+        break;
+      case 'DD':
+        dateParts.push(day);
+        break;
     }
   }
 
-  const finallDate = dateParts.join(toFormat[toFormat.length - 1]);
+  const finalDate = dateParts.join(toFormat[toFormat.length - 1]);
 
-  return finallDate;
+  return finalDate;
 }
 
 module.exports = formatDate;
