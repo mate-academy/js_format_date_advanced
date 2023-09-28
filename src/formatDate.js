@@ -50,21 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat[3];
-  const newSeparator = toFormat[3];
+  const YEAR_SHORT_LENGTH = 2;
+  const CURRENT_YEAR_SHORT = '23';
+  const formatValuesLen = fromFormat.length - 1;
+  const oldSeparator = fromFormat[formatValuesLen];
+  const newSeparator = toFormat[formatValuesLen];
   const splittedDate = date.split(oldSeparator);
-  let year = 0;
-  let month = 0;
-  let day = 0;
+  let year = '';
+  let month = '';
+  let day = '';
   const formattedDate = [];
 
-  for (let i = 0; i < 3; i++) {
-    if (fromFormat[i] === 'YYYY') {
-      year = splittedDate[i];
-    }
+  for (let i = 0; i < formatValuesLen; i++) {
+    if (fromFormat[i].includes('Y')) {
+      const yearFormat = fromFormat[i];
 
-    if (fromFormat[i] === 'YY') {
       year = splittedDate[i];
+
+      if (yearFormat.length === YEAR_SHORT_LENGTH) {
+        if (year < CURRENT_YEAR_SHORT) {
+          year = `20${year}`;
+        } else {
+          year = `19${year}`;
+        }
+      }
     }
 
     if (fromFormat[i] === 'MM') {
@@ -76,25 +85,13 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < formatValuesLen; i++) {
     if (toFormat[i] === 'YYYY') {
-      if (year.length === 2) {
-        if (year < 23) {
-          formattedDate[i] = `20${year}`;
-        } else {
-          formattedDate[i] = `19${year}`;
-        }
-      } else {
-        formattedDate[i] = year;
-      }
+      formattedDate[i] = year;
     }
 
     if (toFormat[i] === 'YY') {
-      if (year.length === 4) {
-        formattedDate[i] = year.slice(-2);
-      } else {
-        formattedDate[i] = year;
-      }
+      formattedDate[i] = year.slice(-2);
     }
 
     if (toFormat[i] === 'MM') {
