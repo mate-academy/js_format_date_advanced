@@ -55,7 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const formatCal = {};
 
-  fromFormat.split(divisionMark).forEach((part, index) => {
+  fromFormat.forEach((part, index) => {
     if (part !== divisionMark) {
       formatCal[part] = dividedDate[index];
     }
@@ -106,9 +106,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const finalDate = dateParts.join(toFormat[toFormat.length - 1]);
+  const finallDate = dateParts.join(toFormat[toFormat.length - 1]);
 
-  return finalDate;
+  return finallDate;
 }
 
 module.exports = formatDate;
