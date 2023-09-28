@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 'use strict';
 
 /**
@@ -50,7 +51,67 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const divisionMark = fromFormat[fromFormat.length - 1];
+  const dividedDate = date.split(divisionMark);
+
+  const formatCal = {};
+
+  fromFormat.forEach((part, index) => {
+    if (part !== divisionMark) {
+      formatCal[part] = dividedDate[index];
+    }
+  });
+
+  let year = formatCal['YYYY'] || formatCal['YY'];
+  const month = formatCal['MM'];
+  const day = formatCal['DD'];
+
+  if (year) {
+    year = transformYear(year, toFormat);
+  }
+
+  const dateParts = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        dateParts.push(year);
+        break;
+      case 'MM':
+        dateParts.push(month);
+        break;
+      case 'DD':
+        dateParts.push(day);
+        break;
+    }
+  }
+
+  const finallDate = dateParts.join(toFormat[toFormat.length - 1]);
+
+  return finallDate;
+}
+
+function transformYear(year, toFormat) {
+  if (year.length === 4 && toFormat.includes('YY')) {
+    year = year.substring(2);
+  } else if (year === '00' && toFormat.includes('YYYY')) {
+    year = 2000;
+  } else if (year.length === 2 && toFormat.includes('YYYY')) {
+    year = parseInt(year, 10);
+
+    if (year === 2000) {
+      return year.toString();
+    }
+
+    if (year < 30) {
+      year = '20' + year;
+    } else {
+      year = '19' + year;
+    }
+  }
+
+  return year;
 }
 
 module.exports = formatDate;
