@@ -57,12 +57,17 @@ function formatDate(date, fromFormat, toFormat) {
   const separator2 = toFormat[3];
   const arr = date.split(separator);
 
+  const FULL_YEAR = 'YYYY';
+  const SHORT_YEAR = 'YY';
+  const MONTH = 'MM';
+  const DAY = 'DD';
+
   for (let i = 0; i < arr.length; i++) {
-    if (fromFormat[i] === 'YYYY') {
+    if (fromFormat[i] === FULL_YEAR) {
       year = arr[i];
     }
 
-    if (fromFormat[i] === 'YY') {
+    if (fromFormat[i] === SHORT_YEAR) {
       if (arr[i] < 30) {
         year = `${20}` + arr[i];
       }
@@ -72,29 +77,29 @@ function formatDate(date, fromFormat, toFormat) {
       }
     }
 
-    if (fromFormat[i] === 'MM') {
+    if (fromFormat[i] === MONTH) {
       month = arr[i];
     }
 
-    if (fromFormat[i] === 'DD') {
+    if (fromFormat[i] === DAY) {
       day = arr[i];
     }
   }
 
   for (let j = 0; j < toFormat.length; j++) {
-    if (toFormat[j] === 'YYYY') {
+    if (toFormat[j] === FULL_YEAR) {
       res.push(year);
     }
 
-    if (toFormat[j] === 'YY') {
+    if (toFormat[j] === SHORT_YEAR) {
       res.push(year[2] + year[3]);
     }
 
-    if (toFormat[j] === 'MM') {
+    if (toFormat[j] === MONTH) {
       res.push(month);
     }
 
-    if (toFormat[j] === 'DD') {
+    if (toFormat[j] === DAY) {
       res.push(day);
     }
   }
