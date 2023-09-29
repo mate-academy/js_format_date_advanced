@@ -67,11 +67,7 @@ function formatDate(date, fromFormat, toFormat) {
     const halfYearFormat = dateObject.YY;
 
     if (value === undefined) {
-      if (key === 'YY') {
-        value = fullYearFormat.slice(2);
-      } else {
-        value = +halfYearFormat < YEAR_PERIOD ? `20${halfYearFormat}` : `19${halfYearFormat}`;
-      }
+      value = key === 'YY' ? fullYearFormat.slice(2) : (+halfYearFormat < YEAR_PERIOD ? `20${halfYearFormat}` : `19${halfYearFormat}`);
     }
 
     formattedDate.push(value);
