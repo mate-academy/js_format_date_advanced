@@ -51,37 +51,49 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const newSeparator = toFormat.slice(-1);
-  const formatDate = date.split(fromFormat[3]);
+  const getDate = date.split(fromFormat[3]);
   const newArr = [];
 
   let day, month, year;
 
   for (let i = 0; i < fromFormat.length; i++) {
-    const element = formatDate[i];
+    const element = getDate[i];
+    const format = fromFormat[i];
 
-    if (fromFormat[i].includes('Y')) {
-      year = element;
-    }
+    switch (true) {
+      case format.includes('Y'): {
+        year = element;
 
-    if (fromFormat[i].includes('M')) {
-      month = element;
-    }
+        break;
+      }
 
-    if (fromFormat[i].includes('D')) {
-      day = element;
+      case format.includes('M'): {
+        month = element;
+
+        break;
+      }
+
+      case format.includes('D'): {
+        day = element;
+
+        break;
+      }
+
+      default:
+        break;
     }
   }
 
   for (const format of toFormat) {
     if (format.includes('Y')) {
+      const prefix = year < 30 ? '20' : '19';
+      const fullYear = prefix + year;
+
       if (format.length < year.length) {
         newArr.push(year.slice(2));
       } else if (format.length === year.length) {
         newArr.push(year);
       } else {
-        const prefix = year < 30 ? '20' : '19';
-        const fullYear = prefix + year;
-
         newArr.push(fullYear);
       }
     }
