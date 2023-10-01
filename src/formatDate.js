@@ -49,8 +49,43 @@
  * @returns {string}
  */
 
+// formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.'])
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const prevDate = date.split(fromFormat[3]);
+  const prevDay = fromFormat.indexOf('DD');
+  const prevMonth = fromFormat.indexOf('MM');
+  let prevYear = fromFormat.indexOf('YY');
+  const newDay = toFormat.indexOf('DD');
+  const newMonth = toFormat.indexOf('MM');
+  let newYear = toFormat.indexOf('YY');
+  const newDate = [];
+
+  if (prevYear === -1) {
+    prevYear = fromFormat.indexOf('YYYY');
+  }
+
+  if (newYear === -1) {
+    newYear = toFormat.indexOf('YYYY');
+  }
+
+  newDate[newDay] = prevDate[prevDay];
+  newDate[newMonth] = prevDate[prevMonth];
+  newDate[newYear] = prevDate[prevYear];
+
+  if (fromFormat[prevYear].length > toFormat[newYear].length) {
+    newDate[newYear] = prevDate[prevYear].substring(2);
+  }
+
+  if (fromFormat[prevYear].length < toFormat[newYear].length) {
+    if (prevDate[prevYear][0] < 3) {
+      newDate[newYear] = '20' + newDate[newYear];
+    } else {
+      newDate[newYear] = '19' + newDate[newYear];
+    }
+  }
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
