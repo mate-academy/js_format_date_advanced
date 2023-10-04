@@ -68,11 +68,9 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case formatYearShort:
-        if (oldDateArray[i] < 30) {
-          year = '20' + oldDateArray[i];
-        } else {
-          year = '19' + oldDateArray[i];
-        }
+        year = oldDateArray[i] < 30
+          ? '20' + oldDateArray[i]
+          : '19' + oldDateArray[i];
 
         break;
 
