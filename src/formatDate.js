@@ -55,7 +55,6 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromSeparator);
   const dateObj = {};
   const result = [];
-  const fullYear = 'YYYY';
   const shortYear = 'YY';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
@@ -64,14 +63,10 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (!fromFormat.includes(shortYear)) {
     dateObj.YY = dateObj.YYYY.slice(2);
-  }
-
-  if (!fromFormat.includes(fullYear)) {
-    if (dateObj.YY < 30) {
-      dateObj.YYYY = '20' + dateObj.YY;
-    } else {
-      dateObj.YYYY = '19' + dateObj.YY;
-    }
+  } else {
+    dateObj.YYYY = dateObj.YY < 30
+      ? '20' + dateObj.YY
+      : '19' + dateObj.YY;
   }
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
