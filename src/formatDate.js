@@ -50,7 +50,51 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+
+  const oldDate = date.split(oldSeparator);
+  const newDate = [];
+
+  let oldY, oldM, oldD;
+  let newY, newM, newD;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i].includes('Y')) {
+      oldY = i;
+    } else if (fromFormat[i].includes('M')) {
+      oldM = i;
+    } else if (fromFormat[i].includes('D')) {
+      oldD = i;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i].includes('Y')) {
+      newY = i;
+    } else if (toFormat[i].includes('M')) {
+      newM = i;
+    } else if (toFormat[i].includes('D')) {
+      newD = i;
+    }
+  }
+
+  if (toFormat[newY].length === 2 && fromFormat[oldY].length === 4) {
+    newDate[newY] = oldDate[oldY].slice(-2);
+  } else if (toFormat[newY].length === 4 && fromFormat[oldY].length === 2) {
+    if (Number(oldDate[oldY]) < 30) {
+      newDate[newY] = '20' + oldDate[oldY];
+    } else {
+      newDate[newY] = '19' + oldDate[oldY];
+    }
+  } else {
+    newDate[newY] = oldDate[oldY];
+  }
+
+  newDate[newM] = oldDate[oldM];
+  newDate[newD] = oldDate[oldD];
+
+  return newDate.join(newSeparator);
 }
 
 module.exports = formatDate;
