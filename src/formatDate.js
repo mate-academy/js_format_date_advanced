@@ -50,64 +50,41 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const newSeparator = toFormat.slice(-1);
-  const getDate = date.split(fromFormat[3]);
-  const result = [];
+  const resultDate = [];
 
-  let day, month, year;
+  const dateParts = date.split(fromFormat[fromFormat.length - 1]);
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    const element = getDate[i];
-    const format = fromFormat[i];
+  const slicedFormat = toFormat.slice(0, 3);
 
-    switch (true) {
-      case format.includes('Y'): {
-        year = element;
+  for (let i = 0; i < slicedFormat.length; i++) {
+    const formatPart = toFormat[i];
 
-        break;
-      }
+    let prop = formatPart;
 
-      case format.includes('M'): {
-        month = element;
-
-        break;
-      }
-
-      case format.includes('D'): {
-        day = element;
-
-        break;
-      }
-
-      default:
-        break;
+    if (formatPart === 'YYYY') {
+      prop = 'YY';
     }
-  }
 
-  for (const format of toFormat) {
-    if (format.includes('Y')) {
-      const prefix = year < 30 ? '20' : '19';
-      const fullYear = prefix + year;
+    const fromIndex = fromFormat.findIndex((value) => value.includes(prop));
 
-      if (format.length < year.length) {
-        result.push(year.slice(2));
-      } else if (format.length === year.length) {
-        result.push(year);
+    let newProp = dateParts[fromIndex];
+
+    if (formatPart === 'YYYY' && newProp.length === 2) {
+      if (newProp < 30) {
+        newProp = `20${newProp}`;
       } else {
-        result.push(fullYear);
+        newProp = `19${newProp}`;
       }
     }
 
-    if (format.includes('M')) {
-      result.push(month);
+    if (formatPart === 'YY' && newProp.length === 4) {
+      newProp = newProp.slice(2);
     }
 
-    if (format.includes('D')) {
-      result.push(day);
-    }
+    resultDate.push(newProp);
   }
 
-  return result.join(newSeparator);
+  return resultDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
