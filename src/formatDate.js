@@ -50,30 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const YEAR_INDEX = 2;
+  const DATE_REPLACE_ITERATIONS = 3;
+
   const oldFormatIndexes = [];
   const oldFormatYearQuadro
     = getDMYIndexesSequence(oldFormatIndexes, fromFormat);
+
   const newFormatIndexes = [];
   const newFormatYearQuadro
     = getDMYIndexesSequence(newFormatIndexes, toFormat);
-  const dateToConvert = date.split(fromFormat[fromFormat.length - 1]);
 
-  // if different year formats
-  const oldYear = dateToConvert[oldFormatIndexes[2]];
+  const dateToConvert = date.split(fromFormat[fromFormat.length - 1]);
+  const oldYear = dateToConvert[oldFormatIndexes[YEAR_INDEX]];
 
   if (!oldFormatYearQuadro && newFormatYearQuadro) {
-    if (+oldYear < 30) {
-      dateToConvert[oldFormatIndexes[2]] = `20${oldYear}`;
-    } else {
-      dateToConvert[oldFormatIndexes[2]] = `19${oldYear}`;
-    }
+    dateToConvert[oldFormatIndexes[YEAR_INDEX]]
+      = +oldYear < 30 ? `20${oldYear}` : `19${oldYear}`;
   } else if (oldFormatYearQuadro && !newFormatYearQuadro) {
-    dateToConvert[oldFormatIndexes[2]] = oldYear.split('').slice(2).join('');
+    dateToConvert[oldFormatIndexes[YEAR_INDEX]]
+      = oldYear.split('').slice(2).join('');
   }
 
   const newDate = [];
 
-  for (let i = 0; i <= 3; i++) {
+  for (let i = 0; i <= DATE_REPLACE_ITERATIONS; i++) {
     newDate[newFormatIndexes[i]] = dateToConvert[oldFormatIndexes[i]];
   }
 
@@ -92,9 +93,9 @@ function getDMYIndexesSequence(indexes, format) {
   indexes.push(format.indexOf('DD'));
   indexes.push(format.indexOf('MM'));
 
-  let yearIndex;
+  const yearIndex = format.indexOf('YY');
 
-  if ((yearIndex = format.indexOf('YY')) !== -1) {
+  if (yearIndex !== -1) {
     indexes.push(yearIndex);
 
     return false;
