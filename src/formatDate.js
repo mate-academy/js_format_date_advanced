@@ -50,7 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldFormatIndexes = [];
+  const oldFormatYearQuadro
+    = getDMYIndexesSequence(oldFormatIndexes, fromFormat);
+  const newFormatIndexes = [];
+  const newFormatYearQuadro
+    = getDMYIndexesSequence(newFormatIndexes, toFormat);
+  const dateToConvert = date.split(fromFormat[fromFormat.length - 1]);
+
+  // if different year formats
+  const oldYear = dateToConvert[oldFormatIndexes[2]];
+
+  if (!oldFormatYearQuadro && newFormatYearQuadro) {
+    if (+oldYear < 30) {
+      dateToConvert[oldFormatIndexes[2]] = `20${oldYear}`;
+    } else {
+      dateToConvert[oldFormatIndexes[2]] = `19${oldYear}`;
+    }
+  } else if (oldFormatYearQuadro && !newFormatYearQuadro) {
+    dateToConvert[oldFormatIndexes[2]] = oldYear.split('').slice(2).join('');
+  }
+
+  const newDate = [];
+
+  for (let i = 0; i <= 3; i++) {
+    newDate[newFormatIndexes[i]] = dateToConvert[oldFormatIndexes[i]];
+  }
+
+  return newDate.join(toFormat[toFormat.length - 1]);
+}
+
+/**
+ * function fills array with indexes of day, month, year and
+ * returns true, if year format *YYYY*, otherwise - false
+ * @param {string[]} indexes
+ * @param {string[]} format
+ *
+ * @returns {boolean}
+*/
+function getDMYIndexesSequence(indexes, format) {
+  indexes.push(format.indexOf('DD'));
+  indexes.push(format.indexOf('MM'));
+
+  let yearIndex;
+
+  if ((yearIndex = format.indexOf('YY')) !== -1) {
+    indexes.push(yearIndex);
+
+    return false;
+  }
+
+  indexes.push(format.indexOf('YYYY'));
+
+  return true;
 }
 
 module.exports = formatDate;
