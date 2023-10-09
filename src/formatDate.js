@@ -63,11 +63,8 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (!Object.keys(objectFromFormat).includes('YYYY')) {
-    if (objectFromFormat.YY < 30) {
-      objectFromFormat['YYYY'] = 20 + objectFromFormat.YY;
-    } else {
-      objectFromFormat['YYYY'] = 19 + objectFromFormat.YY;
-    }
+    objectFromFormat['YYYY'] = objectFromFormat.YY < 30 ? 20
+    + objectFromFormat.YY : 19 + objectFromFormat.YY;
   }
 
   for (const toForm of toFormat) {
