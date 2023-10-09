@@ -50,7 +50,31 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [, , , fromSeparator] = fromFormat;
+  const [, , , toSeparator] = toFormat;
+  const dateArr = date.split(fromSeparator);
+  const dateKeys = {};
+  const finalView = [];
+
+  for (let i = 0; i < dateArr.length; i++) {
+    if (fromFormat[i] === 'YY') {
+      const front = dateArr[i] < 30 ? 20 : 19;
+
+      dateKeys['YYYY'] = `${front}${dateArr[i]}`;
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateKeys['YY'] = dateArr[i].slice(2);
+    }
+
+    dateKeys[fromFormat[i]] = dateArr[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    finalView.push(dateKeys[toFormat[i]]);
+  }
+
+  return finalView.join(toSeparator);
 }
 
 module.exports = formatDate;
