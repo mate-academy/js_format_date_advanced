@@ -57,15 +57,15 @@ function formatDate(date, fromFormat, toFormat) {
   const finalView = [];
 
   for (let i = 0; i < dateArr.length; i++) {
-    if (fromFormat[i] === 'YY') {
-      const front = dateArr[i] < 30 ? 20 : 19;
+    switch (fromFormat[i]) {
+      case 'YY':
+        const front = dateArr[i] < 30 ? 20 : 19;
 
-      dateKeys['YYYY'] = `${front}${dateArr[i]}`;
-      continue;
-    }
+        dateKeys['YYYY'] = `${front}${dateArr[i]}`;
+        break;
 
-    if (fromFormat[i] === 'YYYY') {
-      dateKeys['YY'] = dateArr[i].slice(2);
+      case 'YYYY':
+        dateKeys['YY'] = dateArr[i].slice(2);
     }
 
     dateKeys[fromFormat[i]] = dateArr[i];
