@@ -50,7 +50,40 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFrom = fromFormat[3];
+  const separatorTo = toFormat[3];
+  const arrayDate = date.split(separatorFrom);
+  const objectFromFormat = {};
+  const objectToFormat = {};
+  const MINIMUM_YEARS = 30;
+  const MAX_THOUSANDTH = 20;
+  const MIN_THOUSANDTH = 19;
+  const MAX_LENGTH = 4;
+  const MIN_LENGTH = 2;
+
+  for (let i = 0; i < arrayDate.length; i++) {
+    objectFromFormat[fromFormat[i]] = arrayDate[i];
+    objectToFormat[toFormat[i]] = 0;
+  }
+
+  for (const unit in objectToFormat) {
+    if (!objectFromFormat[unit] && unit.length > MIN_LENGTH) {
+      const years = objectFromFormat[unit.slice(2)];
+      const thousandth = +years < MINIMUM_YEARS
+        ? MAX_THOUSANDTH
+        : MIN_THOUSANDTH;
+
+      objectToFormat[unit] = thousandth + years;
+    } else {
+      objectToFormat[unit] = objectFromFormat[unit];
+    }
+
+    if (!objectFromFormat[unit] && unit.length < MAX_LENGTH) {
+      objectToFormat[unit] = objectFromFormat[unit + unit].slice(2);
+    }
+  }
+
+  return Object.values(objectToFormat).join(separatorTo);
 }
 
 module.exports = formatDate;
