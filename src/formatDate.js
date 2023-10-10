@@ -55,17 +55,26 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromSeparator);
   const dateKeys = {};
   const finalView = [];
+  const fullYear = 'YYYY';
+  const halfYear = 'YY';
+  const defaultNum = 30;
+  const prevCentury = 19;
+  const curCentury = 20;
 
   for (let i = 0; i < dateArr.length; i++) {
     switch (fromFormat[i]) {
-      case 'YY':
-        const front = dateArr[i] < 30 ? 20 : 19;
+      case halfYear:
+        const front = dateArr[i] < defaultNum ? curCentury : prevCentury;
 
-        dateKeys['YYYY'] = `${front}${dateArr[i]}`;
+        dateKeys[fullYear] = `${front}${dateArr[i]}`;
         break;
 
-      case 'YYYY':
-        dateKeys['YY'] = dateArr[i].slice(2);
+      case fullYear:
+        dateKeys[halfYear] = dateArr[i].slice(2);
+        break;
+
+      default:
+        break;
     }
 
     dateKeys[fromFormat[i]] = dateArr[i];
