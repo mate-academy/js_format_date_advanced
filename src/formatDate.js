@@ -61,6 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
       const front = dateArr[i] < 30 ? 20 : 19;
 
       dateKeys['YYYY'] = `${front}${dateArr[i]}`;
+      continue;
     }
 
     if (fromFormat[i] === 'YYYY') {
