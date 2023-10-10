@@ -66,11 +66,12 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const unit in objectToFormat) {
     if (!objectFromFormat[unit] && unit.length > 2) {
-      if (+objectFromFormat[unit.slice(2)] < MINIMUM_YEARS) {
-        objectToFormat[unit] = MAX_THOUSANDTH + objectFromFormat[unit.slice(2)];
-      } else {
-        objectToFormat[unit] = MIN_THOUSANDTH + objectFromFormat[unit.slice(2)];
-      }
+      const years = objectFromFormat[unit.slice(2)];
+      const thousandth = +years < MINIMUM_YEARS
+        ? MAX_THOUSANDTH
+        : MIN_THOUSANDTH;
+
+      objectToFormat[unit] = thousandth + years;
     } else {
       objectToFormat[unit] = objectFromFormat[unit];
     }
