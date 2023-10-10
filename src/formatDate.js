@@ -50,7 +50,41 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const [, , , fromSeparator] = fromFormat;
+  const [, , , toSeparator] = toFormat;
+  const dateArr = date.split(fromSeparator);
+  const dateKeys = {};
+  const finalView = [];
+  const fullYear = 'YYYY';
+  const halfYear = 'YY';
+  const defaultNum = 30;
+  const prevCentury = 19;
+  const curCentury = 20;
+
+  for (let i = 0; i < dateArr.length; i++) {
+    switch (fromFormat[i]) {
+      case halfYear:
+        const front = dateArr[i] < defaultNum ? curCentury : prevCentury;
+
+        dateKeys[fullYear] = `${front}${dateArr[i]}`;
+        break;
+
+      case fullYear:
+        dateKeys[halfYear] = dateArr[i].slice(2);
+        break;
+
+      default:
+        break;
+    }
+
+    dateKeys[fromFormat[i]] = dateArr[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    finalView.push(dateKeys[toFormat[i]]);
+  }
+
+  return finalView.join(toSeparator);
 }
 
 module.exports = formatDate;
