@@ -49,7 +49,12 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
+  const oldSeparator = fromFormat[toFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+  const lastCentury = 19;
+  const currentCentury = 20;
+  const yearsLimitForCurrentCentury = 30;
+  const oldDate = date.split(oldSeparator);
   let newDate = [];
   let day = '';
   let month = '';
@@ -80,12 +85,12 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       if (year.length < toFormat[i].length) {
-        if (year < 30) {
-          newDate[i] = 20 + year;
+        if (year < yearsLimitForCurrentCentury) {
+          newDate[i] = currentCentury + year;
         }
 
-        if (year >= 30) {
-          newDate[i] = 19 + year;
+        if (year >= yearsLimitForCurrentCentury) {
+          newDate[i] = lastCentury + year;
         }
       }
     }
@@ -99,7 +104,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  newDate = newDate.join(toFormat[toFormat.length - 1]);
+  newDate = newDate.join(newSeparator);
 
   return newDate;
 }
