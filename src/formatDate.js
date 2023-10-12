@@ -87,25 +87,37 @@ function formatDate(date, fromFormat, toFormat) {
   const formatedDate = [...toFormatWithoutSeparator];
 
   for (let i = 0; i < formatedDate.length; i++) {
-    if (formatedDate[i] === 'DD') {
-      formatedDate[i] = day;
-    } else if (formatedDate[i] === 'MM') {
-      formatedDate[i] = month;
-    } else if (formatedDate[i] === 'YY' && year.length === 2) {
-      formatedDate[i] = year;
-    } else if (formatedDate[i] === 'YY' && year.length === 4) {
-      formatedDate[i] = year.split('').slice(2).join('');
-    } else if (formatedDate[i] === 'YYYY' && year.length === 4) {
-      formatedDate[i] = year;
-    } else if (formatedDate[i] === 'YYYY' && year.length === 2) {
-      const startDecades = 30;
-      const twentyThousands = 20;
-      const ninetyThousands = 19;
+    switch (formatedDate[i]) {
+      case 'DD':
+        formatedDate[i] = day;
+        break;
 
-      formatedDate[i]
-      = year < startDecades
-          ? year = `${twentyThousands}` + year
-          : year = `${ninetyThousands}` + year;
+      case 'MM':
+        formatedDate[i] = month;
+        break;
+
+      case 'YY':
+        if (year.length === 2) {
+          formatedDate[i] = year;
+        } else if (year.length === 4) {
+          formatedDate[i] = year.split('').slice(2).join('');
+        }
+        break;
+
+      case 'YYYY':
+        if (year.length === 4) {
+          formatedDate[i] = year;
+        } else if (year.length === 2) {
+          const startDecades = 30;
+          const twentyThousands = 20;
+          const ninetyThousands = 19;
+
+          formatedDate[i]
+          = year < startDecades
+              ? year = `${twentyThousands}` + year
+              : year = `${ninetyThousands}` + year;
+        }
+        break;
     }
   }
 
