@@ -50,7 +50,66 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+  const fromSeparator = fromFormat[3];
+
+  let arrayDate = [];
+
+  if (fromSeparator === '.') {
+    arrayDate = date.split('.');
+  } else if (fromSeparator === '-') {
+    arrayDate = date.split('-');
+  } else if (fromSeparator === '/') {
+    arrayDate = date.split('/');
+  }
+
+  let day = '';
+  let month = '';
+  let year = '';
+
+  let j = 0;
+
+  for (let i = 0; i < arrayDate.length; i++) {
+    if (fromFormat[j] === 'DD') {
+      day += arrayDate[i];
+    }
+
+    if (fromFormat[j] === 'MM') {
+      month += arrayDate[i];
+    }
+
+    if (fromFormat[j] === 'YYYY' || fromFormat[j] === 'YY') {
+      year += arrayDate[i];
+    }
+    j++;
+  }
+
+  const separator = toFormat[3];
+  const toFormatWithoutSeparator = toFormat.slice(0, 3);
+
+  const formatedDate = [...toFormatWithoutSeparator];
+
+  for (let i = 0; i < formatedDate.length; i++) {
+    if (formatedDate[i] === 'DD') {
+      formatedDate[i] = day;
+    } else if (formatedDate[i] === 'MM') {
+      formatedDate[i] = month;
+    } else if (formatedDate[i] === 'YY' && year.length === 2) {
+      formatedDate[i] = year;
+    } else if (formatedDate[i] === 'YY' && year.length === 4) {
+      formatedDate[i] = year.split('').slice(2).join('');
+    } else if (formatedDate[i] === 'YYYY' && year.length === 4) {
+      formatedDate[i] = year;
+    } else if (formatedDate[i] === 'YYYY' && year.length === 2) {
+      if (year < 30) {
+        year = `${20}` + year;
+      } else {
+        year = `${19}` + year;
+      }
+      formatedDate[i] = year;
+    }
+  }
+
+  return formatedDate.join(separator);
+};
 
 module.exports = formatDate;
