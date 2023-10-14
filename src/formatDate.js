@@ -50,6 +50,12 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const SHORT_YEAR_FORMAT_LENGTH = 2;
+  const LONG_YEAR_FORMAT_LENGTH = 4;
+  const CENTURY_CHANGE_VALUE = 30;
+  const NINETEENTH_CENTURY = 19;
+  const TWETIETH_CENTURY = 20;
+
   const oldSeparator = fromFormat[3];
   const oldDate = date.split(oldSeparator);
   const oldDayIndex = fromFormat.findIndex(el => el.includes('D'));
@@ -66,14 +72,16 @@ function formatDate(date, fromFormat, toFormat) {
   const month = oldDate[oldMonthIndex];
   let year = oldDate[oldYearIndex];
 
-  if (fromFormat[oldYearIndex].length === 4
-    && toFormat[newYearIndex].length === 2) {
+  if (fromFormat[oldYearIndex].length === LONG_YEAR_FORMAT_LENGTH
+    && toFormat[newYearIndex].length === SHORT_YEAR_FORMAT_LENGTH) {
     year = year.slice(2);
   }
 
-  if (fromFormat[oldYearIndex].length === 2
-    && toFormat[newYearIndex].length === 4) {
-    year = year < 30 ? `20${year}` : `19${year}`;
+  if (fromFormat[oldYearIndex].length === SHORT_YEAR_FORMAT_LENGTH
+    && toFormat[newYearIndex].length === LONG_YEAR_FORMAT_LENGTH) {
+    year = year < CENTURY_CHANGE_VALUE
+      ? `${TWETIETH_CENTURY}${year}`
+      : `${NINETEENTH_CENTURY}${year}`;
   }
 
   newDate[newYearIndex] = year;
