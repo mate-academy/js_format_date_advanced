@@ -52,25 +52,25 @@
 function formatDate(date, fromFormat, toFormat) {
   const result = [];
   const splitDate = date.split(fromFormat[3]);
-  const object = {};
+  const parsedDate = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    object[fromFormat[i]] = splitDate[i];
+    parsedDate[fromFormat[i]] = splitDate[i];
   }
 
-  if (!Object.keys(object).includes('YY')) {
-    object['YY'] = object.YYYY.slice(2);
+  if (!Object.keys(parsedDate).includes('YY')) {
+    parsedDate['YY'] = parsedDate.YYYY.slice(2);
   }
 
-  if (!Object.keys(object).includes('YYYY')) {
-    object['YYYY'] = object.YY < 30 ? 20 + object.YY
-      : 19 + object.YY;
+  if (!Object.keys(parsedDate).includes('YYYY')) {
+    parsedDate['YYYY'] = parsedDate.YY < 30 ? 20 + parsedDate.YY
+      : 19 + parsedDate.YY;
   }
 
-  for (const toFormatElements of toFormat) {
-    for (const objectKeyes in object) {
-      if (objectKeyes === toFormatElements) {
-        result.push(object[objectKeyes]);
+  for (const item of toFormat) {
+    for (const key in parsedDate) {
+      if (key === item) {
+        result.push(parsedDate[key]);
       }
     }
   }
