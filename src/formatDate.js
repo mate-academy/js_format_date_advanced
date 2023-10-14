@@ -54,7 +54,7 @@ function formatDate(date, fromFormat, toFormat) {
   const LONG_YEAR_FORMAT_LENGTH = 4;
   const CENTURY_CHANGE_VALUE = 30;
   const NINETEENTH_CENTURY = 19;
-  const TWETIETH_CENTURY = 20;
+  const TWENTIETH_CENTURY = 20;
 
   const oldSeparator = fromFormat[3];
   const oldDate = date.split(oldSeparator);
@@ -74,13 +74,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (fromFormat[oldYearIndex].length === LONG_YEAR_FORMAT_LENGTH
     && toFormat[newYearIndex].length === SHORT_YEAR_FORMAT_LENGTH) {
-    year = year.slice(2);
+    year = year.slice(SHORT_YEAR_FORMAT_LENGTH);
   }
 
   if (fromFormat[oldYearIndex].length === SHORT_YEAR_FORMAT_LENGTH
     && toFormat[newYearIndex].length === LONG_YEAR_FORMAT_LENGTH) {
     year = year < CENTURY_CHANGE_VALUE
-      ? `${TWETIETH_CENTURY}${year}`
+      ? `${TWENTIETH_CENTURY}${year}`
       : `${NINETEENTH_CENTURY}${year}`;
   }
 
