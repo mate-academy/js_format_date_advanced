@@ -51,6 +51,33 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const splitedDate = date.split(fromFormat[3]);
+  const parsedDate = {};
+  const result = [];
+
+  for (let i = 0; i < splitedDate.length; i++) {
+    parsedDate[fromFormat[i]] = splitedDate[i];
+  }
+
+  if (!Object.keys(parsedDate).includes('YY')) {
+    parsedDate['YY'] = parsedDate.YYYY.slice(2);
+  }
+
+  if (!Object.keys(parsedDate).includes('YYYY')) {
+    parsedDate['YYYY'] = parsedDate.YY < 30
+      ? 20 + parsedDate.YY
+      : 19 + parsedDate.YY;
+  }
+
+  for (const item of toFormat) {
+    for (const key in parsedDate) {
+      if (key === item) {
+        result.push(parsedDate[key]);
+      }
+    }
+  }
+
+  return result.join(toFormat[3]);
 }
 
 module.exports = formatDate;
