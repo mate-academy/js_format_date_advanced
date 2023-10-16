@@ -50,43 +50,55 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const resultDate = [];
+  let resultDate = [];
 
   const fromSeparator = fromFormat[fromFormat.length - 1];
-  const dateComponents = date.split(fromSeparator);
   const toSeparator = toFormat[toFormat.length - 1];
+
+  const dateComponents = date.split(fromSeparator);
 
   for (let i = 0; i < toFormat.length; i++) {
     const formatToken = toFormat[i];
 
     switch (formatToken) {
+      case 'DD':
+        resultDate.push(dateComponents[fromFormat.indexOf('DD')]);
+        break;
+
+      case 'MM':
+        resultDate.push(dateComponents[fromFormat.indexOf('MM')]);
+        break;
+
       case 'YYYY':
-        if (dateComponents[0].length === 4) {
-          resultDate.push(dateComponents[0]);
-        } else {
-          resultDate.push(`20${dateComponents[0]}`);
+        if (fromFormat.includes('YYYY')) {
+          resultDate.push(dateComponents[fromFormat.indexOf('YYYY')]);
+        } else if (fromFormat.includes('YY')) {
+          const year2Digits = dateComponents[fromFormat.indexOf('YY')];
+
+          if (year2Digits.length === 2) {
+            if (year2Digits < '30') {
+              resultDate.push(`20${year2Digits}`);
+            } else {
+              resultDate.push(`19${year2Digits}`);
+            }
+          } else {
+            resultDate.push(year2Digits);
+          }
         }
         break;
 
       case 'YY':
-        if (dateComponents[0].length === 4) {
-          resultDate.push(dateComponents[0].slice(2));
-        } else {
-          resultDate.push(dateComponents[0]);
+        if (fromFormat.includes('YYYY')) {
+          resultDate.push(dateComponents[fromFormat.indexOf('YYYY')].slice(-2));
+        } else if (fromFormat.includes('YY')) {
+          resultDate.push(dateComponents[fromFormat.indexOf('YY')]);
         }
         break;
-      case 'MM':
-        resultDate.push(dateComponents[1]);
-        break;
-      case 'DD':
-        resultDate.push(dateComponents[2]);
-        break;
-      default:
-        resultDate.push(formatToken);
     }
   }
+  resultDate = resultDate.join(toSeparator);
 
-  return resultDate.join(toSeparator);
+  return resultDate;
 }
 
 module.exports = formatDate;
