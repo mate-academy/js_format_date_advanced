@@ -48,9 +48,50 @@
  *
  * @returns {string}
  */
+const getStartOfYear = (year) => {
+  const currentYear = new Date().getFullYear().toString();
+  const shortenYear = currentYear.slice(2);
+  const startOfYear = currentYear.slice(0, 2);
+
+  return year <= shortenYear ? startOfYear : startOfYear - 1;
+};
+
+const formatYear = (year, fromFormat, toFormat) => {
+  if (toFormat.length < fromFormat.length) {
+    return year.slice(2);
+  }
+
+  if (toFormat.length > fromFormat.length) {
+    return getStartOfYear(year) + year;
+  }
+
+  return year;
+};
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFromFormat = fromFormat[3];
+  const separatorToFormat = toFormat[3];
+
+  const dateItems = date.split(separatorFromFormat);
+
+  return toFormat
+    .slice(0, 3)
+    .map((format) => {
+      const index = fromFormat.indexOf(format);
+
+      if (index === -1) {
+        const fullYear = 'YYYY';
+        const shortYear = 'YY';
+
+        const yearFormat = format.length === 2 ? fullYear : shortYear;
+        const yearIndex = fromFormat.indexOf(yearFormat);
+
+        return formatYear(dateItems[yearIndex], yearFormat, format);
+      }
+
+      return dateItems[index];
+    })
+    .join(separatorToFormat);
 }
 
 module.exports = formatDate;
