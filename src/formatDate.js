@@ -56,6 +56,12 @@ function formatDate(date, fromFormat, toFormat) {
   const expandedDateTo = {};
   let resultDate = [];
 
+  const FULL_YEAR = 'YYYY';
+  const SHORT_YEAR = 'YY';
+  const TWENTIES = '20';
+  const NINETEENTH = '19';
+  const YEAR_DIVIDER = 30;
+
   for (let i = 0; i < 3; i++) {
     expandedDateFrom[fromFormat[i]] = splittedDate[i];
     expandedDateTo[toFormat[i]] = undefined;
@@ -67,16 +73,16 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (expandedDateFrom['YY'] && !(expandedDateTo['YY'])) {
-    if (expandedDateFrom['YY'] < 30) {
-      expandedDateTo['YYYY'] = Number(`${20}${expandedDateFrom['YY']}`);
+  if (expandedDateFrom[SHORT_YEAR] && !(expandedDateTo[SHORT_YEAR])) {
+    if (expandedDateFrom[SHORT_YEAR] < YEAR_DIVIDER) {
+      expandedDateTo[FULL_YEAR] = TWENTIES + expandedDateFrom[SHORT_YEAR];
     } else {
-      expandedDateTo['YYYY'] = Number(`${19}${expandedDateFrom['YY']}`);
+      expandedDateTo[FULL_YEAR] = NINETEENTH + expandedDateFrom[SHORT_YEAR];
     }
   }
 
-  if (expandedDateFrom['YYYY'] && !(expandedDateTo['YYYY'])) {
-    expandedDateTo['YY'] = Number(`${expandedDateFrom['YYYY'].slice(2)}`);
+  if (expandedDateFrom[FULL_YEAR] && !(expandedDateTo[FULL_YEAR])) {
+    expandedDateTo[SHORT_YEAR] = expandedDateFrom[FULL_YEAR].slice(2);
   }
 
   resultDate = Object.values(expandedDateTo);
