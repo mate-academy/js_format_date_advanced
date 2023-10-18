@@ -55,21 +55,22 @@ function formatDate(date, fromFormat, toFormat) {
   const toSeparator = toFormat[SEPARATOR_INDEX];
   const toFormatKeys = toFormat.slice(0, SEPARATOR_INDEX);
 
-  const fromDate = {};
+  const dateWithFormat = {};
 
   const dateParts = date.split(fromSeparator);
+
   dateParts.forEach((part, index) => {
     const formatKey = fromFormat[index];
 
-    fromDate[formatKey] = part;
+    dateWithFormat[formatKey] = part;
   });
 
-  const formatedDate = toFormatKeys.map((formatKey) => {
-    if (formatKey in fromDate) {
-      return fromDate[formatKey];
+  const formatedDateParts = toFormatKeys.map((formatKey) => {
+    if (formatKey in dateWithFormat) {
+      return dateWithFormat[formatKey];
     }
 
-    const year = fromDate['YYYY'] || fromDate['YY'];
+    const year = dateWithFormat['YYYY'] || dateWithFormat['YY'];
 
     if (formatKey === 'YY') {
       return year.slice(2);
@@ -80,7 +81,7 @@ function formatDate(date, fromFormat, toFormat) {
     return centuary + year;
   });
 
-  return formatedDate.join(toSeparator);
+  return formatedDateParts.join(toSeparator);
 }
 
 module.exports = formatDate;
