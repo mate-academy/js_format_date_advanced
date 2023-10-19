@@ -61,15 +61,13 @@ function formatDate(date, fromFormat, toFormat) {
   const toSeparator = toFormat[SEPARATOR_INDEX];
   const toFormatKeys = toFormat.slice(0, SEPARATOR_INDEX);
 
-  const dateWithFormat = {};
-
   const dateParts = date.split(fromSeparator);
 
-  dateParts.forEach((part, index) => {
+  const dateWithFormat = dateParts.reduce((prev, part, index) => {
     const formatKey = fromFormat[index];
 
-    dateWithFormat[formatKey] = part;
-  });
+    return { ...prev, [formatKey]: part };
+  }, {});
 
   const formatedDateParts = toFormatKeys.map((formatKey) => {
     if (formatKey in dateWithFormat) {
