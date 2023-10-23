@@ -76,32 +76,33 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'DD') {
-      result[i] = day;
-    }
-
-    if (toFormat[i] === 'MM') {
-      result[i] = month;
-    }
-
-    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      if (toFormat[i].length === year.length) {
-        result[i] = year;
-      }
-
-      if (toFormat[i].length === 2 && year.length === 4) {
-        result[i] = year.slice(-2);
-      }
-
-      if (year.length === 2) {
-        if (+year < 30) {
-          result[i] = +year + 2000;
+    switch (toFormat[i]) {
+      case 'DD':
+        result[i] = day;
+        break;
+      case 'MM':
+        result[i] = month;
+        break;
+      case 'YY':
+      case 'YYYY':
+        if (toFormat[i].length === year.length) {
+          result[i] = year;
         }
 
-        if (+year >= 30) {
-          result[i] = +year + 1900;
+        if (toFormat[i].length === 2 && year.length === 4) {
+          result[i] = year.slice(-2);
         }
-      }
+
+        if (year.length === 2) {
+          if (+year < 30) {
+            result[i] = +year + 2000;
+          }
+
+          if (+year >= 30) {
+            result[i] = +year + 1900;
+          }
+        }
+        break;
     }
   }
 
