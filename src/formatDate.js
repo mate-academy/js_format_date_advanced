@@ -11,7 +11,7 @@
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
  *
  * Examples:
- *
+ *s
  * formatDate(
  *   '2020-02-18',
  *   ['YYYY', 'MM', 'DD', '-'],
@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splittedDate = date.split(fromFormat[3]);
+  const fromFormatObj = {
+    [fromFormat[0]]: splittedDate[0],
+    [fromFormat[1]]: splittedDate[1],
+    [fromFormat[2]]: splittedDate[2],
+  };
+
+  const toFormatObj = {
+    [toFormat[0]]: '',
+    [toFormat[1]]: '',
+    [toFormat[2]]: '',
+  };
+
+  for (const key of Object.keys(toFormatObj)) {
+    if (fromFormat.includes(key)) {
+      toFormatObj[key] = fromFormatObj[key];
+    } else {
+      if ((key === 'YYYY')) {
+        if (fromFormatObj['YY'] < 30) {
+          toFormatObj[key] = 20 + fromFormatObj['YY'];
+        } else {
+          toFormatObj[key] = 19 + fromFormatObj['YY'];
+        }
+      }
+
+      if ((key === 'YY')) {
+        toFormatObj[key] = (fromFormatObj['YYYY'].slice(2));
+      }
+    }
+  }
+
+  return Object.values(toFormatObj).join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
