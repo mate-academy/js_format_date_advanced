@@ -42,31 +42,41 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
-  */
-
+ */
 function formatDate(date, fromFormat, toFormat) {
-  const dateParts = date.split(fromFormat[3]);
-  const dateCollector = {};
-  const newDateFormat = [];
+  const dateInfo = date.split(fromFormat[3]);
+  const formatedDate = [];
+  const separator = toFormat[3];
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateCollector[fromFormat[i]] = dateParts[i];
+  fromFormat.pop();
+  toFormat.pop();
+
+  if (toFormat.includes("YY") && fromFormat.includes("YYYY")) {
+    fromFormat[fromFormat.indexOf("YYYY")] = "YY";
+
+    dateInfo[fromFormat.indexOf("YY")] =
+      dateInfo[fromFormat.indexOf("YY")].slice(2);
+  } else if (toFormat.includes("YYYY") && fromFormat.includes("YY")) {
+    fromFormat[fromFormat.indexOf("YY")] = "YYYY";
+
+    let year = dateInfo[fromFormat.indexOf("YYYY")];
+
+    if (+year < 30) {
+      year = "20" + year;
+    } else {
+      year = "19" + year;
+    }
+
+    dateInfo[fromFormat.indexOf("YYYY")] = year;
   }
 
-  if (!fromFormat.includes("YY")) {
-    dateCollector.YY = dateCollector.YYYY.slice(2);
-  } else {
-    const longYear =
-      dateCollector.YY < 30 ? 20 + dateCollector.YY : 19 + dateCollector.YY;
+  for (let i = 0; i < toFormat.length; i++) {
+    const index = fromFormat.indexOf(toFormat[i]);
 
-    dateCollector.YYYY = longYear;
+    formatedDate[i] = dateInfo[index];
   }
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    newDateFormat.push(dateCollector[toFormat[i]]);
-  }
-
-  return newDateFormat.join(toFormat[3]);
+  return formatedDate.join(separator);
 }
 
 module.exports = formatDate;
