@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // verifying icoming formats
+  // verifying incoming formats
   if (fromFormat.length !== 4) {
     throw new Error('Incorrect date format (fromFormat).');
   }
@@ -61,9 +61,15 @@ function formatDate(date, fromFormat, toFormat) {
 
   // an object to neatly store all the date values
   const dateInfo = {};
+
   // separators
-  const oldSeparator = fromFormat[3];
-  const newSeparator = toFormat[3];
+  const oldSeparator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+
+  // variable to render the date in the new format
+  // based on toFormat argument
+  const newDate = [...toFormat];
+
   // date split into an array
   const dateNumbers = date.split(oldSeparator);
 
@@ -72,15 +78,8 @@ function formatDate(date, fromFormat, toFormat) {
     throw new Error('Incorrect date.');
   }
 
-  // variable to render the date in the new format
-  // based on toFormat argument
-  const newDate = [...toFormat];
-
-  // removing separator from the newDate
-  newDate.pop();
-
   // dateInfo object - creating keys and values with the loop
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     // converting year from 'YY' to 'YYYY' if needed
     if (fromFormat[i] === 'YY') {
       const prefix = +dateNumbers[i] < 30 ? '20' : '19';
@@ -108,5 +107,11 @@ function formatDate(date, fromFormat, toFormat) {
   // returning newDate joint with newSeparator
   return newDate.join(newSeparator);
 }
+
+formatDate(
+  '2012-12-21',
+  ['YYYY', 'MM', 'DD', '-'],
+  ['DD', 'MM', 'YY', '/'],
+);
 
 module.exports = formatDate;
