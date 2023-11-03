@@ -49,8 +49,45 @@
  * @returns {string}
  */
 
+// "use strict";
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const TO_FORMAT_DATE = [];
+  const DATE_ARRAY = date.split(fromFormat[fromFormat.length - 1]);
+  const CENTURY_20 = 19;
+  const CENTURY_21 = 20;
+  const YY_TO_FORMAT = toFormat.indexOf('YY');
+  const YYYY_TO_FORMAT = toFormat.indexOf('YYYY');
+  const YYYY_FROM_FORMAT = fromFormat.indexOf('YYYY');
+  const CHOOSE_CENTURY = 30;
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    for (let j = 0; j < toFormat.length - 1; j++) {
+      if (fromFormat[i] === toFormat[j]) {
+        TO_FORMAT_DATE[j] = DATE_ARRAY[i];
+      }
+
+      if (fromFormat.includes('YYYY') && YY_TO_FORMAT !== -1) {
+        TO_FORMAT_DATE[YY_TO_FORMAT] = DATE_ARRAY[YYYY_FROM_FORMAT].slice(
+          TO_FORMAT_DATE.length - 1
+        );
+      }
+
+      if (fromFormat.includes('YY') && YYYY_TO_FORMAT !== -1) {
+        TO_FORMAT_DATE[YYYY_TO_FORMAT] = DATE_ARRAY[fromFormat.indexOf('YY')];
+
+        if (DATE_ARRAY[fromFormat.indexOf('YY')] < CHOOSE_CENTURY) {
+          TO_FORMAT_DATE[YYYY_TO_FORMAT]
+            = CENTURY_21 + TO_FORMAT_DATE[YYYY_TO_FORMAT];
+        } else {
+          TO_FORMAT_DATE[YYYY_TO_FORMAT]
+            = CENTURY_20 + TO_FORMAT_DATE[YYYY_TO_FORMAT];
+        }
+      }
+    }
+  }
+
+  return TO_FORMAT_DATE.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
