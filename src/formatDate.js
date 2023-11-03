@@ -50,7 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const key = fromFormat[3];
+  const separator = fromFormat[3];
   const arr = date.split(key);
 
   const dayIndex = fromFormat.indexOf('DD');
