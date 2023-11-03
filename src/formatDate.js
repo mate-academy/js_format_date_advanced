@@ -73,20 +73,17 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (toFormat[0] === 'YY' || toFormat[1] === 'YY' || toFormat[2] === 'YY') {
+  if (toFormat.includes('YY')) {
     year = year.slice(-2);
   }
 
-  if (toFormat[0] === 'DD' && toFormat[1] === 'MM') {
-    return +day + toFormat[3] + month + toFormat[3] + year;
-  }
-
-  if (toFormat[0] === 'MM' && toFormat[1] === 'DD') {
-    return month + toFormat[3] + +day + toFormat[3] + year;
-  }
-
-  if (toFormat[1] === 'MM' && toFormat[2] === 'DD') {
-    return year + toFormat[3] + month + toFormat[3] + +day;
+  switch (toFormat[0]) {
+    case 'DD':
+      return +day + toFormat[3] + month + toFormat[3] + year;
+    case 'MM':
+      return month + toFormat[3] + +day + toFormat[3] + year;
+    default:
+      return year + toFormat[3] + month + toFormat[3] + +day;
   }
 }
 
