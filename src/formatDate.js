@@ -49,8 +49,53 @@
  * @returns {string}
  */
 
+// "use strict";
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const toFormatDate = [];
+  const dateArray = date.split(fromFormat[fromFormat.length - 1]);
+  const shortYYFormat = toFormat.indexOf('YY');
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    for (let j = 0; j < toFormat.length - 1; j++) {
+      if (fromFormat[i] === toFormat[j]) {
+        toFormatDate[j] = dateArray[i];
+      }
+
+      if (
+        fromFormat.includes('YYYY')
+        && toFormat.includes('YY')
+        && shortYYFormat !== -1
+      ) {
+        toFormatDate[shortYYFormat] = dateArray[fromFormat.indexOf('YYYY')];
+
+        toFormatDate[shortYYFormat] = toFormatDate[shortYYFormat].slice(
+          toFormatDate.length - 1
+        );
+      }
+
+      if (
+        fromFormat.includes('YY')
+        && toFormat.includes('YYYY')
+        && toFormat.indexOf('YYYY') !== -1
+      ) {
+        toFormatDate[toFormat.indexOf('YYYY')]
+          = dateArray[fromFormat.indexOf('YY')];
+
+        if (dateArray[fromFormat.indexOf('YY')] < 30) {
+          toFormatDate[toFormat.indexOf('YYYY')]
+            = 20 + toFormatDate[toFormat.indexOf('YYYY')];
+        } else {
+          toFormatDate[toFormat.indexOf('YYYY')]
+            = 19 + toFormatDate[toFormat.indexOf('YYYY')];
+        }
+      }
+    }
+  }
+
+  const convertedDate = toFormatDate.join(toFormat[toFormat.length - 1]);
+
+  return convertedDate;
 }
 
 module.exports = formatDate;
