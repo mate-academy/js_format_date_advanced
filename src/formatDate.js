@@ -74,33 +74,33 @@ function formatDate(date, fromFormat, toFormat) {
   };
 
   const [
-    firstUnitFrom,
-    secondUnitFrom,
-    thirdUnitFrom,
+    leftUnitFrom,
+    middleUnitFrom,
+    rightUnitFrom,
     separatorFrom,
   ] = fromFormat;
 
   const [
-    firstValue,
-    secontValue,
-    thirdValue,
+    leftValue,
+    middleValue,
+    rightValue,
   ] = date.split(separatorFrom);
 
-  dateObject[firstUnitFrom] = firstValue;
-  dateObject[secondUnitFrom] = secontValue;
-  dateObject[thirdUnitFrom] = thirdValue;
+  dateObject[leftUnitFrom] = leftValue;
+  dateObject[middleUnitFrom] = middleValue;
+  dateObject[rightUnitFrom] = rightValue;
 
   const [
-    firstUnitTo,
-    secondUnitTo,
-    thirdUnitTo,
+    leftUnitTo,
+    middleUnitTo,
+    rightUnitTo,
     separatorTo,
   ] = toFormat;
 
   return [
-    dateObject[firstUnitTo],
-    dateObject[secondUnitTo],
-    dateObject[thirdUnitTo],
+    dateObject[leftUnitTo],
+    dateObject[middleUnitTo],
+    dateObject[rightUnitTo],
   ].join(separatorTo);
 }
 
