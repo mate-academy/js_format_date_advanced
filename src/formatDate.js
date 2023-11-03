@@ -52,13 +52,6 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dataHolder = {
-    // get YYYY() {
-    //   if (this.YY < 30) {
-    //     return '20' + this.YY;
-    //   } else {
-    //     return '19' + this.YY;
-    //   }
-    // },
   };
 
   let newData = '';
@@ -76,6 +69,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   // couldnt put getter in object, so i put it here;
+  // Oh well
   if (!dataHolder.YY) {
     const year = dataHolder.YYYY;
 
