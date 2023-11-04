@@ -50,7 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const LONG_YEAR_MARK = 'YYYY';
+  const SHORT_YEAR_MARK = 'YY';
+  const MONTH_MARK = 'MM';
+  const DAY_MARK = 'DD';
+  const TWENTIETH_CENTURY_MARK = '19';
+  const TWENTIETH_ONE_CENTURY_MARK = '20';
+  const CURRENT_YEAR_MARK = new Date().getFullYear().toString().slice(2);
+
+  const oldSeparator = fromFormat[3];
+  const dateParts = date.split(oldSeparator);
+  const newSeparator = toFormat[3];
+  const newDate = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === LONG_YEAR_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        ? dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        : dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)] > CURRENT_YEAR_MARK
+          ? (TWENTIETH_CENTURY_MARK
+          + dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)])
+          : (TWENTIETH_ONE_CENTURY_MARK
+          + dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)]);
+    } else if (toFormat[i] === SHORT_YEAR_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        .slice(2, fromFormat.length);
+    } else if (toFormat[i] === MONTH_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(MONTH_MARK)];
+    } else if (toFormat[i] === DAY_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(DAY_MARK)];
+    }
+  }
+
+  return newDate.join(newSeparator);
 }
 
 module.exports = formatDate;
