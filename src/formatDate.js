@@ -50,291 +50,39 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const YEAR_MARKING_LONG_VERSION = 'YYYY';
-  const YEAR_MARKING_SHORT_VERSION = 'YY';
-  const MONTH_MARKING = 'MM';
-  const DAY_MARKING = 'DD';
-  const TWENTIETH_CENTURY_MARKING = '19';
-  const TWENTIETH_ONE_CENTURY_MARKING = '20';
-  const CURRENT_YEAR_WITHOUT_CENTURY
-    = +new Date().getFullYear().toString().slice(2);
-  const result = [];
-  const splitArray = date.split(fromFormat[3]);
+  const LONG_YEAR_MARK = 'YYYY';
+  const SHORT_YEAR_MARK = 'YY';
+  const MONTH_MARK = 'MM';
+  const DAY_MARK = 'DD';
+  const TWENTIETH_CENTURY_MARK = '19';
+  const TWENTIETH_ONE_CENTURY_MARK = '20';
+  const CURRENT_YEAR_MARK = new Date().getFullYear().toString().slice(2);
 
-  switch (fromFormat[0]) {
-    case YEAR_MARKING_SHORT_VERSION:
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[0];
-      }
+  const oldSeparator = fromFormat[3];
+  const dateParts = date.split(oldSeparator);
+  const newSeparator = toFormat[3];
+  const newDate = [];
 
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[0];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[0];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[0] = TWENTIETH_CENTURY_MARKING + splitArray[0];
-        } else {
-          result[0] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[0];
-        }
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[1] = TWENTIETH_CENTURY_MARKING + splitArray[0];
-        } else {
-          result[1] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[0];
-        }
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[2] = TWENTIETH_CENTURY_MARKING + splitArray[0];
-        } else {
-          result[2] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[0];
-        }
-      }
-      break;
-    case YEAR_MARKING_LONG_VERSION:
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        result[0] = splitArray[0];
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        result[1] = splitArray[0];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        result[2] = splitArray[0];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[0].slice(2);
-      }
-
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[0].slice(2);
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[0].slice(2);
-      }
-      break;
-    case MONTH_MARKING:
-      if (toFormat[0] === MONTH_MARKING) {
-        result[0] = splitArray[0];
-      }
-
-      if (toFormat[1] === MONTH_MARKING) {
-        result[1] = splitArray[0];
-      }
-
-      if (toFormat[2] === MONTH_MARKING) {
-        result[2] = splitArray[0];
-      }
-      break;
-    case DAY_MARKING:
-      if (toFormat[0] === DAY_MARKING) {
-        result[0] = splitArray[0];
-      }
-
-      if (toFormat[1] === DAY_MARKING) {
-        result[1] = splitArray[0];
-      }
-
-      if (toFormat[2] === DAY_MARKING) {
-        result[2] = splitArray[0];
-      }
-      break;
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === LONG_YEAR_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        ? dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        : dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)] > CURRENT_YEAR_MARK
+          ? (TWENTIETH_CENTURY_MARK
+          + dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)])
+          : (TWENTIETH_ONE_CENTURY_MARK
+          + dateParts[fromFormat.indexOf(SHORT_YEAR_MARK)]);
+    } else if (toFormat[i] === SHORT_YEAR_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(LONG_YEAR_MARK)]
+        .slice(2, fromFormat.length);
+    } else if (toFormat[i] === MONTH_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(MONTH_MARK)];
+    } else if (toFormat[i] === DAY_MARK) {
+      newDate[i] = dateParts[fromFormat.indexOf(DAY_MARK)];
+    }
   }
 
-  switch (fromFormat[1]) {
-    case YEAR_MARKING_SHORT_VERSION:
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[1];
-      }
-
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[1];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[1];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[0] = TWENTIETH_CENTURY_MARKING + splitArray[1];
-        } else {
-          result[0] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[1];
-        }
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[1] = TWENTIETH_CENTURY_MARKING + splitArray[1];
-        } else {
-          result[1] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[1];
-        }
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[2] = TWENTIETH_CENTURY_MARKING + splitArray[1];
-        } else {
-          result[2] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[1];
-        }
-      }
-      break;
-    case YEAR_MARKING_LONG_VERSION:
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        result[0] = splitArray[1];
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        result[1] = splitArray[1];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        result[2] = splitArray[1];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[1].slice(2);
-      }
-
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[1].slice(2);
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[1].slice(2);
-      }
-      break;
-    case MONTH_MARKING:
-      if (toFormat[0] === MONTH_MARKING) {
-        result[0] = splitArray[1];
-      }
-
-      if (toFormat[1] === MONTH_MARKING) {
-        result[1] = splitArray[1];
-      }
-
-      if (toFormat[2] === MONTH_MARKING) {
-        result[2] = splitArray[1];
-      }
-      break;
-    case DAY_MARKING:
-      if (toFormat[0] === DAY_MARKING) {
-        result[0] = splitArray[1];
-      }
-
-      if (toFormat[1] === DAY_MARKING) {
-        result[1] = splitArray[1];
-      }
-
-      if (toFormat[2] === DAY_MARKING) {
-        result[2] = splitArray[1];
-      }
-      break;
-  }
-
-  switch (fromFormat[2]) {
-    case YEAR_MARKING_SHORT_VERSION:
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[2];
-      }
-
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[2];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[2];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[2] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[0] = TWENTIETH_CENTURY_MARKING + splitArray[2];
-        } else {
-          result[0] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[2];
-        }
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[2] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[1] = TWENTIETH_CENTURY_MARKING + splitArray[2];
-        } else {
-          result[1] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[2];
-        }
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        if (+splitArray[0] > CURRENT_YEAR_WITHOUT_CENTURY) {
-          result[2] = TWENTIETH_CENTURY_MARKING + splitArray[2];
-        } else {
-          result[2] = TWENTIETH_ONE_CENTURY_MARKING + splitArray[2];
-        }
-      }
-      break;
-    case YEAR_MARKING_LONG_VERSION:
-      if (toFormat[0] === YEAR_MARKING_LONG_VERSION) {
-        result[0] = splitArray[2];
-      }
-
-      if (toFormat[1] === YEAR_MARKING_LONG_VERSION) {
-        result[1] = splitArray[2];
-      }
-
-      if (toFormat[2] === YEAR_MARKING_LONG_VERSION) {
-        result[2] = splitArray[2];
-      }
-
-      if (toFormat[0] === YEAR_MARKING_SHORT_VERSION) {
-        result[0] = splitArray[2].slice(2);
-      }
-
-      if (toFormat[1] === YEAR_MARKING_SHORT_VERSION) {
-        result[1] = splitArray[2].slice(2);
-      }
-
-      if (toFormat[2] === YEAR_MARKING_SHORT_VERSION) {
-        result[2] = splitArray[2].slice(2);
-      }
-      break;
-    case MONTH_MARKING:
-      if (toFormat[0] === MONTH_MARKING) {
-        result[0] = splitArray[2];
-      }
-
-      if (toFormat[1] === MONTH_MARKING) {
-        result[1] = splitArray[2];
-      }
-
-      if (toFormat[2] === MONTH_MARKING) {
-        result[2] = splitArray[2];
-      }
-      break;
-    case DAY_MARKING:
-      if (toFormat[0] === DAY_MARKING) {
-        result[0] = splitArray[2];
-      }
-
-      if (toFormat[1] === DAY_MARKING) {
-        result[1] = splitArray[2];
-      }
-
-      if (toFormat[2] === DAY_MARKING) {
-        result[2] = splitArray[2];
-      }
-      break;
-  }
-
-  return result.join(toFormat[3]);
+  return newDate.join(newSeparator);
 }
 
 module.exports = formatDate;
