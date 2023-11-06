@@ -70,13 +70,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   // couldnt put getter in object, so i put it here;
   // Oh well
-  if (!dataHolder.YY) {
+  if (dataHolder.YY === undefined) {
     const year = dataHolder.YYYY;
 
     dataHolder.YY = year.slice(-2);
   }
 
-  if (!dataHolder.YYYY) {
+  if (dataHolder.YYYY === undefined) {
     if (dataHolder.YY < 30) {
       dataHolder.YYYY = '20' + dataHolder.YY;
     } else {
