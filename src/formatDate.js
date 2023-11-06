@@ -51,6 +51,48 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const dataHolder = {
+  };
+
+  let newData = '';
+
+  const lastIndex = fromFormat.length - 1;
+
+  const oldDateformats = fromFormat.slice(0, lastIndex);
+  const oldSeparator = fromFormat.slice(lastIndex);
+
+  const oldDateArray = date.split(oldSeparator);
+
+  // need to separate date to an array;
+  for (let i = 0; i < 3; i++) {
+    dataHolder[oldDateformats[i]] = oldDateArray[i];
+  }
+
+  // couldnt put getter in object, so i put it here;
+  // Oh well
+  if (dataHolder.YY === undefined) {
+    const year = dataHolder.YYYY;
+
+    dataHolder.YY = year.slice(-2);
+  }
+
+  if (dataHolder.YYYY === undefined) {
+    if (dataHolder.YY < 30) {
+      dataHolder.YYYY = '20' + dataHolder.YY;
+    } else {
+      dataHolder.YYYY = '19' + dataHolder.YY;
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    newData += String(dataHolder[toFormat[i]]);
+
+    if (i < 2) {
+      newData += String(toFormat[3]);
+    }
+  }
+
+  return newData;
 }
 
 module.exports = formatDate;
