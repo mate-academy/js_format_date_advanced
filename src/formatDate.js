@@ -54,6 +54,10 @@ function formatDate(date, fromFormat, toFormat) {
   const dateCollector = {};
   const newDateFormat = [];
 
+  const THRESHOLD_YEAR = 30;
+  const OUR_CENTURY = 20;
+  const PREVIOUS_CENTURY = 19;
+
   for (let i = 0; i < fromFormat.length - 1; i++) {
     dateCollector[fromFormat[i]] = dateParts[i];
   }
@@ -61,10 +65,9 @@ function formatDate(date, fromFormat, toFormat) {
   if (!fromFormat.includes('YY')) {
     dateCollector.YY = dateCollector.YYYY.slice(2);
   } else {
-    const longYear
-      = dateCollector.YY < 30 ? 20 + dateCollector.YY : 19 + dateCollector.YY;
-
-    dateCollector.YYYY = longYear;
+    dateCollector.YYYY = dateCollector.YY < THRESHOLD_YEAR
+      ? OUR_CENTURY + dateCollector.YY
+      : PREVIOUS_CENTURY + dateCollector.YY;
   }
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
