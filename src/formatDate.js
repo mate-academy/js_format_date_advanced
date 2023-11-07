@@ -64,57 +64,23 @@ function formatDate(date, fromFormat, toFormat) {
   let stringResult = '';
 
   for (let i = 0; i < (fromFormat.length - 1); i++) {
-    switch (fromFormat[i]) {
-      case 'DD':
-        objectFrom.DD = arrayFrom[i];
-        break;
+    objectFrom[`${fromFormat[i]}`] = arrayFrom[i];
 
-      case 'MM':
-        objectFrom.MM = arrayFrom[i];
-        break;
-
-      case 'YY':
-        objectFrom.YY = arrayFrom[i];
-        break;
-
-      case 'YYYY':
-        objectFrom.YYYY = arrayFrom[i];
-        break;
-    }
-
-    if (objectFrom.YY === '') {
+    if (!objectFrom.YY) {
       objectFrom.YY = objectFrom.YYYY.slice(2, 4);
     }
 
-    if (objectFrom.YYYY === '') {
+    if (!objectFrom.YYYY) {
       const number = +objectFrom.YY;
 
-      if (number >= 30) {
-        objectFrom.YYYY = '19' + objectFrom.YY;
-      } else {
-        objectFrom.YYYY = '20' + objectFrom.YY;
-      }
+      const century = number >= 30 ? '19' : '20';
+
+      objectFrom.YYYY = century + objectFrom.YY;
     }
   }
 
   for (let i = 0; i < (toFormat.length - 1); i++) {
-    switch (toFormat[i]) {
-      case 'DD':
-        stringResult = stringResult + objectFrom.DD;
-        break;
-
-      case 'MM':
-        stringResult = stringResult + objectFrom.MM;
-        break;
-
-      case 'YY':
-        stringResult = stringResult + objectFrom.YY;
-        break;
-
-      case 'YYYY':
-        stringResult = stringResult + objectFrom.YYYY;
-        break;
-    }
+    stringResult = stringResult + objectFrom[`${toFormat[i]}`];
 
     if (i < 2) {
       stringResult = stringResult + separatorTo;
