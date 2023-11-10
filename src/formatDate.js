@@ -49,8 +49,43 @@
  * @returns {string}
  */
 
+const YY = 'YY';
+const YYYY = 'YYYY';
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const objDate = {};
+  const arrDateResult = [];
+  const delimiterFromFormat = fromFormat[3];
+  const delimiterToFormat = toFormat[3];
+  const arrDate = date.split(delimiterFromFormat);
+
+  arrDate.map((item, i) => {
+    objDate[fromFormat[i]] = item;
+  });
+
+  const keysDate = Object.keys(objDate);
+
+  toFormat.map((item, i) => {
+    if (item === YY && !keysDate.includes(item)) {
+      arrDateResult.push((objDate[YYYY]).slice(2));
+
+      return true;
+    }
+
+    if (item === YYYY && !keysDate.includes(item)) {
+      const year = `${objDate[YY] < 30 ? 20 : 19}${objDate[YY]}`;
+
+      arrDateResult.push(year);
+
+      return true;
+    }
+
+    if (keysDate.includes(item)) {
+      arrDateResult.push(objDate[item]);
+    }
+  });
+
+  return arrDateResult.join(delimiterToFormat);
 }
 
 module.exports = formatDate;
