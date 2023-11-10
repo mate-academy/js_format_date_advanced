@@ -50,38 +50,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateInput = date;
-  const oldFormat = fromFormat;
-  const newFormat = toFormat;
-  const oldDelimiter = oldFormat.splice(3, 1);
-  const newDelimiter = newFormat.splice(3, 1);
+  const oldDelimiter = fromFormat[3];
+  const newDelimiter = toFormat[3];
 
-  const dateArray = dateInput.split(oldDelimiter);
-  const dateObj = {};
+  const LONG_YEAR_ABBR = 'YYYY';
+  const SHORT_YEAR_ABBR = 'YY';
+
+  const dateArray = date.split(oldDelimiter);
   let resultDate = '';
   const resultDateArray = [];
+  let yearShortFormat;
+  let yearLongFormat;
 
-  for (let i = 0; i <= oldFormat.length; i++) {
-    dateObj[oldFormat[i]] = dateArray[i];
+  if (toFormat.includes(LONG_YEAR_ABBR)
+  && (fromFormat.includes(SHORT_YEAR_ABBR))) {
+    yearShortFormat = dateArray[fromFormat.indexOf(SHORT_YEAR_ABBR)];
+    yearLongFormat = (yearShortFormat > 29 ? '19' : '20') + yearShortFormat;
+
+    dateArray[dateArray.indexOf(yearShortFormat)] = yearLongFormat;
+    fromFormat[fromFormat.indexOf(SHORT_YEAR_ABBR)] = LONG_YEAR_ABBR;
   }
 
-  if (newFormat.includes('YYYY') && (oldFormat.includes('YY'))) {
-    dateObj.YYYY = (dateObj.YY > 29 ? '19' : '20') + dateObj.YY;
-    delete dateObj.YY;
+  if (toFormat.includes(SHORT_YEAR_ABBR)
+  && (fromFormat.includes(LONG_YEAR_ABBR))) {
+    yearLongFormat = dateArray[fromFormat.indexOf(LONG_YEAR_ABBR)];
+    yearShortFormat = yearLongFormat.slice(2);
+
+    fromFormat[fromFormat.indexOf(LONG_YEAR_ABBR)] = SHORT_YEAR_ABBR;
+    dateArray[dateArray.indexOf(yearLongFormat)] = yearShortFormat;
   }
 
-  if (newFormat.includes('YY') && (oldFormat.includes('YYYY'))) {
-    dateObj.YY = dateObj.YYYY.slice(2);
-    delete dateObj.YYYY;
-  }
+  for (let i = 0; i <= fromFormat.length - 2; i++) {
+    const oldPropertyToPut = fromFormat[i];
+    const indexToPut = toFormat.indexOf(oldPropertyToPut);
 
-  for (let i = 0; i <= newFormat.length; i++) {
-    resultDateArray[i] = dateObj[newFormat[i]];
+    resultDateArray[indexToPut] = dateArray[i];
   }
 
   resultDate = resultDateArray.join(newDelimiter);
 
-  return resultDate.slice(0, resultDate.length - 1);
+  return resultDate;
 }
 
 module.exports = formatDate;
