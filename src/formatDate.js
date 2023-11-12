@@ -50,7 +50,70 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  let [newDay, newMonth, newYear] = '';
+  let n = 0;
+  let result = '';
+  let shortNewYear = '';
+  let shortOldFormat = '';
+  let longNewYear = '';
+
+  for (const oldIndexDate of fromFormat) {
+    if (oldIndexDate === 'MM') {
+      newMonth = date.slice(n, (n + 2));
+      n = n + 3;
+    }
+
+    if (oldIndexDate === 'YY') {
+      newYear = date.slice(n, (n + 2));
+      shortOldFormat = 'yes';
+      n = n + 3;
+
+      if (+newYear < 30) {
+        longNewYear = '20' + newYear;
+      } else {
+        longNewYear = '19' + newYear;
+      }
+    }
+
+    if (oldIndexDate === 'YYYY') {
+      newYear = date.slice(n, (n + 4));
+      shortNewYear = date.slice((n + 2), (n + 4));
+      n = n + 5;
+    }
+
+    if (oldIndexDate === 'DD') {
+      newDay = date.slice(n, (n + 2));
+      n = n + 3;
+    }
+  }
+
+  for (const newIndexDate of toFormat) {
+    if (newIndexDate === 'DD') {
+      result = result + newDay + toFormat.slice(3);
+    }
+
+    if (newIndexDate === 'MM') {
+      result = result + newMonth + toFormat.slice(3);
+    }
+
+    if (newIndexDate === 'YY') {
+      if (shortOldFormat === 'yes') {
+        result = result + newYear + toFormat.slice(3);
+      } else {
+        result = result + shortNewYear + toFormat.slice(3);
+      }
+    }
+
+    if (newIndexDate === 'YYYY') {
+      if (shortOldFormat === 'yes') {
+        result = result + longNewYear + toFormat.slice(3);
+      } else {
+        result = result + newYear + toFormat.slice(3);
+      }
+    }
+  }
+
+  return result.slice(0, -1);
 }
 
 module.exports = formatDate;
