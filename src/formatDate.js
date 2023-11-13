@@ -50,6 +50,7 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  //  string just for commit
   const MAX_YEAR_FOR_XXI_CENTURY = 30;
   const objFromDate = {};
 
