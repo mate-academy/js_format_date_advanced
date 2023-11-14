@@ -58,27 +58,18 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject[fromFormat[i]] = dateArray[i];
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YY') {
-      if (dateObject['YY']) {
-        resultArray.push(dateObject[toFormat[i]]);
-      } else if (dateObject['YYYY']) {
-        resultArray.push(dateObject['YYYY']
-          .split('').slice(2).join(''));
-      }
-    } else if (toFormat[i] === 'YYYY') {
-      if (dateObject['YYYY']) {
-        resultArray.push(dateObject[toFormat[i]]);
-      } else if (dateObject['YY']) {
-        if (dateObject['YY'] < 30) {
-          resultArray.push(`20${dateObject['YY']}`);
-        } else {
-          resultArray.push(`19${dateObject['YY']}`);
-        }
-      }
+  if (dateObject.YYYY) {
+    dateObject['YY'] = dateObject['YYYY'].split('').slice(2).join('');
+  } else {
+    if (dateObject['YY'] < 30) {
+      dateObject['YYYY'] = `20${dateObject['YY']}`;
     } else {
-      resultArray.push(dateObject[toFormat[i]]);
-    }
+      dateObject['YYYY'] = `19${dateObject['YY']}`;
+    };
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    resultArray.push(dateObject[toFormat[i]]);
   }
 
   return resultArray.join(`${toFormat[3]}`);
