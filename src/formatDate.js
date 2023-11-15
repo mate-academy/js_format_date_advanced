@@ -50,9 +50,11 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const century19 = 19;
-  const century20 = 20;
-  const century30 = 30;
+  const century = {
+    19: '19',
+    20: '20',
+    30: '30',
+  };
   const codeDay = 'DD';
   const codeMonth = 'MM';
   const codeYear = 'YYYY';
@@ -69,11 +71,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (dateOld.hasOwnProperty(shortCodeYear)) {
-    if (+dateOld.YY < century30) {
-      dateOld.YYYY = century20 + dateOld.YY;
-    } else {
-      dateOld.YYYY = century19 + dateOld.YY;
-    }
+    dateOld.YYYY = +dateOld.YY < 30
+      ? century[20] + dateOld.YY
+      : century[19] + dateOld.YY;
   } else {
     dateOld.YY = dateOld.YYYY.slice(-2);
   }
