@@ -54,27 +54,25 @@ function formatDate(date, fromFormat, toFormat) {
   const toSeparator = toFormat[toFormat.length - 1];
   const separatedDate = date.split(`${fromSeparator}`);
   const dateToObject = {
-    day: '',
-    year: '',
-    month: '',
   };
   const dateArray = [];
 
-  /* sents to another function to fill in object */
-
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    fillDateObject(fromFormat[i], i);
+    dateToObject[fromFormat[i]] = separatedDate[i];
   }
 
-  /* now creates new date from object */
-
   for (let i = 0; i < toFormat.length - 1; i++) {
-    fillDateArray(toFormat[i], i);
+    if (toFormat[i] in dateToObject) {
+      dateArray.push(dateToObject[toFormat[i]]);
+    } else if (toFormat[i] === 'YYYY') {
+      dateArray.push(makeYear(separatedDate[i]));
+    } else {
+      dateArray.push(separatedDate[i].split('').splice(2, 3).join(''));
+    }
   }
 
   return dateArray.join(`${toSeparator}`);
 
-  /* change YY year to YYYY year */
   function makeYear(yearToChange) {
     if (+yearToChange >= 30) {
       return '19' + yearToChange;
@@ -82,40 +80,6 @@ function formatDate(date, fromFormat, toFormat) {
 
     return '20' + yearToChange;
   }
-
-  /* fills in objectDate with data */
-  function fillDateArray(dateFormatPart) {
-    switch (dateFormatPart) {
-      case 'DD':
-        dateArray.push(dateToObject.day);
-        break;
-      case 'MM':
-        dateArray.push(dateToObject.month);
-        break;
-      case 'YYYY':
-        dateArray.push(dateToObject.year);
-        break;
-      default:
-        dateArray.push(dateToObject.year.split('').splice(2, 3).join('')); ;
-    }
-  }
-  /* changes object values according to new format */
-
-  function fillDateObject(dateFormatPart, index) {
-    switch (dateFormatPart) {
-      case 'DD':
-        dateToObject.day = separatedDate[index];
-        break;
-      case 'MM':
-        dateToObject.month = separatedDate[index];
-        break;
-      case 'YYYY':
-        dateToObject.year = separatedDate[index];
-        break;
-      default:
-        dateToObject.year = makeYear(separatedDate[index]);
-    }
-  };
 };
 
 module.exports = formatDate;
