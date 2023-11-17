@@ -48,9 +48,66 @@
  *
  * @returns {string}
  */
+const YEAR_THRESHOLD = 30;
+const SHORT_YEAR_PREFIX = '20';
+const LONG_YEAR_PREFIX = '19';
+const YEAR_PLACEHOLDER = 'Y';
+const MONTH_PLACEHOLDER = 'M';
+const DAY_PLACEHOLDER = 'D';
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator = fromFormat[fromFormat.length - 1];
+  const newDate = date.split(separator);
+  const newSeparator = toFormat[toFormat.length - 1];
+  const newFormat = [];
+
+  let year, month, day;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        year = newDate[i];
+        break;
+      case 'YY':
+        year = newDate[i];
+
+        if (year >= YEAR_THRESHOLD) {
+          year = LONG_YEAR_PREFIX + year;
+        } else {
+          year = SHORT_YEAR_PREFIX + year;
+        }
+        break;
+      case 'MM':
+        month = newDate[i];
+        break;
+      case 'DD':
+        day = newDate[i];
+        break;
+      default:
+        break;
+    }
+  }
+
+  for (const format of toFormat) {
+    switch (format) {
+      case 'YYYY':
+        newFormat.push(year);
+        break;
+      case 'YY':
+        newFormat.push(year.slice(-2));
+        break;
+      case 'MM':
+        newFormat.push(month);
+        break;
+      case 'DD':
+        newFormat.push(day);
+        break;
+      default:
+        break;
+    }
+  }
+
+  return newFormat.join(newSeparator);
 }
 
 module.exports = formatDate;
