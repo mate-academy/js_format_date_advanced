@@ -48,47 +48,62 @@
  *
  * @returns {string}
  */
+const YEAR_THRESHOLD = 30;
+const SHORT_YEAR_PREFIX = '20';
+const LONG_YEAR_PREFIX = '19';
+const YEAR_PLACEHOLDER = 'Y';
+const MONTH_PLACEHOLDER = 'M';
+const DAY_PLACEHOLDER = 'D';
 
 function formatDate(date, fromFormat, toFormat) {
-  const newDate = date.split(fromFormat[3]);
-  const newSeparator = toFormat.slice(-1);
+  const separator = fromFormat[fromFormat.length - 1];
+  const newDate = date.split(separator);
+  const newSeparator = toFormat[toFormat.length - 1];
   const newFormat = [];
 
   let year, month, day;
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].includes('Y')) {
-      year = newDate[i];
-    }
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        year = newDate[i];
+        break;
+      case 'YY':
+        year = newDate[i];
 
-    if (fromFormat[i].includes('M')) {
-      month = newDate[i];
-    }
-
-    if (fromFormat[i].includes('D')) {
-      day = newDate[i];
+        if (year >= YEAR_THRESHOLD) {
+          year = LONG_YEAR_PREFIX + year;
+        } else {
+          year = SHORT_YEAR_PREFIX + year;
+        }
+        break;
+      case 'MM':
+        month = newDate[i];
+        break;
+      case 'DD':
+        day = newDate[i];
+        break;
+      default:
+        break;
     }
   }
 
   for (const format of toFormat) {
-    if (format.includes('Y')) {
-      if (format.length < year.length) {
-        newFormat.push(year.slice(2));
-      } else if (format.length === year.length) {
+    switch (format) {
+      case 'YYYY':
         newFormat.push(year);
-      } else {
-        const fullYear = (year >= 30 ? '19' : '20') + year;
-
-        newFormat.push(fullYear);
-      }
-    }
-
-    if (format.includes('M')) {
-      newFormat.push(month);
-    }
-
-    if (format.includes('D')) {
-      newFormat.push(day);
+        break;
+      case 'YY':
+        newFormat.push(year.slice(-2));
+        break;
+      case 'MM':
+        newFormat.push(month);
+        break;
+      case 'DD':
+        newFormat.push(day);
+        break;
+      default:
+        break;
     }
   }
 
