@@ -65,7 +65,6 @@ function formatDate(date, fromFormat, toFormat) {
         toFormat[i] = 'YYYY';
         oldObject[toFormat[i]] = oldObject[toFormat[i]].slice(2);
       } else {
-        toFormat[i] = 'YY';
 
         if (oldObject[toFormat[i]] < 30) {
           oldObject[toFormat[i]] = '20' + oldObject[toFormat[i]];
