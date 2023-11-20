@@ -62,7 +62,6 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (oldObject[toFormat[i]] === undefined) {
       if (toFormat[i] === 'YY') {
-        toFormat[i] = 'YYYY';
         oldObject[toFormat[i]] = oldObject[toFormat[i]].slice(2);
       } else {
 
