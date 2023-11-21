@@ -51,6 +51,87 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const oldSeparator = fromFormat.pop();
+  const newSeparator = toFormat.pop();
+
+  const arrayWithNewFormat = date.split(oldSeparator);
+  const newDateArray = [];
+
+  let indexOfOld = -1;
+  let indexOfNew = -1;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+      indexOfOld = i;
+      break;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+      indexOfNew = i;
+      break;
+    }
+  }
+
+  let indexOfOldMonth = -1;
+  let indexOfNewMonth = -1;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'MM') {
+      indexOfOldMonth = i;
+      break;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'MM') {
+      indexOfNewMonth = i;
+      break;
+    }
+  }
+
+  if (indexOfOld !== -1 && indexOfNew !== -1) {
+    const yearFromOld = arrayWithNewFormat[indexOfOld];
+
+    // 'YY' -> 'YYYY'
+    if (fromFormat[indexOfOld] === 'YY' && toFormat[indexOfNew] === 'YYYY') {
+      const year = Number(yearFromOld);
+
+      if (year < 30) {
+        arrayWithNewFormat[indexOfOld] = '20' + yearFromOld;
+      } else {
+        arrayWithNewFormat[indexOfOld] = '19' + yearFromOld;
+      }
+    }
+
+    // 'YYYY' -> 'YY'
+    if (fromFormat[indexOfOld] === 'YYYY' && toFormat[indexOfNew] === 'YY') {
+      arrayWithNewFormat[indexOfOld] = yearFromOld.slice(2);
+    }
+  }
+
+  for (let i = 0; i < toFormat.length; i++) {
+    const index = toFormat.indexOf(toFormat[i]);
+
+    if (index !== -1) {
+      newDateArray.push(arrayWithNewFormat[index]);
+    }
+  }
+
+  const temp = newDateArray[indexOfOld];
+
+  newDateArray[indexOfOld] = newDateArray[indexOfNew];
+  newDateArray[indexOfNew] = temp;
+
+  const tempMonth = newDateArray[indexOfOldMonth];
+
+  newDateArray[indexOfOldMonth] = newDateArray[indexOfNewMonth];
+  newDateArray[indexOfNewMonth] = tempMonth;
+
+  const newDate = newDateArray.join(newSeparator);
+
+  return newDate;
 }
 
 module.exports = formatDate;
