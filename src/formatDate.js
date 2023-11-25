@@ -69,22 +69,22 @@ function formatDate(date, fromFormat, toFormat) {
       continue;
     }
 
-    if (value === LONG_YEAR_FROMAT) {
-      const yearPrefix = +dateComponents[SHORT_YEAR_FROMAT] < 30 ? '20' : '19';
+    switch (value) {
+      case LONG_YEAR_FROMAT:
+        const yearPrefix = +dateComponents[SHORT_YEAR_FROMAT] < 30
+          ? '20'
+          : '19';
 
-      newFormatDate.push(yearPrefix + dateComponents[SHORT_YEAR_FROMAT]);
+        newFormatDate.push(yearPrefix + dateComponents[SHORT_YEAR_FROMAT]);
+        break;
 
-      continue;
-    }
-
-    if (value === SHORT_YEAR_FROMAT) {
-      newFormatDate.push(dateComponents[LONG_YEAR_FROMAT].slice(-2));
+      case SHORT_YEAR_FROMAT:
+        newFormatDate.push(dateComponents[LONG_YEAR_FROMAT].slice(-2));
+        break;
     }
   }
 
-  const formattedDate = newFormatDate.join(toFormat[toFormat.length - 1]);
-
-  return formattedDate;
+  return newFormatDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
