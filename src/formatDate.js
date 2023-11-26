@@ -78,11 +78,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (toFormat.includes('YYYY') && year.length === 2) {
-    if (+year < 30) {
-      year = CURRENT_CENTURY + year;
-    } else {
-      year = PREVIOUS_CENTURY + year;
-    }
+    year = +year < 30
+      ? CURRENT_CENTURY + year
+      : PREVIOUS_CENTURY + year;
   }
 
   if (toFormat.includes('YY') && year.length === 4) {
