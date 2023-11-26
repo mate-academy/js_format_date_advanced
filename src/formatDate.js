@@ -58,16 +58,20 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject[fromFormat[i]] = dateArray[i];
   };
 
-  if (!('YY' in dateObject)) {
-    dateObject['YY'] = dateObject['YYYY'].slice(2);
+  const shortYear = 'YY';
+  const fullYear = 'YYYY';
+  const limit = '30';
+  const beforeLimit = '20';
+  const aboveLimit = '19';
+
+  if (!(shortYear in dateObject)) {
+    dateObject[shortYear] = dateObject[fullYear].slice(2);
   };
 
-  if (!('YYYY' in dateObject)) {
-    if (dateObject['YY'] < '30') {
-      dateObject['YYYY'] = '20' + [dateObject['YY']];
-    } else {
-      dateObject['YYYY'] = '19' + [dateObject['YY']];
-    }
+  if (!(fullYear in dateObject)) {
+    dateObject[fullYear] = dateObject[shortYear] < limit
+      ? beforeLimit + [dateObject[shortYear]]
+      : aboveLimit + [dateObject[shortYear]];
   };
 
   const convertArray = [];
