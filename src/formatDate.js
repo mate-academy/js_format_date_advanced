@@ -53,15 +53,13 @@ function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[fromFormat.length - 1]);
   const newDate = [0, 0, 0];
   const dateInfo = {};
-  let count = 0;
 
   let year = 0;
 
-  for (const key of fromFormat) {
-    if (count <= dateParts.length - 1) {
-      dateInfo[key] = dateParts[count];
-    }
-    count += 1;
+  for (let i = 0; i < dateParts.length; i++) {
+    const key = fromFormat[i];
+
+    dateInfo[key] = dateParts[i];
   }
 
   for (let i = 0; i < dateParts.length; i++) {
