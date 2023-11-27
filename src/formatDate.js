@@ -49,8 +49,48 @@
  * @returns {string}
  */
 
+'use strict';
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(fromFormat[3]);
+  const dateObject = {};
+
+  for (let i = 0; i < 3; i++) {
+    dateObject[fromFormat[i]] = dateParts[i];
+  }
+
+  let newDate = '';
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (dateObject['YY']) {
+          const year = parseInt(dateObject['YY'], 10);
+
+          dateObject['YYYY'] = year < 30 ? `20${dateObject['YY']}` : `19${dateObject['YY']}`;
+        }
+        newDate += dateObject['YYYY'];
+        break;
+      case 'YY':
+        if (dateObject['YYYY']) {
+          const year = parseInt(dateObject['YYYY'].slice(-2), 10);
+
+          dateObject['YY'] = year.toString().padStart(2, '0');
+        }
+        newDate += dateObject['YY'];
+        break;
+      case 'MM':
+      case 'DD':
+        newDate += dateObject[toFormat[i]].padStart(2, '0');
+        break;
+    }
+
+    if (i < 2) {
+      newDate += toFormat[3];
+    }
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
