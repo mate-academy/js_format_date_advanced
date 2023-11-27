@@ -56,50 +56,44 @@ function formatDate(date, fromFormat, toFormat) {
   let month;
   let day;
 
+  const YEAR_THRESHOLD = 30;
+  const PREFIX_20 = 20;
+  const PREFIX_19 = 19;
+
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      year = splitDate[i];
-    }
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+        year = splitDate[i];
+        break;
 
-    if (fromFormat[i] === 'MM') {
-      month = splitDate[i];
-    }
+      case 'MM':
+        month = splitDate[i];
+        break;
 
-    if (fromFormat[i] === 'DD') {
-      day = splitDate[i];
+      case 'DD':
+        day = splitDate[i];
+        break;
     }
   }
 
   for (const toForm of toFormat) {
     switch (toForm) {
-      case ('DD'):
+      case 'DD':
         formated.push(day);
-
         break;
 
-      case ('MM'):
+      case 'MM':
         formated.push(month);
-
         break;
 
-      case ('YYYY'):
-        if (year.length === 4) {
-          formated.push(year);
-        } else if (year < 30) {
-          formated.push(20 + year);
-        } else {
-          formated.push(19 + year);
-        }
-
+      case 'YYYY':
+        formated.push(year.length === 4 ? year
+          : (year < YEAR_THRESHOLD ? PREFIX_20 + year : PREFIX_19 + year));
         break;
 
-      case ('YY'):
-        if (year.length === 2) {
-          formated.push(year);
-        } else {
-          formated.push(year.slice(2));
-        }
-
+      case 'YY':
+        formated.push(year.length === 2 ? year : year.slice(2));
         break;
     }
   }
