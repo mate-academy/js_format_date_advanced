@@ -62,22 +62,27 @@ function formatDate(date, fromFormat, toFormat) {
   let newDate = '';
 
   for (let i = 0; i < 3; i++) {
-    if (toFormat[i] === 'YYYY') {
-      if (dateObject['YY']) {
-        const year = parseInt(dateObject['YY'], 10);
+    switch (toFormat[i]) {
+      case 'YYYY':
+        if (dateObject['YY']) {
+          const year = parseInt(dateObject['YY'], 10);
 
-        dateObject['YYYY'] = year < 30 ? `20${dateObject['YY']}` : `19${dateObject['YY']}`;
-      }
-      newDate += dateObject['YYYY'];
-    } else if (toFormat[i] === 'YY') {
-      if (dateObject['YYYY']) {
-        const year = parseInt(dateObject['YYYY'].slice(-2), 10);
+          dateObject['YYYY'] = year < 30 ? `20${dateObject['YY']}` : `19${dateObject['YY']}`;
+        }
+        newDate += dateObject['YYYY'];
+        break;
+      case 'YY':
+        if (dateObject['YYYY']) {
+          const year = parseInt(dateObject['YYYY'].slice(-2), 10);
 
-        dateObject['YY'] = year.toString().padStart(2, '0');
-      }
-      newDate += dateObject['YY'];
-    } else if (toFormat[i] === 'MM' || toFormat[i] === 'DD') {
-      newDate += dateObject[toFormat[i]].padStart(2, '0');
+          dateObject['YY'] = year.toString().padStart(2, '0');
+        }
+        newDate += dateObject['YY'];
+        break;
+      case 'MM':
+      case 'DD':
+        newDate += dateObject[toFormat[i]].padStart(2, '0');
+        break;
     }
 
     if (i < 2) {
