@@ -41,16 +41,57 @@
  *   ['YY', 'MM', 'DD', '/'],
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
- *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
+
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromFormatOject = {};
+  const arrayDate = date.split(fromFormat[fromFormat.length - 1]);
+  const array = [];
+  const dateYear = {};
+
+  dateYear['YYYY'] = arrayDate[fromFormat.indexOf('YYYY')];
+  dateYear['YY'] = arrayDate[fromFormat.indexOf('YY')];
+
+  if (dateYear['YYYY'] === undefined) {
+    let year = dateYear['YY'];
+
+    if (year < 30) {
+      year = `20${year}`;
+    } else {
+      year = `19${year}`;
+    }
+    dateYear['YYYY'] = year;
+  }
+
+  if (dateYear['YY'] === undefined) {
+    const someYear = dateYear['YYYY'];
+
+    dateYear['YY'] = someYear.slice(2);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    fromFormatOject[fromFormat[i]] = arrayDate[i];
+  }
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case 'YY':
+        array[i] = dateYear['YY'];
+        break;
+      case 'YYYY':
+        array[i] = dateYear['YYYY'];
+        break;
+      case 'MM':
+        array[i] = fromFormatOject['MM'];
+        break;
+      case 'DD':
+        array[i] = fromFormatOject['DD'];
+        break;
+    }
+  }
+
+  return array.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
