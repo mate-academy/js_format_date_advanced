@@ -50,7 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const parts = date.split(fromFormat[fromFormat.length - 1]);
+  const delimiter = fromFormat[fromFormat.length - 1];
+  const parts = date.split(delimiter);
   let newDate = '';
 
   const YEAR_FULL = 'YYYY';
@@ -58,25 +59,31 @@ function formatDate(date, fromFormat, toFormat) {
   const MONTH = 'MM';
   const DAY = 'DD';
 
+  const hasFullYear = fromFormat.includes(YEAR_FULL);
+  const hasShortYear = fromFormat.includes(YEAR_SHORT);
+  const yearIndex = hasShortYear
+    ? fromFormat.indexOf(YEAR_SHORT)
+    : hasFullYear
+      ? fromFormat.indexOf(YEAR_FULL)
+      : -1;
+
   for (let i = 0; i < toFormat.length; i++) {
     switch (true) {
       case toFormat[i].includes(YEAR_SHORT):
-        if (fromFormat.includes(YEAR_FULL) && toFormat[i] === YEAR_SHORT) {
+        if (hasFullYear && toFormat[i] === YEAR_SHORT) {
           const twoDigitYear = parseInt(
-            parts[fromFormat.indexOf(YEAR_FULL)]
+            parts[yearIndex], 10
           ).toString().slice(-2);
 
           newDate += twoDigitYear;
-        } else if (fromFormat.includes(YEAR_SHORT)) {
-          const twoDigitYear = parseInt(
-            parts[fromFormat.indexOf(YEAR_SHORT)], 10
-          );
+        } else if (hasShortYear) {
+          const twoDigitYear = parseInt(parts[yearIndex], 10);
           const fullYear = twoDigitYear < 30 ? 2000
           + twoDigitYear : 1900 + twoDigitYear;
 
           newDate += fullYear;
         } else {
-          newDate += parts[fromFormat.indexOf(YEAR_FULL)];
+          newDate += parts[yearIndex];
         }
         break;
 
