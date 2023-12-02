@@ -66,6 +66,16 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj[element] = oldDateList[i];
   }
 
+  handleYearFormat(dateObj, toFormat);
+
+  for (let i = 0; i < newDateFormat.length; i++) {
+    newDate.push(dateObj[toFormat[i]]);
+  }
+
+  return newDate.join(newSep);
+}
+
+function handleYearFormat(dateObj, toFormat) {
   if ('YY' in dateObj && toFormat.includes('YYYY')) {
     if (dateObj.YY < 30) {
       dateObj.YYYY = `20${dateObj.YY}`;
@@ -80,12 +90,6 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj.YY = dateObj.YYYY.slice(2);
     delete dateObj.YYYY;
   }
-
-  for (let i = 0; i < newDateFormat.length; i++) {
-    newDate.push(dateObj[toFormat[i]]);
-  }
-
-  return newDate.join(newSep);
 }
 
 module.exports = formatDate;
