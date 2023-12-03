@@ -59,19 +59,22 @@ function formatDate(date, fromFormat, toFormat) {
 
   const result = toFormat
     .map((part) => {
-      if (part.includes('YY')) {
-        let year = resultMap.get('YYYY');
+      const LONG_YEAR_FORMAT = 'YYYY';
+      const SHORT_YEAR_FORMAT = 'YY';
 
-        if (resultMap.has('YY')) {
-          year = resultMap.get('YY');
-        } else if (resultMap.has('YYYY')) {
+      if (part.includes(SHORT_YEAR_FORMAT)) {
+        let year = resultMap.get(LONG_YEAR_FORMAT);
+
+        if (resultMap.has(SHORT_YEAR_FORMAT)) {
+          year = resultMap.get(SHORT_YEAR_FORMAT);
+        } else if (resultMap.has(LONG_YEAR_FORMAT)) {
           year = year.slice(-2);
         }
 
         if (part.includes('YYYY')) {
-          if (resultMap.has('YY')) {
-            year = resultMap.get('YY');
-          } else if (resultMap.has('YYYY')) {
+          if (resultMap.has(SHORT_YEAR_FORMAT)) {
+            year = resultMap.get(SHORT_YEAR_FORMAT);
+          } else if (resultMap.has(LONG_YEAR_FORMAT)) {
             year = year.slice(-2);
           }
 
