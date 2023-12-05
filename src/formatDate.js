@@ -50,7 +50,70 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArray = date.split(fromFormat[3]);
+  const reformattedDateArray = [];
+  let index = 0;
+  let shortYear;
+  let longYear;
+  let month;
+  let day;
+
+  for (const part of fromFormat) {
+    switch (part) {
+      case 'YY':
+        shortYear = dateArray[index];
+        break;
+      case 'YYYY':
+        longYear = dateArray[index];
+        break;
+      case 'MM':
+        month = dateArray[index];
+        break;
+      case 'DD':
+        day = dateArray[index];
+        break;
+    }
+    index++;
+  }
+
+  function yearExtension(yy) {
+    for (let i = 2023; i > 1900; i--) {
+      if (i % 100 === +yy) {
+        return i;
+      }
+    }
+
+    return 'ERROR in year extansion';
+  }
+
+  function yearTrimming(yyyy) {
+    return ('' + yyyy).slice(-2);
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    longYear = yearExtension(shortYear);
+  } else if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    shortYear = yearTrimming(longYear);
+  }
+
+  for (const part of toFormat) {
+    switch (part) {
+      case 'YY':
+        reformattedDateArray.push(shortYear);
+        break;
+      case 'YYYY':
+        reformattedDateArray.push(longYear);
+        break;
+      case 'MM':
+        reformattedDateArray.push(month);
+        break;
+      case 'DD':
+        reformattedDateArray.push(day);
+        break;
+    }
+  }
+
+  return reformattedDateArray.join(toFormat[3]);
 }
 
 module.exports = formatDate;
