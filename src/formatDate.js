@@ -50,7 +50,57 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // Крок 1: Ініціалізація об'єктів та масивів для збереження частин дати
+  const fullDate = {};
+  const mainDate = [];
+
+  /* Крок 2: Розбиття вхідної дати на частини
+  відповідно до роздільника у fromFormat */
+  const oldDate = date.split(fromFormat[3]);
+
+  // Крок 3: Визначення нового роздільника та кроку століття для 2-значних років
+  const newConnector = toFormat[3];
+  const centuryStep = 30;
+
+  // Крок 4: Перебір частин дати, вказаних у fromFormat
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    // Зберігання кожної частини дати у об'єкті fullDate за ключами з fromFormat
+    fullDate[fromFormat[i]] = oldDate[i];
+
+    /* Якщо поточна частина - 'YY',
+    обчислити відповідний 'YYYY' та зберегти його */
+    if (fromFormat[i] === 'YY') {
+      if (oldDate[i] < centuryStep) {
+        fullDate['YYYY'] = `20${oldDate[i]}`;
+      } else {
+        fullDate['YYYY'] = `19${oldDate[i]}`;
+      }
+    }
+  }
+
+  // Крок 5: Перебір у визначеному форматі (toFormat)
+  for (const value of toFormat) {
+    // Пропустити новий роздільник у вихідному форматі
+    if (value === newConnector) {
+      continue;
+    }
+
+    // Крок 6: Залежно від значення
+    switch (value) {
+      // Якщо 'YY', додати останні дві цифри 'YYYY' до нового масиву
+      case 'YY':
+        mainDate.push(fullDate['YYYY'].slice(2));
+        break;
+      // В інших випадках додати відповідну частину дати до нового масиву
+      default:
+        mainDate.push(fullDate[value]);
+        break;
+    }
+  }
+  // Крок 7: З'єднати частини дати у рядок, використовуючи новий роздільник
+
+  return mainDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
