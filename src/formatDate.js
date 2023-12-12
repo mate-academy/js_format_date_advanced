@@ -51,41 +51,41 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const factDate = date.split(fromFormat[fromFormat.length - 1]);
-  const fromFormatArray = [...fromFormat];
+  const fromFormatCopy = [...fromFormat];
   const resultArray = [...toFormat];
 
-  fromFormatArray.splice(-1, 1);
+  fromFormatCopy.splice(-1, 1);
   resultArray.splice(-1, 1);
 
-  if ((fromFormat.includes('YYYY') && toFormat.includes('YYYY'))
-    || (fromFormat.includes('YY') && toFormat.includes('YY'))) {
-    for (let i = 0; i < fromFormat.length; i++) {
+  if ((fromFormatCopy.includes('YYYY') && toFormat.includes('YYYY'))
+    || (fromFormatCopy.includes('YY') && toFormat.includes('YY'))) {
+    for (let i = 0; i < fromFormatCopy.length; i++) {
       for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormat[i] === toFormat[j]) {
+        if (fromFormatCopy[i] === toFormat[j]) {
           resultArray[j] = factDate[i];
         }
       }
     }
   }
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    const longDateIndex = fromFormat.indexOf('YYYY');
+  if (fromFormatCopy.includes('YYYY') && toFormat.includes('YY')) {
+    const longDateIndex = fromFormatCopy.indexOf('YYYY');
 
-    fromFormatArray[longDateIndex] = 'YY';
+    fromFormatCopy[longDateIndex] = 'YY';
 
-    for (let i = 0; i < fromFormat.length; i++) {
+    for (let i = 0; i < fromFormatCopy.length; i++) {
       for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormat[i] === toFormat[j]) {
+        if (fromFormatCopy[i] === toFormat[j]) {
           resultArray[j] = factDate[i].slice(-2);
         }
       }
     }
   }
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const shortDateIndex = fromFormat.indexOf('YY');
+  if (fromFormatCopy.includes('YY') && toFormat.includes('YYYY')) {
+    const shortDateIndex = fromFormatCopy.indexOf('YY');
 
-    fromFormatArray[shortDateIndex] = 'YYYY';
+    fromFormatCopy[shortDateIndex] = 'YYYY';
 
     if (factDate[shortDateIndex] < 30) {
       factDate[shortDateIndex] = `20${factDate[shortDateIndex]}`;
@@ -93,9 +93,9 @@ function formatDate(date, fromFormat, toFormat) {
       factDate[shortDateIndex] = `19${factDate[shortDateIndex]}`;
     }
 
-    for (let i = 0; i < fromFormat.length; i++) {
+    for (let i = 0; i < fromFormatCopy.length; i++) {
       for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormat[i] === toFormat[j]) {
+        if (fromFormatCopy[i] === toFormat[j]) {
           resultArray[j] = factDate[i];
         }
       }
