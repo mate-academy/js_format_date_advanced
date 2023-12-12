@@ -51,6 +51,63 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const NEW_DIVIDER = toFormat[3];
+
+  const result = [];
+  const dateCopy = date.split(fromFormat[3]);
+
+  for (const datePart of toFormat) {
+    let number = 0;
+    let index = 0;
+
+    switch (datePart) {
+      case 'YY':
+        index = fromFormat.indexOf('YY');
+
+        if (index < 0) {
+          index = fromFormat.indexOf('YYYY');
+        }
+
+        number = dateCopy[index];
+
+        if (number > 99) {
+          number = number % 100;
+        }
+        result.push(number);
+        break;
+
+      case 'YYYY':
+        index = fromFormat.indexOf('YY');
+
+        if (index < 0) {
+          index = fromFormat.indexOf('YYYY');
+        }
+
+        number = dateCopy[index];
+
+        if (number <= 99) {
+          number = number >= 30 ? '19' + number : '20' + number;
+        }
+        result.push(number);
+        break;
+
+      case 'DD':
+        index = fromFormat.indexOf('DD');
+        number = dateCopy[index];
+        result.push(number);
+        break;
+
+      case 'MM':
+        index = fromFormat.indexOf('MM');
+        number = dateCopy[index];
+        result.push(number);
+        break;
+
+      default: break;
+    }
+  }
+
+  return result.join(NEW_DIVIDER);
 }
 
 module.exports = formatDate;
