@@ -59,27 +59,16 @@ function formatDate(date, fromFormat, toFormat) {
 
   if ((fromFormatCopy.includes('YYYY') && toFormat.includes('YYYY'))
     || (fromFormatCopy.includes('YY') && toFormat.includes('YY'))) {
-    for (let i = 0; i < fromFormatCopy.length; i++) {
-      for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormatCopy[i] === toFormat[j]) {
-          resultArray[j] = factDate[i];
-        }
-      }
-    }
+    cycle(fromFormatCopy, toFormat, resultArray, factDate);
   }
 
   if (fromFormatCopy.includes('YYYY') && toFormat.includes('YY')) {
     const longDateIndex = fromFormatCopy.indexOf('YYYY');
 
-    fromFormatCopy[longDateIndex] = 'YY';
+    factDate[longDateIndex] = factDate[longDateIndex].slice(-2);
 
-    for (let i = 0; i < fromFormatCopy.length; i++) {
-      for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormatCopy[i] === toFormat[j]) {
-          resultArray[j] = factDate[i].slice(-2);
-        }
-      }
-    }
+    fromFormatCopy[longDateIndex] = 'YY';
+    cycle(fromFormatCopy, toFormat, resultArray, factDate);
   }
 
   if (fromFormatCopy.includes('YY') && toFormat.includes('YYYY')) {
@@ -93,16 +82,25 @@ function formatDate(date, fromFormat, toFormat) {
       factDate[shortDateIndex] = `19${factDate[shortDateIndex]}`;
     }
 
-    for (let i = 0; i < fromFormatCopy.length; i++) {
-      for (let j = 0; j < toFormat.length; j++) {
-        if (fromFormatCopy[i] === toFormat[j]) {
-          resultArray[j] = factDate[i];
-        }
-      }
-    }
+    cycle(fromFormatCopy, toFormat, resultArray, factDate);
   }
 
   return resultArray.join(toFormat[toFormat.length - 1]);
+}
+
+function cycle(
+  fromFormatCopyCycle,
+  toFormatCycle,
+  resultArrayCycle,
+  factDateCycle
+) {
+  for (let i = 0; i < fromFormatCopyCycle.length; i++) {
+    for (let j = 0; j < toFormatCycle.length; j++) {
+      if (fromFormatCopyCycle[i] === toFormatCycle[j]) {
+        resultArrayCycle[j] = factDateCycle[i];
+      }
+    }
+  }
 }
 
 module.exports = formatDate;
