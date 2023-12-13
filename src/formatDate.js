@@ -58,23 +58,26 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject[fromFormat[i]] = dateArrFromFormat[i];
   }
 
+  const fullYearKey = 'YYYY';
+  const shortYearKey = 'YY';
+
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (!(toFormat[i] in dateObject)) {
       switch (toFormat[i]) {
-        case 'YYYY':
-          if (+dateObject['YY'] < 30) {
-            dateObject['YY'] = '20' + dateObject['YY'];
+        case fullYearKey:
+          if (+dateObject[shortYearKey] < 30) {
+            dateObject[shortYearKey] = '20' + dateObject[shortYearKey];
           } else {
-            dateObject['YY'] = '19' + dateObject['YY'];
+            dateObject[shortYearKey] = '19' + dateObject[shortYearKey];
           }
 
-          dateArrToFormat.push(dateObject['YY']);
+          dateArrToFormat.push(dateObject[shortYearKey]);
           break;
 
-        case 'YY':
-          dateObject['YYYY'] = dateObject['YYYY'].substr(2);
+        case shortYearKey:
+          dateObject[fullYearKey] = dateObject[fullYearKey].substr(2);
 
-          dateArrToFormat.push(dateObject['YYYY']);
+          dateArrToFormat.push(dateObject[fullYearKey]);
           break;
       }
 
