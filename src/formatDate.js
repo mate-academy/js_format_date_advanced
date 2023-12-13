@@ -53,28 +53,34 @@ function formatDate(date, fromFormat, toFormat) {
   const factDate = date.split(fromFormat[fromFormat.length - 1]);
   const fromFormatCopy = [...fromFormat];
   const resultArray = [...toFormat];
+  const LONG_YEAR_FORMAT = 'YYYY';
+  const SHORT_YEAR_FORMAT = 'YY';
 
   fromFormatCopy.splice(-1, 1);
   resultArray.splice(-1, 1);
 
-  if ((fromFormatCopy.includes('YYYY') && toFormat.includes('YYYY'))
-    || (fromFormatCopy.includes('YY') && toFormat.includes('YY'))) {
+  if ((fromFormatCopy.includes(LONG_YEAR_FORMAT)
+    && toFormat.includes(LONG_YEAR_FORMAT))
+    || (fromFormatCopy.includes(SHORT_YEAR_FORMAT)
+    && toFormat.includes(SHORT_YEAR_FORMAT))) {
     cycle(fromFormatCopy, toFormat, resultArray, factDate);
   }
 
-  if (fromFormatCopy.includes('YYYY') && toFormat.includes('YY')) {
-    const longDateIndex = fromFormatCopy.indexOf('YYYY');
+  if (fromFormatCopy.includes(LONG_YEAR_FORMAT)
+    && toFormat.includes(SHORT_YEAR_FORMAT)) {
+    const longDateIndex = fromFormatCopy.indexOf(LONG_YEAR_FORMAT);
 
     factDate[longDateIndex] = factDate[longDateIndex].slice(-2);
 
-    fromFormatCopy[longDateIndex] = 'YY';
+    fromFormatCopy[longDateIndex] = SHORT_YEAR_FORMAT;
     cycle(fromFormatCopy, toFormat, resultArray, factDate);
   }
 
-  if (fromFormatCopy.includes('YY') && toFormat.includes('YYYY')) {
-    const shortDateIndex = fromFormatCopy.indexOf('YY');
+  if (fromFormatCopy.includes(SHORT_YEAR_FORMAT)
+    && toFormat.includes(LONG_YEAR_FORMAT)) {
+    const shortDateIndex = fromFormatCopy.indexOf(SHORT_YEAR_FORMAT);
 
-    fromFormatCopy[shortDateIndex] = 'YYYY';
+    fromFormatCopy[shortDateIndex] = LONG_YEAR_FORMAT;
 
     if (factDate[shortDateIndex] < 30) {
       factDate[shortDateIndex] = `20${factDate[shortDateIndex]}`;
@@ -95,11 +101,9 @@ function cycle(
   factDateCycle
 ) {
   for (let i = 0; i < fromFormatCopyCycle.length; i++) {
-    for (let j = 0; j < toFormatCycle.length; j++) {
-      if (fromFormatCopyCycle[i] === toFormatCycle[j]) {
-        resultArrayCycle[j] = factDateCycle[i];
-      }
-    }
+    const index = toFormatCycle.indexOf(fromFormatCopyCycle[i]);
+
+    resultArrayCycle[index] = factDateCycle[i];
   }
 }
 
