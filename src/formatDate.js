@@ -42,15 +42,50 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
- */
+//  * @param {string} date
+//  * @param {string[]} fromFormat
+//  * @param {string[]} toFormat
+//  *
+//  * @returns {string}
+//  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const result = [];
+  const arrayDate = date.split(fromFormat[fromFormat.length - 1]);
+  const objectData = {};
+  let newKey = '';
+
+  for (let i = 0; i < arrayDate.length; i++) {
+    objectData[fromFormat[i]] = arrayDate[i];
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    let century = 0;
+
+    newKey = 'YYYY';
+
+    if (objectData['YY'] < 30) {
+      century = 20;
+    } else {
+      century = 19;
+    }
+
+    objectData.YY = century + objectData['YY'];
+    objectData[newKey] = objectData.YY;
+  }
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    newKey = 'YY';
+
+    objectData.YYYY = objectData['YYYY'].slice(-2);
+    objectData[newKey] = objectData.YYYY;
+  }
+
+  for (let j = 0; j < toFormat.length - 1; j++) {
+    result.push(objectData[toFormat[j]]);
+  }
+
+  return result.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
