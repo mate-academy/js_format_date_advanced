@@ -50,7 +50,93 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const NOW_CENTURY = '20';
+  const LAST_CENTURY = '19';
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+  const newArray = [];
+  let indexYear;
+  let day;
+  let month;
+  let year;
+
+  function getValue(strDate, Separator, index) {
+    const indexOfSeparator1 = date.indexOf(Separator);
+    const indexOfSeparator2 = date.indexOf(Separator, indexOfSeparator1 + 1);
+
+    switch (index) {
+      case 0:
+        return strDate.slice(0, indexOfSeparator1);
+
+      case 1:
+        return strDate.slice(indexOfSeparator1 + 1, indexOfSeparator2);
+
+      case 2:
+        return strDate.slice(indexOfSeparator2 + 1);
+    }
+  }
+
+  for (const item of fromFormat) {
+    switch (item) {
+      case 'DD':
+        const indexDay = fromFormat.indexOf('DD');
+
+        day = getValue(date, oldSeparator, indexDay);
+
+        break;
+
+      case 'MM':
+        const indexMonth = fromFormat.indexOf('MM');
+
+        month = getValue(date, oldSeparator, indexMonth);
+
+        break;
+
+      case 'YYYY':
+        indexYear = fromFormat.indexOf('YYYY');
+        year = getValue(date, oldSeparator, indexYear);
+
+        break;
+
+      case 'YY':
+        indexYear = fromFormat.indexOf('YY');
+        year = getValue(date, oldSeparator, indexYear);
+
+        if (+year < 30) {
+          year = NOW_CENTURY + year;
+        } else {
+          year = LAST_CENTURY + year;
+        }
+
+        break;
+
+      default:
+
+        break;
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case 'DD':
+        newArray[i] = day;
+        break;
+
+      case 'MM':
+        newArray[i] = month;
+        break;
+
+      case 'YYYY':
+        newArray[i] = year;
+        break;
+
+      case 'YY':
+        newArray[i] = year.slice(2);
+        break;
+    }
+  }
+
+  return newArray.join(newSeparator);
 }
 
 module.exports = formatDate;
