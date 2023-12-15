@@ -48,9 +48,75 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const YEAR_ID = 'Y';
+  const MONTH_ID = 'M';
+  const DAY_ID = 'D';
+  const TWENTY_CENTURE_LIMIT = 30;
+  const dateArray = date.split(fromFormat[fromFormat.length - 1]);
+  const toFormatDivider = toFormat[toFormat.length - 1];
+  const resultArray = [];
+  const time = {
+    day: '',
+    month: '',
+    year: '',
+  };
+  let yearIndexFromFormat = 0;
+  let yearIndexToFormat = 0;
+
+  for (let i = 0; i < dateArray.length; i++) {
+    switch (true) {
+      case fromFormat[i].includes(YEAR_ID):
+        yearIndexFromFormat = i;
+        time.year = dateArray[i];
+        break;
+
+      case fromFormat[i].includes(MONTH_ID):
+        time.month = dateArray[i];
+        break;
+
+      case fromFormat[i].includes(DAY_ID):
+        time.day = dateArray[i];
+        break;
+    }
+  }
+
+  for (let i = 0; i < dateArray.length; i++) {
+    switch (true) {
+      case toFormat[i].includes(YEAR_ID):
+        yearIndexToFormat = i;
+        resultArray.push(time.year);
+        break;
+
+      case toFormat[i].includes(MONTH_ID):
+        resultArray.push(time.month);
+        break;
+
+      case toFormat[i].includes(DAY_ID):
+        resultArray.push(time.day);
+        break;
+    }
+  }
+
+  function reFormYear(year) {
+    const fromLength = fromFormat[yearIndexFromFormat].length;
+    const toLength = toFormat[yearIndexToFormat].length;
+
+    if (fromLength === toLength) {
+      return year;
+    }
+
+    if (fromLength > toLength) {
+      return year.slice(-2);
+    }
+
+    return +year >= TWENTY_CENTURE_LIMIT ? `19${year}` : `20${year}`;
+  }
+
+  time.year = reFormYear(time.year);
+  resultArray[yearIndexToFormat] = time.year;
+
+  return resultArray.join(toFormatDivider);
 }
 
 module.exports = formatDate;
