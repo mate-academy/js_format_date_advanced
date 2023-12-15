@@ -53,6 +53,10 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const dividerIndex = toFormat.length - 1;
   const NEW_DIVIDER = toFormat[dividerIndex];
+  const CENTURY_UP = '20';
+  const CENTURY_DOWN = '19';
+  const CENTURY_BORDER = 99;
+  const SWITCH_YEAR = 30;
 
   const result = [];
   const dateCopy = date.split(fromFormat[dividerIndex]);
@@ -97,7 +101,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     let number = dateCopy[index];
 
-    if (number > 99) {
+    if (number > CENTURY_BORDER) {
       number = number % 100;
     }
     res.push(number);
@@ -113,8 +117,10 @@ function formatDate(date, fromFormat, toFormat) {
 
     let number = dateCopy[index];
 
-    if (number <= 99) {
-      number = number >= 30 ? '19' + number : '20' + number;
+    if (number <= CENTURY_BORDER) {
+      number = number >= SWITCH_YEAR
+        ? CENTURY_DOWN + number
+        : CENTURY_UP + number;
     }
     res.push(number);
   }
