@@ -51,10 +51,11 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const NEW_DIVIDER = toFormat[3];
+  const dividerIndex = toFormat.length - 1;
+  const NEW_DIVIDER = toFormat[dividerIndex];
 
   const result = [];
-  const dateCopy = date.split(fromFormat[3]);
+  const dateCopy = date.split(fromFormat[dividerIndex]);
 
   for (const datePart of toFormat) {
     let number = 0;
@@ -92,19 +93,29 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'DD':
-        index = fromFormat.indexOf('DD');
-        number = dateCopy[index];
-        result.push(number);
+        addDateElement('DD', result);
+        // index = fromFormat.indexOf('DD');
+        // number = dateCopy[index];
+        // result.push(number);
         break;
 
       case 'MM':
-        index = fromFormat.indexOf('MM');
-        number = dateCopy[index];
-        result.push(number);
+        addDateElement('MM', result);
+        // index = fromFormat.indexOf('MM');
+        // number = dateCopy[index];
+        // result.push(number);
         break;
 
       default: break;
     }
+  }
+
+  // add function above to format dd mm
+  function addDateElement(value, res) {
+    const index = fromFormat.indexOf(value);
+    const number = dateCopy[index];
+
+    res.push(number);
   }
 
   return result.join(NEW_DIVIDER);
