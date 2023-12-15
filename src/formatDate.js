@@ -52,6 +52,7 @@ function formatDate(date, fromFormat, toFormat) {
   const YEAR_ID = 'Y';
   const MONTH_ID = 'M';
   const DAY_ID = 'D';
+  const TWENTY_CENTURE_LIMIT = 30;
   const dateArray = date.split(fromFormat[fromFormat.length - 1]);
   const toFormatDivider = toFormat[toFormat.length - 1];
   const resultArray = [];
@@ -106,10 +107,10 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (fromLength > toLength) {
-      return year.slice(2, 4);
+      return year.slice(-2);
     }
 
-    return +year >= 30 ? `19${year}` : `20${year}`;
+    return +year >= TWENTY_CENTURE_LIMIT ? `19${year}` : `20${year}`;
   }
 
   time.year = reFormYear(time.year);
