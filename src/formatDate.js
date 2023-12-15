@@ -58,52 +58,21 @@ function formatDate(date, fromFormat, toFormat) {
   const dateCopy = date.split(fromFormat[dividerIndex]);
 
   for (const datePart of toFormat) {
-    let number = 0;
-    let index = 0;
-
     switch (datePart) {
       case 'YY':
-        index = fromFormat.indexOf('YY');
-
-        if (index < 0) {
-          index = fromFormat.indexOf('YYYY');
-        }
-
-        number = dateCopy[index];
-
-        if (number > 99) {
-          number = number % 100;
-        }
-        result.push(number);
+        addYearShortFormat('YY', result);
         break;
 
       case 'YYYY':
-        index = fromFormat.indexOf('YY');
-
-        if (index < 0) {
-          index = fromFormat.indexOf('YYYY');
-        }
-
-        number = dateCopy[index];
-
-        if (number <= 99) {
-          number = number >= 30 ? '19' + number : '20' + number;
-        }
-        result.push(number);
+        addYearLongFormat('YYYY', result);
         break;
 
       case 'DD':
         addDateElement('DD', result);
-        // index = fromFormat.indexOf('DD');
-        // number = dateCopy[index];
-        // result.push(number);
         break;
 
       case 'MM':
         addDateElement('MM', result);
-        // index = fromFormat.indexOf('MM');
-        // number = dateCopy[index];
-        // result.push(number);
         break;
 
       default: break;
@@ -115,6 +84,38 @@ function formatDate(date, fromFormat, toFormat) {
     const index = fromFormat.indexOf(value);
     const number = dateCopy[index];
 
+    res.push(number);
+  }
+
+  // add function to year format YY
+  function addYearShortFormat(value, res) {
+    let index = fromFormat.indexOf('YY');
+
+    if (index < 0) {
+      index = fromFormat.indexOf('YYYY');
+    }
+
+    let number = dateCopy[index];
+
+    if (number > 99) {
+      number = number % 100;
+    }
+    res.push(number);
+  }
+
+  // add function to year format YYYY
+  function addYearLongFormat(value, res) {
+    let index = fromFormat.indexOf('YY');
+
+    if (index < 0) {
+      index = fromFormat.indexOf('YYYY');
+    }
+
+    let number = dateCopy[index];
+
+    if (number <= 99) {
+      number = number >= 30 ? '19' + number : '20' + number;
+    }
     res.push(number);
   }
 
