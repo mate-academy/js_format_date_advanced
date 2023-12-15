@@ -51,7 +51,9 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const keysDates = {};
-  const dateParts = date.split(fromFormat[3]);
+  const oldSeparator = fromFormat[3];
+  const newSeparator = toFormat[3];
+  const dateParts = date.split(oldSeparator);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     keysDates[fromFormat[i]] = dateParts[i];
@@ -68,7 +70,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const newDates = toFormat.slice(0, -1).map(key => keysDates[key]);
 
-  return newDates.join(toFormat[3]);
+  return newDates.join(newSeparator);
 }
 
 module.exports = formatDate;
