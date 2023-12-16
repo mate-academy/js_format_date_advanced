@@ -51,28 +51,43 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
-  let result = toFormat;
+  const DAY_IDENTIFIER = 'DD';
+  const MONTH_IDENTIFIER = 'MM';
+  const YEAR_SHORT_IDENTIFIER = 'YY';
+  const YEAR_LONG_IDENTIFIER = 'YYYY';
+  let result = toFormat.slice(0, 3);
 
-  result[result.indexOf('DD')] = dateArr[fromFormat.indexOf('DD')];
-  result[result.indexOf('MM')] = dateArr[fromFormat.indexOf('MM')];
+  result[result.indexOf(DAY_IDENTIFIER)]
+  = dateArr[fromFormat.indexOf(DAY_IDENTIFIER)];
 
-  if (fromFormat.includes('YY') && result.includes('YY')) {
-    result[result.indexOf('YY')] = dateArr[fromFormat.indexOf('YY')];
-  } else if (fromFormat.includes('YYYY') && result.includes('YYYY')) {
-    result[result.indexOf('YYYY')] = dateArr[fromFormat.indexOf('YYYY')];
-  } else if (fromFormat.includes('YY') && result.includes('YYYY')) {
-    if (dateArr[fromFormat.indexOf('YY')] >= 30) {
-      result[result.indexOf('YYYY')] = '19' + dateArr[fromFormat.indexOf('YY')];
+  result[result.indexOf(MONTH_IDENTIFIER)]
+  = dateArr[fromFormat.indexOf(MONTH_IDENTIFIER)];
+
+  if (fromFormat.includes(YEAR_SHORT_IDENTIFIER)
+      && result.includes(YEAR_SHORT_IDENTIFIER)) {
+    result[result.indexOf(YEAR_SHORT_IDENTIFIER)]
+    = dateArr[fromFormat.indexOf(YEAR_SHORT_IDENTIFIER)];
+  } else if (fromFormat.includes(YEAR_LONG_IDENTIFIER)
+              && result.includes(YEAR_LONG_IDENTIFIER)) {
+    result[result.indexOf(YEAR_LONG_IDENTIFIER)]
+          = dateArr[fromFormat.indexOf(YEAR_LONG_IDENTIFIER)];
+  } else if (fromFormat.includes(YEAR_SHORT_IDENTIFIER)
+              && result.includes(YEAR_LONG_IDENTIFIER)) {
+    if (dateArr[fromFormat.indexOf(YEAR_SHORT_IDENTIFIER)] >= 30) {
+      result[result.indexOf(YEAR_LONG_IDENTIFIER)]
+            = '19' + dateArr[fromFormat.indexOf(YEAR_SHORT_IDENTIFIER)];
     } else {
-      result[result.indexOf('YYYY')] = '20' + dateArr[fromFormat.indexOf('YY')];
+      result[result.indexOf(YEAR_LONG_IDENTIFIER)]
+            = '20' + dateArr[fromFormat.indexOf(YEAR_SHORT_IDENTIFIER)];
     }
-  } else if (fromFormat.includes('YYYY') && result.includes('YY')) {
-    result[result.indexOf('YY')]
+  } else if (fromFormat.includes(YEAR_LONG_IDENTIFIER)
+              && result.includes(YEAR_SHORT_IDENTIFIER)) {
+    result[result.indexOf(YEAR_SHORT_IDENTIFIER)]
   = (dateArr[fromFormat.indexOf('YYYY')][2]
   + dateArr[fromFormat.indexOf('YYYY')][3]);
   }
 
-  result = result.join(result.pop());
+  result = result.join(toFormat.slice(3));
 
   return result;
 }
