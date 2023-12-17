@@ -53,36 +53,44 @@ function formatDate(date, fromFormat, toFormat) {
   const separatorFrom = fromFormat[fromFormat.length - 1];
   const separatorTo = toFormat[toFormat.length - 1];
   const dateArray = date.split(separatorFrom);
+  const result = [];
   let day;
   let month;
   let year;
-  const result = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i][0] === 'Y') {
-      year = dateArray[i];
-    } else if (fromFormat[i][0] === 'M') {
-      month = dateArray[i];
-    } else if (fromFormat[i][0] === 'D') {
-      day = dateArray[i];
+    switch (fromFormat[i][0]) {
+      case 'Y':
+        year = dateArray[i];
+        break;
+      case 'M':
+        month = dateArray[i];
+        break;
+      case 'D':
+        day = dateArray[i];
+        break;
     }
   }
 
   for (let k = 0; k < toFormat.length; k++) {
-    if (toFormat[k][0] === 'D') {
-      result.push(day);
-    } else if (toFormat[k][0] === 'Y') {
-      if (toFormat[k] === 'YYYY' && year.length <= 2 && +year < 30) {
-        result.push('20' + year);
-      } else if (toFormat[k] === 'YYYY' && year.length <= 2) {
-        result.push('19' + year);
-      } else if (toFormat[k] === 'YY' && year.length > 2) {
-        result.push(year.slice(2));
-      } else {
-        result.push(year);
-      }
-    } else if (toFormat[k][0] === 'M') {
-      result.push(month);
+    switch (toFormat[k][0]) {
+      case 'D':
+        result.push(day);
+        break;
+      case 'Y':
+        if (toFormat[k] === 'YYYY' && year.length <= 2 && +year < 30) {
+          result.push('20' + year);
+        } else if (toFormat[k] === 'YYYY' && year.length <= 2) {
+          result.push('19' + year);
+        } else if (toFormat[k] === 'YY' && year.length > 2) {
+          result.push(year.slice(2));
+        } else {
+          result.push(year);
+        }
+        break;
+      case 'M':
+        result.push(month);
+        break;
     }
   }
 
