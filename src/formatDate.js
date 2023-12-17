@@ -56,14 +56,22 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     const part = fromFormat[i];
 
-    if (part === 'YYYY') {
-      year = parts[i];
-    } else if (part === 'YY') {
-      year = parts[i].slice(-2);
-    } else if (part === 'MM') {
-      month = parts[i];
-    } else if (part === 'DD') {
-      day = parts[i];
+    switch (part) {
+      case 'YYYY':
+        year = parts[i];
+        break;
+
+      case 'YY':
+        year = parts[i].slice(-2);
+        break;
+
+      case 'MM':
+        month = parts[i];
+        break;
+
+      case 'DD':
+        day = parts[i];
+        break;
     }
   }
 
@@ -74,14 +82,22 @@ function formatDate(date, fromFormat, toFormat) {
     const getBigYear = +year < 30 ? '20' + year : '19' + year;
     const getSmallYear = year.slice(-2);
 
-    if (part === 'YYYY') {
-      formattedDate.push(year.length === 4 ? year : getBigYear);
-    } else if (part === 'YY') {
-      formattedDate.push(year.length === 2 ? year : getSmallYear);
-    } else if (part === 'MM') {
-      formattedDate.push(month);
-    } else if (part === 'DD') {
-      formattedDate.push(day);
+    switch (part) {
+      case 'YYYY':
+        formattedDate.push(year.length === 4 ? year : getBigYear);
+        break;
+
+      case 'YY':
+        formattedDate.push(year.length === 2 ? year : getSmallYear);
+        break;
+
+      case 'MM':
+        formattedDate.push(month);
+        break;
+
+      case 'DD':
+        formattedDate.push(day);
+        break;
     }
   }
 
