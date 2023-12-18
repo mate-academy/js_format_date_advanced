@@ -50,34 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dayDescription = 'DD';
-  const monthDescription = 'MM';
-  const yearDescription = 'YY';
-  const fullYearDescription = 'YYYY';
+  const DAY_DESCRIPTION = 'DD';
+  const MONTH_DESCRIPTION = 'MM';
+  const YEAR_DESCRIPTION = 'YY';
+  const FULL_YEAR_DESCRIPTION = 'YYYY';
+  const INDEX_OF_DEVIDER = 3;
 
-  const indexOfDevider = 3;
-  const newDevider = toFormat[indexOfDevider];
-  const currentDate = date.split(fromFormat[indexOfDevider]);
-  const currentDay = currentDate[fromFormat.indexOf(dayDescription)];
-  const currentMonth = currentDate[fromFormat.indexOf(monthDescription)];
-  const currentYear = currentDate[fromFormat.indexOf(yearDescription)];
-  const currentFullYear = currentDate[fromFormat.indexOf(fullYearDescription)];
+  const newDevider = toFormat[INDEX_OF_DEVIDER];
+  const currentDate = date.split(fromFormat[INDEX_OF_DEVIDER]);
+  const currentDay = currentDate[fromFormat.indexOf(DAY_DESCRIPTION)];
+  const currentMonth = currentDate[fromFormat.indexOf(MONTH_DESCRIPTION)];
+  const currentYear = currentDate[fromFormat.indexOf(YEAR_DESCRIPTION)];
+  const currentFullYear
+    = currentDate[fromFormat.indexOf(FULL_YEAR_DESCRIPTION)];
 
   const formatedDate = [];
 
-  for (let i = 0; i < indexOfDevider; i++) {
+  for (let i = 0; i < INDEX_OF_DEVIDER; i++) {
     switch (toFormat[i]) {
-      case dayDescription:
+      case DAY_DESCRIPTION:
         formatedDate[i] = currentDay;
 
         break;
 
-      case monthDescription:
+      case MONTH_DESCRIPTION:
         formatedDate[i] = currentMonth;
 
         break;
 
-      case yearDescription:
+      case YEAR_DESCRIPTION:
         if (currentYear) {
           formatedDate[i] = currentYear;
 
@@ -88,7 +89,7 @@ function formatDate(date, fromFormat, toFormat) {
 
         break;
 
-      case fullYearDescription:
+      case FULL_YEAR_DESCRIPTION:
         if (currentYear) {
           if (+currentYear < 30) {
             formatedDate[i] = `20${currentYear}`;
