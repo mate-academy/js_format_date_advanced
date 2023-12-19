@@ -54,6 +54,10 @@ function formatDate(date, fromFormat, toFormat) {
   const separatorTo = toFormat[toFormat.length - 1];
   const dateArray = date.split(separatorFrom);
   const result = [];
+  const yearCentury = 30;
+  const fullYearFormat = 'YYYY';
+  const endYearFormat = 'YY';
+  const maxLength = 2;
   let day;
   let month;
   let year;
@@ -78,12 +82,13 @@ function formatDate(date, fromFormat, toFormat) {
         result.push(day);
         break;
       case 'Y':
-        if (toFormat[k] === 'YYYY' && year.length <= 2 && +year < 30) {
+        if (toFormat[k] === fullYearFormat
+          && year.length <= maxLength && +year < yearCentury) {
           result.push('20' + year);
-        } else if (toFormat[k] === 'YYYY' && year.length <= 2) {
+        } else if (toFormat[k] === fullYearFormat && year.length <= maxLength) {
           result.push('19' + year);
-        } else if (toFormat[k] === 'YY' && year.length > 2) {
-          result.push(year.slice(2));
+        } else if (toFormat[k] === endYearFormat && year.length > maxLength) {
+          result.push(year.slice(maxLength));
         } else {
           result.push(year);
         }
