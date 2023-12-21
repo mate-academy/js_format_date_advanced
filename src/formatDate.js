@@ -57,31 +57,29 @@ function formatDate(date, fromFormat, toFormat) {
   let day, month, year, lengthYear;
 
   for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i].includes('Y')) {
-      year = newDate[i];
-    }
+    switch (true) {
+      case fromFormat[i].includes('Y'):
+        year = newDate[i];
+        break;
 
-    if (fromFormat[i].includes('M')) {
-      month = newDate[i];
-    }
+      case fromFormat[i].includes('M'):
+        month = newDate[i];
+        break;
 
-    if (fromFormat[i].includes('D')) {
-      day = newDate[i];
+      case fromFormat[i].includes('D'):
+        day = newDate[i];
+        break;
     }
   }
 
   for (const format of toFormat) {
     if (format.includes('Y')) {
       if (format.length < year.length) {
-        newArr.push(year.slice(2));
+        newArr.push(year.slice(-2));
       } else if (format.length === year.length) {
         newArr.push(year);
       } else {
-        if (year >= 30) {
-          lengthYear = '19' + year;
-        } else {
-          lengthYear = '20' + year;
-        }
+        lengthYear = parseInt(year, 10) < 30 ? '20' + year : '19' + year;
         newArr.push(lengthYear);
       }
     }
