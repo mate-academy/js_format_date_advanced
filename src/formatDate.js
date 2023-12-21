@@ -58,23 +58,10 @@ function formatDate(date, fromFormat, toFormat) {
   const fullYearFormat = 'YYYY';
   const endYearFormat = 'YY';
   const maxLength = 2;
-  let day;
-  let month;
-  let year;
-
-  for (let i = 0; i < fromFormat.length; i++) {
-    switch (fromFormat[i][0]) {
-      case 'Y':
-        year = dateArray[i];
-        break;
-      case 'M':
-        month = dateArray[i];
-        break;
-      case 'D':
-        day = dateArray[i];
-        break;
-    }
-  }
+  const day = dateArray[fromFormat.indexOf('DD')];
+  const month = dateArray[fromFormat.indexOf('MM')];
+  const year
+  = dateArray[fromFormat.indexOf('YY') && fromFormat.indexOf('YYYY')];
 
   for (let k = 0; k < toFormat.length; k++) {
     switch (toFormat[k][0]) {
@@ -95,6 +82,8 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case 'M':
         result.push(month);
+        break;
+      default:
         break;
     }
   }
