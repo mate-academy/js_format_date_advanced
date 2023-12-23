@@ -50,7 +50,62 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const result = [];
+  const firstSeparator = fromFormat[3];
+  const secondSeparator = toFormat[3];
+  const dateArray = date.split(firstSeparator);
+  const year = findYear(dateArray, fromFormat);
+  let numericYear = parseInt(year);
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'MM' || fromFormat[i] === 'DD') {
+      const index = toFormat.indexOf(fromFormat[i]);
+
+      result[index] = dateArray[i];
+    } else if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
+      const index = toFormat.indexOf(fromFormat[i]);
+
+      result[index] = dateArray[i];
+    }
+  }
+
+  if (toFormat.includes('YY') && year.length > 2 && numericYear < 2000) {
+    const index = toFormat.indexOf('YY');
+
+    numericYear -= 1900;
+    result[index] = numericYear;
+  }
+
+  if (toFormat.includes('YY') && year.length > 2 && numericYear >= 2000) {
+    const index = toFormat.indexOf('YY');
+
+    numericYear -= 2000;
+    result[index] = numericYear;
+  }
+
+  if (toFormat.includes('YYYY') && numericYear < 30) {
+    const index = toFormat.indexOf('YYYY');
+
+    numericYear += 2000;
+    result[index] = numericYear;
+  }
+
+  if (toFormat.includes('YYYY') && numericYear >= 30 && numericYear < 1000) {
+    const index = toFormat.indexOf('YYYY');
+
+    numericYear += 1900;
+    result[index] = numericYear;
+  }
+
+  return result.join(secondSeparator);
+}
+
+function findYear(date, format) {
+  for (let i = 0; i < format.length; i++) {
+    if (format[i] === 'YY' || format[i] === 'YYYY') {
+      return date[i];
+    }
+  }
 }
 
 module.exports = formatDate;
