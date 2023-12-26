@@ -50,6 +50,11 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const ZERO_YEAR = '00';
+  const NINGHTEENTH_YEAR = '19';
+  const THIRTIETH_YEAR = '30';
+  const TWENTIETH_YEAR = '20';
+
   const newDate = [];
 
   const separateFrom = fromFormat.pop();
@@ -71,12 +76,12 @@ function formatDate(date, fromFormat, toFormat) {
         if (fromFormat[i] === 'YYYY') {
           newDate[i] = oldDate[j].slice(-2);
         } else if (fromFormat[j] === 'YY') {
-          if (oldDate[j] === '00') {
-            newDate[i] = '20' + oldDate[j];
-          } else if (+oldDate[j] < 30) {
+          if (oldDate[j] === ZERO_YEAR) {
+            newDate[i] = TWENTIETH_YEAR + oldDate[j];
+          } else if (+oldDate[j] < THIRTIETH_YEAR) {
             newDate[i] = oldDate[j] + oldDate[j];
-          } else if (+oldDate[j] >= 30) {
-            newDate[i] = '19' + oldDate[j];
+          } else if (+oldDate[j] >= THIRTIETH_YEAR) {
+            newDate[i] = NINGHTEENTH_YEAR + oldDate[j];
           }
         }
       }
