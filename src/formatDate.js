@@ -52,11 +52,11 @@
 function formatDate(date, fromFormat, toFormat) {
   const formatedDate = [];
   const dateArr = date.split(fromFormat[fromFormat.length - 1]);
-  const dateObj = {
-    [fromFormat[0]]: dateArr[0],
-    [fromFormat[1]]: dateArr[1],
-    [fromFormat[2]]: dateArr[2],
-  };
+  const dateObj = {};
+
+  for (let dateIter = 0; dateIter < fromFormat.length; dateIter++) {
+    dateObj[fromFormat[dateIter]] = dateArr[dateIter];
+  }
 
   if ('YYYY' in dateObj) {
     dateObj.YY = dateObj.YYYY % 100;
