@@ -35,7 +35,7 @@
  *   ['YY', 'MM', 'DD', '/'],
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
- *
+ **-9+
  * formatDate(
  *   '97/02/18',
  *   ['YY', 'MM', 'DD', '/'],
@@ -50,7 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromFormatArray = date.split(fromFormat[fromFormat.length - 1]);
+
+  let year = null;
+  let month = null;
+  let day = null;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'MM') {
+      month = fromFormatArray[i];
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      year = fromFormatArray[i];
+    }
+
+    if (fromFormat[i] === 'YYYY' && toFormat[i] === 'YY') {
+      year = fromFormatArray[i].slice(-2);
+    }
+
+    if (fromFormat[i === 'YY' && toFormat[i] === 'YYYY']) {
+      if (fromFormatArray[i] < 30) {
+        year = '20' + fromFormatArray[i];
+      }
+
+      if (fromFormatArray[i] >= 30) {
+        year = '19' + fromFormatArray[i];
+      }
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = fromFormatArray[i];
+    }
+  }
+
+  const formattedDate = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'MM') {
+      formattedDate.push(month);
+    }
+
+    if (toFormat[i] === 'YYYY') {
+      formattedDate.push(year);
+    }
+
+    if (toFormat[i] === 'DD') {
+      formattedDate.push(day);
+    }
+  }
+
+  const newSeparator = toFormat[toFormat.length - 1];
+
+  return formattedDate.join(newSeparator);
 }
 
 module.exports = formatDate;
