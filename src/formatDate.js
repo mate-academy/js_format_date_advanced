@@ -50,7 +50,14 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateArray = date.split(fromFormat[3]);
+  const SHORT_YEAR = 'YY';
+  const LONG_YEAR = 'YYYY';
+  const DAY = 'DD';
+  const MONTH = 'MM';
+  const OLD_SEPARATOR = fromFormat[3];
+  const NEW_SEPARATOR = toFormat[3];
+
+  const dateArray = date.split(OLD_SEPARATOR);
   const dateObject = {};
   const result = [];
 
@@ -59,26 +66,32 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (const element of toFormat) {
-    for (const key in dateObject) {
-      if (element === key) {
-        result.push(dateObject[key]);
-      }
+    if (element === DAY) {
+      result.push(dateObject[DAY]);
+    }
 
-      if (element === 'YY' && key === 'YYYY') {
-        result.push(dateObject[key].slice(2));
-      }
+    if (element === MONTH) {
+      result.push(dateObject[MONTH]);
+    }
 
-      if (key === 'YY' && element === 'YYYY') {
-        if (+dateObject[key] < 30) {
-          result.push(`20${dateObject[key]}`);
-        } else {
-          result.push(`19${dateObject[key]}`);
-        }
+    if (element === SHORT_YEAR && dateObject.hasOwnProperty(LONG_YEAR)) {
+      result.push(dateObject[LONG_YEAR].slice(2));
+    }
+
+    if (element === LONG_YEAR && dateObject.hasOwnProperty(SHORT_YEAR)) {
+      if (+dateObject[SHORT_YEAR] < 30) {
+        result.push(`20${dateObject[SHORT_YEAR]}`);
+      } else {
+        result.push(`19${dateObject[SHORT_YEAR]}`);
       }
+    }
+
+    if (element === LONG_YEAR && dateObject.hasOwnProperty(LONG_YEAR)) {
+      result.push(dateObject[LONG_YEAR]);
     }
   }
 
-  return result.join(toFormat[3]);
+  return result.join(NEW_SEPARATOR);
 }
 
 module.exports = formatDate;
