@@ -54,8 +54,8 @@ function formatDate(date, fromFormat, toFormat) {
 
   let month = null;
   let day = null;
-  let shortYear = null;
-  let longYear = null;
+  let year = null;
+  let isLongYear = false;
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'DD') {
@@ -67,11 +67,12 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (fromFormat[i] === 'YY') {
-      shortYear = fromFormatArray[i];
+      year = fromFormatArray[i];
     }
 
     if (fromFormat[i] === 'YYYY') {
-      longYear = fromFormatArray[i];
+      year = fromFormatArray[i];
+      isLongYear = true;
     }
   }
 
@@ -86,20 +87,24 @@ function formatDate(date, fromFormat, toFormat) {
       formattedDate.push(month);
     }
 
-    if (toFormat[i] === 'YYYY') {
-      if (longYear) {
-        formattedDate.push(longYear);
+    if (toFormat[i] === 'YYYY' && isLongYear) {
+      formattedDate.push(year);
+    }
+
+    if (toFormat[i] === 'YYYY' && !isLongYear) {
+      if (year < 30) {
+        formattedDate.push('20' + year);
       } else {
-        formattedDate.push((shortYear < 30 ? '20' : '19') + shortYear);
+        formattedDate.push('19' + year);
       }
     }
 
-    if (toFormat[i] === 'YY') {
-      if (shortYear) {
-        formattedDate.push(shortYear);
-      } else {
-        formattedDate.push(longYear.slice(-2));
-      }
+    if (toFormat[i] === 'YY' && !isLongYear) {
+      formattedDate.push(year);
+    }
+
+    if (toFormat[i] === 'YY' && isLongYear) {
+      formattedDate.push(year.slice(-2));
     }
   }
 
