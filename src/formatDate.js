@@ -59,22 +59,26 @@ function formatDate(date, fromFormat, toFormat) {
   let yearFormatShort;
   let yearFormatLong;
 
-  if (toFormat.includes('YYYY')
-  && (fromFormat.includes('YY'))) {
-    yearFormatShort = dateParts[fromFormat.indexOf('YY')];
-    yearFormatLong = (yearFormatShort > 29 ? '19' : '20') + yearFormatShort;
+  switch (true) {
+    case toFormat.includes('YYYY') && fromFormat.includes('YY'):
+      yearFormatShort = dateParts[fromFormat.indexOf('YY')];
 
-    dateParts[dateParts.indexOf(yearFormatShort)] = yearFormatLong;
-    fromFormat[fromFormat.indexOf('YY')] = 'YYYY';
-  }
+      if (yearFormatShort > 29) {
+        yearFormatLong = '19' + yearFormatShort;
+      } else {
+        yearFormatLong = '20' + yearFormatShort;
+      }
 
-  if (toFormat.includes('YY')
-  && (fromFormat.includes('YYYY'))) {
-    yearFormatLong = dateParts[fromFormat.indexOf('YYYY')];
-    yearFormatShort = yearFormatLong.slice(2);
+      dateParts[dateParts.indexOf(yearFormatShort)] = yearFormatLong;
+      fromFormat[fromFormat.indexOf('YY')] = 'YYYY';
+      break;
 
-    fromFormat[fromFormat.indexOf('YYYY')] = 'YY';
-    dateParts[dateParts.indexOf(yearFormatLong)] = yearFormatShort;
+    case toFormat.includes('YY') && fromFormat.includes('YYYY'):
+      yearFormatLong = dateParts[fromFormat.indexOf('YYYY')];
+      yearFormatShort = yearFormatLong.slice(2);
+
+      fromFormat[fromFormat.indexOf('YYYY')] = 'YY';
+      dateParts[dateParts.indexOf(yearFormatLong)] = yearFormatShort;
   }
 
   for (let i = 0; i <= fromFormat.length - 2; i++) {
