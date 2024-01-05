@@ -73,9 +73,9 @@ function formatDate(date, fromFormat, toFormat) {
         } else if (fromFormat[j] === 'YY') {
           if (oldDate[j] === '00') {
             newDate[i] = '20' + oldDate[j];
-          } else if (+oldDate[j] < 30) {
+          } else if (oldDate[j] < 30) {
             newDate[i] = oldDate[j] + oldDate[j];
-          } else if (+oldDate[j] >= 30) {
+          } else {
             newDate[i] = '19' + oldDate[j];
           }
         }
