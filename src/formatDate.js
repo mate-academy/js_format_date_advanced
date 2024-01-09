@@ -67,7 +67,6 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < oldDateArray.length; i++) {
     const dateKey = toFormat[i];
-    const dateValue = dateObj[dateKey];
     const hasCorrectYearFormat = Object.prototype.hasOwnProperty
       .call(dateObj, dateKey);
 
@@ -77,7 +76,7 @@ function formatDate(date, fromFormat, toFormat) {
 
       newDateArray.push(convertedYear);
     } else {
-      newDateArray.push(dateValue);
+      newDateArray.push(dateObj[dateKey]);
     }
   }
 
