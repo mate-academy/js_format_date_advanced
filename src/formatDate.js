@@ -55,8 +55,6 @@ function formatDate(date, fromFormat, toFormat) {
   let index;
 
   for (let i = 0; i < 3; i++) {
-    // console.log(toFormat[i]);
-
     switch (toFormat[i]) {
       case 'YY':
         if (fromFormat.indexOf('YY') >= 0) {
