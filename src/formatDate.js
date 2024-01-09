@@ -71,8 +71,7 @@ function formatDate(date, fromFormat, toFormat) {
       .call(dateObj, dateKey);
 
     if (!hasCorrectYearFormat) {
-      const currentYear = dateObj.year;
-      const convertedYear = changeYearFormat(dateKey, currentYear);
+      const convertedYear = changeYearFormat(dateKey, dateObj.year);
 
       newDateArray.push(convertedYear);
     } else {
