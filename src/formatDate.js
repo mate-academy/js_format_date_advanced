@@ -50,7 +50,59 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const divider = fromFormat[fromFormat.length - 1];
+  const toDivider = toFormat[toFormat.length - 1];
+  const splittedComingDate = date.split(divider);
+
+  const comingYearIndex = fromFormat.findIndex((value) => value[0] === 'Y');
+  const comingMonthIndex = fromFormat.findIndex((value) => value[0] === 'M');
+  const comingDayIndex = fromFormat.findIndex((value) => value[0] === 'D');
+
+  const comingYear = splittedComingDate[comingYearIndex];
+  const comingMonth = splittedComingDate[comingMonthIndex];
+  const comingDay = splittedComingDate[comingDayIndex];
+
+  let formattedDate = '';
+
+  for (const format of toFormat) {
+    switch (format[0]) {
+      case 'Y':
+        const comingYearLength = fromFormat[comingYearIndex].length;
+        const comingFormatIsDifferent = format.length !== comingYearLength;
+
+        if (comingFormatIsDifferent) {
+          if (format.length === 4) {
+            // we are here in case we have 2-digits year
+            // in `date` and `fromFormat
+            formattedDate += comingYear < 30 ? 20 : 19;
+            formattedDate += comingYear;
+            break;
+          }
+
+          // we are here in case we have 4-digits year
+          // in `date` and `fromFormat
+          formattedDate += comingYear.slice(2, 4);
+          break;
+        }
+
+        formattedDate += comingYear;
+        break;
+      case 'M':
+        formattedDate += comingMonth;
+        break;
+      case 'D':
+        formattedDate += comingDay;
+        break;
+      default:
+        break;
+    }
+
+    if (toFormat.indexOf(format) <= 1) {
+      formattedDate += toDivider;
+    }
+  }
+
+  return formattedDate;
 }
 
 module.exports = formatDate;
