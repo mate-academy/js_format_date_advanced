@@ -53,24 +53,21 @@ function formatDate(date, fromFormat, toFormat) {
   const dateToArray = date.split(fromFormat[3]);
   const newDate = [];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    for (let y = 0; y < fromFormat.length - 1; y++) {
-      if (toFormat[i] === fromFormat[y]) {
-        newDate[i] = dateToArray[y];
+  for (const newValue of toFormat) {
+    for (const oldValue of fromFormat) {
+      if (newValue === oldValue) {
+        newDate[newValue] = dateToArray[oldValue];
       }
 
-      if (toFormat[i] === 'YY' && fromFormat[y] === 'YYYY') {
-        newDate[i] = dateToArray[y].slice(2);
+      if (newValue === 'YY' && oldValue === 'YYYY') {
+        newDate[newValue] = dateToArray[oldValue].slice(2);
       }
 
-      if (toFormat[i] === 'YYYY' && fromFormat[y] === 'YY'
-      && dateToArray[y] < 30) {
-        newDate[i] = '20' + dateToArray[y];
-      }
-
-      if (toFormat[i] === 'YYYY' && fromFormat[y] === 'YY'
-      && dateToArray[y] >= 30) {
-        newDate[i] = '19' + dateToArray[y];
+      if (newValue === 'YYYY' && oldValue === 'YY'
+      && dateToArray[oldValue] < 30) {
+        newDate[newValue] = '20' + dateToArray[oldValue];
+      } else {
+        newDate[newValue] = '19' + dateToArray[oldValue];
       }
     }
   }
