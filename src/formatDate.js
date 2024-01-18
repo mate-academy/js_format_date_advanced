@@ -51,23 +51,23 @@
 
 function formatDate(date, fromFormat, toFormat) {
   const dateSplit = date.split(fromFormat[fromFormat.length - 1]);
-  const dateArr = [];
+  const dateObject = [];
 
   fromFormat.forEach((i, j) => {
-    dateArr[i] = dateSplit[j];
+    dateObject[i] = dateSplit[j];
   });
 
-  if (dateArr.YYYY) {
-    dateArr.YY = dateArr.YYYY.slice(-2);
+  if (dateObject.YYYY) {
+    dateObject.YY = dateObject.YYYY.slice(-2);
   } else {
-    dateArr.YYYY = dateArr.YY < 30
-      ? `20${dateArr.YY}`
-      : `19${dateArr.YY}`;
+    dateObject.YYYY = dateObject.YY < 30
+      ? `20${dateObject.YY}`
+      : `19${dateObject.YY}`;
   }
 
   const newDate = toFormat
     .slice(0, -1)
-    .map(format => dateArr[format]);
+    .map(format => dateObject[format]);
 
   return newDate.join(toFormat[toFormat.length - 1]);
 }
