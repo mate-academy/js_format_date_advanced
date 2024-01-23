@@ -49,8 +49,70 @@
  * @returns {string}
  */
 
+const INDEX_OF_SIGN = 3;
+const YEAR = 'Y';
+const MONTH = 'M';
+const DAY = 'D';
+const FIRST = 1;
+const THIRD = 2;
+const LONG_YEAR_FORMAT = 4;
+const SHORT_YEAR_FORMAT = 2;
+const TWENTIETH_CENTURY = '19';
+const TWENTY_FIRST_CENTURY = '20';
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const splitSign = fromFormat[INDEX_OF_SIGN];
+
+  const joinSign = toFormat[INDEX_OF_SIGN];
+
+  const dateData = date.split(splitSign);
+
+  const resultArray = { ...dateData };
+
+  const indexOfYearFromFormat = findIndexOfData(fromFormat, YEAR);
+  const indexOfMonthFromFormat = findIndexOfData(fromFormat, MONTH);
+  const indexOfDayFromFormat = findIndexOfData(fromFormat, DAY);
+
+  const indexOfYearToFormat = findIndexOfData(toFormat, YEAR);
+  const indexOfMonthToFormat = findIndexOfData(toFormat, MONTH);
+  const indexOfDayToFormat = findIndexOfData(toFormat, DAY);
+
+  resultArray[indexOfYearToFormat] = convertYear(
+    dateData[indexOfYearFromFormat], fromFormat, toFormat
+  );
+  resultArray[indexOfMonthToFormat] = dateData[indexOfMonthFromFormat];
+  resultArray[indexOfDayToFormat] = dateData[indexOfDayFromFormat];
+
+  return Object.values(resultArray).join(joinSign);
+}
+
+function findIndexOfData(format, type) {
+  for (let i = 0; i < INDEX_OF_SIGN; i++) {
+    if (format[i][FIRST] === type) {
+      return i;
+    }
+  }
+}
+
+function convertYear(year, fromFormat, toFormat) {
+  const fromLength = findLength(fromFormat);
+  const toLength = findLength(toFormat);
+
+  if (fromLength === LONG_YEAR_FORMAT && toLength === SHORT_YEAR_FORMAT) {
+    return year.slice(THIRD);
+  } else if (fromLength === SHORT_YEAR_FORMAT
+    && toLength === LONG_YEAR_FORMAT) {
+    return (Number(year) < 30) ? TWENTY_FIRST_CENTURY.concat(year)
+      : TWENTIETH_CENTURY.concat(year);
+  } else {
+    return year;
+  }
+}
+
+function findLength(format) {
+  const index = findIndexOfData(format, YEAR);
+
+  return format[index].length;
 }
 
 module.exports = formatDate;
