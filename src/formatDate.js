@@ -70,15 +70,12 @@ function formatDate(date, fromFormat, toFormat) {
         if (fromFormat[i].length === 2 && +copyDate[i] < 30) {
           year = '20' + copyDate[i];
         }
-
         break;
 
       case 'M': month = copyDate[i];
-
         break;
 
       case 'D': day = copyDate[i];
-      
         break;
 
       default:
