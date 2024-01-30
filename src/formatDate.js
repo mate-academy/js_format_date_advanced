@@ -59,7 +59,7 @@ function formatDate(date, fromFormat, toFormat) {
   const delimiterToFormat = toFormat[3];
   const arrDate = date.split(delimiterFromFormat);
 
-  arrDate.map((item, i) => {
+  arrDate.forEach((item, i) => {
     objDate[fromFormat[i]] = item;
   });
 
