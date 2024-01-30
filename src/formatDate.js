@@ -49,8 +49,44 @@
  * @returns {string}
  */
 
+const MONTH_SCHEMA = 'YY';
+const YEAR_SCHEMA = 'YYYY';
+const CENTURY_THRESHOLD = 30;
+const CENTURY_PREFIX_21 = 20;
+const CENTURY_PREFIX_20 = 19;
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const parsedDate = {};
+  const formattedDate = [];
+  const delimiterFromFormat = fromFormat[3];
+  const delimiterToFormat = toFormat[3];
+  const splittedDate = date.split(delimiterFromFormat);
+
+  splittedDate.forEach((item, i) => {
+    parsedDate[fromFormat[i]] = item;
+  });
+
+  const keysDate = Object.keys(parsedDate);
+
+  toFormat.forEach((item, i) => {
+    if (item === MONTH_SCHEMA && !keysDate.includes(item)) {
+      formattedDate.push((parsedDate[YEAR_SCHEMA]).slice(2));
+    }
+
+    if (item === YEAR_SCHEMA && !keysDate.includes(item)) {
+      const year = `${parsedDate[MONTH_SCHEMA] < CENTURY_THRESHOLD
+        ? CENTURY_PREFIX_21
+        : CENTURY_PREFIX_20}${parsedDate[MONTH_SCHEMA]}`;
+
+      formattedDate.push(year);
+    }
+
+    if (keysDate.includes(item)) {
+      formattedDate.push(parsedDate[item]);
+    }
+  });
+
+  return formattedDate.join(delimiterToFormat);
 }
 
 module.exports = formatDate;
