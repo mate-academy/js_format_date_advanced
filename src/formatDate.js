@@ -65,19 +65,15 @@ function formatDate(date, fromFormat, toFormat) {
 
   const keysDate = Object.keys(objDate);
 
-  toFormat.map((item, i) => {
+  toFormat.forEach((item, i) => {
     if (item === YY && !keysDate.includes(item)) {
       arrDateResult.push((objDate[YYYY]).slice(2));
-
-      return true;
     }
 
     if (item === YYYY && !keysDate.includes(item)) {
       const year = `${objDate[YY] < 30 ? 20 : 19}${objDate[YY]}`;
 
       arrDateResult.push(year);
-
-      return true;
     }
 
     if (keysDate.includes(item)) {
