@@ -65,10 +65,9 @@ function formatDate(date, fromFormat, toFormat) {
     dateParts['YY'] = dateParts['YYYY'].substring(2, 4);
   }
 
-  const newDate = toFormat.slice(0, 3)
-    .map(format => dateParts[format] || format);
-
-  return newDate.join(toFormat[3]);
+  return toFormat.slice(0, 3)
+    .map(format => dateParts[format] || format)
+    .join(toFormat[3]);
 }
 
 module.exports = formatDate;
