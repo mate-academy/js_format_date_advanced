@@ -36,10 +36,9 @@
  *   ['YYYY', 'MM', 'DD', '.'],
  * ) // '2020.02.18'
  *
- * formatDate(
- *   '97/02/18',
- *   ['YY', 'MM', 'DD', '/'],
- *   ['DD', 'MM', 'YYYY', '.'],
+ * formatDate('97/02/18',
+ * ['YY', 'MM', 'DD', '/'],
+ * ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
  * @param {string} date
@@ -50,7 +49,26 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = {};
+  const separator = fromFormat[3];
+  const dateValues = date.split(separator);
+
+  for (let i = 0; i < 3; i++) {
+    dateParts[fromFormat[i]] = dateValues[i];
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    dateParts['YYYY'] = parseInt(dateParts['YY']) < 30
+      ? '20' + dateParts['YY']
+      : '19' + dateParts['YY'];
+  } else if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    dateParts['YY'] = dateParts['YYYY'].substring(2, 4);
+  }
+
+  const newDate = toFormat.slice(0, 3)
+    .map(format => dateParts[format] || format);
+
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
