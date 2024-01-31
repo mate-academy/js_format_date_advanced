@@ -66,7 +66,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return toFormat.slice(0, 3)
-    .map(format => dateParts[format] || format)
+    .map(format => dateParts[format])
     .join(toFormat[3]);
 }
 
