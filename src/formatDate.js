@@ -52,20 +52,20 @@
 function formatDate(date, fromFormat, toFormat) {
   let resultDate = '';
   const objectDateFormat = {};
-  const dateSplitted = date.split(fromFormat[fromFormat.length - 1]);
+  const splitter = fromFormat[fromFormat.length - 1];
+  const dateSplitted = date.split(splitter);
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    const less = dateSplitted[i] < 30;
-    const more = dateSplitted[i] >= 30;
+    const currentCentury = dateSplitted[i] < 30;
+    const pastCentury = dateSplitted[i] >= 30;
+    const formatCondition = fromFormat[i] === 'YY' && toFormat.includes('YYYY');
 
-    if (fromFormat[i] === 'YY' && toFormat.includes('YYYY') && less) {
+    if (formatCondition && currentCentury) {
       objectDateFormat.YYYY = '20' + dateSplitted[i];
-    } else if (fromFormat[i] === 'YY' && toFormat.includes('YYYY') && more) {
+    } else if (formatCondition && pastCentury) {
       objectDateFormat.YYYY = '19' + dateSplitted[i];
-    }
-
-    if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
-      objectDateFormat.YY = dateSplitted[i][2] + dateSplitted[i][3];
+    } else if (fromFormat[i] === 'YYYY' && toFormat.includes('YY')) {
+      objectDateFormat.YY = dateSplitted[i].slice(2);
     } else {
       objectDateFormat[fromFormat[i]] = dateSplitted[i];
     }
