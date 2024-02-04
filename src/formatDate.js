@@ -48,9 +48,67 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const currentSeparator = fromFormat[3];
+  const dateSplited = date.split(currentSeparator);
+  const [oldYear, month, day] = splitOldDate(dateSplited, fromFormat);
+  const newYear = setNewYear(oldYear, toFormat);
+  const newDayMonthYear = [day, month, newYear];
+  const correctDate = setCorrectDate(newDayMonthYear, toFormat);
+
+  return correctDate;
+}
+
+function splitOldDate(date, fromFormat) {
+  const oldYearMonthDay = [];
+
+  if (fromFormat.indexOf('YY') >= 0) {
+    oldYearMonthDay.push(date[fromFormat.indexOf('YY')]);
+  } else {
+    oldYearMonthDay.push(date[fromFormat.indexOf('YYYY')]);
+  }
+
+  oldYearMonthDay.push(date[fromFormat.indexOf('MM')]);
+  oldYearMonthDay.push(date[fromFormat.indexOf('DD')]);
+
+  return oldYearMonthDay;
+}
+
+function setNewYear(oldYear, toFormat) {
+  const SHORT_YEAR_FORMAT_LENGTH = 2;
+  const LONG_YEAR_FORMAT_LENGTH = 4;
+  const CENTURE_19 = '19';
+  const CENTURE_20 = '20';
+
+  if (toFormat.includes('YY') && oldYear.length !== SHORT_YEAR_FORMAT_LENGTH) {
+    return oldYear.slice(2);
+  }
+
+  if (toFormat.includes('YYYY') && oldYear.length !== LONG_YEAR_FORMAT_LENGTH) {
+    if (oldYear < 30) {
+      return CENTURE_20 + oldYear;
+    }
+
+    return CENTURE_19 + oldYear;
+  }
+
+  return oldYear;
+}
+
+function setCorrectDate([day, month, year], toFormat) {
+  const newSeparator = toFormat[3];
+  const indexOfDay = toFormat.indexOf('DD');
+  const indexOfMonth = toFormat.indexOf('MM');
+  const indexOfYear = toFormat.includes('YY')
+    ? toFormat.indexOf('YY')
+    : toFormat.indexOf('YYYY');
+  const correctDate = [];
+
+  correctDate[indexOfDay] = day;
+  correctDate[indexOfMonth] = month;
+  correctDate[indexOfYear] = year;
+
+  return correctDate.join(newSeparator);
 }
 
 module.exports = formatDate;
