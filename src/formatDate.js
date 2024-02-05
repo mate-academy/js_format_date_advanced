@@ -58,9 +58,7 @@ function formatDate(date, fromFormat, toFormat) {
   const SHORT_YEAR = 'YY';
   const FULL_YEAR = 'YYYY';
 
-  let dayValue;
-  let monthValue;
-  let yearValue;
+  let dayValue, monthValue, yearValue;
 
   const dateArray = date.split(FROM_SEPARATOR);
   const result = [];
@@ -74,8 +72,6 @@ function formatDate(date, fromFormat, toFormat) {
         monthValue = dateArray[i];
         break;
       case SHORT_YEAR:
-        yearValue = dateArray[i];
-        break;
       case FULL_YEAR:
         yearValue = dateArray[i];
         break;
@@ -91,10 +87,7 @@ function formatDate(date, fromFormat, toFormat) {
         result.push(monthValue);
         break;
       case SHORT_YEAR:
-        if (yearValue.length > 2) {
-          yearValue = yearValue.slice(2);
-        }
-        result.push(yearValue);
+        result.push(yearValue.slice(-2));
         break;
       case FULL_YEAR:
         if (yearValue.length < 4) {
