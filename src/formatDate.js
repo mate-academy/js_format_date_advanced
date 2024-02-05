@@ -51,6 +51,44 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const firstSeparator = fromFormat[fromFormat.length - 1];
+  const dateItems = date.split(firstSeparator);
+  const obj = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    obj[fromFormat[i]] = dateItems[i];
+  }
+
+  const obj2 = {};
+  const secondSeparator = toFormat[fromFormat.length - 1];
+  const fromFormatTemp = Array.from(fromFormat).sort();
+  const toFormatTemp = Array.from(toFormat).sort();
+
+  for (let i = 0; i < fromFormatTemp.length; i++) {
+    let year = 0;
+
+    if (fromFormatTemp[i].length > toFormatTemp[i].length) {
+      year = obj[fromFormatTemp[i]].slice(2);
+    } else if (fromFormatTemp[i].length < toFormatTemp[i].length) {
+      if (obj[fromFormatTemp[i]] < 30) {
+        year = 2000 + parseInt(obj[fromFormatTemp[i]]);
+      } else {
+        year = 1900 + parseInt(obj[fromFormatTemp[i]]);
+      }
+    } else {
+      year = obj[fromFormatTemp[i]];
+    }
+
+    obj2[toFormatTemp[i]] = year;
+  }
+
+  const finalResult = [];
+
+  for (let i = 0; i < fromFormatTemp.length - 1; i++) {
+    finalResult.push(obj2[toFormat[i]]);
+  }
+
+  return finalResult.join(secondSeparator);
 }
 
 module.exports = formatDate;
