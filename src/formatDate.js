@@ -49,8 +49,106 @@
  * @returns {string}
  */
 
+// function formatDate(date, fromFormat, toFormat) {
+//   let newDate = [];
+
+//   if (date.length === 10 && Number(date[2])) {
+//     newDate = date.split(date[4]);
+//   } else {
+//     newDate = date.split(date[2]);
+//   }
+
+//   if (fromFormat[0] !== toFormat[0]) {
+//     if (fromFormat[2] !== toFormat[2]) {
+//       newDate = newDate.reverse();
+//     }
+//   }
+
+//   if (toFormat[2] === 'YY') {
+//     if (fromFormat[0] === 'YYYY' || fromFormat[2] === 'YYYY') {
+//       newDate[2] = newDate[2].slice(2);
+//     }
+//   }
+
+//   if (toFormat[2] === 'YYYY' && toFormat[2] !== fromFormat[2]) {
+//     if (fromFormat[0] === 'YY' || fromFormat[2] === 'YY') {
+//       if (newDate[2] > 30) {
+//         newDate[2] = '19' + newDate[2];
+//       } else {
+//         newDate[2] = '20' + newDate[2];
+//       }
+//     }
+//   } else if (fromFormat[0] === 'YY' && toFormat[0] === 'YYYY') {
+//     if (newDate[0] >= 30) {
+//       newDate[0] = '19' + newDate[0];
+//     } else {
+//       newDate[0] = '20' + newDate[0];
+//     }
+//   } else if (fromFormat[0] === 'YYYY' && toFormat[0] === 'YY') {
+//     if (newDate[0] >= 30) {
+//       newDate[0] = '19' + newDate[0];
+//     } else {
+//       newDate[0] = '20' + newDate[0];
+//     }
+//   }
+
+//   if (fromFormat[1] === 'YYYY') {
+//     const year = newDate[1];
+
+//     newDate[1] = newDate[2];
+//     newDate[2] = year;
+//   }
+
+//   return newDate.join(toFormat[3]);
+// }
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const start = [];
+  let count = 0;
+  const newDate = getDate(date);
+
+  for (let i = 0; i < newDate.length; i++) {
+    start.push([fromFormat[i], newDate[i]]);
+  }
+
+  while (count < 3) {
+    let index = fromFormat.findIndex((el) => {
+      return el === toFormat[count];
+    });
+
+    if (index === -1) {
+      if (toFormat.includes('YY')) {
+        index = fromFormat.indexOf('YYYY');
+        newDate[count] = (start[index][1]).slice(2, 4);
+      } else {
+        index = fromFormat.indexOf('YY');
+
+        if (start[index][1] >= 30) {
+          newDate[count] = '19' + start[index][1];
+        } else {
+          newDate[count] = '20' + start[index][1];
+        }
+      }
+    } else {
+      newDate[count] = start[index][1];
+    }
+
+    count++;
+  };
+
+  return newDate.join(toFormat[3]);
+}
+
+function getDate(date) {
+  let newDate = [];
+
+  if (date.length === 10 && Number(date[2])) {
+    newDate = date.split(date[4]);
+  } else {
+    newDate = date.split(date[2]);
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
