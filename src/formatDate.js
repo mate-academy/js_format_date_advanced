@@ -51,6 +51,38 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const times = { 'YYYY': 0, 'MM': 0, 'DD': 0 };
+  const res = [];
+
+  for (let j = 0; j < fromFormat.length - 1; j++) {
+    for (let i = 0; i < fromFormat.length - 1; i++) {
+      times[fromFormat[i]] = date.split(fromFormat[3])[i];
+
+      if (fromFormat[i] === 'YYYY' && toFormat[j] === 'YY') {
+        times['YY'] = times['YYYY'].slice(2);
+        delete times['YYYY'];
+      }
+
+      if (fromFormat[i] === 'YY' && toFormat[j] === 'YYYY') {
+        if (times['YY'] >= 30) {
+          times['YYYY'] = `19${times['YY']}`;
+        } else {
+          times['YYYY'] = `20${times['YY']}`;
+        }
+        delete times['YY'];
+      }
+    }
+  }
+
+  for (const type of toFormat) {
+    for (const key in times) {
+      if (key === type) {
+        res.push(times[key]);
+      }
+    }
+  }
+
+  return res.join(`${toFormat[3]}`);
 }
 
 module.exports = formatDate;
