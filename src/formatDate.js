@@ -50,7 +50,87 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // const symbols = '/, -, _, .';
+  const dateParts = date.split(fromFormat[3]);
+  // const separate = date.split('-');
+  // const changesymbol = separate.join(toFormat[3]);
+  const day = 'DD';
+  const month = 'MM';
+  const yearYYYY = 'YYYY';
+  const yearYY = 'YY';
+
+  let pastFormatYear = '';
+
+  const indexDayFromFormat = fromFormat.indexOf(day);
+  const indexMonthFromFormat = fromFormat.indexOf(month);
+  let indexYearFromFormat = 2;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === yearYYYY) {
+      indexYearFromFormat = i;
+      pastFormatYear = yearYYYY;
+    }
+
+    if (fromFormat[i] === yearYY) {
+      indexYearFromFormat = i;
+      pastFormatYear = yearYY;
+    }
+  }
+
+  // const indexDayToFormat  = toFormat.indexOf(day);
+  // const indexMonthToFormat = toFormat.indexOf(month);
+  // const indexYearToFormat = toFormat.indexOf(year);
+  const dayNumber = dateParts[indexDayFromFormat];
+  const monthNumber = dateParts[indexMonthFromFormat];
+  const yearNumber = dateParts[indexYearFromFormat];
+
+  const newDate = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === day) {
+      newDate.push(dayNumber);
+    }
+
+    if (toFormat[i] === month) {
+      newDate.push(monthNumber);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY && (yearNumber === '00' || +yearNumber < 30)) {
+      newDate.push(`20${yearNumber}`);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY && (+yearNumber >= 30)) {
+      newDate.push(`19${yearNumber}`);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYYYY
+      //  && yearNumber.length === 4
+       ) {
+      newDate.push(yearNumber);
+    }
+
+    if (toFormat[i] === yearYY && pastFormatYear === yearYY 
+      // && yearNumber.length === 2
+      ) {
+      newDate.push(yearNumber);
+    }
+    if (toFormat[i] === yearYY && pastFormatYear === yearYYYY
+      && yearNumber.length === 4
+      ) {
+      let xyeta = [];
+      xyeta.push(yearNumber[2])
+      xyeta.push(yearNumber[3])
+      newDate.push(xyeta.join(''));
+    }
+
+  }
+
+  // console.log(dateParts);
+
+  // const newDateString = .toString();
+  const finishDate = newDate.join(toFormat[3])
+
+  return finishDate;
 }
 
 module.exports = formatDate;
