@@ -50,50 +50,30 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const oldDate = date.split(fromFormat[3]);
-  const newDate = [];
+  const dateArray = date.split(fromFormat[3]);
+  const resultDateArray = [];
 
-  const ddIndexFrom = fromFormat.indexOf('DD');
-  const ddIndexTo = toFormat.indexOf('DD');
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const part = toFormat[i];
+    const value = dateArray[fromFormat.indexOf(part)];
 
-  newDate[ddIndexTo] = oldDate[ddIndexFrom];
+    if (part === 'YYYY' && value === undefined) {
+      const valueYY = dateArray[fromFormat.indexOf('YY')];
 
-  const mmIndexFrom = fromFormat.indexOf('MM');
-  const mmIndexTo = toFormat.indexOf('MM');
+      resultDateArray.push(valueYY < 30 ? '20' + valueYY : '19' + valueYY);
+    } else if (part === 'YY') {
+      const valueYYYY = dateArray[fromFormat.indexOf('YYYY')];
 
-  newDate[mmIndexTo] = oldDate[mmIndexFrom];
-
-  let yyIndexFrom;
-  let yyIndexTo;
-
-  switch (true) {
-    case fromFormat.includes('YYYY') && toFormat.includes('YYYY'):
-      yyIndexFrom = fromFormat.indexOf('YYYY');
-      yyIndexTo = toFormat.indexOf('YYYY');
-
-      newDate[yyIndexTo] = oldDate[yyIndexFrom];
-      break;
-
-    case fromFormat.includes('YY') && toFormat.includes('YYYY'):
-      yyIndexFrom = fromFormat.indexOf('YY');
-      yyIndexTo = toFormat.indexOf('YYYY');
-
-      if (+oldDate[yyIndexFrom] < 30) {
-        newDate[yyIndexTo] = '20' + oldDate[yyIndexFrom];
-      } else {
-        newDate[yyIndexTo] = '19' + oldDate[yyIndexFrom];
-      }
-      break;
-
-    case fromFormat.includes('YYYY') && toFormat.includes('YY'):
-      yyIndexFrom = fromFormat.indexOf('YYYY');
-      yyIndexTo = toFormat.indexOf('YY');
-
-      newDate[yyIndexTo] = oldDate[yyIndexFrom].slice(-2);
-      break;
+      resultDateArray.push(valueYYYY.slice(-2));
+    } else {
+      resultDateArray.push(value);
+    }
   }
 
-  return newDate.join(toFormat[3]);
+  const resultDateSeparator = toFormat[3];
+  const result = resultDateArray.join(resultDateSeparator);
+
+  return result;
 }
 
 module.exports = formatDate;
