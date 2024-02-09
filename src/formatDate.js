@@ -50,7 +50,78 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(fromFormat[3]);
+
+  const day = 'DD';
+  const month = 'MM';
+  const yearYYYY = 'YYYY';
+  const yearYY = 'YY';
+
+  let pastFormatYear = '';
+
+  const indexDayFromFormat = fromFormat.indexOf(day);
+  const indexMonthFromFormat = fromFormat.indexOf(month);
+  let indexYearFromFormat = 2;
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === yearYYYY) {
+      indexYearFromFormat = i;
+      pastFormatYear = yearYYYY;
+    }
+
+    if (fromFormat[i] === yearYY) {
+      indexYearFromFormat = i;
+      pastFormatYear = yearYY;
+    }
+  }
+
+  const dayNumber = dateParts[indexDayFromFormat];
+  const monthNumber = dateParts[indexMonthFromFormat];
+  const yearNumber = dateParts[indexYearFromFormat];
+
+  const newDate = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === day) {
+      newDate.push(dayNumber);
+    }
+
+    if (toFormat[i] === month) {
+      newDate.push(monthNumber);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY
+      && (yearNumber === '00' || +yearNumber < 30)) {
+      newDate.push(`20${yearNumber}`);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY
+      && (+yearNumber >= 30)) {
+      newDate.push(`19${yearNumber}`);
+    }
+
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYYYY) {
+      newDate.push(yearNumber);
+    }
+
+    if (toFormat[i] === yearYY && pastFormatYear === yearYY) {
+      newDate.push(yearNumber);
+    }
+
+    if (toFormat[i] === yearYY && pastFormatYear === yearYYYY
+      && yearNumber.length === 4
+    ) {
+      const array = [];
+
+      array.push(yearNumber[2]);
+      array.push(yearNumber[3]);
+      newDate.push(array.join(''));
+    }
+  }
+
+  const finishDate = newDate.join(toFormat[3]);
+
+  return finishDate;
 }
 
 module.exports = formatDate;
