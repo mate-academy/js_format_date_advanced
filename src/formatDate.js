@@ -50,10 +50,8 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // const symbols = '/, -, _, .';
   const dateParts = date.split(fromFormat[3]);
-  // const separate = date.split('-');
-  // const changesymbol = separate.join(toFormat[3]);
+
   const day = 'DD';
   const month = 'MM';
   const yearYYYY = 'YYYY';
@@ -77,9 +75,6 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  // const indexDayToFormat  = toFormat.indexOf(day);
-  // const indexMonthToFormat = toFormat.indexOf(month);
-  // const indexYearToFormat = toFormat.indexOf(year);
   const dayNumber = dateParts[indexDayFromFormat];
   const monthNumber = dateParts[indexMonthFromFormat];
   const yearNumber = dateParts[indexYearFromFormat];
@@ -95,40 +90,36 @@ function formatDate(date, fromFormat, toFormat) {
       newDate.push(monthNumber);
     }
 
-    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY && (yearNumber === '00' || +yearNumber < 30)) {
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY
+      && (yearNumber === '00' || +yearNumber < 30)) {
       newDate.push(`20${yearNumber}`);
     }
 
-    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY && (+yearNumber >= 30)) {
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYY
+      && (+yearNumber >= 30)) {
       newDate.push(`19${yearNumber}`);
     }
 
-    if (toFormat[i] === yearYYYY && pastFormatYear === yearYYYY
-      //  && yearNumber.length === 4
-       ) {
+    if (toFormat[i] === yearYYYY && pastFormatYear === yearYYYY) {
       newDate.push(yearNumber);
     }
 
-    if (toFormat[i] === yearYY && pastFormatYear === yearYY 
-      // && yearNumber.length === 2
-      ) {
+    if (toFormat[i] === yearYY && pastFormatYear === yearYY) {
       newDate.push(yearNumber);
     }
+
     if (toFormat[i] === yearYY && pastFormatYear === yearYYYY
       && yearNumber.length === 4
-      ) {
-      let xyeta = [];
-      xyeta.push(yearNumber[2])
-      xyeta.push(yearNumber[3])
-      newDate.push(xyeta.join(''));
-    }
+    ) {
+      const array = [];
 
+      array.push(yearNumber[2]);
+      array.push(yearNumber[3]);
+      newDate.push(array.join(''));
+    }
   }
 
-  // console.log(dateParts);
-
-  // const newDateString = .toString();
-  const finishDate = newDate.join(toFormat[3])
+  const finishDate = newDate.join(toFormat[3]);
 
   return finishDate;
 }
