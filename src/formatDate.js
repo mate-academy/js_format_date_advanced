@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
       const valueYY = dateArray[fromFormat.indexOf('YY')];
 
       resultDateArray.push(valueYY < 30 ? '20' + valueYY : '19' + valueYY);
-    } else if (part === 'YY') {
+    } else if (part === 'YY' && value === undefined) {
       const valueYYYY = dateArray[fromFormat.indexOf('YYYY')];
 
       resultDateArray.push(valueYYYY.slice(-2));
