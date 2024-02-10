@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 /**
@@ -50,7 +51,54 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDateSeparator = fromFormat[3];
+  const newDateSeparator = toFormat[3];
+
+  const newFormatParts = toFormat.slice(0, 3);
+
+  const dateParts = date.split(oldDateSeparator);
+
+  let year = '';
+  let month = '';
+  let day = '';
+
+  fromFormat.forEach((part, index) => {
+    if (part === 'YYYY' || part === 'YY') {
+      year = dateParts[index];
+    } else if (part === 'MM') {
+      month = dateParts[index];
+    } else if (part === 'DD') {
+      day = dateParts[index];
+    }
+  });
+
+  if (newFormatParts.includes('YYYY')) {
+    if (year.length === 2) {
+      year = (Number(year) < 30) ? '20' + year : '19' + year;
+    }
+  } else if (newFormatParts.includes('YY')) {
+    year = (year.length === 4) ? year.slice(2) : year;
+  }
+
+  const formattedDateParts = newFormatParts.map(part => {
+    if (part === 'YYYY') {
+      return year;
+    }
+
+    if (part === 'YY') {
+      return year;
+    }
+
+    if (part === 'MM') {
+      return month;
+    }
+
+    if (part === 'DD') {
+      return day;
+    }
+  });
+
+  return formattedDateParts.join(newDateSeparator);
 }
 
 module.exports = formatDate;
