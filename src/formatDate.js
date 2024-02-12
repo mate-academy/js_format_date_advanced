@@ -5,8 +5,8 @@
  * date format. Create a `formatDate` function that accepts the `date` string,
  * the old `fromFormat` array and the new `toFormat` array. Function returns
  * given date in new format.
- *   The functionge a separator, reorder the date parts of convert a
- * year from 4 digits to 2 digits and back.n can cha
+ *   The function can change a separator, reorder the date parts of convert a
+ * year from 4 digits to 2 digits and back.
  *   When converting from YYYY to YY just use 2 last digit (1997 -> 97).
  *   When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise.
  *
