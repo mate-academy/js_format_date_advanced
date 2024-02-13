@@ -56,17 +56,25 @@ function formatDate(date, fromFormat, toFormat) {
   let month = '';
   let year = '';
   const devider = toFormat[toFormat.length - 1];
+  const formatDay = 'DD';
+  const formatMonth = 'MM';
+  const formatYearFourChars = 'YYYY';
+  const formatYearTwoChars = 'YY';
+  const toTwentyFirstCentury = 2000;
+  const toTwentiethCentury = 1900;
+  const limitYearForCentury = 30;
 
   for (let i = 0; i < dayParts.length; i++) {
-    if (fromFormat[i] === 'DD') {
+    if (fromFormat[i] === formatDay) {
       day = dayParts[i];
     }
 
-    if (fromFormat[i] === 'MM') {
+    if (fromFormat[i] === formatMonth) {
       month = dayParts[i];
     }
 
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+    if (fromFormat[i] === formatYearFourChars
+      || fromFormat[i] === formatYearTwoChars) {
       year = dayParts[i];
     }
   }
@@ -74,18 +82,18 @@ function formatDate(date, fromFormat, toFormat) {
   let formattedDate = '';
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY') {
+    if (toFormat[i] === formatYearFourChars) {
       if (year.length === 2) {
         let yearToNum = parseInt(year, 10);
 
-        if (yearToNum < 30) {
-          yearToNum += 2000;
+        if (yearToNum < limitYearForCentury) {
+          yearToNum += toTwentyFirstCentury;
         } else {
-          yearToNum += 1900;
+          yearToNum += toTwentiethCentury;
         }
 
         year = yearToNum.toString();
-      } else if (toFormat[i] === 'YY') {
+      } else if (toFormat[i] === formatYearTwoChars) {
         if (year.length === 4) {
           year = year.slice(2);
         }
@@ -94,14 +102,21 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'MM') {
-      formattedDate += month + devider;
-    } else if (toFormat[i] === 'DD') {
-      formattedDate += day + devider;
-    } else if (toFormat[i] === 'YYYY') {
-      formattedDate += year + devider;
-    } else if (toFormat[i] === 'YY') {
-      formattedDate += year.slice(2) + devider;
+    switch (toFormat[i]) {
+      case formatMonth:
+        formattedDate += month + devider;
+        break;
+      case formatDay:
+        formattedDate += day + devider;
+        break;
+      case formatYearFourChars:
+        formattedDate += year + devider;
+        break;
+      case formatYearTwoChars:
+        formattedDate += year.slice(2) + devider;
+        break;
+      default:
+        break;
     }
   }
 
