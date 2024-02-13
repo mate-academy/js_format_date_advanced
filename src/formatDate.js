@@ -69,9 +69,6 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        year = dateArray[i];
-        break;
-
       case 'YYYY':
         year = dateArray[i];
         break;
@@ -89,7 +86,7 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        toFormatDate.push(year[2] + year[3]);
+        toFormatDate.push(year.slice(-2));
         break;
 
       case 'YYYY':
