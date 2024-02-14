@@ -55,26 +55,38 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(separatorFrom);
   const dateObjFrom = {};
   const newDateArr = [];
+  const yearTwoDigitsFormat = 'YY';
+  const yearFourDigitsFormat = 'YYYY';
+  const month = 'MM';
+  const day = 'DD';
 
-  for (let i = 0; i < dateArr.length; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     dateObjFrom[fromFormat[i]] = dateArr[i];
   }
 
-  for (let j = 0; j < dateArr.length; j++) {
-    if (dateObjFrom[toFormat[j]]) {
-      newDateArr.push(dateObjFrom[toFormat[j]]);
-    } else if (dateObjFrom['YY'] < 30) {
-      dateObjFrom['YY'] = `20${dateObjFrom['YY']}`;
-      newDateArr.push(dateObjFrom['YY']);
-    } else if (dateObjFrom['YY'] >= 30) {
-      dateObjFrom['YY'] = `19${dateObjFrom['YY']}`;
-      newDateArr.push(dateObjFrom['YY']);
-    } else {
-      dateObjFrom['YYYY'] = dateObjFrom['YYYY']
-        .split('')
-        .splice(-2, 2)
-        .join('');
-      newDateArr.push(dateObjFrom['YYYY']);
+  for (const formatPart of toFormat) {
+    switch (formatPart) {
+      case yearTwoDigitsFormat:
+        const yearShort = dateObjFrom[yearFourDigitsFormat] % 100;
+
+        newDateArr.push(yearShort < 10 ? `0${yearShort}` : `${yearShort}`);
+        break;
+      case yearFourDigitsFormat:
+        let yearLong = dateObjFrom[yearTwoDigitsFormat];
+
+        if (yearLong) {
+          yearLong = Number(yearLong) < 30 ? `20${yearLong}` : `19${yearLong}`;
+        } else {
+          yearLong = dateObjFrom[yearFourDigitsFormat];
+        }
+        newDateArr.push(yearLong);
+        break;
+      case month:
+        newDateArr.push(dateObjFrom[month]);
+        break;
+      case day:
+        newDateArr.push(dateObjFrom[day]);
+        break;
     }
   }
 
