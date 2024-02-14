@@ -49,12 +49,12 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  const DAY = 'DD';
-  const MONTH = 'MM';
-  const YEAR_SHORT = 'YY';
-  const YEAR_LONG = 'YYYY';
+const DAY = 'DD';
+const MONTH = 'MM';
+const YEAR_SHORT = 'YY';
+const YEAR_LONG = 'YYYY';
 
+function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromFormat[3]);
 
   const day = dateArr[fromFormat.indexOf(DAY)];
