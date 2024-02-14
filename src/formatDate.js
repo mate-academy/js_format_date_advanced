@@ -50,41 +50,46 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
+  const DAY = 'DD';
+  const MONTH = 'MM';
+  const YEAR_SHORT = 'YY';
+  const YEAR_LONG = 'YYYY';
+
   const dateArr = date.split(fromFormat[3]);
 
-  const day = dateArr[fromFormat.indexOf('DD')];
-  const month = dateArr[fromFormat.indexOf('MM')];
-  let year = dateArr[fromFormat.indexOf('YY')];
+  const day = dateArr[fromFormat.indexOf(DAY)];
+  const month = dateArr[fromFormat.indexOf(MONTH)];
+  let year = dateArr[fromFormat.indexOf(YEAR_SHORT)];
 
   if (!year) {
-    year = dateArr[fromFormat.indexOf('YYYY')];
+    year = dateArr[fromFormat.indexOf(YEAR_LONG)];
   }
 
-  const result = [];
+  const newFormatDate = [];
 
   for (let i = 0; i < 3; i++) {
     switch (toFormat[i]) {
-      case 'DD':
-        result.push(day);
+      case DAY:
+        newFormatDate.push(day);
         break;
-      case 'MM':
-        result.push(month);
+      case MONTH:
+        newFormatDate.push(month);
         break;
-      case 'YY':
+      case YEAR_SHORT:
         if (year.length === 2) {
-          result.push(year);
+          newFormatDate.push(year);
         } else {
-          result.push(year.slice(-2));
+          newFormatDate.push(year.slice(-2));
         }
         break;
-      case 'YYYY':
+      case YEAR_LONG:
         if (year.length === 4) {
-          result.push(year);
+          newFormatDate.push(year);
         } else {
           if (+year < 30) {
-            result.push(`20${year}`);
+            newFormatDate.push(`20${year}`);
           } else {
-            result.push(`19${year}`);
+            newFormatDate.push(`19${year}`);
           }
         }
         break;
@@ -93,7 +98,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return result.join(toFormat[3]);
+  return newFormatDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
