@@ -51,6 +51,44 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  const OLD_SEPARATOR = fromFormat[3];
+  const NEW_SEPARATOR = toFormat[3];
+  const OLD_DATE = date.split(OLD_SEPARATOR);
+  const OLD_YEAR_FORMAT = fromFormat.includes('YYYY') ? 'YYYY' : 'YY';
+  const NEW_YEAR_FORMAT = toFormat.includes('YYYY') ? 'YYYY' : 'YY';
+  const OLD_YEAR_POSITION = fromFormat.includes('YYYY')
+    ? fromFormat.indexOf('YYYY') : fromFormat.indexOf('YY');
+  const NEW_YEAR_POSITION = toFormat.includes('YYYY')
+    ? toFormat.indexOf('YYYY') : toFormat.indexOf('YY');
+
+  const NEW_DATE = [];
+
+  // find a day and a month
+  NEW_DATE[toFormat.indexOf('DD')] = OLD_DATE[fromFormat.indexOf('DD')];
+  NEW_DATE[toFormat.indexOf('MM')] = OLD_DATE[fromFormat.indexOf('MM')];
+
+  // find a year
+  fromFormat.indexOf('YYYY', 'YY');
+
+  if (OLD_YEAR_FORMAT === NEW_YEAR_FORMAT) {
+    NEW_DATE[NEW_YEAR_POSITION]
+      = OLD_DATE[OLD_YEAR_POSITION];
+  } else {
+    if (OLD_YEAR_FORMAT === 'YYYY') {
+      NEW_DATE[NEW_YEAR_POSITION]
+      = OLD_DATE[OLD_YEAR_POSITION].slice(2, 4);
+    } else {
+      if (+OLD_DATE[OLD_YEAR_POSITION] >= 30) {
+        NEW_DATE[NEW_YEAR_POSITION]
+      = '19' + OLD_DATE[OLD_YEAR_POSITION];
+      } else {
+        NEW_DATE[NEW_YEAR_POSITION]
+      = '20' + OLD_DATE[OLD_YEAR_POSITION];
+      }
+    }
+  }
+
+  return NEW_DATE.join(NEW_SEPARATOR);
 }
 
 module.exports = formatDate;
