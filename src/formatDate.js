@@ -29,6 +29,6 @@ function formatDate(date, fromFormat, toFormat) {
   const formattedDate = changeDataParts.join(toFormat[toFormat.length - 1]);
 
   return formattedDate;
-} //
+}
 
 module.exports = formatDate;
