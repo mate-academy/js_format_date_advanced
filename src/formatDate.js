@@ -48,56 +48,64 @@
  *
  * @returns {string}
  */
+const MONTH = 'M';
+const YEAR = 'Y';
+const DAY = 'D';
+const SHORT_YEAR_FORMAT = 'YY';
 
 function formatDate(date, fromFormat, toFormat) {
   const arrDate = date.split(fromFormat[3].toString());
-  const resultArray = [];
+  const newFormatDate = [];
 
   let year = 0;
   let month = 0;
   let day = 0;
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i].includes('Y')) {
-      year = arrDate[i];
-    } else if (fromFormat[i].includes('M')) {
-      month = arrDate[i];
-    } else if (fromFormat[i].includes('D')) {
-      day = arrDate[i];
+    switch (fromFormat[i][0]) {
+      case YEAR:
+        year = arrDate[i];
+        break;
+      case MONTH:
+        month = arrDate[i];
+        break;
+      case DAY:
+        day = arrDate[i];
+        break;
     }
   }
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i].includes('Y')) {
-      if (toFormat[i] === 'YY') {
+  for (const formatPart of toFormat) {
+    if (formatPart.includes(YEAR)) {
+      if (formatPart === SHORT_YEAR_FORMAT) {
         if (year.toString().length === 2) {
-          resultArray.push(year);
+          newFormatDate.push(year);
         } else {
-          resultArray.push(year.toString().slice(2, 4));
+          newFormatDate.push(year.toString().slice(2, 4));
         }
       } else {
         if (year.toString().length === 2) {
           if (year > 24) {
-            resultArray.push('19' + year);
+            newFormatDate.push('19' + year);
           } else {
-            resultArray.push('20' + year);
+            newFormatDate.push('20' + year);
           }
         } else {
-          resultArray.push(year);
+          newFormatDate.push(year);
         }
       }
     }
 
-    if (toFormat[i].includes('M')) {
-      resultArray.push(month);
+    if (formatPart.includes(MONTH)) {
+      newFormatDate.push(month);
     }
 
-    if (toFormat[i].includes('D')) {
-      resultArray.push(day);
+    if (formatPart.includes(DAY)) {
+      newFormatDate.push(day);
     }
   }
 
-  return resultArray.join(toFormat[3]);
+  return newFormatDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
