@@ -50,7 +50,35 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const gapPrevious = fromFormat[3];
+  const gapPresent = toFormat[3];
+
+  const datePrevForm = date.split(gapPrevious);
+  const datePresForm = date.split(gapPrevious);
+
+  datePresForm[toFormat.indexOf('DD')] = datePrevForm[fromFormat.indexOf('DD')];
+  datePresForm[toFormat.indexOf('MM')] = datePrevForm[fromFormat.indexOf('MM')];
+
+  const prevYearPos = fromFormat.includes('YYYY')
+    ? fromFormat.indexOf('YYYY')
+    : fromFormat.indexOf('YY');
+  const presYearPos = toFormat.includes('YYYY')
+    ? toFormat.indexOf('YYYY')
+    : toFormat.indexOf('YY');
+
+  if (fromFormat.includes('YYYY') && toFormat.includes('YYYY')) {
+    datePresForm[presYearPos] = datePrevForm[prevYearPos];
+  } else if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    datePresForm[prevYearPos] = datePrevForm[presYearPos].slice(-2);
+  } else if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (datePresForm[prevYearPos] < 30) {
+      datePresForm[prevYearPos] = '20' + datePrevForm[presYearPos];
+    } else {
+      datePresForm[prevYearPos] = '19' + datePrevForm[presYearPos];
+    }
+  }
+
+  return datePresForm.join(gapPresent);
 }
 
 module.exports = formatDate;
