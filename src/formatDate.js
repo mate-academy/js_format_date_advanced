@@ -61,47 +61,48 @@ function formatDate(date, fromFormat, toFormat) {
   let lengthYearTo = '';
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'DD') {
-      day += dateValue[i];
-    }
-
-    if (fromFormat[i] === 'MM') {
-      month += dateValue[i];
-    }
-
-    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year += dateValue[i];
-      lengthYearFrom += fromFormat[i];
+    switch (true) {
+      case fromFormat[i] === 'DD':
+        day += dateValue[i];
+        break;
+      case fromFormat[i] === 'MM':
+        month += dateValue[i];
+        break;
+      case fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY':
+        year += dateValue[i];
+        lengthYearFrom += fromFormat[i];
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'DD') {
-      newDate[i] = day;
-    }
+    switch (true) {
+      case toFormat[i] === 'DD':
+        newDate[i] = day;
+        break;
+      case toFormat[i] === 'MM':
+        newDate[i] = month;
+        break;
+      case toFormat[i] === 'YY' || toFormat[i] === 'YYYY':
+        lengthYearTo += toFormat[i];
 
-    if (toFormat[i] === 'MM') {
-      newDate[i] = month;
-    }
+        switch (true) {
+          case lengthYearFrom.length > lengthYearTo.length:
+            year = year.slice(-2);
+            break;
 
-    if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
-      lengthYearTo += toFormat[i];
-
-      if (lengthYearFrom.length > lengthYearTo.length) {
-        year = year.slice(-2);
-      }
-
-      if (lengthYearFrom.length < lengthYearTo.length) {
-        if (year > 25) {
-          year = '19' + year;
+          case lengthYearFrom.length < lengthYearTo.length:
+            switch (true) {
+              case year > 25:
+                year = '19' + year;
+                break;
+              case year < 25:
+                year = '20' + year;
+                break;
+            }
         }
-
-        if (year <= 25) {
-          year = '20' + year;
-        }
-      }
-
-      newDate[i] = year;
+        newDate[i] = year;
+        break;
     }
   }
 
