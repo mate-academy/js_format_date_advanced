@@ -50,7 +50,53 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFrom = fromFormat.pop();
+  const separatorTo = toFormat.pop();
+  const oldDateFormat = date.split(separatorFrom);
+  const newDateFormat = [];
+  const longYearFormat = 'YYYY';
+  const shortYearFormat = 'YY';
+  const monthFormat = 'MM';
+  const dayFormat = 'DD';
+
+  let oldYearIndex = fromFormat.indexOf(longYearFormat);
+
+  if (oldYearIndex === -1) {
+    oldYearIndex = fromFormat.indexOf(shortYearFormat);
+  }
+
+  let newYearIndex = toFormat.indexOf(longYearFormat);
+
+  if (newYearIndex === -1) {
+    newYearIndex = toFormat.indexOf(shortYearFormat);
+  }
+
+  let year = oldDateFormat[oldYearIndex];
+
+  if (toFormat.indexOf(shortYearFormat) !== -1) {
+    year = year.slice(-2);
+    oldDateFormat[oldYearIndex] = year;
+  }
+
+  if (toFormat.indexOf(longYearFormat) !== -1) {
+    if (+year.slice(-2) > 20) {
+      year = '19' + year.slice(-2);
+    } else {
+      year = '20' + year.slice(-2);
+    }
+    oldDateFormat[oldYearIndex] = year;
+  }
+
+  const oldMonthIndex = fromFormat.indexOf(monthFormat);
+  const newMonthIndex = toFormat.indexOf(monthFormat);
+  const oldDayIndex = fromFormat.indexOf(dayFormat);
+  const newDayIndex = toFormat.indexOf(dayFormat);
+
+  newDateFormat[newYearIndex] = year;
+  newDateFormat[newDayIndex] = oldDateFormat[oldDayIndex];
+  newDateFormat[newMonthIndex] = oldDateFormat[oldMonthIndex];
+
+  return newDateFormat.join(separatorTo);
 }
 
 module.exports = formatDate;
