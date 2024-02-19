@@ -50,7 +50,36 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const oldDateArr = date.split(fromFormat[3]);
+  const newDateArr = [];
+
+  // # cycle through every old format section for every new format section
+  for (let toIndex = 0; toIndex < 3; toIndex++) {
+    for (let fromIndex = 0; fromIndex < 3; fromIndex++) {
+      // # find matching section types
+      if (fromFormat[fromIndex][0] === toFormat[toIndex][0]) {
+        // # check wether old and new format sections are equal length
+        // # (since only Year type changes)
+        if (fromFormat[fromIndex].length !== toFormat[toIndex].length) {
+          // # check which if old format is longer
+          if (fromFormat[fromIndex].length === 4) {
+            newDateArr.push(oldDateArr[fromIndex].slice(2));
+          } else {
+            newDateArr.push(
+              // prettier-ignore
+              // # (otherwise linter error)
+              (+oldDateArr[fromIndex] < 30 ? '20' : '19')
+              + oldDateArr[fromIndex]
+            );
+          }
+        } else {
+          newDateArr.push(oldDateArr[fromIndex]);
+        }
+      }
+    }
+  }
+
+  return newDateArr.join(toFormat[3]);
 }
 
 module.exports = formatDate;
