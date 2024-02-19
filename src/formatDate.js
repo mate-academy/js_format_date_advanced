@@ -74,18 +74,17 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   let year = oldDateFormat[oldYearIndex];
-  const SHORTENED_YEAR = year.slice(-2);
+  const shortenedYear = year.slice(-2);
 
   if (toFormat.indexOf(SHORT_YEAR_FORMAT) !== -1) {
-    year = SHORTENED_YEAR;
+    year = shortenedYear;
     oldDateFormat[oldYearIndex] = year;
   }
 
   if (toFormat.indexOf(LONG_YEAR_FORMAT) !== -1) {
-    year
-    = SHORTENED_YEAR > 20
-        ? year = CENTURY_20 + SHORTENED_YEAR
-        : year = CENTURY_21 + SHORTENED_YEAR;
+    year = shortenedYear > 20
+      ? year = CENTURY_20 + shortenedYear
+      : year = CENTURY_21 + shortenedYear;
   }
 
   const oldMonthIndex = fromFormat.indexOf(MONTH_FORMAT);
