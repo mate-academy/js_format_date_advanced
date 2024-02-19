@@ -54,43 +54,44 @@ function formatDate(date, fromFormat, toFormat) {
   const separatorTo = toFormat.pop();
   const oldDateFormat = date.split(separatorFrom);
   const newDateFormat = [];
-  const longYearFormat = 'YYYY';
-  const shortYearFormat = 'YY';
-  const monthFormat = 'MM';
-  const dayFormat = 'DD';
+  const LONG_YEAR_FORMAT = 'YYYY';
+  const SHORT_YEAR_FORMAT = 'YY';
+  const MONTH_FORMAT = 'MM';
+  const DAY_FORMAT = 'DD';
+  const CENTURY_20 = '19';
+  const CENTURY_21 = '20';
 
-  let oldYearIndex = fromFormat.indexOf(longYearFormat);
+  let oldYearIndex = fromFormat.indexOf(LONG_YEAR_FORMAT);
 
   if (oldYearIndex === -1) {
-    oldYearIndex = fromFormat.indexOf(shortYearFormat);
+    oldYearIndex = fromFormat.indexOf(SHORT_YEAR_FORMAT);
   }
 
-  let newYearIndex = toFormat.indexOf(longYearFormat);
+  let newYearIndex = toFormat.indexOf(LONG_YEAR_FORMAT);
 
   if (newYearIndex === -1) {
-    newYearIndex = toFormat.indexOf(shortYearFormat);
+    newYearIndex = toFormat.indexOf(SHORT_YEAR_FORMAT);
   }
 
   let year = oldDateFormat[oldYearIndex];
+  const SHORTENED_YEAR = year.slice(-2);
 
-  if (toFormat.indexOf(shortYearFormat) !== -1) {
-    year = year.slice(-2);
+  if (toFormat.indexOf(SHORT_YEAR_FORMAT) !== -1) {
+    year = SHORTENED_YEAR;
     oldDateFormat[oldYearIndex] = year;
   }
 
-  if (toFormat.indexOf(longYearFormat) !== -1) {
-    if (+year.slice(-2) > 20) {
-      year = '19' + year.slice(-2);
-    } else {
-      year = '20' + year.slice(-2);
-    }
-    oldDateFormat[oldYearIndex] = year;
+  if (toFormat.indexOf(LONG_YEAR_FORMAT) !== -1) {
+    year
+    = SHORTENED_YEAR > 20
+        ? year = CENTURY_20 + SHORTENED_YEAR
+        : year = CENTURY_21 + SHORTENED_YEAR;
   }
 
-  const oldMonthIndex = fromFormat.indexOf(monthFormat);
-  const newMonthIndex = toFormat.indexOf(monthFormat);
-  const oldDayIndex = fromFormat.indexOf(dayFormat);
-  const newDayIndex = toFormat.indexOf(dayFormat);
+  const oldMonthIndex = fromFormat.indexOf(MONTH_FORMAT);
+  const newMonthIndex = toFormat.indexOf(MONTH_FORMAT);
+  const oldDayIndex = fromFormat.indexOf(DAY_FORMAT);
+  const newDayIndex = toFormat.indexOf(DAY_FORMAT);
 
   newDateFormat[newYearIndex] = year;
   newDateFormat[newDayIndex] = oldDateFormat[oldDayIndex];
