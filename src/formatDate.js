@@ -53,27 +53,44 @@ function formatDate(date, fromFormat, toFormat) {
   const oldDateArr = date.split(fromFormat[3]);
   const newDateArr = [];
 
+  const LAST_FORMAT_SECTION_INDEX = 3;
+  const FULL_YEAR_LENGTH = 4;
+  const MAX_YEAR_FOR_LATEST_CENTURY = 30;
+
   // # cycle through every old format section for every new format section
-  for (let toIndex = 0; toIndex < 3; toIndex++) {
-    for (let fromIndex = 0; fromIndex < 3; fromIndex++) {
+
+  for (
+    let toFormatIndex = 0;
+    toFormatIndex < LAST_FORMAT_SECTION_INDEX;
+    toFormatIndex++
+  ) {
+    for (
+      let fromFormatIndex = 0;
+      fromFormatIndex < LAST_FORMAT_SECTION_INDEX;
+      fromFormatIndex++
+    ) {
       // # find matching section types
-      if (fromFormat[fromIndex][0] === toFormat[toIndex][0]) {
+      if (fromFormat[fromFormatIndex][0] === toFormat[toFormatIndex][0]) {
         // # check wether old and new format sections are equal length
         // # (since only Year type changes)
-        if (fromFormat[fromIndex].length !== toFormat[toIndex].length) {
+        if (
+          fromFormat[fromFormatIndex].length !== toFormat[toFormatIndex].length
+        ) {
           // # check which if old format is longer
-          if (fromFormat[fromIndex].length === 4) {
-            newDateArr.push(oldDateArr[fromIndex].slice(2));
+          if (fromFormat[fromFormatIndex].length === FULL_YEAR_LENGTH) {
+            newDateArr.push(oldDateArr[fromFormatIndex].slice(2));
           } else {
             newDateArr.push(
               // prettier-ignore
               // # (otherwise linter error)
-              (+oldDateArr[fromIndex] < 30 ? '20' : '19')
-              + oldDateArr[fromIndex]
+              (+oldDateArr[fromFormatIndex] < MAX_YEAR_FOR_LATEST_CENTURY
+                ? '20'
+                : '19')
+              + oldDateArr[fromFormatIndex]
             );
           }
         } else {
-          newDateArr.push(oldDateArr[fromIndex]);
+          newDateArr.push(oldDateArr[fromFormatIndex]);
         }
       }
     }
