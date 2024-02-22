@@ -48,7 +48,6 @@
  *
  * @returns {string}
  */
-
 function formatDate(date, fromFormat, toFormat) {
   const newStr = date.split(fromFormat[3]);
   const res = [];
@@ -56,7 +55,6 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-
       if (toFormat[i] === fromFormat[j]) {
         res.push(newStr[j]);
       }
