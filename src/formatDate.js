@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
@@ -42,15 +42,59 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
- * @param {string} date
- * @param {string[]} fromFormat
- * @param {string[]} toFormat
- *
- * @returns {string}
  */
 
+
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separator1 = fromFormat[fromFormat.length - 1]; // creating variavble with date separotor
+  const dateElements = date.split(separator1); // creating araay with date element in good order
+
+  const matcher = {};
+
+  for (let index = 0; index < dateElements.length; index++) {
+    matcher[fromFormat[index]] = dateElements[index]; // creating object with connected date elements names and varaibles
+  }
+
+  let { YYYY, MM, DD, YY } = matcher; // creating variables from date object
+
+  if (YYYY === undefined) {
+    if (YY > 24) {
+      YYYY = Number("19" + String(YY)); // trying to do YYYY from YY
+    } else {
+      YYYY = Number("20" + String(YY));
+    }
+  }
+
+  if (YY === undefined) {
+    YY = YYYY.slice(2);
+  }
+
+  const newDateElements = []; // creating new array for new dare elelmnts
+
+  const separator2 = toFormat[toFormat.length - 1]; //variable of new seperator
+
+  for (let index = 0; index < toFormat.length - 1; index++) { //pushing to new array
+    if (toFormat[index] === "YYYY") {
+      newDateElements.push(YYYY);
+    }
+
+    if (toFormat[index] === "YY") {
+      newDateElements.push(YY);
+    }
+
+    if (toFormat[index] === "MM") {
+      newDateElements.push(MM);
+    }
+
+    if (toFormat[index] === "DD") {
+      newDateElements.push(DD);
+    }
+  }
+
+  const result = newDateElements.join(separator2);
+
+  return result;
 }
 
 module.exports = formatDate;
