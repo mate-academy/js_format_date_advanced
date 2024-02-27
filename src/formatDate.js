@@ -92,7 +92,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  const result = newDateElements.join(separator2);
+  const result = newDateElements.join(separator2); // crating string with joining elements gorm array using new separator
 
   return result;
 }
