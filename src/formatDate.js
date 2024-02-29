@@ -50,7 +50,38 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const finishDate = [];
+  const punctuationFromFormat = fromFormat[fromFormat.length - 1];
+  const punctuationToFormat = toFormat[toFormat.length - 1];
+  const startDate = date.split(punctuationFromFormat);
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] !== 'YY' && fromFormat[i] !== 'YY') {
+      if (fromFormat[i] === toFormat[0]) {
+        finishDate[0] = startDate[i];
+      } else if (fromFormat[i] === toFormat[1]) {
+        finishDate[1] = startDate[i];
+      } else if (fromFormat[i] === toFormat[2]) {
+        finishDate[2] = startDate[i];
+      }
+    } else {
+      for (let j = 0; j < fromFormat.length; j++) {
+        if (toFormat[j] === 'YY') {
+          finishDate[j] = startDate[j].slice(2);
+        } else if (fromFormat[j] === 'YY') {
+          if (startDate[j] === '00') {
+            finishDate[j] = '20' + startDate[j];
+          } else if (parseInt(startDate[j]) < 30) {
+            finishDate[j] = '20' + startDate[j];
+          } else if (parseInt(startDate[j]) >= 30) {
+            finishDate[j] = '19' + startDate[j];
+          }
+        }
+      }
+    }
+  }
+
+  return finishDate.join(punctuationToFormat);
 }
 
 module.exports = formatDate;
