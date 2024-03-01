@@ -49,8 +49,76 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
-}
+const formatDay = 'DD';
+const formatMonth = 'MM';
+const formatYearFourChars = 'YYYY';
+const formatYearTwoChars = 'YY';
+const toTwentyFirstCentury = 2000;
+const toTwentiethCentury = 1900;
+const limitYearForCentury = 30;
 
+function formatDate(date, fromFormat, toFormat) {
+  const dayParts = date.split(fromFormat[fromFormat.length - 1]);
+
+  let day = '';
+  let month = '';
+  let year = '';
+  const divider = toFormat[toFormat.length - 1];
+
+  for (let i = 0; i < dayParts.length; i++) {
+    if (fromFormat[i] === formatDay) {
+      day = dayParts[i];
+    }
+
+    if (fromFormat[i] === formatMonth) {
+      month = dayParts[i];
+    }
+
+    if (fromFormat[i] === formatYearFourChars
+      || fromFormat[i] === formatYearTwoChars) {
+      year = dayParts[i];
+    }
+  }
+
+  let formattedDate = '';
+
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === formatYearFourChars) {
+      if (year.length === 2) {
+        let yearToNum = parseInt(year, 10);
+
+        yearToNum = (yearToNum < limitYearForCentury)
+          ? (yearToNum += toTwentyFirstCentury)
+          : (yearToNum += toTwentiethCentury);
+
+        year = yearToNum.toString();
+      }
+
+      if (toFormat[i] === formatYearTwoChars) {
+        year = year.length === 4 ? year.slice(2) : year;
+      }
+    }
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case formatMonth:
+        formattedDate += month + divider;
+        break;
+      case formatDay:
+        formattedDate += day + divider;
+        break;
+      case formatYearFourChars:
+        formattedDate += year + divider;
+        break;
+      case formatYearTwoChars:
+        formattedDate += year.slice(2) + divider;
+        break;
+      default: formattedDate += toFormat[i] + divider;
+        break;
+    }
+  }
+
+  return formattedDate.slice(0, -1);
+}
 module.exports = formatDate;
