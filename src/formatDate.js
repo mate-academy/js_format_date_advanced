@@ -48,9 +48,60 @@
  *
  * @returns {string}
  */
+const DAY = 'DD';
+const MONTH = 'MM';
+const YEAR_FULL = 'YYYY';
+const YEAR_SHORT = 'YY';
+const TO_TWENTIETH_CENTURY = '19';
+const TO_TWENTY_FIRST_CENTURY = '20';
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFrom = fromFormat[fromFormat.length - 1];
+  const separatorTo = toFormat[toFormat.length - 1];
+  const dateArray = date.split(`${separatorFrom}`);
+  const correctDateArray = [];
+  const day = dateArray[fromFormat.indexOf(DAY)];
+  const month = dateArray[fromFormat.indexOf(MONTH)];
+
+  let yearFull = fromFormat.indexOf(YEAR_FULL) !== -1
+    ? dateArray[fromFormat.indexOf(YEAR_FULL)]
+    : '';
+  let yearShort = fromFormat.indexOf(YEAR_SHORT) !== -1
+    ? dateArray[fromFormat.indexOf(YEAR_SHORT)]
+    : '';
+
+  if (yearFull) {
+    yearShort = yearFull.slice(2);
+  } else {
+    yearFull = +yearShort < 30
+      ? TO_TWENTY_FIRST_CENTURY + yearShort
+      : TO_TWENTIETH_CENTURY + yearShort;
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    switch (toFormat[i]) {
+      case DAY:
+        correctDateArray.push(day);
+        break;
+
+      case MONTH:
+        correctDateArray.push(month);
+        break;
+
+      case YEAR_FULL:
+        correctDateArray.push(yearFull);
+        break;
+
+      case YEAR_SHORT:
+        correctDateArray.push(yearShort);
+        break;
+
+      default:
+        return 'mistake';
+    }
+  }
+
+  return correctDateArray.join(separatorTo);
 }
 
 module.exports = formatDate;
