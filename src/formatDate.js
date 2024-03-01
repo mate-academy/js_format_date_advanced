@@ -49,8 +49,56 @@
  * @returns {string}
  */
 
+const DAY = 'DD';
+const MONTH = 'MM';
+const YEAR_SHORT = 'YY';
+const YEAR_LONG = 'YYYY';
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateArr = date.split(fromFormat[3]);
+
+  const day = dateArr[fromFormat.indexOf(DAY)];
+  const month = dateArr[fromFormat.indexOf(MONTH)];
+  let year = dateArr[fromFormat.indexOf(YEAR_SHORT)];
+
+  if (!year) {
+    year = dateArr[fromFormat.indexOf(YEAR_LONG)];
+  }
+
+  const newFormatDate = [];
+
+  for (let i = 0; i < 3; i++) {
+    switch (toFormat[i]) {
+      case DAY:
+        newFormatDate.push(day);
+        break;
+      case MONTH:
+        newFormatDate.push(month);
+        break;
+      case YEAR_SHORT:
+        if (year.length === 2) {
+          newFormatDate.push(year);
+        } else {
+          newFormatDate.push(year.slice(-2));
+        }
+        break;
+      case YEAR_LONG:
+        if (year.length === 4) {
+          newFormatDate.push(year);
+        } else {
+          if (+year < 30) {
+            newFormatDate.push(`20${year}`);
+          } else {
+            newFormatDate.push(`19${year}`);
+          }
+        }
+        break;
+      default:
+        throw new Error('Wrong format');
+    }
+  }
+
+  return newFormatDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
