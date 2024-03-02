@@ -52,52 +52,52 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromArr = date.split(fromFormat[3]);
   const from = {
-    Month: 0,
-    Day: 0,
-    Year: 0,
+    month: 0,
+    day: 0,
+    year: 0,
   };
   const resultArr = [];
 
   for (let i = 0; i < 3; i++) {
     if (fromFormat[i] === 'MM') {
-      from.Month = i;
+      from.month = i;
     }
 
     if (fromFormat[i] === 'DD') {
-      from.Day = i;
+      from.day = i;
     }
 
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      from.Year = i;
+      from.year = i;
     }
   }
 
   for (let i = 0; i < 3; i++) {
     if (toFormat[i] === 'MM') {
-      resultArr.push(fromArr[from.Month]);
+      resultArr.push(fromArr[from.month]);
     }
 
     if (toFormat[i] === 'DD') {
-      resultArr.push(fromArr[from.Day]);
+      resultArr.push(fromArr[from.day]);
     }
 
     if (toFormat[i] === 'YY') {
-      if (fromArr[from.Year].length === 2) {
-        resultArr.push(fromArr[from.Year]);
+      if (fromArr[from.year].length === 2) {
+        resultArr.push(fromArr[from.year]);
       } else {
-        resultArr.push(fromArr[from.Year].slice(-2));
+        resultArr.push(fromArr[from.year].slice(-2));
       }
     }
 
     if (toFormat[i] === 'YYYY') {
-      if (fromArr[from.Year].length === 2) {
-        if (parseInt(fromArr[from.Year]) < 30) {
-          resultArr.push(`20` + fromArr[from.Year]);
+      if (fromArr[from.year].length === 2) {
+        if (parseInt(fromArr[from.year]) < 30) {
+          resultArr.push(`20` + fromArr[from.year]);
         } else {
-          resultArr.push(`19` + fromArr[from.Year]);
+          resultArr.push(`19` + fromArr[from.year]);
         }
       } else {
-        resultArr.push(fromArr[from.Year]);
+        resultArr.push(fromArr[from.year]);
       }
     }
   }
