@@ -62,7 +62,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i].includes('YY') && fromFormat.includes('YYYY')) {
+    if (toFormat[i] === 'YY' && fromFormat.includes('YYYY')) {
       const year = parseInt(dateMapping['YYYY']);
 
       newForm[i] = (year % 100).toString();
