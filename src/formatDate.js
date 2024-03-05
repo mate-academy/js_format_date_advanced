@@ -52,7 +52,6 @@
 function formatDate(date, fromFormat, toFormat) {
   // write code here
   const oldDateArray = date.split(fromFormat[fromFormat.length - 1]);
-
   const newDateArray = new Array(3);
 
   for (const i of ['D', 'Y', 'M']) {
