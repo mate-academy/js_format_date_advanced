@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 /**
@@ -12,11 +13,6 @@
  *
  * Examples:
  *
- * formatDate(
- *   '2020-02-18',
- *   ['YYYY', 'MM', 'DD', '-'],
- *   ['YYYY', 'MM', 'DD', '.'],
- * ) // '2020.02.18'
  *
  * formatDate(
  *   '2020-02-18',
@@ -42,6 +38,12 @@
  *   ['DD', 'MM', 'YYYY', '.'],
  * ) // '18.02.1997'
  *
+ *  * formatDate(
+ *   '2020-02-18',
+ *   ['YYYY', 'MM', 'DD', '-'],
+ *   ['YYYY', 'MM', 'DD', '.'],
+ * ) // '2020.02.18'
+ *
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -50,7 +52,33 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+
+  const dateParts = date.split(fromSeparator); // [2020, 02, 18]
+  const dateSet = {};
+
+  for (let i = 0; i < dateParts.length; i++) {
+    dateSet[fromFormat[i]] = dateParts[i]; // { YYYY: 2020, MM : 02}
+  }
+
+  const newDate = [];
+
+  for (const key of toFormat) {
+    if (dateSet[key]) {
+      newDate.push(dateSet[key]);
+    } else if (key === 'YY') {
+      newDate.push(dateSet.YYYY.slice(2));
+    } else if (key === 'YYYY') {
+      if (dateSet.YY < 30) {
+        newDate.push('20' + dateSet.YY);
+      } else {
+        newDate.push('19' + dateSet.YY);
+      }
+    }
+  }
+
+  return newDate.join(toSeparator);
 }
 
 module.exports = formatDate;
