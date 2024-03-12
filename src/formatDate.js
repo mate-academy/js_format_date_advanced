@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  *   Time flies, standards change. Let's get rid of the routine of changing the
@@ -50,7 +50,65 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const separatorFrom = fromFormat[3];
+  const separatorNew = toFormat[3];
+  const longFormatYear = "YYYY";
+  const shortFormatYear = "YY";
+  const dateFormat = "DD";
+  const monthFormat = "MM";
+  const dateArray = date.split(separatorFrom);
+  const newDateArray = [];
+  const objDateFrom = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    objDateFrom[fromFormat[i]] = dateArray[i];
+  }
+
+  for (const partOfDate of toFormat) {
+    switch (partOfDate) {
+      case dateFormat:
+        newDateArray.push(objDateFrom[dateFormat]);
+        break;
+
+      case monthFormat:
+        newDateArray.push(objDateFrom[monthFormat]);
+        break;
+
+      case longFormatYear:
+        if (objDateFrom[longFormatYear]) {
+          newDateArray.push(objDateFrom[longFormatYear]);
+        } else {
+          const longYear = mapShortToLong(objDateFrom[shortFormatYear]);
+
+          newDateArray.push(longYear);
+        }
+        break;
+
+      case shortFormatYear:
+        if (objDateFrom[shortFormatYear]) {
+          newDateArray.push(objDateFrom[shortFormatYear]);
+        } else {
+          const shortYear = mapLongToShort(objDateFrom[longFormatYear]);
+
+          newDateArray.push(shortYear);
+        }
+        break;
+    }
+  }
+
+  return newDateArray.join(separatorNew);
 }
+
+const mapLongToShort = (year) => {
+  return year.slice(2);
+};
+
+const mapShortToLong = (year) => {
+  if (+year < 30) {
+    return `20${year}`;
+  } else {
+    return `19${year}`;
+  }
+};
 
 module.exports = formatDate;
