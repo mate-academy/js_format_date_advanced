@@ -38,10 +38,10 @@ formatDate(
 ); // '2020.02.18'
 
 formatDate(
-'97/02/18',
-['YY', 'MM', 'DD', '/'],
-['DD', 'MM', 'YYYY', '.'],
-) // '18.02.1997'
+  '97/02/18',
+  ['YY', 'MM', 'DD', '/'],
+  ['DD', 'MM', 'YYYY', '.'],
+); // '18.02.1997'
 ```
 
 **Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
