@@ -51,6 +51,81 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
+  let newDate = '';
+
+  function sliceYearFirst(dateToSlice) {
+    fromFormat[0] = dateToSlice.slice(0, 4);
+    fromFormat[1] = dateToSlice.slice(5, 7);
+    fromFormat[2] = dateToSlice.slice(8);
+    delete fromFormat[3];
+  }
+
+  function addDeviderCutLast(typeOfDevider) {
+    newDate = fromFormat.join(typeOfDevider).slice(0, -1);
+  }
+
+  function addDeviderCutFirstReverse(typeOfDevider) {
+    newDate = fromFormat.reverse().join(typeOfDevider).slice(1);
+  }
+
+  function convertYear(originalYear) {
+    if (Number(originalYear) < 30) {
+      fromFormat[0] = `20${originalYear}`;
+    } else {
+      fromFormat[0] = `19${originalYear}`;
+    }
+
+    fromFormat[1] = date.slice(3, 5);
+    fromFormat[2] = date.slice(6);
+    delete fromFormat[3];
+  }
+
+  if (toFormat[0] === 'YYYY' && fromFormat[0] === 'YYYY') {
+    sliceYearFirst(date);
+    addDeviderCutLast(toFormat[3]);
+  }
+
+  if (toFormat[0] === 'DD' && fromFormat[0] === 'YYYY') {
+    sliceYearFirst(date);
+    addDeviderCutFirstReverse(toFormat[3]);
+  }
+
+  if (toFormat[2] === 'YY' && fromFormat[2] === 'YYYY') {
+    fromFormat[0] = date.slice(0, 2);
+    fromFormat[1] = date.slice(3, 5);
+    fromFormat[2] = date.slice(8);
+    delete fromFormat[3];
+
+    addDeviderCutLast(toFormat[3]);
+  }
+
+  if (toFormat[0] === 'YYYY' && fromFormat[0] === 'YY') {
+    convertYear(date.slice(0, 2));
+    addDeviderCutLast(toFormat[3]);
+  }
+
+  if (toFormat[2] === 'YYYY' && fromFormat[0] === 'YY') {
+    convertYear(date.slice(0, 2));
+    addDeviderCutFirstReverse(toFormat[3]);
+  }
+
+  if (toFormat[0] === 'DD' && fromFormat[0] === 'MM') {
+    fromFormat[0] = date.slice(0, 2);
+    fromFormat[1] = date.slice(3, 7);
+    fromFormat[2] = date.slice(8);
+    delete fromFormat[3];
+
+    toFormat[0] = fromFormat[2];
+    toFormat[1] = fromFormat[0];
+    toFormat[2] = fromFormat[1];
+
+    if (toFormat[3] === '-') {
+      delete toFormat[3];
+      newDate = toFormat.join('-').slice(0, -1);
+    }
+  }
+
+  return newDate;
 }
 
 module.exports = formatDate;
