@@ -49,8 +49,93 @@
  * @returns {string}
  */
 
-function formatDate(date, fromFormat, toFormat) {
-  // write code here
+function convertToFullYear(year) {
+      if (year < 30) {
+          return 20 + year;
+        } else {
+          return 19 + year
+      }
 }
 
-module.exports = formatDate;
+function convertYearToShort(year) {
+  return year % 100;
+}
+
+
+function formatDate(date, fromFormat, toFormat) {
+  const idxSeparator = 3;
+  const separatorFromFormat = fromFormat[idxSeparator];
+  const separatorToFormat = toFormat[idxSeparator];
+  const newDate = date.split(separatorFromFormat);
+  const generalDate = [];
+
+  const FORMATS = {
+    DAY: 'DD',
+    MONTH: 'MM',
+    YYYY: 'YYYY',
+    YY: 'YY'
+  };
+  //
+  for (const item of toFormat) {
+      if (item === FORMATS.DAY || item === FORMATS.MONTH) {
+        const fromFormatIndex = fromFormat.indexOf(item);
+        const toFormatIndex = toFormat.indexOf(item);
+
+        generalDate[toFormatIndex] = newDate[fromFormatIndex];
+      }
+
+      if (item === FORMATS.YYYY) {
+        const fromFormatIndex = fromFormat.indexOf(FORMATS.YYYY);
+        const toFormatIndex = toFormat.indexOf(item);
+
+        generalDate[toFormatIndex] = newDate[fromFormatIndex];
+      }
+
+      if (item === FORMATS.YYYY && fromFormat.includes(FORMATS.YY)) {
+        const fromFormatIndex = fromFormat.indexOf(FORMATS.YY);
+        const toFormatIndex = toFormat.indexOf(item);
+
+        generalDate[toFormatIndex] = convertToFullYear(newDate[fromFormatIndex]);
+      }
+
+      if (item === FORMATS.YY) {
+        const fromFormatIndex = fromFormat.indexOf(FORMATS.YYYY);
+        const toFormatIndex = toFormat.indexOf(item);
+
+        generalDate[toFormatIndex] = convertYearToShort (newDate[fromFormatIndex]);
+      }
+  }
+
+
+  return generalDate.join(separatorToFormat);
+}
+
+  formatDate (
+    '2020-02-18',
+    ['YYYY', 'MM', 'DD', '-'],
+    ['YYYY', 'MM', 'DD', '.'],
+  ) // '2020.02.18'
+
+  formatDate(
+    '2020-02-18',
+    ['YYYY', 'MM', 'DD', '-'],
+    ['DD', 'MM', 'YYYY', '.'],
+  ) // '18.02.2020'
+
+  formatDate(
+    '18-02-2020',
+    ['DD', 'MM', 'YYYY', '-'],
+    ['DD', 'MM', 'YY', '/'],
+  ) // '18/02/20'
+
+  formatDate(
+    '20/02/18',
+    ['YY', 'MM', 'DD', '/'],
+    ['YYYY', 'MM', 'DD', '.'],
+  ) // '2020.02.18'
+
+  formatDate(
+    '97/02/18',
+    ['YY', 'MM', 'DD', '/'],
+    ['DD', 'MM', 'YYYY', '.'],
+  ) // '18.02.1997'
