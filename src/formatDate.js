@@ -51,81 +51,54 @@
 
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  let newDate = '';
+  const localFromFormat = date.split(fromFormat[3]);
+  const localToFormat = {};
 
-  function sliceYearFirst(dateToSlice) {
-    fromFormat[0] = dateToSlice.slice(0, 4);
-    fromFormat[1] = dateToSlice.slice(5, 7);
-    fromFormat[2] = dateToSlice.slice(8);
-    delete fromFormat[3];
-  }
+  for (let i = 0; i < localFromFormat.length; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        localToFormat['year'] = localFromFormat[i];
+        break;
 
-  function addDeviderCutLast(typeOfDevider) {
-    newDate = fromFormat.join(typeOfDevider).slice(0, -1);
-  }
+      case 'YY':
+        if (Number(localFromFormat[i]) < 30) {
+          localFromFormat[i] = `20${localFromFormat[i]}`;
+        } else {
+          localFromFormat[i] = `19${localFromFormat[i]}`;
+        }
+        localToFormat['year'] = localFromFormat[i];
+        break;
 
-  function addDeviderCutFirstReverse(typeOfDevider) {
-    newDate = fromFormat.reverse().join(typeOfDevider).slice(1);
-  }
+      case 'MM':
+        localToFormat['month'] = localFromFormat[i];
+        break;
 
-  function convertYear(originalYear) {
-    if (Number(originalYear) < 30) {
-      fromFormat[0] = `20${originalYear}`;
-    } else {
-      fromFormat[0] = `19${originalYear}`;
-    }
-
-    fromFormat[1] = date.slice(3, 5);
-    fromFormat[2] = date.slice(6);
-    delete fromFormat[3];
-  }
-
-  if (toFormat[0] === 'YYYY' && fromFormat[0] === 'YYYY') {
-    sliceYearFirst(date);
-    addDeviderCutLast(toFormat[3]);
-  }
-
-  if (toFormat[0] === 'DD' && fromFormat[0] === 'YYYY') {
-    sliceYearFirst(date);
-    addDeviderCutFirstReverse(toFormat[3]);
-  }
-
-  if (toFormat[2] === 'YY' && fromFormat[2] === 'YYYY') {
-    fromFormat[0] = date.slice(0, 2);
-    fromFormat[1] = date.slice(3, 5);
-    fromFormat[2] = date.slice(8);
-    delete fromFormat[3];
-
-    addDeviderCutLast(toFormat[3]);
-  }
-
-  if (toFormat[0] === 'YYYY' && fromFormat[0] === 'YY') {
-    convertYear(date.slice(0, 2));
-    addDeviderCutLast(toFormat[3]);
-  }
-
-  if (toFormat[2] === 'YYYY' && fromFormat[0] === 'YY') {
-    convertYear(date.slice(0, 2));
-    addDeviderCutFirstReverse(toFormat[3]);
-  }
-
-  if (toFormat[0] === 'DD' && fromFormat[0] === 'MM') {
-    fromFormat[0] = date.slice(0, 2);
-    fromFormat[1] = date.slice(3, 7);
-    fromFormat[2] = date.slice(8);
-    delete fromFormat[3];
-
-    toFormat[0] = fromFormat[2];
-    toFormat[1] = fromFormat[0];
-    toFormat[2] = fromFormat[1];
-
-    if (toFormat[3] === '-') {
-      delete toFormat[3];
-      newDate = toFormat.join('-').slice(0, -1);
+      case 'DD':
+        localToFormat['day'] = localFromFormat[i];
+        break;
     }
   }
 
-  return newDate;
+  const localDate = [];
+
+  for (let i = 0; i < localFromFormat.length; i++) {
+    switch (toFormat[i]) {
+      case 'YYYY':
+        localDate[i] = localToFormat['year'];
+        break;
+      case 'YY':
+        localDate[i] = localToFormat['year'].slice(2);
+        break;
+      case 'MM':
+        localDate[i] = localToFormat['month'];
+        break;
+      case 'DD':
+        localDate[i] = localToFormat['day'];
+        break;
+    }
+  }
+
+  return localDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
