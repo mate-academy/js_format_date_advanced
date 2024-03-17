@@ -50,7 +50,37 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // Get the separator used in the current date format
+  const dateSeparator = fromFormat[3];
+
+  // Split the date string into its components
+  const dateParts = date.split(dateSeparator);
+
+  // Create an object to map the date parts to their format
+  const dateObj = {};
+
+  // Fill the date object with the date parts
+  for (let i = 0; i < 3; i++) {
+    dateObj[fromFormat[i]] = dateParts[i];
+  }
+
+  if (dateObj['YY'] && !dateObj['YYYY']) {
+    dateObj['YYYY'] = dateObj['YY'] < 30 ? '20'
+    + dateObj['YY'] : '19' + dateObj['YY'];
+  }
+
+  if (dateObj['YYYY'] && !dateObj['YY']) {
+    dateObj['YY'] = dateObj['YYYY'].slice(-2);
+  }
+
+  // Map the date parts to the new format
+  const newDateParts = toFormat.slice(0, 3).map(format => dateObj[format]);
+
+  // Get the separator used in the new date format
+  const newDateSeparator = toFormat[3];
+
+  // Join the date parts into a string using the new separator
+  return newDateParts.join(newDateSeparator);
 }
 
 module.exports = formatDate;
