@@ -8,8 +8,8 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const SEPARATOR_OLD = fromFormat.pop();
-  const SEPARATOR_NEW = toFormat.pop();
+  const SEPARATOR_OLD = fromFormat[fromFormat.length - 1];
+  const SEPARATOR_NEW = toFormat[toFormat.length - 1];
 
   const dateOldFormat = date.split(SEPARATOR_OLD);
   const dateNewFormat = [];
