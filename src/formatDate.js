@@ -65,9 +65,13 @@ function formatDate(date, fromFormat, toFormat) {
   fromFormat.forEach((part, index) => {
     if (part === 'YYYY' || part === 'YY') {
       year = dateParts[index];
-    } else if (part === 'MM') {
+    }
+
+    if (part === 'MM') {
       month = dateParts[index];
-    } else if (part === 'DD') {
+    }
+
+    if (part === 'DD') {
       day = dateParts[index];
     }
   });
@@ -76,16 +80,14 @@ function formatDate(date, fromFormat, toFormat) {
     if (year.length === 2) {
       year = (Number(year) < 30) ? '20' + year : '19' + year;
     }
-  } else if (newFormatParts.includes('YY')) {
+  }
+
+  if (newFormatParts.includes('YY')) {
     year = (year.length === 4) ? year.slice(2) : year;
   }
 
   const formattedDateParts = newFormatParts.map(part => {
-    if (part === 'YYYY') {
-      return year;
-    }
-
-    if (part === 'YY') {
+    if (part === 'YYYY' || part === 'YY') {
       return year;
     }
 
