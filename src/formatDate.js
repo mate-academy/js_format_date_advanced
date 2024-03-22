@@ -53,56 +53,47 @@ function formatDate(date, fromFormat, toFormat) {
   const SEPARATOR_INDEX = 3;
   const DAYS_FORMAT = 'DD';
   const MONTH_FORMAT = 'MM';
-  const TWENTY = '20';
-  const NINETEEN = '19';
-  const SHORT_YEAR_FORMAT = 'YY';
-  const LONG_YEAR_FORMAT = 'YYYY';
   const SHORT_YEAR_FORMAT_LENGTH = 2;
-  const LONG_YEAR_FORMAT_LENGTH = 4;
+
   const partsOfDate = date.split(fromFormat[SEPARATOR_INDEX]);
   const resultArray = [];
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === SHORT_YEAR_FORMAT || toFormat[i] === LONG_YEAR_FORMAT) {
-      const indexOfYear =
-        fromFormat.indexOf(SHORT_YEAR_FORMAT) !== -1
-          ? fromFormat.indexOf(SHORT_YEAR_FORMAT)
-          : fromFormat.indexOf(LONG_YEAR_FORMAT);
+    if (toFormat[i].startsWith('Y')) {
+      const indexOfYear = fromFormat.findIndex((str) => str.startsWith('Y'));
       const yearFromDate = partsOfDate[indexOfYear];
 
-      if (
-        toFormat[i].length === SHORT_YEAR_FORMAT_LENGTH &&
-        yearFromDate.length === LONG_YEAR_FORMAT_LENGTH
-      ) {
-        resultArray[i] = yearFromDate.slice(SHORT_YEAR_FORMAT_LENGTH);
-        continue;
-      }
+      const differencesFormats =
+        toFormat[i].length - fromFormat[indexOfYear].length;
 
-      if (
-        toFormat[i].length === LONG_YEAR_FORMAT_LENGTH &&
-        yearFromDate.length === SHORT_YEAR_FORMAT_LENGTH
-      ) {
-        if (+yearFromDate < 30) {
-          resultArray[i] = TWENTY + yearFromDate;
-        } else {
-          resultArray[i] = NINETEEN + yearFromDate;
+      switch (differencesFormats) {
+        case -2: {
+          resultArray[i] = yearFromDate.slice(SHORT_YEAR_FORMAT_LENGTH);
+          break;
         }
-        continue;
-      }
 
-      resultArray[i] = yearFromDate;
+        case 2: {
+          const resultYear =
+            +yearFromDate < 30 ? 20 + yearFromDate : 19 + yearFromDate;
+
+          resultArray[i] = resultYear;
+          break;
+        }
+
+        default: {
+          resultArray[i] = yearFromDate;
+        }
+      }
     }
 
-    if (toFormat[i] === MONTH_FORMAT) {
-      const indexOfMonth = fromFormat.indexOf(MONTH_FORMAT);
-      const monthFromDate = partsOfDate[indexOfMonth];
+    if (toFormat[i].startsWith('M')) {
+      const monthFromDate = partsOfDate[fromFormat.indexOf(MONTH_FORMAT)];
 
       resultArray[i] = monthFromDate;
     }
 
-    if (toFormat[i] === DAYS_FORMAT) {
-      const indexOfDays = fromFormat.indexOf(DAYS_FORMAT);
-      const daysFromDate = partsOfDate[indexOfDays];
+    if (toFormat[i].startsWith('D')) {
+      const daysFromDate = partsOfDate[fromFormat.indexOf(DAYS_FORMAT)];
 
       resultArray[i] = daysFromDate;
     }
