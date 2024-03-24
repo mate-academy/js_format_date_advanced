@@ -50,7 +50,6 @@
  * @returns {string}
  */
 
-
 function formatDate(date, fromFormat, toFormat) {
   const OLD_SEPARATOR = fromFormat[3];
   const NEW_SEPARATOR = toFormat[3];
