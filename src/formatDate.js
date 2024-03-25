@@ -19,13 +19,20 @@ function formatDate(date, fromFormat, toFormat) {
     obj[key] = value;
   }
 
-  for (const part of toFormat) {
-    if (part === 'YY' && obj[part] < 30) {
-      result.push(`20${obj[part]}`);
-    } else if (part === 'YY' && obj[part] >= 30) {
-      result.push(`19${obj[part]}`);
-    } else if (part === 'YYYY' || part === 'DD' || part === 'MM') {
-      result.push(obj[part]);
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    const fromKey = fromFormat[i];
+    const toKey = toFormat[i];
+
+    if (fromKey === 'YY' && toKey === 'YYYY') {
+      if (obj['YY'] >= 30) {
+        result.push(`19${obj['YY']}`);
+      } else if (obj['YY'] < 30) {
+        result.push(`20${obj['YY']}`);
+      }
+    } else if (fromKey === 'YYYY' && toKey === 'YY') {
+      result.push(obj['YYYY'].slice(-2));
+    } else {
+      result.push(obj[toKey]);
     }
   }
 
