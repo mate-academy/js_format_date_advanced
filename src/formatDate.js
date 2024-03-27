@@ -8,38 +8,39 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const newArr = [];
-  const dateSplit = date.split(fromFormat[3]);
-  const day = dateSplit[fromFormat.indexOf('DD')];
-  const month = dateSplit[fromFormat.indexOf('MM')];
+  const dateComponents = date.split(fromFormat[3]);
+  const formattedDateComponents = Array(3);
 
-  if (fromFormat.indexOf('YYYY') !== -1 && toFormat.indexOf('YYYY') !== -1) {
-    newArr[toFormat.indexOf('YYYY')] = dateSplit[fromFormat.indexOf('YYYY')];
-  }
+  const indexYY = fromFormat.indexOf('YY');
+  const indexYYYY = fromFormat.indexOf('YYYY');
+  const toIndexYY = toFormat.indexOf('YY');
+  const toIndexYYYY = toFormat.indexOf('YYYY');
 
-  if (fromFormat.indexOf('YY') !== -1 && toFormat.indexOf('YYYY') !== -1) {
-    if (dateSplit[fromFormat.indexOf('YY')] < 30) {
-      newArr[toFormat.indexOf('YYYY')] =
-        '20' + dateSplit[fromFormat.indexOf('YY')];
-    } else {
-      newArr[toFormat.indexOf('YYYY')] =
-        '19' + dateSplit[fromFormat.indexOf('YY')];
+  if (indexYY !== -1 || indexYYYY !== -1) {
+    const isFromYY = indexYY !== -1;
+    const isToYY = toIndexYY !== -1;
+    const fromIndex = isFromYY ? indexYY : indexYYYY;
+    const toIndex = isToYY ? toIndexYY : toIndexYYYY;
+    let year = dateComponents[fromIndex];
+
+    if (isFromYY && !isToYY) {
+      year = year < 30 ? '20' + year : '19' + year;
     }
+
+    if (!isFromYY && isToYY) {
+      year = year.slice(-2);
+    }
+
+    formattedDateComponents[toIndex] = year;
   }
 
-  if (fromFormat.indexOf('YYYY') !== -1 && toFormat.indexOf('YY') !== -1) {
-    newArr[toFormat.indexOf('YY')] =
-      dateSplit[fromFormat.indexOf('YYYY')].slice(-2);
-  }
+  formattedDateComponents[toFormat.indexOf('DD')] =
+    dateComponents[fromFormat.indexOf('DD')];
 
-  if (fromFormat.indexOf('YY') !== -1 && toFormat.indexOf('YY') !== -1) {
-    newArr[toFormat.indexOf('YY')] = dateSplit[fromFormat.indexOf('YY')];
-  }
+  formattedDateComponents[toFormat.indexOf('MM')] =
+    dateComponents[fromFormat.indexOf('MM')];
 
-  newArr[toFormat.indexOf('DD')] = day;
-  newArr[toFormat.indexOf('MM')] = month;
-
-  return newArr.join(toFormat[3]);
+  return formattedDateComponents.join(toFormat[3]);
 }
 
 module.exports = formatDate;
