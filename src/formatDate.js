@@ -7,12 +7,12 @@
  *
  * @returns {string}
  */
-function formatDate(dateString, fromFormat, toFormat) {
-  const dateParts = dateString.split(fromFormat[3]);
+function formatDate(date, fromFormat, toFormat) {
+  const dateParts = date.split(fromFormat[3]);
   let year;
   let month;
   let day;
-  const newDate = [];
+  const formattedDate = [];
 
   for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'YYYY') {
@@ -35,23 +35,23 @@ function formatDate(dateString, fromFormat, toFormat) {
   for (const format of toFormat) {
     switch (format) {
       case 'YYYY':
-        newDate.push(year);
+        formattedDate.push(year);
         break;
 
       case 'YY':
-        newDate.push(year.slice(-2));
+        formattedDate.push(year.slice(-2));
         break;
 
       case 'MM':
-        newDate.push(month);
+        formattedDate.push(month);
         break;
 
       case 'DD':
-        newDate.push(day);
+        formattedDate.push(day);
     }
   }
 
-  return newDate.join(toFormat[3]);
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
