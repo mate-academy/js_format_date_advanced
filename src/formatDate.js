@@ -8,35 +8,44 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const arr = date.split(fromFormat[3]);
+  const OLD_SEPARATOR = fromFormat[3];
+  const NEW_SEPARATOR = toFormat[3];
 
-  if (toFormat[2] === 'YYYY' && fromFormat[1] === 'YYYY') {
-    [arr[0], arr[1], arr[2]] = [arr[2], arr[0], arr[1]];
+  const resultArray = [];
+  const dateArray = date.split(OLD_SEPARATOR);
+
+  const obj = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    switch (fromFormat[i]) {
+      case 'YYYY':
+      case 'YY':
+      case 'MM':
+      case 'DD':
+        obj[fromFormat[i]] = dateArray[i];
+        break;
+      default:
+        break;
+    }
   }
 
-  if (toFormat[0] === 'YYYY' && arr[0] <= 99 && arr[0] >= 30) {
-    arr[0] = '19' + arr[0];
-  } else if (toFormat[0] === 'YYYY' && arr[0] < 30) {
-    arr[0] = '20' + arr[0];
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const key = toFormat[i];
+
+    if (key === 'YY' && fromFormat.includes('YYYY')) {
+      const year = parseInt(obj['YYYY'].slice(-2));
+
+      resultArray.push(year);
+    } else if (key === 'YYYY' && fromFormat.includes('YY')) {
+      const year = parseInt(obj['YY']);
+
+      resultArray.push(year < 30 ? 2000 + year : 1900 + year);
+    } else {
+      resultArray.push(obj[key]);
+    }
   }
 
-  if (toFormat[2] === 'YYYY' && fromFormat[2] === 'YYYY' && arr[2] < 30) {
-    arr[2] = '20' + arr[2];
-  }
-
-  if (toFormat[2] === 'YY' && arr[2].length === 4) {
-    arr[2] = arr[2].slice(2);
-  }
-
-  if (toFormat[2] === 'YYYY' && fromFormat[0] === 'YYYY') {
-    arr.reverse();
-  } else if (toFormat[2] === 'YYYY' && arr[0] <= 99
-  && arr[0] >= 30 && fromFormat[0] === 'YY') {
-    arr[0] = '19' + arr[0];
-    arr.reverse();
-  }
-
-  return arr.join(toFormat[3]);
+  return resultArray.join(NEW_SEPARATOR);
 }
 
 module.exports = formatDate;
