@@ -1,3 +1,5 @@
+'use strict';
+
 function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3];
   const newSeparator = toFormat[3];
