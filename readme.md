@@ -1,6 +1,10 @@
 # Format Date Advanced
 
+**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
+
 Time flies, standards change. Let's get rid of the routine of changing the date format.
+
+## Task description:
 
 Create a `formatDate` function that accepts the `date` string,
 the old `fromFormat` array and the new `toFormat` array. Function returns given date in new format.
@@ -43,5 +47,3 @@ formatDate(
   ['DD', 'MM', 'YYYY', '.'],
 ); // '18.02.1997'
 ```
-
-**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
