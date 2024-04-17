@@ -8,36 +8,50 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const SEPARATOR = fromFormat[fromFormat.length - 1];
-  const JOINER = toFormat[toFormat.length - 1];
-  const DATEPARTS = date.split(SEPARATOR);
+  const dateParts = date.split(fromFormat[3]);
+  let year;
+  let month;
+  let day;
+  const formattedDate = [];
 
-  while (DATEPARTS.length > 1 && DATEPARTS[DATEPARTS.length - 1] === '') {
-    DATEPARTS.pop();
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YYYY') {
+      year = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'YY') {
+      year = dateParts[i] < 30 ? `20${dateParts[i]}` : `19${dateParts[i]}`;
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = dateParts[i];
+    }
   }
 
-  const DATEMAP = {};
+  for (const format of toFormat) {
+    switch (format) {
+      case 'YYYY':
+        formattedDate.push(year);
+        break;
 
-  fromFormat.forEach((part, index) => {
-    DATEMAP[part] = DATEPARTS[index];
-  });
+      case 'YY':
+        formattedDate.push(year.slice(-2));
+        break;
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    DATEMAP['YY'] = DATEMAP['YYYY'].slice(-2);
+      case 'MM':
+        formattedDate.push(month);
+        break;
+
+      case 'DD':
+        formattedDate.push(day);
+    }
   }
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    const FULLYEAR
-    = parseInt(DATEMAP['YY']) < 30
-      ? '20' + DATEMAP['YY']
-      : '19' + DATEMAP['YY'];
-
-    DATEMAP['YYYY'] = FULLYEAR;
-  }
-
-  const FORMATTEDDATE = toFormat.map((part) => DATEMAP[part]);
-
-  return FORMATTEDDATE.slice(0, -1).join(JOINER);
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
