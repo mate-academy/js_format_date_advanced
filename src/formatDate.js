@@ -15,11 +15,7 @@ function formatDate(date, fromFormat, toFormat) {
     const component = fromFormat[i];
     const value = dataParts[i];
 
-    if (component === 'YYYY') {
-      year = value;
-    }
-
-    if (component === 'YY') {
+    if (component === 'YYYY' || component === 'YY') {
       year = value;
     }
 
@@ -49,11 +45,7 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length; i++) {
     const component = toFormat[i];
 
-    if (component === 'YYYY') {
-      newDate.push(year);
-    }
-
-    if (component === 'YY') {
+    if (component === 'YYYY' || component === 'YY') {
       newDate.push(year);
     }
 
