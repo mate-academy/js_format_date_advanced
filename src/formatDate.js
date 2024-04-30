@@ -6,68 +6,36 @@
  * @param {string[]} toFormat
  *
  * @returns {string}
+ *
  */
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  let year = '';
-  let month = '';
-  let day = '';
-  let string = '';
-  let newDate = '';
-  const sign = toFormat[toFormat.length - 1];
-  const dateParts = date.split(/[.\-/]/);
+  const oldSeparator = /[.\-/]/;
+  const newDate = [];
+  const objectDate = {};
+  const splitDate = date.split(oldSeparator);
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    const meaning = fromFormat[i];
+  for (let i = 0; i < splitDate.length; i++) {
+    objectDate[fromFormat[i]] = splitDate[i];
+  }
 
-    if (meaning === 'YYYY') {
-      year += dateParts[i];
-    }
-
-    if (meaning === 'YY') {
-      year = parseInt(dateParts[i]);
-
-      if (year > 0 && year < 30) {
-        year = '20' + year;
-      } else if (year === 0) {
-        year = '200' + year;
-      } else {
-        year = '19' + year;
-      }
-    }
-
-    if (meaning === 'MM') {
-      month += dateParts[i];
-    }
-
-    if (meaning === 'DD') {
-      day += dateParts[i];
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    if (objectDate['YY'] < 30) {
+      objectDate['YYYY'] = '20' + objectDate['YY'];
+    } else {
+      objectDate['YYYY'] = '19' + objectDate['YY'];
     }
   }
 
-  for (let j = 0; j < toFormat.length; j++) {
-    const value = toFormat[j];
-
-    if (value === 'YYYY') {
-      string += year + ' ';
-    }
-
-    if (value === 'YY') {
-      string += year.slice(-2) + ' ';
-    }
-
-    if (value === 'MM') {
-      string += month + ' ';
-    }
-
-    if (value === 'DD') {
-      string += day + ' ';
-    }
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
+    objectDate['YY'] = objectDate['YYYY'].slice(-2);
   }
 
-  newDate = string.split(' ').join(sign).slice(0, -1);
+  toFormat.forEach((value) => {
+    newDate.push(objectDate[value]);
+  });
 
-  return newDate;
+  return newDate.join(toFormat[toFormat.length - 1]).slice(0, -1);
 }
 
 module.exports = formatDate;
