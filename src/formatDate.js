@@ -17,10 +17,10 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YY':
-        data.year = dateArr[i];
+        data.yearShorthand = dateArr[i];
         break;
       case 'YYYY':
-        data.year = dateArr[i];
+        data.yearFullform = dateArr[i];
         break;
       case 'MM':
         data.month = dateArr[i];
@@ -31,30 +31,35 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (data.year.length === 2 && data.year < 30) {
-    data.longYearForm = '20' + `${data.year}`;
-  } else if (data.year.length === 2) {
-    data.longYearForm = '19' + `${data.year}`;
+  if (data.yearShorthand && data.yearShorthand < 30) {
+    data.shorthandChanged = '20' + `${data.yearShorthand}`;
+  } else {
+    data.shorthandChanged = '19' + `${data.yearShorthand}`;
   }
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YY' && data.year.length === 2) {
-      newDate.push(data.year);
-    } else if (toFormat[i] === 'YYYY' && data.year.length === 4) {
-      newDate.push(data.year);
-    } else if (toFormat[i] === 'YYYY' && data.year.length === 2) {
-      newDate.push(data.longYearForm);
-    } else if (toFormat[i] === 'YY' && data.year.length === 4) {
-      newDate.push(data.year.slice(2));
+    if (toFormat[i] === 'YY' && data.yearShorthand) {
+      newDate.push(data.yearShorthand);
     }
 
-    switch (toFormat[i]) {
-      case 'MM':
-        newDate.push(data.month);
-        break;
-      case 'DD':
-        newDate.push(data.day);
-        break;
+    if (toFormat[i] === 'YYYY' && data.yearFullform) {
+      newDate.push(data.yearFullform);
+    }
+
+    if (toFormat[i] === 'YYYY' && !data.yearFullform) {
+      newDate.push(data.shorthandChanged);
+    }
+
+    if (toFormat[i] === 'YY' && !data.yearShorthand) {
+      newDate.push(data.yearFullform.slice(2));
+    }
+
+    if (toFormat[i] === 'MM') {
+      newDate.push(data.month);
+    }
+
+    if (toFormat[i] === 'DD') {
+      newDate.push(data.day);
     }
   }
 
