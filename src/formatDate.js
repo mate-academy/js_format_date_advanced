@@ -22,9 +22,9 @@ function formatDate(date, fromFormat, toFormat) {
     dateObject.YY = dateObject.YYYY.slice(2);
   }
 
-  if (dateObject.YY >= 30) {
+  if (dateObject.hasOwnProperty('YY') && dateObject.YY >= 30) {
     dateObject.YYYY = '19' + dateObject.YY;
-  } else {
+  } else if (dateObject.hasOwnProperty('YY')) {
     dateObject.YYYY = '20' + dateObject.YY;
   }
 
