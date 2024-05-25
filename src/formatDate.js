@@ -11,14 +11,14 @@ function formatDate(date, fromFormat, toFormat) {
   const dateObject = {};
   const separator = fromFormat[3];
   const newSeparator = toFormat[3];
-  const splitedDate = date.split(separator);
+  const splitDate = date.split(separator);
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    dateObject[fromFormat[i]] = splitedDate[i];
+    dateObject[fromFormat[i]] = splitDate[i];
   }
 
-  if (dateObject.hasOwnProperty('YYYY')) {
+  if (dateObject.hasOwnProperty('YYYY') && toFormat.includes('YY')) {
     dateObject.YY = dateObject.YYYY.slice(2);
   }
 
