@@ -9,12 +9,12 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   // write code here
-  const seperator = date.split(fromFormat[3]);
+  const separator = date.split(fromFormat[3]);
   let formattedDate = [];
   const format = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    format[fromFormat[i]] = seperator[i];
+    format[fromFormat[i]] = separator[i];
   }
 
   for (let j = 0; j < toFormat.length; j++) {
