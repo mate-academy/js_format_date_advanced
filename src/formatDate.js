@@ -16,7 +16,7 @@ function formatDate(date, fromFormat, toFormat) {
   let day = '';
   const result = [];
 
-  for (let i = 0; i <= dateParts.length; i++) {
+  for (let i = 0; i < dateParts.length; i++) {
     if (fromFormat[i] === 'YYYY') {
       year = dateParts[i];
     }
@@ -34,13 +34,13 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' && fromFormat.includes('YYYY')) {
       result.push(year.slice(2));
     }
 
     if (toFormat[i] === 'YYYY' && fromFormat.includes('YY')) {
-      if (year < 30) {
+      if (+year < 30) {
         year = '20' + `${year}`;
         result.push(year);
       } else {
