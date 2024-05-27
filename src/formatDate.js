@@ -9,11 +9,14 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const lastElement = fromFormat.length - 1;
-  const separator = date.split(fromFormat[lastElement]);
+  const separators = date.split(fromFormat[lastElement]);
   const format = {};
+  const currentCentury = '20';
+  const previousCentury = '19';
+  const century = 30;
 
   fromFormat.slice(0, -1).forEach((part, index) => {
-    format[part] = separator[index];
+    format[part] = separators[index];
   });
 
   const convertYear = (year, targetFormat) => {
@@ -23,7 +26,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (targetFormat === 'YYYY') {
       if (year.length === 2) {
-        return (year < 30 ? '20' : '19') + year;
+        return (year < century ? currentCentury : previousCentury) + year;
       }
 
       return year;
