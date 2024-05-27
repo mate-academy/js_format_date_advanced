@@ -17,25 +17,24 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let i = 0; i < dateParts.length; i++) {
-    if (fromFormat[i] === 'YYYY') {
-      year = dateParts[i];
-    }
-
-    if (fromFormat[i] === 'YY') {
-      year = dateParts[i];
-    }
-
-    if (fromFormat[i] === 'MM') {
-      month = dateParts[i];
-    }
-
-    if (fromFormat[i] === 'DD') {
-      day = dateParts[i];
+    switch (fromFormat[i]) {
+      case 'YYYY':
+        year = dateParts[i];
+        break;
+      case 'YY':
+        year = dateParts[i];
+        break;
+      case 'MM':
+        month = dateParts[i];
+        break;
+      case 'DD':
+        day = dateParts[i];
+        break;
     }
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    if (toFormat[i] === 'YY' && fromFormat.includes('YYYY')) {
+    if (toFormat[i] === 'YY') {
       result.push(year.slice(2));
     }
 
