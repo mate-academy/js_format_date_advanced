@@ -8,35 +8,39 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const separator = date.split(fromFormat[3]);
-  let formattedDate = [];
+  const lastElement = fromFormat.length - 1;
+  const separator = date.split(fromFormat[lastElement]);
   const format = {};
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    format[fromFormat[i]] = separator[i];
-  }
+  fromFormat.slice(0, -1).forEach((part, index) => {
+    format[part] = separator[index];
+  });
 
-  for (let j = 0; j < toFormat.length; j++) {
-    if (format.hasOwnProperty(toFormat[j])) {
-      formattedDate.push(format[toFormat[j]]);
+  const convertYear = (year, targetFormat) => {
+    if (targetFormat === 'YY') {
+      return year.slice(-2);
     }
 
-    if (format.hasOwnProperty('YYYY') && toFormat[j] === 'YY') {
-      formattedDate.push(format['YYYY'].slice(2));
-    }
-
-    if (format.hasOwnProperty('YY') && toFormat[j] === 'YYYY') {
-      if (format['YY'] < 30) {
-        formattedDate.push('20'.concat(format['YY']));
-      } else {
-        formattedDate.push('19'.concat(format['YY']));
+    if (targetFormat === 'YYYY') {
+      if (year.length === 2) {
+        return (year < 30 ? '20' : '19') + year;
       }
-    }
-  }
-  formattedDate = formattedDate.join(`${toFormat[3]}`);
 
-  return formattedDate;
+      return year;
+    }
+
+    return year;
+  };
+
+  const formattedDate = toFormat.slice(0, -1).map((part) => {
+    if (part === 'YY' || part === 'YYYY') {
+      return convertYear(format['YYYY'] || format['YY'], part);
+    }
+
+    return format[part];
+  });
+
+  return formattedDate.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
