@@ -53,9 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
             +dateParts.year < 30 || dateParts.year === '00' ? '20' : '19';
           const fullYear = prefix + dateParts.year;
 
-          if (!formatedDate.includes(fullYear)) {
-            formatedDate.push(fullYear);
-          }
+          formatedDate.push(fullYear);
         } else {
           formatedDate.push(dateParts.year);
         }
