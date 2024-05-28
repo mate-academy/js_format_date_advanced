@@ -8,6 +8,9 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
+  const CENTURY_NINETEEN = 19;
+  const CENTURY_TWENTY = 20;
+
   const separatorFrom = fromFormat[3];
   const separatorTo = toFormat[3];
 
@@ -24,7 +27,9 @@ function formatDate(date, fromFormat, toFormat) {
     const year = parseInt(dateObject['YY'], 10);
 
     dateObject['YYYY'] =
-      year < 30 ? '20' + dateObject['YY'] : '19' + dateObject['YY'];
+      year < 30
+        ? CENTURY_TWENTY + dateObject['YY']
+        : CENTURY_NINETEEN + dateObject['YY'];
   }
 
   const newDateParts = toFormat.slice(0, 3).map((part) => dateObject[part]);
