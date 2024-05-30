@@ -82,15 +82,11 @@ function findindexOfYear(format, date) {
 function toFindindexOfYear(toFormat) {
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i].length === 4) {
-      const indexOfYearLong = toFormat.indexOf('YYYY');
-
-      return indexOfYearLong;
+      return toFormat.indexOf('YYYY');
     }
   }
 
-  const indexOfYear = toFormat.indexOf('YY');
-
-  return indexOfYear;
+  return toFormat.indexOf('YY');
 }
 
 module.exports = formatDate;
