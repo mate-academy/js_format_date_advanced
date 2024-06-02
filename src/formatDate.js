@@ -48,14 +48,18 @@ function formatDate(date, fromFormat, toFormat) {
           }
 
           if (fromFormatYear.length < toFormatYear.length) {
-            if (year < 30) {
+            const convertedYear = +year;
+
+            if (convertedYear < 30) {
               year = `20${year}`;
             } else {
               year = `19${year}`;
             }
           }
 
-          newDateArr[index] = year;
+          if (index >= 0) {
+            newDateArr[index] = year;
+          }
         }
       }
     }
