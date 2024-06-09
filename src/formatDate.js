@@ -8,45 +8,29 @@
  * @returns {string}
  */
 
-const DIVIDER_IDX = 3;
-const YEARS_PERIOD = 30;
-const YEARS_2000S = 20;
-const YEARS_1900S = 19;
-const YEAR_SHORT = 'YY';
-const YEAR_LONG = 'YYYY';
+const config = {};
 
 function formatDate(date, fromFormat, toFormat) {
-  const divider = fromFormat[DIVIDER_IDX];
+  const divider = fromFormat[3];
   const dateParts = date.split(divider);
-  const dateConfig = {};
 
   for (let i = 0; i < 3; i++) {
-    const datePart = dateParts[i];
     const formatPart = fromFormat[i];
+    const datePart = dateParts[i];
 
-    if (formatPart === YEAR_LONG) {
-      dateConfig.YY = datePart.slice(2);
+    if (formatPart === 'YYYY') {
+      config.YY = datePart.slice(2);
     }
 
-    if (formatPart === YEAR_SHORT) {
-      dateConfig.YYYY = createLongYear(datePart);
+    if (formatPart === 'YY') {
+      config.YYYY = datePart < 30 ? `20${datePart}` : `19${datePart}`;
     }
 
-    dateConfig[formatPart] = datePart;
+    config[fromFormat[i]] = dateParts[i];
   }
 
-  return prepareNewFormat(dateConfig, toFormat);
-}
-
-function createLongYear(shortYear) {
-  const years = shortYear < YEARS_PERIOD ? YEARS_2000S : YEARS_1900S;
-
-  return years + shortYear;
-}
-
-function prepareNewFormat(config, format) {
-  return [config[format[0]], config[format[1]], config[format[2]]].join(
-    format[DIVIDER_IDX],
+  return Array.from({ length: 3 }, (_v, idx) => config[toFormat[idx]]).join(
+    toFormat[3],
   );
 }
 
