@@ -8,13 +8,23 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
+  if (fromFormat.length !== 4 || toFormat.length !== 4) {
+    throw new Error(
+      'Format should contain 4 elements including the separator.',
+    );
+  }
+
   const oldYear = yearFormatAndPlace(fromFormat);
   const newYear = yearFormatAndPlace(toFormat);
 
   const formatedDate = [];
+  let dateParts = '';
   let year = '';
 
-  const dateParts = date.split(fromFormat[3]);
+  if (typeof date === 'string') {
+    dateParts = date.split(fromFormat[3]);
+  }
+
   const newDateSeparator = toFormat[3];
 
   const thresholdYear = 30;
@@ -22,7 +32,7 @@ function formatDate(date, fromFormat, toFormat) {
   if (oldYear.format !== newYear.format) {
     if (oldYear.format.length < newYear.format.length) {
       year =
-        dateParts[oldYear.place] < thresholdYear
+        +dateParts[oldYear.place] < thresholdYear
           ? `20${dateParts[oldYear.place]}`
           : `19${dateParts[oldYear.place]}`;
     } else {
@@ -32,6 +42,12 @@ function formatDate(date, fromFormat, toFormat) {
     year = dateParts[oldYear.place];
   }
 
+  const separators = ['-', '/', '.'];
+
+  if (!separators.includes(toFormat[toFormat.length - 1])) {
+    throw new Error('Invalid format. The last element should be a separator.');
+  }
+
   for (let i = 0; i < toFormat.length - 1; i++) {
     switch (toFormat[i]) {
       case 'YYYY':
@@ -39,10 +55,20 @@ function formatDate(date, fromFormat, toFormat) {
         formatedDate[i] = year;
         break;
       case 'MM':
-        formatedDate[i] = dateParts[fromFormat.indexOf('MM')];
+        const mmIndex = fromFormat.indexOf('MM');
+
+        if (mmIndex === -1) {
+          throw new Error("'MM' is not part of the fromFormat array");
+        }
+        formatedDate[i] = dateParts[mmIndex];
         break;
       case 'DD':
-        formatedDate[i] = dateParts[fromFormat.indexOf('DD')];
+        const ddIndex = fromFormat.indexOf('DD');
+
+        if (ddIndex === -1) {
+          throw new Error("'DD' is not part of the fromFormat array");
+        }
+        formatedDate[i] = dateParts[ddIndex];
         break;
     }
   }
@@ -55,6 +81,12 @@ function yearFormatAndPlace(pattern) {
   const shortYearFormat = 'YY';
   let format = '';
   let place = -1;
+
+  if (!pattern.includes(longYearFormat) && !pattern.includes(shortYearFormat)) {
+    throw new Error(
+      'Invalid pattern. Pattern should contain either "YYYY" or "YY".',
+    );
+  }
 
   for (let i = 0; i < pattern.length; i++) {
     if (pattern[i] === longYearFormat || pattern[i] === shortYearFormat) {
