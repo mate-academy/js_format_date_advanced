@@ -8,25 +8,27 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
+  const fromFormatCopy = [...fromFormat];
+  const toFormatCopy = [...toFormat];
+  const fromSeparator = fromFormatCopy.pop();
+  const toSeparator = toFormatCopy.pop();
   const dateParts = date.split(fromSeparator);
   const objFrom = {};
   const arrTo = [];
 
-  for (let i = 0; i < fromFormat.length; i++) {
-    objFrom[fromFormat[i]] = dateParts[i];
+  for (let i = 0; i < fromFormatCopy.length; i++) {
+    objFrom[fromFormatCopy[i]] = dateParts[i];
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormatCopy.length; i++) {
     for (const entry of Object.entries(objFrom)) {
-      const twoLettersTo = toFormat[i].slice(0, 2);
+      const twoLettersTo = toFormatCopy[i].slice(0, 2);
       const twoLettersFrom = entry[0].slice(0, 2);
 
-      if (toFormat[i] === entry[0]) {
+      if (toFormatCopy[i] === entry[0]) {
         arrTo[i] = entry[1];
       } else if (twoLettersTo === twoLettersFrom) {
-        if (entry[0].length > toFormat[i].length) {
+        if (entry[0].length > toFormatCopy[i].length) {
           arrTo[i] = entry[1].slice(2, 4);
         } else {
           if (+entry[1] < 30) {
