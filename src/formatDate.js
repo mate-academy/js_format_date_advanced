@@ -30,7 +30,7 @@ function formatDate(date, fromFormat, toFormat) {
   const day = dateParts[dayIndexFrom];
 
   if (fromFormat[yearIndexFrom] === 'YY' && toFormat[yearIndexTo] === 'YYYY') {
-    if (year < 30) {
+    if (+year < 30) {
       year = `20${year}`;
     } else {
       year = `19${year}`;
@@ -41,27 +41,26 @@ function formatDate(date, fromFormat, toFormat) {
     year = year.slice(-2);
   }
 
-  let newDate = '';
+  const newDate = [];
 
   for (const part of toFormat.slice(0, -1)) {
     switch (part) {
       case 'YYYY':
-        newDate += year;
+        newDate.push(year);
         break;
       case 'YY':
-        newDate += year;
+        newDate.push(year);
         break;
       case 'MM':
-        newDate += month;
+        newDate.push(month);
         break;
       case 'DD':
-        newDate += day;
+        newDate.push(day);
         break;
     }
-    newDate += newSeparator;
   }
 
-  return newDate.slice(0, -1);
+  return newDate.join(newSeparator);
 }
 
 module.exports = formatDate;
