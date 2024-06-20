@@ -15,15 +15,17 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (fromFormat[i].startsWith('Y')) {
-      sortedDate['YY'] =
-        'YY'.length < formatedDate[i].length
-          ? formatedDate[i].slice(2, 4)
-          : formatedDate[i];
+      if (formatedDate[i].length > 2) {
+        sortedDate['YY'] = formatedDate[i].slice(2, 4);
+      } else {
+        sortedDate['YY'] = formatedDate[i];
+      }
 
-      sortedDate['YYYY'] =
-        formatedDate[i].length < 'YYYY'.length
-          ? yearFormat(formatedDate[i])
-          : formatedDate[i];
+      if (formatedDate[i].length < 4) {
+        sortedDate['YYYY'] = yearFormat(formatedDate[i]);
+      } else {
+        sortedDate['YYYY'] = formatedDate[i];
+      }
     } else {
       sortedDate[fromFormat[i]] = formatedDate[i];
     }
