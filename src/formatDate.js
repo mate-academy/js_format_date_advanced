@@ -11,48 +11,57 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat[3]; // For example "/"
   const newSeparator = toFormat[3]; // For example "."
   const newFormat = toFormat;
-  const newFormatSorted = [...toFormat].sort(); // for easy found YYYY or YY ??
+  const oldFormat = fromFormat;
   let YearFormFromFormat = ''; // found what we in old format YY OR YYYY ??
-  const arrayFromDataString = date.split(oldSeparator);
+  const dateComponents = date.split(oldSeparator);
   const objectOfDataAndFormats = {};
   // object =  keys = index of fromFormat, values = digits of date;
-  const fromFormatLenghtWitoutSeparator = fromFormat.length - 1;
+  const fromFormatLengthWithoutSeparator = fromFormat.length - 1;
   // delete Separator in the end of array
   const arrayOfResult = [];
-
+  const shortFormatOFYear = 'YY';
+  const longFormatOFYear = 'YYYY';
   // many variables for easy reading, not )
 
-  if (fromFormat.includes('YY')) {
-    YearFormFromFormat = 'YY';
-  }
+  let indexOfYearFormat = 0;
 
-  if (fromFormat.includes('YYYY')) {
-    YearFormFromFormat = 'YYYY';
-  }
-
-  for (let i = 0; i < fromFormatLenghtWitoutSeparator; i++) {
-    if (fromFormat[i] === YearFormFromFormat) {
-      fromFormat[i] = newFormatSorted[3];
+  for (const ch of newFormat) {
+    if (ch === shortFormatOFYear || ch === longFormatOFYear) {
+      indexOfYearFormat = newFormat.indexOf(ch);
     }
-    objectOfDataAndFormats[fromFormat[i]] = arrayFromDataString[i];
   }
 
-  let valueOfKey = objectOfDataAndFormats[newFormatSorted[3]];
+  if (fromFormat.includes(shortFormatOFYear)) {
+    YearFormFromFormat = shortFormatOFYear;
+  }
 
-  if (valueOfKey.length > newFormatSorted[3].length) {
+  if (fromFormat.includes(longFormatOFYear)) {
+    YearFormFromFormat = longFormatOFYear;
+  }
+
+  for (let i = 0; i < fromFormatLengthWithoutSeparator; i++) {
+    if (oldFormat[i] === YearFormFromFormat) {
+      oldFormat[i] = newFormat[indexOfYearFormat];
+    }
+    objectOfDataAndFormats[oldFormat[i]] = dateComponents[i];
+  }
+
+  let valueOfKey = objectOfDataAndFormats[newFormat[indexOfYearFormat]];
+
+  if (valueOfKey.length > newFormat[indexOfYearFormat].length) {
     valueOfKey = valueOfKey.slice(valueOfKey.length - 2);
 
-    objectOfDataAndFormats[newFormatSorted[3]] = valueOfKey;
+    objectOfDataAndFormats[newFormat[indexOfYearFormat]] = valueOfKey;
   }
 
-  if (valueOfKey.length < newFormatSorted[3].length) {
+  if (valueOfKey.length < newFormat[indexOfYearFormat].length) {
     if (valueOfKey < 30) {
       valueOfKey = `20${valueOfKey}`;
     } else {
       valueOfKey = `19${valueOfKey}`;
     }
 
-    objectOfDataAndFormats[newFormatSorted[3]] = valueOfKey;
+    objectOfDataAndFormats[newFormat[indexOfYearFormat]] = valueOfKey;
   }
 
   for (const ch of newFormat) {
