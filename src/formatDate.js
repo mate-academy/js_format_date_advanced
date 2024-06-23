@@ -11,7 +11,7 @@ function formatDate(date, fromFormat, toFormat) {
   const formatedDate = date.split(fromFormat[3]);
   const sortedDate = {};
   const finalArray = [];
-  const yearFormat = (year) => (+year >= 30 ? `19${year}` : `20${year}`);
+  const yearFormat = (year) => (parseInt(year, 10) >= 30 ? `19${year}` : `20${year}`);
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (fromFormat[i].startsWith('Y')) {
