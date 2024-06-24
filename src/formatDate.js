@@ -11,14 +11,12 @@ function formatDate(date, fromFormat, toFormat) {
   const dateSplit = date.split(fromFormat[3]);
   const newDate = [];
 
-
   for (let i = 0; toFormat.length - 1 > i; i++) {
     const format = toFormat[i];
-    console.log(format)
-    console.log(newDate)
 
     if (format === 'YYYY' && fromFormat.includes('YY')) {
-      let year = dateSplit[fromFormat.indexOf('YY')]
+      let year = dateSplit[fromFormat.indexOf('YY')];
+
       if (year < 30) {
         year = '20' + year;
       } else {
@@ -31,9 +29,8 @@ function formatDate(date, fromFormat, toFormat) {
       newDate.push(dateSplit[fromFormat.indexOf(format)]);
     }
   }
-  console.log(newDate)
 
-  return newDate.join(toFormat[3])
+  return newDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
