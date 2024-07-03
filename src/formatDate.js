@@ -11,8 +11,8 @@ function formatDate(date, fromFormat, toFormat) {
   // find out which separator
   // to split the string
   // to convert to an array of numbers
-  const pastSeparator = fromFormat[3];
-  const oldFormat = date.split(pastSeparator);
+  const fromSeparator = fromFormat[3];
+  const oldFormat = date.split(fromSeparator);
 
   let year = '';
   let month = '';
@@ -29,15 +29,15 @@ function formatDate(date, fromFormat, toFormat) {
     switch (fromFormat[i]) {
       case 'YYYY':
       case 'YY':
-        year += oldFormat[i];
+        year = oldFormat[i];
         break;
 
       case 'DD':
-        day += oldFormat[i];
+        day = oldFormat[i];
         break;
 
       case 'MM':
-        month += oldFormat[i];
+        month = oldFormat[i];
         break;
     }
   }
@@ -49,37 +49,46 @@ function formatDate(date, fromFormat, toFormat) {
   const newFormat = [];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'YYYY') {
-      // When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise
+    switch (toFormat[i]) {
+      case 'YYYY':
+        newFormat[i] = year.length === 2 ? convertFormatYYtoYYYY() : year;
+        break;
 
-      if (year.length === 2) {
-        if (+year < 30) {
-          year = '20' + year;
-        } else {
-          year = '19' + year;
-        }
-      }
+      case 'YY':
+        newFormat[i] = year.length === 4 ? convertFormatYYYYtoYY() : year;
+        break;
 
-      newFormat[i] = year;
+      case 'DD':
+        newFormat[i] = day;
+        break;
+
+      case 'MM':
+        newFormat[i] = month;
+        break;
     }
+  }
 
+  function convertFormatYYYYtoYY() {
     // When converting from YYYY to YY just use 2 last digit (1997 -> 97)
 
-    if (toFormat[i] === 'YY') {
-      if (year.length === 4) {
-        year = year.slice(-2);
-      }
+    return year.slice(-2);
+  }
 
-      newFormat[i] = year;
+  function convertFormatYYtoYYYY() {
+    // When converting from YY to YYYY use 20YY if YY < 30 and 19YY otherwise
+
+    // all two-digit years less than '30' belong to the 21st century
+    // all others to the 20th century
+
+    const LIMIT_21ST_CENTURY = 30;
+    const INITIAL_DIGITS_YEARS_21ST_CENTURY = 20;
+    const INITIAL_DIGITS_YEARS_20ST_CENTURY = 19;
+
+    if (+year < LIMIT_21ST_CENTURY) {
+      return INITIAL_DIGITS_YEARS_21ST_CENTURY + year;
     }
 
-    if (toFormat[i] === 'MM') {
-      newFormat[i] = month;
-    }
-
-    if (toFormat[i] === 'DD') {
-      newFormat[i] = day;
-    }
+    return INITIAL_DIGITS_YEARS_20ST_CENTURY + year;
   }
 
   // convert the array into a string
