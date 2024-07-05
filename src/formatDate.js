@@ -21,6 +21,29 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       if (toFormat[i].slice(0, 1) === Object.keys(dateFromObj)[j].slice(0, 1)) {
+        const n = Math.sign(
+          toFormat[i].length - Object.keys(dateFromObj)[j].length,
+        );
+
+        switch (n) {
+          case 0:
+            result += Object.values(dateFromObj)[j] + toFormat[3];
+            break;
+          case -1:
+            result += Object.values(dateFromObj)[j].slice(2) + toFormat[3];
+            break;
+          case 1:
+            if (parseInt(Object.values(dateFromObj)[j]) < 30) {
+              result += '20' + Object.values(dateFromObj)[j] + toFormat[3];
+            } else if (parseInt(Object.values(dateFromObj)[j]) >= 30) {
+              result += '19' + Object.values(dateFromObj)[j] + toFormat[3];
+            }
+            break;
+        }
+      }
+    }
+  }
+  /**
         if (toFormat[i].length === Object.keys(dateFromObj)[j].length) {
           result += Object.values(dateFromObj)[j] + toFormat[3];
         }
@@ -30,15 +53,15 @@ function formatDate(date, fromFormat, toFormat) {
         }
 
         if (toFormat[i].length > Object.keys(dateFromObj)[j].length) {
-          if (Object.values(dateFromObj)[j] < 30) {
+          if (parseInt(Object.values(dateFromObj)[j]) < 30) {
             result += '20' + Object.values(dateFromObj)[j] + toFormat[3];
-          } else if (Object.values(dateFromObj)[j] >= 30) {
+          } else if (parseInt(Object.values(dateFromObj)[j]) >= 30) {
             result += '19' + Object.values(dateFromObj)[j] + toFormat[3];
           }
         }
       }
     }
-  }
+  } */
 
   return result.slice(0, -1);
 }
