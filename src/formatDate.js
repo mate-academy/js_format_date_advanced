@@ -43,25 +43,6 @@ function formatDate(date, fromFormat, toFormat) {
       }
     }
   }
-  /**
-        if (toFormat[i].length === Object.keys(dateFromObj)[j].length) {
-          result += Object.values(dateFromObj)[j] + toFormat[3];
-        }
-
-        if (toFormat[i].length < Object.keys(dateFromObj)[j].length) {
-          result += Object.values(dateFromObj)[j].slice(2) + toFormat[3];
-        }
-
-        if (toFormat[i].length > Object.keys(dateFromObj)[j].length) {
-          if (parseInt(Object.values(dateFromObj)[j]) < 30) {
-            result += '20' + Object.values(dateFromObj)[j] + toFormat[3];
-          } else if (parseInt(Object.values(dateFromObj)[j]) >= 30) {
-            result += '19' + Object.values(dateFromObj)[j] + toFormat[3];
-          }
-        }
-      }
-    }
-  } */
 
   return result.slice(0, -1);
 }
