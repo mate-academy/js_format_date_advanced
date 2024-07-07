@@ -11,33 +11,25 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const fromSeparator = fromFormat[fromFormat.length - 1];
   const toSeparator = toFormat[toFormat.length - 1];
-  const dataArr = date.split(fromSeparator);
-  const obj = {};
+  const dateArr = date.split(fromSeparator);
+  const dateObj = {};
   const result = [];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    obj[fromFormat[i]] = dataArr[i];
+    dateObj[fromFormat[i]] = dateArr[i];
   }
 
   for (let i = 0; i < toFormat.length - 1; i++) {
-    for (const key in obj) {
-      if (toFormat[i] === key) {
-        result.push(obj[key]);
-      }
-    }
+    const formatChar = toFormat[i];
 
-    if (toFormat[i] === 'YY') {
-      result.push(obj['YYYY'].split('').slice(2).join(''));
-    }
+    if (formatChar === 'YY' && dateObj['YYYY']) {
+      result.push(dateObj['YYYY'].split('').slice(2).join(''));
+    } else if (formatChar === 'YYYY' && dateObj['YY']) {
+      const year = +dateObj['YY'];
 
-    if (toFormat[i] === 'YYYY') {
-      if (+obj['YY'] < 30) {
-        result.push(`20${obj['YY']}`);
-      }
-
-      if (+obj['YY'] >= 30) {
-        result.push(`19${obj['YY']}`);
-      }
+      result.push(year < 30 ? `20${dateObj['YY']}` : `19${dateObj['YY']}`);
+    } else {
+      result.push(dateObj[formatChar]);
     }
   }
 
