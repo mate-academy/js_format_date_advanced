@@ -20,7 +20,6 @@ function formatDate(date, fromFormat, toFormat) {
  * @param {string} date
  * @param {string[]} format
  *
- *
  * @returns {Object}
  */
 function parseDate(date, format) {
@@ -58,7 +57,6 @@ function parseDate(date, format) {
  * @param {Object} date
  * @param {string[]} format
  *
- *
  * @returns {string}
  */
 function dateToString(date, format) {
@@ -76,6 +74,8 @@ function dateToString(date, format) {
 /**
  * @param {number} num
  * @param {number} length
+ *
+ * @returns {string}
  */
 function prettyNumString(num, length) {
   return num.toString().padStart(length, '0').slice(-length);
