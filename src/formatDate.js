@@ -22,7 +22,7 @@ function formatDate(date, fromFormat, toFormat) {
         const fromIndex = fromFormat.indexOf('YY');
         const year = dateArr[fromIndex];
 
-        resultArr.push(year < 30 ? '20' + year : '19' + year);
+        resultArr.push(+year < 30 ? '20' + year : '19' + year);
       } else if (format === 'YY') {
         const fromIndex = fromFormat.indexOf('YYYY');
         const year = dateArr[fromIndex];
