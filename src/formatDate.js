@@ -17,8 +17,6 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < 3; i++) {
     switch (fromFormat[i]) {
       case 'YYYY':
-        year = dateSeparated[i];
-        break;
       case 'YY':
         year = dateSeparated[i];
         break;
@@ -42,17 +40,13 @@ function formatDate(date, fromFormat, toFormat) {
         finalDate += day;
         break;
       case 'YY':
-        if (year.length === 2) {
-          finalDate += year;
-        } else {
-          finalDate += year.slice(-2);
-        }
+        finalDate += year.slice(-2);
         break;
       case 'YYYY':
         if (year.length === 4) {
           finalDate += year;
         } else {
-          if (parseInt(year) < 30) {
+          if (Number.isFinite(parseInt(year)) < 30) {
             finalDate += '20' + year;
           } else {
             finalDate += '19' + year;
