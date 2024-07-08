@@ -34,29 +34,26 @@ function formatDate(date, fromFormat, toFormat) {
   let newDate = '';
 
   toFormat.forEach((format) => {
+    let part = '';
+
     switch (format) {
       case 'YYYY':
-        newDate += yearPart;
-        newDate += dividerNew;
-
+        part = yearPart;
         break;
       case 'YY':
-        newDate += yearPart.slice(-2);
-        newDate += dividerNew;
+        part = yearPart.slice(-2);
         break;
       case 'MM':
-        newDate += MM;
-        newDate += toFormat[3];
-
+        part = MM;
         break;
       case 'DD':
-        newDate += DD;
-        newDate += dividerNew;
-
+        part = DD;
         break;
       default:
-        newDate += format;
+        part = format;
     }
+    newDate += part;
+    newDate += dividerNew;
   });
 
   return newDate.split(dividerNew).slice(0, 3).join(dividerNew);
