@@ -33,6 +33,8 @@ function formatDate(date, fromFormat, toFormat) {
       case 'DD':
         day = dateDay[i];
         break;
+      default:
+        break;
     }
   }
 
@@ -68,6 +70,8 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case 'DD':
         newDate.push(day);
+        break;
+      default:
         break;
     }
   }
