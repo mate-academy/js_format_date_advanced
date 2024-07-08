@@ -46,7 +46,7 @@ function formatDate(date, fromFormat, toFormat) {
         if (year.length === 4) {
           finalDate += year;
         } else {
-          if (Number.isFinite(parseInt(year)) < 30) {
+          if (Number.isFinite(parseInt(year)) && parseInt(year) < 30) {
             finalDate += '20' + year;
           } else {
             finalDate += '19' + year;
