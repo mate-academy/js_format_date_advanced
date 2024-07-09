@@ -9,29 +9,27 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   // create property for symbols from and to
-  const simbolFormat = fromFormat[fromFormat.length - 1];
-  const simbolTo = toFormat[toFormat.length - 1];
+  const symbolFormat = fromFormat[fromFormat.length - 1];
+  const symbolTo = toFormat[toFormat.length - 1];
   // create split array from date
-  const dateDay = date.split(simbolFormat);
+  const dateParts = date.split(symbolFormat);
   // create property that will save new date
-  let year = '';
-  let day = '';
-  let month = '';
+  let year = Number();
+  let day = Number();
+  let month = Number();
 
-  // add value for year, day, month from dateDay
+  // add value for year, day, month from dateParts
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'YYYY':
-        year = dateDay[i];
-        break;
       case 'YY':
-        year = dateDay[i];
+        year = dateParts[i];
         break;
       case 'MM':
-        month = dateDay[i];
+        month = dateParts[i];
         break;
       case 'DD':
-        day = dateDay[i];
+        day = dateParts[i];
         break;
       default:
         break;
@@ -77,6 +75,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
   // create date with right simbol;
 
-  return newDate.join(simbolTo);
+  return newDate.join(symbolTo);
 }
 module.exports = formatDate;
