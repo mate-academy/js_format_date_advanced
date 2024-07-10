@@ -21,7 +21,9 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (toFormat.includes('YY')) {
     objectDate['YY'] = objectDate['YYYY'].slice(2);
-  } else if (objectDate['YY'] && toFormat.includes('YYYY')) {
+  }
+
+  if (objectDate['YY'] && toFormat.includes('YYYY')) {
     objectDate['YYYY'] =
       objectDate['YY'] < 30 ? '20' + objectDate['YY'] : '19' + objectDate['YY'];
   }
