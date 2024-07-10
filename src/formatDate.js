@@ -9,16 +9,15 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const dateObj = parseDate(date, fromFormat);
-  const newDate = getDate(dateObj, toFormat);
 
-  return newDate;
+  return getDate(dateObj, toFormat);
 }
 
 function parseDate(date, fromFormat) {
   const dateObj = {};
 
   for (let i = 0; i < 3; i++) {
-    const part = +date.split(fromFormat[3])[i];
+    const part = date.split(fromFormat[3])[i];
 
     if (fromFormat[i] === 'DD') {
       dateObj.day = part;
@@ -34,14 +33,14 @@ function parseDate(date, fromFormat) {
 
     if (fromFormat[i] === 'YY') {
       if (part < 30) {
-        dateObj.year = 2000 + part;
+        dateObj.year = '20' + part;
       } else {
-        dateObj.year = 1900 + part;
+        dateObj.year = '19' + part;
       }
     }
-
-    return dateObj;
   }
+
+  return dateObj;
 }
 
 function getDate(dateObj, toFormat) {
