@@ -8,18 +8,18 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const fromDevider = fromFormat[3];
-  const toDevider = toFormat[3];
+  const fromDivider = fromFormat[3];
+  const toDivider = toFormat[3];
 
-  const dateValues = date.split(fromDevider);
+  const dateValues = date.split(fromDivider);
 
   const objectDate = {};
 
-  fromFormat.forEach((key, value) => {
-    objectDate[key] = dateValues[value];
+  fromFormat.forEach((value, index) => {
+    objectDate[value] = dateValues[index];
   });
 
-  if (toFormat.includes('YY')) {
+  if (objectDate['YYYY'] && toFormat.includes('YY')) {
     objectDate['YY'] = objectDate['YYYY'].slice(2);
   }
 
@@ -30,8 +30,8 @@ function formatDate(date, fromFormat, toFormat) {
 
   const toDate = toFormat
     .slice(0, 3)
-    .map((key) => objectDate[key])
-    .join(toDevider);
+    .map((value) => objectDate[value])
+    .join(toDivider);
 
   return toDate;
 }
