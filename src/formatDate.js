@@ -12,16 +12,17 @@ function formatDate(date, fromFormat, toFormat) {
   const separator2 = toFormat[toFormat.length - 1];
 
   const curDate = date.split(separator);
-  const result = [];
+  const dateObj = {};
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
-    if (fromFormat[i] === 'YYYY' && toFormat[i] === 'YY') {
-      result.push(curDate[i].slice(-2));
-      continue;
-    }
+    dateObj[fromFormat[i]] = curDate[i];
+  }
 
-    if (fromFormat[i] === 'YY' && toFormat[i] === 'YYYY') {
-      let curYear = curDate[i];
+  const result = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    if (toFormat[i] === 'YYYY' && fromFormat.indexOf('YY') !== -1) {
+      let curYear = dateObj['YY'];
 
       if (curYear < 30) {
         curYear = '20' + curYear;
@@ -33,9 +34,12 @@ function formatDate(date, fromFormat, toFormat) {
       continue;
     }
 
-    const indexOfDate = fromFormat.indexOf(toFormat[i]);
+    if (toFormat[i] === 'YY' && fromFormat.indexOf('YYYY') !== -1) {
+      result.push(dateObj['YYYY'].slice(-2));
+      continue;
+    }
 
-    result.push(curDate[indexOfDate]);
+    result.push(dateObj[toFormat[i]]);
   }
 
   return result.join(separator2);
