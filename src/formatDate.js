@@ -39,7 +39,7 @@ function getNewDate(toFormat, dateArray, dateObject) {
   let newDate = '';
 
   for (let i = 0; i < dateArray.length; i++) {
-    if (toFormat[i].includes(YEAR_SIGN)) {
+    if (toFormat[i][0] === YEAR_SIGN) {
       newDate += getRightYear(toFormat[i], dateObject);
     } else {
       newDate += dateObject[toFormat[i]];
