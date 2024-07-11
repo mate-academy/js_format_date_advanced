@@ -53,18 +53,18 @@ function getNewDate(toFormat, dateArray, dateObject) {
   return newDate;
 }
 
-function getRightYear(toFormat, dateObject) {
+function getRightYear(toYearFormat, dateObject) {
   const YEAR_FORMAT_SHORT = 'YY';
   const YEAR_FORMAT_FULL = 'YYYY';
   const BORDER_TO_DEFINE_CENTURY = 30;
   const PREFIX_CENTURY_OLD = '19';
   const PREFIX_CENTURY_NEW = '20';
 
-  if (toFormat in dateObject) {
-    return dateObject[toFormat];
+  if (toYearFormat in dateObject) {
+    return dateObject[toYearFormat];
   }
 
-  if (toFormat === YEAR_FORMAT_SHORT) {
+  if (toYearFormat === YEAR_FORMAT_SHORT) {
     return dateObject[YEAR_FORMAT_FULL].slice(2);
   }
 
