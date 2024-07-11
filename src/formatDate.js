@@ -10,24 +10,24 @@
 function formatDate(date, fromFormat, toFormat) {
   const SEPARATOR_INDEX = 3;
 
-  const dateArray = date.split(fromFormat[SEPARATOR_INDEX]);
+  const dateParts = date.split(fromFormat[SEPARATOR_INDEX]);
   const dateObject = getDateObject(
-    dateArray,
+    dateParts,
     fromFormat,
     toFormat,
     SEPARATOR_INDEX,
   );
 
-  return getNewDate(toFormat, dateArray, dateObject);
+  return getNewDate(toFormat, dateParts, dateObject);
 }
 
-function getDateObject(dateArray, fromFormat, toFormat, separatorIndex) {
+function getDateObject(dateParts, fromFormat, toFormat, separatorIndex) {
   const dateObject = {
     separator: toFormat[separatorIndex],
   };
 
   for (let i = 0; i < separatorIndex; i++) {
-    dateObject[fromFormat[i]] = dateArray[i];
+    dateObject[fromFormat[i]] = dateParts[i];
   }
 
   return dateObject;
@@ -53,23 +53,26 @@ function getNewDate(toFormat, dateArray, dateObject) {
   return newDate;
 }
 
-function getRightYear(toFormat, date) {
+function getRightYear(toFormat, dateObject) {
   const YEAR_FORMAT_SHORT = 'YY';
   const YEAR_FORMAT_FULL = 'YYYY';
+  const BORDER_TO_DEFINE_CENTURY = 30;
+  const PREFIX_CENTURY_OLD = '19';
+  const PREFIX_CENTURY_NEW = '20';
 
-  if (toFormat in date) {
-    return date[toFormat];
+  if (toFormat in dateObject) {
+    return dateObject[toFormat];
   }
 
   if (toFormat === YEAR_FORMAT_SHORT) {
-    return date[YEAR_FORMAT_FULL].slice(2);
+    return dateObject[YEAR_FORMAT_FULL].slice(2);
   }
 
-  if (date[YEAR_FORMAT_SHORT] < 30) {
-    return '20' + date[YEAR_FORMAT_SHORT];
+  if (+dateObject[YEAR_FORMAT_SHORT] < BORDER_TO_DEFINE_CENTURY) {
+    return PREFIX_CENTURY_NEW + dateObject[YEAR_FORMAT_SHORT];
   }
 
-  return '19' + date[YEAR_FORMAT_SHORT];
+  return PREFIX_CENTURY_OLD + dateObject[YEAR_FORMAT_SHORT];
 }
 
 module.exports = formatDate;
