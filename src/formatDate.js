@@ -13,9 +13,20 @@ function formatDate(date, fromFormat, toFormat) {
   const tab = [];
   let year;
 
-  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    fromFormat[fromFormat.indexOf('YY')] = 'YYYY';
-    year = dateParts[fromFormat.indexOf('YYYY')];
+  const ifFromIncludesYY = fromFormat.includes('YY');
+  const ifFromIncludesYYYY = fromFormat.includes('YYYY');
+  const ifToIncludesYY = toFormat.includes('YY');
+  const ifToIncludesYYYY = toFormat.includes('YYYY');
+
+  const fromIndexYY = fromFormat.indexOf('YY');
+  const fromIndexYYYY = fromFormat.indexOf('YYYY');
+
+  if (ifFromIncludesYY && ifToIncludesYYYY) {
+    fromFormat[fromIndexYY] = 'YYYY';
+
+    const yearYYYY = fromFormat.indexOf('YYYY');
+
+    year = dateParts[yearYYYY];
 
     if (year < 30) {
       year = '20' + year;
@@ -23,13 +34,16 @@ function formatDate(date, fromFormat, toFormat) {
       year = '19' + year;
     }
 
-    dateParts[fromFormat.indexOf('YYYY')] = year;
+    dateParts[yearYYYY] = year;
   }
 
-  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
-    fromFormat[fromFormat.indexOf('YYYY')] = 'YY';
-    year = dateParts[fromFormat.indexOf('YY')].slice(2, 4);
-    dateParts[fromFormat.indexOf('YY')] = year;
+  if (ifFromIncludesYYYY && ifToIncludesYY) {
+    fromFormat[fromIndexYYYY] = 'YY';
+
+    const yearYY = fromFormat.indexOf('YY');
+
+    year = dateParts[yearYY].slice(2, 4);
+    dateParts[yearYY] = year;
   }
 
   for (let i = 0; i < 3; i++) {
