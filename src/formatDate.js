@@ -8,14 +8,18 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const delimiters = ['-', '/', '.'];
-  const inputDelimiter = delimiters.find((d) => date.includes(d));
+  const inputDelimiter = fromFormat.find((char) => {
+    return ['-', '/', '.'].includes(char);
+  });
+
   const dateParts = date.split(inputDelimiter);
 
   const dateObj = {};
 
   fromFormat.forEach((part, index) => {
-    dateObj[part] = dateParts[index];
+    if (part !== inputDelimiter) {
+      dateObj[part] = dateParts[index];
+    }
   });
 
   if (dateObj['YYYY'] && toFormat.includes('YY')) {
@@ -26,17 +30,16 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj['YYYY'] = year < 30 ? '20' + dateObj['YY'] : '19' + dateObj['YY'];
   }
 
-  let outputDelimiter = '-';
+  const outputDelimiter = toFormat.find(
+    (char) => ['-', '/', '.'].includes(char) || '',
+  );
 
-  if (toFormat.includes('/')) {
-    outputDelimiter = '/';
-  } else if (toFormat.includes('.')) {
-    outputDelimiter = '.';
-  }
+  const newDate = toFormat
+    .filter((part) => part !== outputDelimiter)
+    .map((part) => dateObj[part])
+    .join(outputDelimiter);
 
-  const newDate = toFormat.map((part) => dateObj[part]).join(outputDelimiter);
-
-  return newDate.slice(0, -1);
+  return newDate;
 }
 
 module.exports = formatDate;
