@@ -19,35 +19,32 @@ function formatDate(date, fromFormat, toFormat) {
   const NEW_CENTURY = 20;
 
   const dateArr = date.split(SEPARATOR_FROM_FORMAT);
+  const dateObject = {};
   const formatedDateArr = [];
 
-  const dateLength = dateArr.length;
+  for (let i = 0; i < dateArr.length; i++) {
+    dateObject[fromFormat[i]] = dateArr[i];
+  }
 
-  for (let i = 0; i < dateLength; i++) {
-    for (let j = 0; j < dateLength; j++) {
-      if (toFormat[i] === fromFormat[j]) {
-        formatedDateArr.push(dateArr[j]);
-        break;
+  for (const el of toFormat) {
+    if (dateObject[el] !== undefined) {
+      formatedDateArr.push(dateObject[el]);
+      continue;
+    }
+
+    if (el === SHORT_YEAR_FORMAT && dateObject[LONG_YEAR_FORMAT]) {
+      formatedDateArr.push(dateObject[LONG_YEAR_FORMAT].slice(2));
+      continue;
+    }
+
+    if (el === LONG_YEAR_FORMAT && dateObject[SHORT_YEAR_FORMAT]) {
+      const year = dateObject[SHORT_YEAR_FORMAT];
+
+      if (+year < MAX_YEAR_NEW_CENTURY) {
+        formatedDateArr.push(NEW_CENTURY.toString().concat(year));
+        continue;
       }
-
-      if (
-        toFormat[i] === SHORT_YEAR_FORMAT &&
-        fromFormat[j] === LONG_YEAR_FORMAT
-      ) {
-        formatedDateArr.push(dateArr[j].slice(2));
-      }
-
-      if (
-        toFormat[i] === LONG_YEAR_FORMAT &&
-        fromFormat[j] === SHORT_YEAR_FORMAT
-      ) {
-        if (dateArr[j] < MAX_YEAR_NEW_CENTURY) {
-          formatedDateArr.push(NEW_CENTURY.toString().concat(dateArr[j]));
-          break;
-        }
-
-        formatedDateArr.push((NEW_CENTURY - 1).toString().concat(dateArr[j]));
-      }
+      formatedDateArr.push((NEW_CENTURY - 1).toString().concat(year));
     }
   }
 
