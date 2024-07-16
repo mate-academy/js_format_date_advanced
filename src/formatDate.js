@@ -8,14 +8,17 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat.pop();
-  const toSeparator = toFormat.pop();
+  const fromFormatCopy = [...fromFormat];
+  const toFormatCopy = [...toFormat];
+
+  const fromSeparator = fromFormatCopy.pop();
+  const toSeparator = toFormatCopy.pop();
 
   const dateParts = date.split(fromSeparator);
 
   const dateMap = {};
 
-  fromFormat.forEach((part, index) => {
+  fromFormatCopy.forEach((part, index) => {
     dateMap[part] = dateParts[index];
   });
 
@@ -29,7 +32,7 @@ function formatDate(date, fromFormat, toFormat) {
     dateMap['YYYY'] = (yy < 30 ? '20' : '19') + dateMap['YY'];
   }
 
-  const newDateParts = toFormat.map((part) => dateMap[part]);
+  const newDateParts = toFormatCopy.map((part) => dateMap[part]);
 
   return newDateParts.join(toSeparator);
 }
