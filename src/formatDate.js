@@ -8,65 +8,63 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const normilizedFromFormat = formatDestructing(fromFormat);
-  const normilizedToFormat = formatDestructing(toFormat);
-
-  // let dateArr = date.split(normilizedFromFormat.delim);
+  const normalizedFromFormat = formatNormalizing(fromFormat);
+  const normalizedToFormat = formatNormalizing(toFormat);
 
   let day;
   let month;
   let year;
 
-  if (normilizedFromFormat.format === 'DMY') {
-    [day, month, year] = date.split(normilizedFromFormat.delim);
-  } else if (normilizedFromFormat.format === 'DYM') {
-    [day, year, month] = date.split(normilizedFromFormat.delim);
-  } else if (normilizedFromFormat.format === 'YDM') {
-    [year, day, month] = date.split(normilizedFromFormat.delim);
-  } else if (normilizedFromFormat.format === 'YMD') {
-    [year, month, day] = date.split(normilizedFromFormat.delim);
-  } else if (normilizedFromFormat.format === 'MDY') {
-    [month, day, year] = date.split(normilizedFromFormat.delim);
-  } else if (normilizedFromFormat.format === 'MYD') {
-    [month, year, day] = date.split(normilizedFromFormat.delim);
+  if (normalizedFromFormat.format === 'DMY') {
+    [day, month, year] = date.split(normalizedFromFormat.delim);
+  } else if (normalizedFromFormat.format === 'DYM') {
+    [day, year, month] = date.split(normalizedFromFormat.delim);
+  } else if (normalizedFromFormat.format === 'YDM') {
+    [year, day, month] = date.split(normalizedFromFormat.delim);
+  } else if (normalizedFromFormat.format === 'YMD') {
+    [year, month, day] = date.split(normalizedFromFormat.delim);
+  } else if (normalizedFromFormat.format === 'MDY') {
+    [month, day, year] = date.split(normalizedFromFormat.delim);
+  } else if (normalizedFromFormat.format === 'MYD') {
+    [month, year, day] = date.split(normalizedFromFormat.delim);
   }
 
-  if (normilizedToFormat.y === 4 && year.length === 2) {
-    if (year < 30) {
+  if (normalizedToFormat.y === 4 && year.length === 2) {
+    if (+year < 30) {
       year = '20' + year;
     } else {
       year = '19' + year;
     }
-  } else if (normilizedToFormat.y === 2 && year.length === 4) {
+  } else if (normalizedToFormat.y === 2 && year.length === 4) {
     year = year.slice(2);
   }
 
   let result;
 
-  if (normilizedToFormat.format === 'DMY') {
+  if (normalizedToFormat.format === 'DMY') {
     result =
-      day + normilizedToFormat.delim + month + normilizedToFormat.delim + year;
-  } else if (normilizedToFormat.format === 'DYM') {
+      day + normalizedToFormat.delim + month + normalizedToFormat.delim + year;
+  } else if (normalizedToFormat.format === 'DYM') {
     result =
-      day + normilizedToFormat.delim + year + normilizedToFormat.delim + month;
-  } else if (normilizedToFormat.format === 'YDM') {
+      day + normalizedToFormat.delim + year + normalizedToFormat.delim + month;
+  } else if (normalizedToFormat.format === 'YDM') {
     result =
-      year + normilizedToFormat.delim + day + normilizedToFormat.delim + month;
-  } else if (normilizedToFormat.format === 'YMD') {
+      year + normalizedToFormat.delim + day + normalizedToFormat.delim + month;
+  } else if (normalizedToFormat.format === 'YMD') {
     result =
-      year + normilizedToFormat.delim + month + normilizedToFormat.delim + day;
-  } else if (normilizedToFormat.format === 'MDY') {
+      year + normalizedToFormat.delim + month + normalizedToFormat.delim + day;
+  } else if (normalizedToFormat.format === 'MDY') {
     result =
-      month + normilizedToFormat.delim + day + normilizedToFormat.delim + year;
-  } else if (normilizedToFormat.format === 'MYD') {
+      month + normalizedToFormat.delim + day + normalizedToFormat.delim + year;
+  } else if (normalizedToFormat.format === 'MYD') {
     result =
-      month + normilizedToFormat.delim + year + normilizedToFormat.delim + day;
+      month + normalizedToFormat.delim + year + normalizedToFormat.delim + day;
   }
 
   return result;
 }
 
-function formatDestructing(format) {
+function formatNormalizing(format) {
   const result = {
     format: '',
   };
