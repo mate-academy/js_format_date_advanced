@@ -8,24 +8,23 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = Array.from(fromFormat).pop();
+  const oldSeparator = fromFormat[fromFormat.length - 1];
+  const newData = date.split(oldSeparator);
   const newFormat = Array.from(toFormat);
   const newSeparator = newFormat.pop();
   const dataObject = {};
 
-  for (const value of date.split(oldSeparator)) {
-    const key = fromFormat.shift();
+  for (let i = 0; i < newData.length; i++) {
+    dataObject[fromFormat[i]] = newData[i];
 
-    dataObject[key] = value;
-
-    if (key === 'YY') {
-      dataObject.YYYY = value < 30 ? '20' + value : '19' + value;
-    } else if (key === 'YYYY') {
-      dataObject.YY = value.substring(2);
+    if (fromFormat[i] === 'YY') {
+      dataObject.YYYY = newData[i] < 30 ? '20' + newData[i] : '19' + newData[i];
+    } else if (fromFormat[i] === 'YYYY') {
+      dataObject.YY = newData[i].substring(2);
     }
   }
 
-  return newFormat.map((call) => dataObject[call]).join(newSeparator);
+  return newFormat.map((datePart) => dataObject[datePart]).join(newSeparator);
 }
 
 module.exports = formatDate;
