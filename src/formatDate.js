@@ -12,22 +12,22 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
   const dateSet = {};
 
-  for (let i = 0; i < dateParts.length; i++) {
+  for (let i = 0; i < 3; i++) {
     dateSet[fromFormat[i]] = dateParts[i];
   }
 
-  for (const key of toFormat) {
-    if (dateSet[key]) {
-      newDate.push(dateSet[key]);
-    } else if (key === 'YY') {
-      newDate.push(dateSet.YYYY.slice(2));
-    } else if (key === 'YYYY') {
-      if (dateSet.YY < 30) {
-        newDate.push('20' + dateSet.YY);
-      } else {
-        newDate.push('19' + dateSet.YY);
-      }
-    }
+  if (dateSet.YYYY) {
+    dateSet.YY = dateSet.YYYY.slice(2);
+  }
+
+  if (dateSet.YY < 30) {
+    dateSet.YYYY = '20' + `${dateSet.YY}`;
+  } else {
+    dateSet.YYYY = '19' + `${dateSet.YY}`;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    newDate.push(dateSet[toFormat[i]]);
   }
 
   return newDate.join(toFormat[toFormat.length - 1]);
