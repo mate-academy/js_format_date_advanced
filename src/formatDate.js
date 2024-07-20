@@ -9,28 +9,50 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const dateParts = date.split(fromFormat[3]);
-  const newDate = [];
-  const dateSet = {};
 
-  for (let i = 0; i < 3; i++) {
-    dateSet[fromFormat[i]] = dateParts[i];
+  let year;
+  let month;
+  let day;
+  const formattedDate = [];
+
+  for (let i = 0; i < fromFormat.length; i++) {
+    if (fromFormat[i] === 'YYYY') {
+      year = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'YY') {
+      year = dateParts[i] < 30 ? `20${dateParts[i]}` : `19${dateParts[i]}`;
+    }
+
+    if (fromFormat[i] === 'MM') {
+      month = dateParts[i];
+    }
+
+    if (fromFormat[i] === 'DD') {
+      day = dateParts[i];
+    }
   }
 
-  if (dateSet.YYYY) {
-    dateSet.YY = dateSet.YYYY.slice(2);
+  for (const format of toFormat) {
+    switch (format) {
+      case 'YYYY':
+        formattedDate.push(year);
+        break;
+
+      case 'YY':
+        formattedDate.push(year.slice(-2));
+        break;
+
+      case 'MM':
+        formattedDate.push(month);
+        break;
+
+      case 'DD':
+        formattedDate.push(day);
+    }
   }
 
-  if (dateSet.YY < 30) {
-    dateSet.YYYY = '20' + `${dateSet.YY}`;
-  } else {
-    dateSet.YYYY = '19' + `${dateSet.YY}`;
-  }
-
-  for (let i = 0; i < 3; i++) {
-    newDate.push(dateSet[toFormat[i]]);
-  }
-
-  return newDate.join(toFormat[toFormat.length - 1]);
+  return formattedDate.join(toFormat[3]);
 }
 
 module.exports = formatDate;
