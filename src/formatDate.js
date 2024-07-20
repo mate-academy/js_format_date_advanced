@@ -15,6 +15,10 @@ function formatDate(date, fromFormat, toFormat) {
 
   const dateParts = date.split(fromSeparator);
 
+  if (dateParts.length !== fromParts.length) {
+    throw new Error('Date format does not match the provided fromFormat');
+  }
+
   const dateObj = {};
 
   fromParts.forEach((part, index) => {
@@ -26,6 +30,10 @@ function formatDate(date, fromFormat, toFormat) {
       if (part === 'YYYY' && dateObj['YY']) {
         const year = parseInt(dateObj['YY'], 10);
 
+        if (isNaN(year)) {
+          throw new Error('Invalid year format');
+        }
+
         if (year < 30) {
           return '20' + dateObj['YY'];
         } else {
@@ -33,8 +41,10 @@ function formatDate(date, fromFormat, toFormat) {
         }
       } else if (part === 'YY' && dateObj['YYYY']) {
         return dateObj['YYYY'].slice(-2);
-      } else {
+      } else if (dateObj[part]) {
         return dateObj[part];
+      } else {
+        throw new Error(`Part ${part} not found in date`);
       }
     })
     .join(toSeparator);
