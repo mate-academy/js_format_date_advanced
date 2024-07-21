@@ -8,31 +8,26 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const separator = fromFormat.pop();
-  const newSeparator = toFormat.pop();
+  const separator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
   const dateParts = date.split(separator);
-  const newDate = ['', '', ''];
+  const newDate = new Array(3).fill('');
 
   const formatMap = {
-    DD: 'день',
-    MM: 'місяць',
-    YYYY: 'рік',
-    YY: 'рік',
+    DD: 'day',
+    MM: 'month',
+    YYYY: 'year',
+    YY: 'year',
   };
 
-  for (let i = 0; i < fromFormat.length; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     const format = fromFormat[i];
     const partType = formatMap[format];
     const partValue = dateParts[i];
 
-    let newIndex = -1;
-
-    for (let j = 0; j < toFormat.length; j++) {
-      if (formatMap[toFormat[j]] === partType) {
-        newIndex = j;
-        break;
-      }
-    }
+    const newIndex = toFormat.findIndex(
+      (f, index) => formatMap[f] === partType && index < toFormat.length - 1,
+    );
 
     if (format === 'YYYY' && toFormat[newIndex] === 'YY') {
       newDate[newIndex] = partValue.slice(-2);
@@ -43,7 +38,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return newDate.join(newSeparator);
+  return newDate.filter(Boolean).join(newSeparator);
 }
 
 module.exports = formatDate;
