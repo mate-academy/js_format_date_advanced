@@ -31,11 +31,14 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (format === 'YYYY' && toFormat[newIndex] === 'YY') {
       newDate[newIndex] = partValue.slice(-2);
-    } else if (format === 'YY' && toFormat[newIndex] === 'YYYY') {
-      newDate[newIndex] = (+partValue < 30 ? '20' : '19') + partValue;
-    } else {
-      newDate[newIndex] = partValue;
+      continue;
     }
+
+    if (format === 'YY' && toFormat[newIndex] === 'YYYY') {
+      newDate[newIndex] = (+partValue < 30 ? '20' : '19') + partValue;
+      continue;
+    }
+    newDate[newIndex] = partValue;
   }
 
   return newDate.filter(Boolean).join(newSeparator);
