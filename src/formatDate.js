@@ -32,6 +32,4 @@ function formatDate(date, fromFormat, toFormat) {
   return newDateFormat.join(toFormat.at(-1));
 }
 
-formatDate('2012-12-21', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']);
-
 module.exports = formatDate;
