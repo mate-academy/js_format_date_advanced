@@ -10,7 +10,7 @@
 function formatDate(date, fromFormat, toFormat) {
   const dataCollector = {};
   const newDateFormat = [];
-  const dateParts = date.split(fromFormat.at(-1));
+  const dateParts = date.split(fromFormat.slice(3));
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     dataCollector[fromFormat[i]] = dateParts[i];
@@ -29,7 +29,7 @@ function formatDate(date, fromFormat, toFormat) {
     newDateFormat.push(dataCollector[toFormat[i]]);
   }
 
-  return newDateFormat.join(toFormat.at(-1));
+  return newDateFormat.join(toFormat.slice(3));
 }
 
 module.exports = formatDate;
