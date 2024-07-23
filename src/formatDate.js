@@ -8,7 +8,30 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dataCollector = {};
+  const newDateFormat = [];
+  const dateParts = date.split(fromFormat.at(-1));
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dataCollector[fromFormat[i]] = dateParts[i];
+  }
+
+  if (!fromFormat.includes('YY')) {
+    dataCollector.YY = dataCollector.YYYY.slice(2);
+  } else {
+    const lonYearFormat =
+      dataCollector.YY < 30 ? 20 + dataCollector.YY : 19 + dataCollector.YY;
+
+    dataCollector.YYYY = lonYearFormat;
+  }
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    newDateFormat.push(dataCollector[toFormat[i]]);
+  }
+
+  return newDateFormat.join(toFormat.at(-1));
 }
+
+formatDate('2012-12-21', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YY', '/']);
 
 module.exports = formatDate;
