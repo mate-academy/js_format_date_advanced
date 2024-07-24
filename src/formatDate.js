@@ -9,37 +9,41 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const splitedArray = date.split(fromFormat[fromFormat.length - 1]);
-  let year = '';
-  const separator = toFormat[toFormat.length - 1];
+  const rightDate = [...toFormat];
+  const separator = rightDate[rightDate.length - 1];
 
-  toFormat.pop();
+  rightDate.pop();
 
-  for (const i of toFormat) {
-    if (i === 'DD') {
-      toFormat[toFormat.indexOf(i)] = splitedArray[fromFormat.indexOf(i)];
+  for (let i = 0; i < rightDate.length; i++) {
+    let value = splitedArray[fromFormat.indexOf(rightDate[i])];
+
+    if (rightDate[i] === 'DD') {
+      rightDate[i] = value;
     }
 
-    if (i === 'MM') {
-      toFormat[toFormat.indexOf(i)] = splitedArray[fromFormat.indexOf(i)];
+    if (rightDate[i] === 'MM') {
+      rightDate[i] = value;
     }
 
-    if ((i === 'YYYY' || i === 'YY') && fromFormat.includes(i)) {
-      year = splitedArray[fromFormat.indexOf(i)];
-      toFormat[toFormat.indexOf(i)] = year;
-    } else if (i === 'YY') {
-      year = splitedArray[fromFormat.indexOf('YYYY')].slice(2);
-      toFormat[toFormat.indexOf(i)] = year;
-    } else if (i === 'YYYY') {
+    if (
+      (rightDate[i] === 'YYYY' || rightDate[i] === 'YY') &&
+      fromFormat.includes(rightDate[i])
+    ) {
+      rightDate[i] = value;
+    } else if (rightDate[i] === 'YY') {
+      value = splitedArray[fromFormat.indexOf('YYYY')].slice(2);
+      rightDate[i] = value;
+    } else if (rightDate[i] === 'YYYY') {
       if (Number(splitedArray[fromFormat.indexOf('YY')]) < 30) {
-        year = '20' + splitedArray[fromFormat.indexOf('YY')];
+        value = '20' + splitedArray[fromFormat.indexOf('YY')];
       } else {
-        year = '19' + splitedArray[fromFormat.indexOf('YY')];
+        value = value = '19' + splitedArray[fromFormat.indexOf('YY')];
       }
-      toFormat[toFormat.indexOf(i)] = year;
+      rightDate[i] = value;
     }
   }
 
-  return toFormat.join(separator);
+  return rightDate.join(separator);
 }
 
 module.exports = formatDate;
