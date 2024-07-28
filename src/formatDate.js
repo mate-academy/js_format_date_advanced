@@ -24,9 +24,9 @@ function formatDate(date, fromFormat, toFormat) {
         year = date.slice(count, count + fromFormat[i].length);
 
         if (+year < 30) {
-          year = 20 + year;
+          year = '20' + year;
         } else {
-          year = 19 + year;
+          year = '19' + year;
         }
         break;
 
