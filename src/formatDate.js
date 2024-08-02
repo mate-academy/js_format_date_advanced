@@ -20,7 +20,7 @@ function formatDate(date, fromFormat, toFormat) {
   const convertToYYYY = (yy) => (parseInt(yy, 10) < 30 ? `20${yy}` : `19${yy}`);
   const convertToYY = (yyyy) => yyyy.slice(-2);
 
-  const newDateFormat = toFormat.slice(0, 3).map(part => {
+  const newDateFormat = toFormat.slice(0, 3).map((part) => {
     if (part === 'YYYY') {
       return dateMap['YYYY'] || convertToYYYY(dateMap['YY']);
     }
@@ -30,9 +30,9 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     return dateMap[part];
- });
+  });
 
- return newDateFormat.join(separatorTo);
+  return newDateFormat.join(separatorTo);
 }
 
 module.exports = formatDate;
