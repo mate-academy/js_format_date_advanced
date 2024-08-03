@@ -7,50 +7,54 @@
  *
  * @returns {string}
  */
-function formatDate(date, sourceFormat, targetFormat) {
-  // Делаем деструктуризацию кода
-  const [, , , sourceSeparator] = sourceFormat;
-  const [, , , targetSeparator] = targetFormat;
+function formatDate(date, fromFormat, toFormat) {
+  const [, , , fromSeparator] = fromFormat;
+  const [, , , toSeparator] = toFormat;
 
-  // Разделение даты по сепаратору
-  const dateParts = date.split(sourceSeparator);
-  const [sourceYear, sourceMonth, sourceDay] = dateParts;
+  const dateParts = date.split(fromSeparator);
 
-  const formattedDateParts = [];
+  const formatIndex = {
+    YYYY: -1,
+    YY: -1,
+    MM: -1,
+    DD: -1,
+  };
 
-  // Переформатирование даты в зависимости от исходного формата
-  if (
-    sourceFormat[0] === 'YYYY' &&
-    targetFormat[0] === 'DD' &&
-    targetFormat[1] === 'MM' &&
-    targetFormat[2] === 'YYYY'
-  ) {
-    formattedDateParts.push(sourceDay, sourceMonth, sourceYear);
-  } else if (targetFormat[2] === 'YY' && sourceFormat[2] === 'YYYY') {
-    formattedDateParts.push(
-      dateParts[0],
-      dateParts[1],
-      dateParts[2].slice(2, 4),
-    );
-  } else if (sourceFormat[0] === 'YY' && targetFormat[0] === 'YYYY') {
-    const fullYear = sourceYear < 30 ? `20${sourceYear}` : `19${sourceYear}`;
+  fromFormat.forEach((part, index) => {
+    if (formatIndex.hasOwnProperty(part)) {
+      formatIndex[part] = index;
+    }
+  });
 
-    formattedDateParts.push(fullYear, sourceMonth, sourceDay);
-  } else if (sourceFormat[0] === 'YY' && targetFormat[0] === 'DD') {
-    const fullYear = sourceYear < 30 ? `20${sourceYear}` : `19${sourceYear}`;
+  const yearPart = dateParts[formatIndex['YYYY']];
+  const monthPart = dateParts[formatIndex['MM']];
+  const dayPart = dateParts[formatIndex['DD']];
+  const year2Part = dateParts[formatIndex['YY']];
 
-    formattedDateParts.push(sourceDay, sourceMonth, fullYear);
-  } else if (
-    sourceFormat[0] === targetFormat[0] &&
-    sourceFormat[1] === targetFormat[1] &&
-    sourceFormat[2] === targetFormat[2]
-  ) {
-    return dateParts.join(targetSeparator);
-  } else {
-    formattedDateParts.push(dateParts[2], dateParts[0], dateParts[1]);
-  }
+  const convertYear = (year) => {
+    if (year.length === 2) {
+      return year < 30 ? `20${year}` : `19${year}`;
+    } else {
+      return year.slice(-2);
+    }
+  };
 
-  return formattedDateParts.join(targetSeparator);
+  const newDateParts = toFormat.map((part) => {
+    switch (part) {
+      case 'YYYY':
+        return formatIndex['YY'] !== -1 ? convertYear(year2Part) : yearPart;
+      case 'YY':
+        return formatIndex['YYYY'] !== -1 ? convertYear(yearPart) : year2Part;
+      case 'MM':
+        return monthPart;
+      case 'DD':
+        return dayPart;
+      default:
+        return '';
+    }
+  });
+
+  return newDateParts.filter((part) => part !== '').join(toSeparator);
 }
 
 module.exports = formatDate;
