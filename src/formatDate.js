@@ -8,17 +8,17 @@
  * @returns {string}
  */
 function formatDate(date, sourceFormat, targetFormat) {
-  // Разделитель для исходного и целевого форматов
+  // Делаем деструктуризацию кода
   const [, , , sourceSeparator] = sourceFormat;
   const [, , , targetSeparator] = targetFormat;
 
-  // Разделение даты по разделителю исходного формата
+  // Разделение даты по сепаратору
   const dateParts = date.split(sourceSeparator);
   const [sourceYear, sourceMonth, sourceDay] = dateParts;
 
   const formattedDateParts = [];
 
-  // Переформатирование даты в зависимости от исходного и целевого форматов
+  // Переформатирование даты в зависимости от исходного формата
   if (
     sourceFormat[0] === 'YYYY' &&
     targetFormat[0] === 'DD' &&
