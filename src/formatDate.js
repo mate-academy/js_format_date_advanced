@@ -8,43 +8,32 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const partsDate = date.split(fromFormat[fromFormat.length - 1]);
-  const correctFormat = [...toFormat];
-  const separator = correctFormat[correctFormat.length - 1];
+  const [, , , separator] = fromFormat;
+  const partsCurrentDate = date.split(separator);
+  const correctDateFormat = [...toFormat];
+  const targetSeparator = correctDateFormat.pop();
+  const dataObj = {};
+  const transformedDateParts = [];
 
-  correctFormat.pop();
-
-  for (let i = 0; i < correctFormat.length; i++) {
-    let value = partsDate[fromFormat.indexOf(correctFormat[i])];
-
-    if (correctFormat[i] === 'DD') {
-      correctFormat[i] = value;
-    }
-
-    if (correctFormat[i] === 'MM') {
-      correctFormat[i] = value;
-    }
-
-    if (
-      (correctFormat[i] === 'YY' || correctFormat[i] === 'YYYY') &&
-      fromFormat.includes(correctFormat[i])
-    ) {
-      correctFormat[i] = value;
-    } else if (correctFormat[i] === 'YY') {
-      value = partsDate[fromFormat.indexOf('YYYY')].slice(2);
-      correctFormat[i] = value;
-    } else if (correctFormat[i] === 'YYYY') {
-      if (Number(partsDate[fromFormat.indexOf('YY')]) < 30) {
-        value = `20${partsDate[fromFormat.indexOf('YY')]}`;
-      } else {
-        value = `19${partsDate[fromFormat.indexOf('YY')]}`;
-      }
-
-      correctFormat[i] = value;
-    }
+  for (let i = 0; i < 3; i++) {
+    dataObj[fromFormat[i]] = partsCurrentDate[i];
   }
 
-  return correctFormat.join(separator);
+  if (dataObj['YYYY']) {
+    dataObj['YY'] = dataObj['YYYY'].slice(2);
+  }
+
+  if (dataObj['YY'] < 30) {
+    dataObj['YYYY'] = `20${dataObj['YY']}`;
+  } else {
+    dataObj['YYYY'] = `19${dataObj['YY']}`;
+  }
+
+  for (let i = 0; i < 3; i++) {
+    transformedDateParts.push(dataObj[correctDateFormat[i]]);
+  }
+
+  return transformedDateParts.join(targetSeparator);
 }
 
 module.exports = formatDate;
