@@ -7,6 +7,16 @@
  *
  * @returns {string}
  */
+function convertYear(dateMap, fromParts, toParts) {
+  if (fromParts.includes('YYYY') && toParts.includes('YY')) {
+    dateMap['YY'] = dateMap['YYYY'].slice(-2);
+  } else if (fromParts.includes('YY') && toParts.includes('YYYY')) {
+    const year = parseInt(dateMap['YY'], 10);
+
+    dateMap['YYYY'] = year < 30 ? `20${dateMap['YY']}` : `19${dateMap['YY']}`;
+  }
+}
+
 function formatDate(date, fromFormat, toFormat) {
   const fromSeparator = fromFormat[3];
   const toSeparator = toFormat[3];
@@ -18,26 +28,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   const dateMap = {};
 
-  for (let i = 0; i < fromParts.length; i++) {
-    dateMap[fromParts[i]] = dateParts[i];
-  }
+  fromParts.forEach((part, index) => {
+    dateMap[part] = dateParts[index];
+  });
 
-  if (fromParts.includes('YYYY') && toParts.includes('YY')) {
-    dateMap['YY'] = dateMap['YYYY'].slice(-2);
-  } else if (fromParts.includes('YY') && toParts.includes('YYYY')) {
-    const year = parseInt(dateMap['YY'], 10);
+  convertYear(dateMap, fromParts, toParts);
 
-    dateMap['YYYY'] = year < 30 ? `20${dateMap['YY']}` : `19${dateMap['YY']}`;
-  }
-
-  let newDate = '';
-
-  for (let i = 0; i < toParts.length; i++) {
-    if (i > 0) {
-      newDate += toSeparator;
-    }
-    newDate += dateMap[toParts[i]];
-  }
+  const newDate = toParts.map((part) => dateMap[part]).join(toSeparator);
 
   return newDate;
 }
