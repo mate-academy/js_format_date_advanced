@@ -8,44 +8,44 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const INPUT_SYMBOL = fromFormat.pop();
-  const OUTPUT_SYMBOL = toFormat.pop();
+  const inputSymbol = fromFormat.pop();
+  const outputSymbol = toFormat.pop();
 
-  const INPUT_DATE_ARRAY = date.split(INPUT_SYMBOL);
+  const inputDateArray = date.split(inputSymbol);
 
   const inputDate = {
-    day: INPUT_DATE_ARRAY[fromFormat.indexOf('DD')],
-    month: INPUT_DATE_ARRAY[fromFormat.indexOf('MM')],
+    day: inputDateArray[fromFormat.indexOf('DD')],
+    month: inputDateArray[fromFormat.indexOf('MM')],
     year:
-      INPUT_DATE_ARRAY[fromFormat.indexOf('YYYY')] ||
-      INPUT_DATE_ARRAY[fromFormat.indexOf('YY')],
+      inputDateArray[fromFormat.indexOf('YYYY')] ||
+      inputDateArray[fromFormat.indexOf('YY')],
   };
 
-  const OUTPUT_DATE = [];
+  const outputDate = [];
 
-  OUTPUT_DATE[toFormat.indexOf('DD')] = inputDate.day;
-  OUTPUT_DATE[toFormat.indexOf('MM')] = inputDate.month;
+  outputDate[toFormat.indexOf('DD')] = inputDate.day;
+  outputDate[toFormat.indexOf('MM')] = inputDate.month;
 
-  const INDEX_OF_YEAR =
+  const indexOfYear =
     toFormat.indexOf('YY') >= 0
       ? toFormat.indexOf('YY')
       : toFormat.indexOf('YYYY');
 
-  const OUTPUT_YEAR_LENGTH = toFormat[INDEX_OF_YEAR].length;
+  const outputYearLength = toFormat[indexOfYear].length;
 
-  const INPUT_YEAR_LENGTH = inputDate.year.length;
+  const inputYearLength = inputDate.year.length;
 
-  if (INPUT_YEAR_LENGTH < OUTPUT_YEAR_LENGTH) {
-    const PREFIX = inputDate.year >= 30 ? '19' : '20';
+  if (inputYearLength < outputYearLength) {
+    const prefix = inputDate.year >= 30 ? '19' : '20';
 
-    OUTPUT_DATE[INDEX_OF_YEAR] = PREFIX + inputDate.year;
-  } else if (INPUT_YEAR_LENGTH > OUTPUT_YEAR_LENGTH) {
-    OUTPUT_DATE[INDEX_OF_YEAR] = inputDate.year.slice(-2);
+    outputDate[indexOfYear] = prefix + inputDate.year;
+  } else if (inputYearLength > outputYearLength) {
+    outputDate[indexOfYear] = inputDate.year.slice(-2);
   } else {
-    OUTPUT_DATE[INDEX_OF_YEAR] = inputDate.year;
+    outputDate[indexOfYear] = inputDate.year;
   }
 
-  return OUTPUT_DATE.join(OUTPUT_SYMBOL);
+  return outputDate.join(outputSymbol);
 }
 
 module.exports = formatDate;
