@@ -24,13 +24,14 @@ function formatDate(date, fromFormat, toFormat) {
     dateObj.YYYY = year < 30 ? `20${dateObj.YY}` : `19${dateObj.YY}`;
   }
 
+  const separator = toFormat[toFormat.length - 1];
   let formattedDate = '';
 
   for (let i = 0; i < toFormat.length - 1; i++) {
     formattedDate += dateObj[toFormat[i]];
 
     if (i < toFormat.length - 2) {
-      formattedDate += toFormat[toFormat.length - 1];
+      formattedDate += separator;
     }
   }
 
