@@ -27,20 +27,15 @@ function formatDate(date, fromFormat, toFormat) {
     object.YYYY = '19' + `${object.YY}`;
   }
 
-  const objectKeys = Object.keys(object);
-  const objectValues = Object.values(object);
+  const updatedDate = [];
 
-  let result = [];
-
-  for (let i = 0; i < toFormat.length; i++) {
-    for (let j = 0; j < objectKeys.length; j++) {
-      if (toFormat[i] === objectKeys[j]) {
-        result.push(objectValues[j]);
-      }
+  for (const el of toFormat) {
+    if (el in object) {
+      updatedDate.push(object[el]);
     }
   }
-  result = result.join(toFormat[3]);
 
-  return result;
+  return updatedDate.join(toFormat[3]);
 }
+
 module.exports = formatDate;
