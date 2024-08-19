@@ -36,7 +36,6 @@ function formatDate(date, fromFormat, toFormat) {
       if (year.length > toFormat[j].length) {
         result[j] = year.slice(2);
       } else if (year.length < toFormat[j].length) {
-        console.log(`5kjgtfdsdftg`);
         if (+year < 30) {
           year = `20${year}`;
         } else {
