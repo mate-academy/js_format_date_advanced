@@ -51,11 +51,9 @@ function formatDate(date, fromFormat, toFormat) {
         result.push(outputNeeded.month);
         break;
       case 'y':
-        if (item.length === 4) {
-          result.push(outputNeeded.year);
-        } else if (item.length === 2) {
-          result.push(outputNeeded.year.slice(-2));
-        }
+        result.push(
+          item.length === 4 ? outputNeeded.year : outputNeeded.year.slice(-2),
+        );
         break;
     }
   }
