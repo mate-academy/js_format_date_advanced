@@ -13,7 +13,6 @@ function formatDate(date, fromFormat, toFormat) {
     day: '',
     month: '',
     year: '',
-    separator: '',
   };
   const separatedDate = date.split(fromFormat[fromFormat.length - 1]);
   const result = [];
@@ -31,14 +30,12 @@ function formatDate(date, fromFormat, toFormat) {
         break;
       case 'y':
         const yearIn =
-          item.length === 2 && Number(separatedDate[i]) < 30
+          Number(separatedDate[i]) < 30
             ? `20${separatedDate[i].slice(-2)}`
             : `19${separatedDate[i].slice(-2)}`;
 
         outputNeeded.year = item.length === 2 ? yearIn : `${separatedDate[i]}`;
         break;
-      default:
-        outputNeeded.separator = `${toFormat[i]}`;
     }
   }
 
@@ -54,17 +51,16 @@ function formatDate(date, fromFormat, toFormat) {
         result.push(outputNeeded.month);
         break;
       case 'y':
-        const year =
-          item.length < 4 ? outputNeeded.year.slice(-2) : outputNeeded.year;
-
-        result.push(year);
+        if (item.length === 4) {
+          result.push(outputNeeded.year);
+        } else if (item.length === 2) {
+          result.push(outputNeeded.year.slice(-2));
+        }
         break;
-      default:
-        outputNeeded.separator = `${toFormat[i]}`;
     }
   }
 
-  return result.join(outputNeeded.separator);
+  return result.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
