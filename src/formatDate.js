@@ -8,7 +8,7 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  return 'hello world';
 }
 
 module.exports = formatDate;
