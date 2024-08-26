@@ -12,14 +12,14 @@ function formatDate(date, fromFormat, toFormat) {
   const newDateFormat = [];
 
   for (let i = 0; i < oldDateFormat.length; i++) {
-    if (toFormat.indexOf(fromFormat[i]) === -1) {
-      if (fromFormat[i].length === 2) {
+    if (fromFormat[i].includes('Y') && toFormat.indexOf(fromFormat[i]) === -1) {
+      if (fromFormat[i] === 'YY') {
         if (+oldDateFormat[i] < 30) {
-          newDateFormat[toFormat.indexOf('YYYY')] = '20' + oldDateFormat[i];
+          newDateFormat[i] = '20' + oldDateFormat[fromFormat.indexOf('YY')];
         } else {
-          newDateFormat[toFormat.indexOf('YYYY')] = '19' + oldDateFormat[i];
+          newDateFormat[i] = '19' + oldDateFormat[fromFormat.indexOf('YY')];
         }
-      } else {
+      } else if (fromFormat[i] === 'YYYY') {
         newDateFormat[toFormat.indexOf('YY')] = oldDateFormat[i].slice(-2);
       }
       continue;
