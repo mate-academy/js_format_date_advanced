@@ -29,7 +29,7 @@ function formatDate(date, fromFormat, toFormat) {
     } else if (fromType === 'YY' && toType === 'YYYY') {
       const year = parseInt(yearStr, 10);
 
-      return year < 30 ? `20${yearStr.padStart(2, '0')}` : `19${yearStr}`;
+      return year < 30 ? `20${yearStr}` : `19${yearStr}`;
     }
 
     return yearStr;
