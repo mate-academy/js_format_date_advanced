@@ -21,7 +21,7 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
-    if (date.YY < 30) {
+    if (dateProperties.YY < 30) {
       dateProperties['YYYY'] = '20' + dateProperties['YY'];
     } else {
       dateProperties['YYYY'] = '19' + dateProperties['YY'];
