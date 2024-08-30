@@ -8,68 +8,47 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const partsOfOldDate = date.split(fromFormat[fromFormat.length - 1]);
-  const newSeparator = toFormat[toFormat.length - 1];
+  const fromSeparator = fromFormat.pop();
+  const toSeparator = toFormat.pop();
 
-  const currentDate = {};
+  const dateParts = date.split(fromSeparator);
+  const mapping = {};
 
   for (let i = 0; i < fromFormat.length; i++) {
     switch (fromFormat[i]) {
       case 'YYYY':
-        currentDate.yearYYYY = partsOfOldDate[i];
-        currentDate.yearYY = partsOfOldDate[i][2] + partsOfOldDate[i][3];
+        mapping.YYYY = dateParts[i];
+        mapping.YY = dateParts[i].slice(-2);
         break;
 
       case 'YY':
-        currentDate.yearYY = partsOfOldDate[i];
+        mapping.YY = dateParts[i];
 
-        if (+partsOfOldDate[i] < 30) {
-          currentDate.yearYYYY = `20${partsOfOldDate[i]}`;
-        } else {
-          currentDate.yearYYYY = `19${partsOfOldDate[i]}`;
-        }
+        mapping.YYYY =
+          dateParts[i] < 30 ? `20${dateParts[i]}` : `19${dateParts[i]}`;
         break;
 
       case 'MM':
-        currentDate.month = partsOfOldDate[i];
+        mapping.MM = dateParts[i];
         break;
 
       case 'DD':
-        currentDate.day = partsOfOldDate[i];
-        break;
-
-      default:
+        mapping.DD = dateParts[i];
         break;
     }
   }
 
-  const newFormatCurrentDate = [];
+  let result = '';
 
   for (let i = 0; i < toFormat.length; i++) {
-    switch (toFormat[i]) {
-      case 'YYYY':
-        newFormatCurrentDate.push(currentDate.yearYYYY);
-        break;
+    result += mapping[toFormat[i]];
 
-      case 'YY':
-        newFormatCurrentDate.push(currentDate.yearYY);
-        break;
-
-      case 'MM':
-        newFormatCurrentDate.push(currentDate.month);
-        break;
-
-      case 'DD':
-        newFormatCurrentDate.push(currentDate.day);
-        break;
-
-      default:
-        break;
+    if (i < toFormat.length - 1) {
+      result += toSeparator;
     }
   }
 
-  return newFormatCurrentDate.join(newSeparator);
+  return result;
 }
 
 module.exports = formatDate;
