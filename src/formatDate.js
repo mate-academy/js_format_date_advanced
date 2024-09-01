@@ -8,7 +8,9 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dateParts = date.split(/[-/.]/);
+  const separator = fromFormat.find((format) => format.length === 1);
+  const dateParts = date.split(separator);
+
   const valueMap = fromFormat.reduce((accumulator, format, index) => {
     accumulator[format] = dateParts[index];
 
@@ -23,36 +25,27 @@ function formatDate(date, fromFormat, toFormat) {
         ? `20${String(yy).padStart(2, '0')}`
         : `19${String(yy).padStart(2, '0')}`
       : valueMap['YY']);
-
-  const month = valueMap['MM'] ? Number(valueMap['MM'], 10) - 1 : 0;
-  const day = valueMap['DD'] ? Number(valueMap['DD'], 10) : 1;
-
-  if (!year) {
-    return null;
-  }
-
-  const parsedDate = new Date(year, month, day);
-
-  if (isNaN(parsedDate.getTime())) {
-    return null;
-  }
+  const month = valueMap['MM'];
+  const day = valueMap['DD'];
 
   const formattedDate = toFormat.map((formatPart) => {
     switch (formatPart) {
       case 'YYYY':
-        return parsedDate.getFullYear();
+        return year;
       case 'YY':
-        return parsedDate.getFullYear().toString().slice(-2);
+        return year.toString().slice(-2);
       case 'MM':
-        return (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+        return month.padStart(2, '0');
       case 'DD':
-        return parsedDate.getDate().toString().padStart(2, '0');
+        return day.padStart(2, '0');
       default:
-        return formatPart;
+        return '';
     }
   });
 
-  return formattedDate.join(toFormat[3]).slice(0, -2);
+  const finalSeparator = toFormat.find((format) => format.length === 1);
+
+  return formattedDate.filter((part) => part !== '').join(finalSeparator);
 }
 
 module.exports = formatDate;
