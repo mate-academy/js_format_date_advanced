@@ -13,7 +13,7 @@ function formatDate(date, fromFormat, toFormat) {
   const dateArr = date.split(fromDelimeter);
   const dataObj = {};
 
-  for (let d = 0; d <= 2; d++) {
+  for (let d = 0; d <= fromFormat.length - 2; d++) {
     dataObj[fromFormat[d]] = dateArr[d];
   }
 
@@ -21,22 +21,21 @@ function formatDate(date, fromFormat, toFormat) {
   const propFormat = toFormat.slice(0, -1);
 
   for (const d of propFormat) {
-    if (d === 'YY' || d === 'YYYY') {
-      properObj[d] = dataObj['YY'] || dataObj['YYYY'];
+    if (d === 'YY') {
+      properObj[d] = dataObj[d] || ('' + dataObj['YYYY']).slice(2);
+    } else if (d === 'YYYY') {
+      properObj[d] = dataObj[d] || changeYear(dataObj['YY']);
     } else {
       properObj[d] = dataObj[d];
     }
   }
 
-  if (('' + properObj['YY']).length === 4) {
-    properObj['YY'] = ('' + properObj['YY']).slice(2);
-  }
-
-  if (('' + properObj['YYYY']).length === 2) {
-    if (properObj['YYYY'] < 30) {
-      properObj['YYYY'] = '20' + properObj['YYYY'];
-    } else if (properObj['YYYY'] >= 30) {
-      properObj['YYYY'] = '19' + properObj['YYYY'];
+  function changeYear(firstFormat) {
+    switch (true) {
+      case firstFormat < 30:
+        return '20' + firstFormat;
+      case firstFormat >= 30:
+        return '19' + firstFormat;
     }
   }
 
