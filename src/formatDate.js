@@ -15,6 +15,7 @@ function formatDate(date, fromFormat, toFormat) {
   const newDate = [];
   const objectDate = {};
 
+  // changes
   for (let i = 0; i < splitDate.length; i++) {
     objectDate[fromFormat[i]] = splitDate[i];
   }
