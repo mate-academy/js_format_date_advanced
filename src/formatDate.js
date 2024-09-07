@@ -49,7 +49,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const newDateParts = [];
 
-  for (let i = 0; i < oldDateParts.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     const newDateFormat = toFormat[i];
 
     const newDatePart = datePartsMatched[newDateFormat];
