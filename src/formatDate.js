@@ -12,24 +12,26 @@ function convertYear(datePartsMatched, fromFormat, toFormat) {
   const FOUR_DIGIT_YEAR_FORMAT = 'YYYY';
   const TWO_DIGIT_YEAR_FORMAT = 'YY';
 
+  const datePartsMatchedCopy = { ...datePartsMatched };
+
   if (
     fromFormat.includes(FOUR_DIGIT_YEAR_FORMAT) &&
     toFormat.includes(TWO_DIGIT_YEAR_FORMAT)
   ) {
-    const year = datePartsMatched[FOUR_DIGIT_YEAR_FORMAT];
+    const year = datePartsMatchedCopy[FOUR_DIGIT_YEAR_FORMAT];
 
-    datePartsMatched[TWO_DIGIT_YEAR_FORMAT] = year.slice(2);
+    datePartsMatchedCopy[TWO_DIGIT_YEAR_FORMAT] = year.slice(2);
   } else if (
     fromFormat.includes(TWO_DIGIT_YEAR_FORMAT) &&
     toFormat.includes(FOUR_DIGIT_YEAR_FORMAT)
   ) {
-    const year = datePartsMatched[TWO_DIGIT_YEAR_FORMAT];
+    const year = datePartsMatchedCopy[TWO_DIGIT_YEAR_FORMAT];
     const newYear = +year < 30 ? `20${year}` : `19${year}`;
 
-    datePartsMatched[FOUR_DIGIT_YEAR_FORMAT] = newYear;
+    datePartsMatchedCopy[FOUR_DIGIT_YEAR_FORMAT] = newYear;
   }
 
-  return datePartsMatched;
+  return datePartsMatchedCopy;
 }
 
 /**
@@ -42,6 +44,8 @@ function convertYear(datePartsMatched, fromFormat, toFormat) {
 function formatDate(date, fromFormat, toFormat) {
   // write code here
 
+  const possibleDateParts = ['YYYY', 'YY', 'MM', 'DD'];
+
   const oldSeparator = fromFormat[fromFormat.length - 1];
   const newSeparator = toFormat[toFormat.length - 1];
 
@@ -49,18 +53,23 @@ function formatDate(date, fromFormat, toFormat) {
 
   let datePartsMatched = {};
 
-  for (let i = 0; i < oldDateParts.length; i++) {
-    datePartsMatched[fromFormat[i]] = oldDateParts[i];
-  }
+  for (const datePart of possibleDateParts) {
+    const datePartIndex = fromFormat.indexOf(datePart);
 
+    if (datePartIndex !== -1) {
+      datePartsMatched[datePart] = oldDateParts[datePartIndex];
+    }
+  }
   datePartsMatched = convertYear(datePartsMatched, fromFormat, toFormat);
 
   const newDateParts = [];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    const newDateFormat = toFormat[i];
+  for (const datePart of toFormat) {
+    if (!possibleDateParts.includes(datePart)) {
+      continue;
+    }
 
-    const newDatePart = datePartsMatched[newDateFormat];
+    const newDatePart = datePartsMatched[datePart];
 
     newDateParts.push(newDatePart);
   }
