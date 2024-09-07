@@ -1,6 +1,30 @@
 'use strict';
 
 /**
+ * @param {Object} datePartsMatched
+ *
+ * @returns {Object}
+ */
+
+function convertYear(datePartsMatched) {
+  const FOUR_DIGIT_YEAR_FORMAT = 'YYYY';
+  const TWO_DIGIT_YEAR_FORMAT = 'YY';
+
+  if (FOUR_DIGIT_YEAR_FORMAT in datePartsMatched) {
+    const year = datePartsMatched[FOUR_DIGIT_YEAR_FORMAT];
+
+    datePartsMatched[TWO_DIGIT_YEAR_FORMAT] = year.slice(2);
+  } else if (TWO_DIGIT_YEAR_FORMAT in datePartsMatched) {
+    const year = datePartsMatched[TWO_DIGIT_YEAR_FORMAT];
+    const newYear = +year < 30 ? `20${year}` : `19${year}`;
+
+    datePartsMatched[FOUR_DIGIT_YEAR_FORMAT] = newYear;
+  }
+
+  return datePartsMatched;
+}
+
+/**
  * @param {string} date
  * @param {string[]} fromFormat
  * @param {string[]} toFormat
@@ -34,29 +58,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return newDateParts.join(newSeparator);
-}
-/**
- * @param {Object} datePartsMatched
- *
- * @returns {Object}
- */
-
-function convertYear(datePartsMatched) {
-  const FOUR_DIGIT_YEAR_FORMAT = 'YYYY';
-  const TWO_DIGIT_YEAR_FORMAT = 'YY';
-
-  if (FOUR_DIGIT_YEAR_FORMAT in datePartsMatched) {
-    const year = datePartsMatched[FOUR_DIGIT_YEAR_FORMAT];
-
-    datePartsMatched[TWO_DIGIT_YEAR_FORMAT] = year.slice(2);
-  } else if (TWO_DIGIT_YEAR_FORMAT in datePartsMatched) {
-    const year = datePartsMatched[TWO_DIGIT_YEAR_FORMAT];
-    const newYear = +year < 30 ? `20${year}` : `19${year}`;
-
-    datePartsMatched[FOUR_DIGIT_YEAR_FORMAT] = newYear;
-  }
-
-  return datePartsMatched;
 }
 
 module.exports = formatDate;
