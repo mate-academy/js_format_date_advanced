@@ -8,25 +8,13 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  let day = 0;
-  let month = 0;
-  let year = 0;
+  const day = fromFormat.indexOf('DD');
+  const month = fromFormat.indexOf('MM');
+  const year = fromFormat.findIndex(f => f === 'YYYY' || f === 'YY');
 
   const splitDate = date.split(fromFormat[fromFormat.length - 1]);
 
   let result = [];
-
-  for (let i = 0; i < fromFormat.length; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
-      year = i;
-    }
-    if (fromFormat[i] === 'MM') {
-      month = i;
-    }
-    if (fromFormat[i] === 'DD') {
-      day = i;
-    }
-  }
 
   for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'DD') {
@@ -40,10 +28,10 @@ function formatDate(date, fromFormat, toFormat) {
         result[i] = splitDate[year].slice(2);
       } else {
         if (splitDate[year].length === 2) {
-          if (splitDate[year] < 30) {
-            result[i] = 20 + splitDate[year];
+          if (+splitDate[year] < 30) {
+            result[i] = '20' + splitDate[year];
           } else {
-            result[i] = 19 + splitDate[year];
+            result[i] = '19' + splitDate[year];
           }
         } else {
           result[i] = splitDate[year];
