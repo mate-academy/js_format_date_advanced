@@ -7,11 +7,11 @@
  *
  * @returns {string}
  */
-function formatDate(date, fromFormat, toFormat) {
+function formatDate(dateStr, fromFormat, toFormat) {
   const fromSeparator = fromFormat.pop();
   const toSeparator = toFormat.pop();
 
-  const dateParts = date.split(fromSeparator);
+  const dateParts = dateStr.split(fromSeparator);
 
   const dateMap = {};
 
@@ -19,13 +19,13 @@ function formatDate(date, fromFormat, toFormat) {
     dateMap[format] = dateParts[index];
   });
 
-  if (dateMap['YY']) {
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
     const year = parseInt(dateMap['YY'], 10);
 
     dateMap['YYYY'] = year < 30 ? '20' + dateMap['YY'] : '19' + dateMap['YY'];
   }
 
-  if (dateMap['YYYY']) {
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     dateMap['YY'] = dateMap['YYYY'].slice(-2);
   }
 
