@@ -2,19 +2,27 @@
 
 /**
  * @param {Object} datePartsMatched
+ * @param {string[]} toFormat
+ * @param {string[]} fromFormat
  *
  * @returns {Object}
  */
 
-function convertYear(datePartsMatched) {
+function convertYear(datePartsMatched, fromFormat, toFormat) {
   const FOUR_DIGIT_YEAR_FORMAT = 'YYYY';
   const TWO_DIGIT_YEAR_FORMAT = 'YY';
 
-  if (FOUR_DIGIT_YEAR_FORMAT in datePartsMatched) {
+  if (
+    fromFormat.includes(FOUR_DIGIT_YEAR_FORMAT) &&
+    toFormat.includes(TWO_DIGIT_YEAR_FORMAT)
+  ) {
     const year = datePartsMatched[FOUR_DIGIT_YEAR_FORMAT];
 
     datePartsMatched[TWO_DIGIT_YEAR_FORMAT] = year.slice(2);
-  } else if (TWO_DIGIT_YEAR_FORMAT in datePartsMatched) {
+  } else if (
+    fromFormat.includes(TWO_DIGIT_YEAR_FORMAT) &&
+    toFormat.includes(FOUR_DIGIT_YEAR_FORMAT)
+  ) {
     const year = datePartsMatched[TWO_DIGIT_YEAR_FORMAT];
     const newYear = +year < 30 ? `20${year}` : `19${year}`;
 
@@ -45,7 +53,7 @@ function formatDate(date, fromFormat, toFormat) {
     datePartsMatched[fromFormat[i]] = oldDateParts[i];
   }
 
-  datePartsMatched = convertYear(datePartsMatched);
+  datePartsMatched = convertYear(datePartsMatched, fromFormat, toFormat);
 
   const newDateParts = [];
 
