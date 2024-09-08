@@ -17,16 +17,17 @@ function formatDate(date, fromFormat, toFormat) {
   let result = [];
 
   for (let i = 0; i < toFormat.length; i++) {
-    if (toFormat[i] === 'DD') {
-      result[i] = splitDate[day];
-    }
-    if (toFormat[i] === 'MM') {
-      result[i] = splitDate[month];
-    }
-    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
-      if (toFormat[i] === 'YY') {
+    switch(toFormat[i]){
+      case 'DD':
+        result[i] = splitDate[day];
+      break;
+      case 'MM':
+        result[i] = splitDate[month];
+        break;
+      case 'YY':
         result[i] = splitDate[year].slice(2);
-      } else {
+        break;
+      case 'YYYY':
         if (splitDate[year].length === 2) {
           if (+splitDate[year] < 30) {
             result[i] = '20' + splitDate[year];
@@ -36,7 +37,7 @@ function formatDate(date, fromFormat, toFormat) {
         } else {
           result[i] = splitDate[year];
         }
-      }
+        break;
     }
   }
 
