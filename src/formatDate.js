@@ -1,7 +1,7 @@
 'use strict';
 
 function formatDate(date, fromFormat, toFormat) {
-  const dateToArrow = date.split(fromFormat[fromFormat.length - 1]);
+  const dateComponents = date.split(fromFormat[fromFormat.length - 1]);
   const formatedDate = [];
   let day = '';
   let month = '';
@@ -10,15 +10,19 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < fromFormat.length - 1; i++) {
     switch (fromFormat[i]) {
       case 'DD':
-        day = dateToArrow[i];
+        day = dateComponents[i];
         break;
 
       case 'MM':
-        month = dateToArrow[i];
+        month = dateComponents[i];
         break;
 
-      default:
-        year = dateToArrow[i];
+      case 'YY':
+        year = dateComponents[i];
+        break;
+
+      case 'YYYY':
+        year = dateComponents[i];
         break;
     }
   }
