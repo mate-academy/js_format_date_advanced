@@ -24,6 +24,10 @@ function formatDate(date, fromFormat, toFormat) {
       case 'YYYY':
         year = dateComponents[i];
         break;
+
+      default: {
+        throw new Error('invalid value');
+      }
     }
   }
 
@@ -56,6 +60,11 @@ function formatDate(date, fromFormat, toFormat) {
         } else {
           formatedDate.push(`19${year}`);
         }
+        break;
+      }
+
+      default: {
+        throw new Error('invalid value');
       }
     }
   }
