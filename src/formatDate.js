@@ -14,27 +14,23 @@ function formatDate(date, fromFormat, toFormat) {
 
   let formatAgan = [];
 
-  let year = formatAgan[0];
-  let month = formatAgan[1];
-  let day = formatAgan[2];
-
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
-      year = newDate[i];
-    }
-
-    if (fromFormat[i] === 'YYYY') {
-      year = newDate[i];
+      formatAgan[0] = newDate[i];
     }
 
     if (fromFormat[i] === 'MM') {
-      month = newDate[i];
+      formatAgan[1] = newDate[i];
     }
 
     if (fromFormat[i] === 'DD') {
-      day = newDate[i];
+      formatAgan[2] = newDate[i];
     }
   }
+
+  let year = formatAgan[0];
+  let month = formatAgan[1];
+  let day = formatAgan[2];
 
   if (toFormat.includes('YYYY') && year.length === 2 && year < 30) {
     year = `${20}` + `${year}`;
@@ -48,7 +44,7 @@ function formatDate(date, fromFormat, toFormat) {
     year = year.toString().slice(-2);
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YY' || toFormat[i] === 'YYYY') {
       formatAgan[i] = year;
     }
