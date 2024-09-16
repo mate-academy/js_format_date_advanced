@@ -57,7 +57,7 @@ function formatDate(date, fromFormat, toFormat) {
       formatAgan[i] = day;
     }
   }
-
+  console.log('fixed');
   return formatAgan.join(joinElement);
 }
 
