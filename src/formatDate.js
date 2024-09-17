@@ -8,7 +8,30 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dataArray = date.split(fromFormat[fromFormat.length - 1]);
+  const dateObject = {};
+  const resArray = [];
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    if (fromFormat[i] === 'YY') {
+      if (Number(dataArray[i]) > 22) {
+        dateObject.YYYY = 19 + dataArray[i];
+      } else {
+        dateObject.YYYY = 20 + dataArray[i];
+      }
+    }
+
+    if (fromFormat[i] === 'YYYY') {
+      dateObject.YY = dataArray[i].substr(-2);
+    }
+    dateObject[fromFormat[i]] = dataArray[i];
+  }
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    resArray[i] = dateObject[toFormat[i]];
+  }
+
+  return resArray.join(toFormat[toFormat.length - 1]);
 }
 
 module.exports = formatDate;
