@@ -12,35 +12,29 @@ function formatDate(date, fromFormat, toFormat) {
   const oldSeparator = fromFormat.pop();
   const newSeparator = toFormat.pop();
 
-  const splitedDate = date.split(oldSeparator);
+  const spliteOldDate = date.split(oldSeparator);
 
-  const newDate = [];
+  const newDate = Array(3);
 
-  let yearFormat = toFormat.includes('YY') ? 'YY' : 'YYYY';
-
-  for (let i = 0; i < splitedDate.length; i++) {
+  for (let i = 0; i < spliteOldDate.length; i++) {
     const oldPart = fromFormat[i];
+
     let index = toFormat.indexOf(oldPart);
 
-    if(oldPart.includes('Y') && oldPart !== yearFormat) {
-      index = toFormat.indexOf(yearFormat);
-    }
+    newDate[index] = spliteOldDate[i];
 
-    const newPart = toFormat[index];
-    
-    if (oldPart.length > newPart.length) {
-      splitedDate[i] = splitedDate[i].split('').slice(-2).join('');
-    }
+  }
 
-    if (oldPart.length < newPart.length) {
-      splitedDate[i] =
-        +splitedDate[i] < 30
-          ? `20${splitedDate[i]}`
-          : `19${splitedDate[i]}`;
-    }
+  if( toFormat.includes('YY') && !fromFormat.includes('YY')){
+    const index = fromFormat.indexOf('YYYY');
+    newDate[toFormat.indexOf('YY')] = spliteOldDate[index].slice(2);
+  }
 
-    newDate[index] = splitedDate[i];
-
+  if( toFormat.includes('YYYY') && !fromFormat.includes('YYYY')){
+    const index = fromFormat.indexOf('YY');
+    newDate[toFormat.indexOf('YYYY')] = +spliteOldDate[index] < 30
+      ? `20${spliteOldDate[index]}`
+      : `19${spliteOldDate[index]}`;
   }
 
   return newDate.join(newSeparator);
