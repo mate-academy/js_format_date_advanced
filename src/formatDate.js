@@ -16,31 +16,31 @@ function formatDate(date, fromFormat, toFormat) {
 
   const newDate = [];
 
+  let yearFormat = toFormat.includes('YY') ? 'YY' : 'YYYY';
+
   for (let i = 0; i < splitedDate.length; i++) {
     const oldPart = fromFormat[i];
+    let index = toFormat.indexOf(oldPart);
 
-    for (let j = 0; j < splitedDate.length; j++) {
-      const newPart = toFormat[j];
-
-      if (oldPart[0] === newPart[0]) {
-        let newDateElement = splitedDate[i];
-
-        newDateElement = splitedDate[i];
-
-        if (oldPart.length > newPart.length) {
-          newDateElement = newDateElement.split('').slice(-2).join('');
-        }
-
-        if (oldPart.length < newPart.length) {
-          newDateElement =
-            +newDateElement < 30
-              ? `20${newDateElement}`
-              : `19${newDateElement}`;
-        }
-
-        newDate[j] = newDateElement;
-      }
+    if(oldPart.includes('Y') && oldPart !== yearFormat) {
+      index = toFormat.indexOf(yearFormat);
     }
+
+    const newPart = toFormat[index];
+    
+    if (oldPart.length > newPart.length) {
+      splitedDate[i] = splitedDate[i].split('').slice(-2).join('');
+    }
+
+    if (oldPart.length < newPart.length) {
+      splitedDate[i] =
+        +splitedDate[i] < 30
+          ? `20${splitedDate[i]}`
+          : `19${splitedDate[i]}`;
+    }
+
+    newDate[index] = splitedDate[i];
+
   }
 
   return newDate.join(newSeparator);
