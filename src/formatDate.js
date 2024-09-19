@@ -14,26 +14,31 @@ function formatDate(date, fromFormat, toFormat) {
   let month;
   let day;
   let year;
+  let yearFormat;
 
   fromFormat.forEach((element) => {
+    const toCharacter = fromCharacter + element.length;
+
     if (element === 'MM') {
-      month = date.slice(fromCharacter, fromCharacter + 2);
+      month = date.slice(fromCharacter, toCharacter);
       fromCharacter = fromCharacter + 3;
     }
 
     if (element === 'DD') {
-      day = date.slice(fromCharacter, fromCharacter + 2);
+      day = date.slice(fromCharacter, toCharacter);
       fromCharacter = fromCharacter + 3;
     }
 
     if (element === 'YYYY') {
-      year = date.slice(fromCharacter, fromCharacter + 4);
+      year = date.slice(fromCharacter, toCharacter);
       fromCharacter = fromCharacter + 5;
+      yearFormat = element;
     }
 
     if (element === 'YY') {
-      year = date.slice(fromCharacter, fromCharacter + 2);
+      year = date.slice(fromCharacter, toCharacter);
       fromCharacter = fromCharacter + 3;
+      yearFormat = element;
     }
   });
 
@@ -47,17 +52,17 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (element === 'YY') {
-      if (year.length === 2) {
+      if (yearFormat === 'YY') {
         newDate += year;
-      } else if (year.length === 4) {
+      } else if (yearFormat === 'YYYY') {
         newDate += year.slice(-2);
       }
     }
 
     if (element === 'YYYY') {
-      if (year.length === 4) {
+      if (yearFormat === 'YYYY') {
         newDate += year;
-      } else if (year.length === 2) {
+      } else if (yearFormat === 'YY') {
         if (year < 30) {
           newDate += `${20}${year}`;
         } else {
@@ -67,7 +72,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (index < 2) {
-      newDate += toFormat[3];
+      newDate += toFormat[toFormat.length - 1];
     }
   });
 
