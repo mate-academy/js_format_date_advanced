@@ -8,10 +8,15 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const [fromSeparator] = fromFormat.splice(-1, 1);
-  const [toSeparator] = toFormat.splice(-1, 1);
-
+  const fromSeparator = fromFormat.slice(-1)[0];
+  const toSeparator = toFormat.slice(-1)[0];
   const dateElements = date.split(fromSeparator);
+
+  const dateMap = fromFormat.reduce((acc, format, index) => {
+    acc[format] = dateElements[index];
+
+    return acc;
+  }, {});
 
   const convertYear = (year, format) => {
     if (format === 'YYYY') {
@@ -25,21 +30,15 @@ function formatDate(date, fromFormat, toFormat) {
     return year;
   };
 
-  const dateMap = fromFormat.reduce((acc, format, index) => {
-    acc[format] = dateElements[index];
+  const formattedDateParts = toFormat.map((format) => {
+    if (format === 'YY' || format === 'YYYY') {
+      return convertYear(dateMap['YYYY'] || dateMap['YY'], format);
+    }
 
-    return acc;
-  }, {});
+    return dateMap[format];
+  });
 
-  return toFormat
-    .map((format) => {
-      if (format === 'YY' || format === 'YYYY') {
-        return convertYear(dateMap['YYYY'] || dateMap['YY'], format);
-      }
-
-      return dateMap[format].padStart(2, '0');
-    })
-    .join(toSeparator);
+  return formattedDateParts.filter(Boolean).join(toSeparator);
 }
 
 module.exports = formatDate;
