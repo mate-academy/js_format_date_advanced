@@ -32,7 +32,7 @@ function formatDate(date, fromFormat, toFormat) {
       }
     } else if (part === 'YY') {
       if (dateParts[indexes['YY']] !== undefined) {
-        newDate.push(dateParts[indexes['YY']]);
+        newDate.push(convertYear(dateParts[indexes['YY']], 'YYYY'));
       } else {
         newDate.push(convertYear(dateParts[indexes['YYYY']], 'YYYY'));
       }
@@ -47,16 +47,16 @@ function formatDate(date, fromFormat, toFormat) {
 }
 
 function convertYear(year, format) {
-  if (format === 'YY') {
-    const yy = Number(year);
+  if (format === 'YYYY') {
+    return year.slice(-2);
+  } else if (format === 'YY') {
+    const yy = parseInt(year, 10);
 
     if (yy < 30) {
       return '20' + year;
     } else {
       return '19' + year;
     }
-  } else if (format === 'YYYY') {
-    return year.slice(-2);
   }
 }
 
