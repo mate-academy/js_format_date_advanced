@@ -9,8 +9,9 @@
  */
 
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeperator = fromFormat[fromFormat.length - 1];
-  const dateParts = date.split(fromSeperator);
+  const fromSeparator = fromFormat[fromFormat.length - 1];
+  const dateParts = date.split(fromSeparator);
+
   const indexes = {
     YYYY: fromFormat.indexOf('YYYY'),
     YY: fromFormat.indexOf('YY'),
@@ -20,31 +21,29 @@ function formatDate(date, fromFormat, toFormat) {
 
   const newDate = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     const part = toFormat[i];
 
-    if (part !== toFormat[toFormat.length - 1]) {
-      if (part === 'YYYY') {
-        if (dateParts[indexes['YYYY']] !== undefined) {
-          newDate.push(dateParts[indexes['YYYY']]);
-        } else {
-          newDate.push(convertYear(dateParts[indexes['YY']], 'YY'));
-        }
-      } else if (part === 'YY') {
-        if (dateParts[indexes['YY']] !== undefined) {
-          newDate.push(dateParts[indexes['YY']]);
-        } else {
-          newDate.push(dateParts[indexes['YYYY']].slice(-2));
-        }
+    if (part === 'YYYY') {
+      if (dateParts[indexes['YYYY']] !== undefined) {
+        newDate.push(dateParts[indexes['YYYY']]);
       } else {
-        newDate.push(dateParts[indexes[part]]);
+        newDate.push(convertYear(dateParts[indexes['YY']], 'YY'));
       }
+    } else if (part === 'YY') {
+      if (dateParts[indexes['YY']] !== undefined) {
+        newDate.push(dateParts[indexes['YY']]);
+      } else {
+        newDate.push(convertYear(dateParts[indexes['YYYY']], 'YYYY'));
+      }
+    } else if (indexes[part] !== -1) {
+      newDate.push(dateParts[indexes[part]]);
     }
   }
 
-  const toSeperator = toFormat[toFormat.length - 1];
+  const toSeparator = toFormat[toFormat.length - 1];
 
-  return newDate.join(toSeperator);
+  return newDate.join(toSeparator);
 }
 
 function convertYear(year, format) {
