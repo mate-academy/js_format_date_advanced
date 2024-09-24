@@ -65,7 +65,7 @@ function formatDate(date, fromFormat, toFormat) {
       if (yearFormat === 'YYYY') {
         newDate += year;
       } else if (yearFormat === 'YY') {
-        if (year < '30') {
+        if (year < parseInt('30')) {
           newDate += `${20}${year}`;
         } else {
           newDate += `${19}${year}`;
@@ -74,10 +74,11 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (
-      toFormat[index + 1] === 'DD' ||
-      toFormat[index + 1] === 'MM' ||
-      toFormat[index + 1] === 'YY' ||
-      toFormat[index + 1] === 'YYYY'
+      toFormat[index + 1] &&
+      (toFormat[index + 1] === 'DD' ||
+        toFormat[index + 1] === 'MM' ||
+        toFormat[index + 1] === 'YY' ||
+        toFormat[index + 1] === 'YYYY')
     ) {
       newDate += toFormat[toFormat.length - 1];
     }
