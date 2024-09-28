@@ -35,19 +35,31 @@ function changeYearsFormat(oldDateObj, arrayWithNewFormat) {
   const { YY, YYYY } = oldDateObj;
 
   if (YY && arrayWithNewFormat.indexOf('YYYY') !== -1) {
-    if (oldDateObj.YY < 30) {
+    if (+oldDateObj.YY < 30) {
       oldDateObj.YY = '20' + oldDateObj.YY;
     } else {
       oldDateObj.YY = '19' + oldDateObj.YY;
     }
-    oldDateObj['YYYY'] = oldDateObj.YY;
-    delete oldDateObj.YY;
+
+    if (!oldDateObj['YYYY'] || oldDateObj.YY) {
+      oldDateObj['YYYY'] = oldDateObj.YY;
+    }
+
+    if (oldDateObj['YY']) {
+      delete oldDateObj.YY;
+    }
   }
 
   if (YYYY && arrayWithNewFormat.indexOf('YY') !== -1) {
     oldDateObj.YYYY = oldDateObj.YYYY.slice(-2);
-    oldDateObj['YY'] = oldDateObj.YYYY;
-    delete oldDateObj.YYYY;
+
+    if (!oldDateObj['YY'] || oldDateObj.YYYY) {
+      oldDateObj['YY'] = oldDateObj.YYYY;
+    }
+
+    if (oldDateObj['YYYY']) {
+      delete oldDateObj.YYYY;
+    }
   }
 }
 
