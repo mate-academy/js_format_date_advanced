@@ -8,7 +8,21 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  const dateParts = date.split(/\D+/);
+  const formattedDateParts = [];
+
+  for (let i = 0; i < toFormat.length; i++) {
+    const formatPart = toFormat[i];
+    const fromIndex = fromFormat.indexOf(formatPart);
+
+    if (fromIndex !== -1) {
+      formattedDateParts.push(dateParts[fromIndex]);
+    } else {
+      formattedDateParts.push(formatPart);
+    }
+  }
+
+  return formattedDateParts.join('');
 }
 
 module.exports = formatDate;
