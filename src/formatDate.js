@@ -16,9 +16,12 @@ function formatDate(date, fromFormat, toFormat) {
   const formattedDatePart = [];
 
   const dateParts = date.split(separatorFrom); // ['2020', '02', '18'],
-  const dayIndex = takeIndexOf(fromFormat, 'DD'); // [2]
-  const monthIndex = takeIndexOf(fromFormat, 'MM'); // [1]
-  const yearIndex = takeIndexOf(fromFormat, 'YYYY'); // [0]
+  const dayIndex = fromFormat.indexOf('DD'); // [2]
+  const monthIndex = fromFormat.indexOf('MM'); // [1]
+  const yearIndex =
+    fromFormat.indexOf('YYYY') !== -1
+      ? fromFormat.indexOf('YYYY')
+      : fromFormat.indexOf('YY'); // [2]
 
   let year = dateParts[yearIndex]; // '2020' [0]
   const month = dateParts[monthIndex]; // '02' [1]
@@ -51,16 +54,6 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   return formattedDatePart.join(separatorToFormat);
-}
-
-function takeIndexOf(format, param) {
-  const index = format.indexOf(param);
-
-  if (index === -1) {
-    return format.indexOf('YY');
-  }
-
-  return index;
 }
 
 module.exports = formatDate;
