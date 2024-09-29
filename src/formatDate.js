@@ -36,9 +36,19 @@ function formatDate(date, fromFormat, toFormat) {
     year = year.slice(2);
   }
 
-  formattedDatePart[takeIndexOf(toFormat, 'YYYY')] = year;
-  formattedDatePart[takeIndexOf(toFormat, 'MM')] = month;
-  formattedDatePart[takeIndexOf(toFormat, 'DD')] = day;
+  for (let i = 0; i < toFormat.length; i++) {
+    if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+      formattedDatePart[i] = year;
+    }
+
+    if (toFormat[i] === 'MM') {
+      formattedDatePart[i] = month;
+    }
+
+    if (toFormat[i] === 'DD') {
+      formattedDatePart[i] = day;
+    }
+  }
 
   return formattedDatePart.join(separatorToFormat);
 }
