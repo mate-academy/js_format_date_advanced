@@ -17,7 +17,7 @@ function formatDate(date, fromFormat, toFormat) {
     dateParts[fromFormat[i]] = dateValues[i];
   }
 
-  if (dateParts['YY']) {
+  if (dateParts['YY'] && toFormat.includes('YYYY')) {
     const year = parseInt(dateParts['YY'], 10);
 
     if (year < 30) {
@@ -27,12 +27,12 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  if (dateParts['YYYY'] && !dateParts['YY']) {
+  if (dateParts['YYYY'] && !dateParts['YY'] && toFormat.includes('YY')) {
     dateParts['YY'] = dateParts['YYYY'].slice(-2);
   }
 
   const formattedDate = toFormat
-    .slice(0, 3)
+    .filter((part) => part !== toSeparator)
     .map((part) => dateParts[part])
     .join(toSeparator);
 
