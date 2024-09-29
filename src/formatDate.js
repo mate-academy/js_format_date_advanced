@@ -8,59 +8,37 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
-  const splittedDate = date.split(fromFormat[3]);
-  const oldDateObj = {};
-  const result = [];
+  const [yearKey, monthKey, dayKey, separator] = fromFormat;
+  const splittedDate = date.split(separator);
 
-  for (let i = 0; i < splittedDate.length; i++) {
-    oldDateObj[fromFormat[i]] = splittedDate[i];
-    // make new object via input date;
-  }
-  changeYearsFormat(oldDateObj, toFormat);
-  // this function delete old format for years and make new correct years format
+  const oldDateObj = [yearKey, monthKey, dayKey].reduce((acc, key, index) => {
+    acc[key] = splittedDate[index];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
-    result.push(oldDateObj[toFormat[i]]);
-    // make array with new correct date format
-  }
+    return acc;
+  }, {});
 
-  // return string with result
-  return result.join(toFormat[3]);
+  const updatedDateObj = changeYearsFormat(oldDateObj, toFormat);
+
+  return toFormat
+    .slice(0, -1)
+    .map((format) => updatedDateObj[format])
+    .join(toFormat[3]);
 }
 
-function changeYearsFormat(oldDateObj, arrayWithNewFormat) {
-  // This function converts years format from oldDateObj
-  // to year format in arrayWithNewFromat
-  const { YY, YYYY } = oldDateObj;
+function changeYearsFormat(dateObj, newFormat) {
+  const result = { ...dateObj };
 
-  if (YY && arrayWithNewFormat.indexOf('YYYY') !== -1) {
-    if (+oldDateObj.YY < 30) {
-      oldDateObj.YY = '20' + oldDateObj.YY;
-    } else {
-      oldDateObj.YY = '19' + oldDateObj.YY;
-    }
-
-    if (!oldDateObj['YYYY'] || oldDateObj.YY) {
-      oldDateObj['YYYY'] = oldDateObj.YY;
-    }
-
-    if (oldDateObj['YY']) {
-      delete oldDateObj.YY;
-    }
+  if (result.YY && newFormat.includes('YYYY')) {
+    result.YYYY = (+result.YY < 30 ? '20' : '19') + result.YY;
+    delete result.YY;
   }
 
-  if (YYYY && arrayWithNewFormat.indexOf('YY') !== -1) {
-    oldDateObj.YYYY = oldDateObj.YYYY.slice(-2);
-
-    if (!oldDateObj['YY'] || oldDateObj.YYYY) {
-      oldDateObj['YY'] = oldDateObj.YYYY;
-    }
-
-    if (oldDateObj['YYYY']) {
-      delete oldDateObj.YYYY;
-    }
+  if (result.YYYY && newFormat.includes('YY')) {
+    result.YY = result.YYYY.slice(-2);
+    delete result.YYYY;
   }
+
+  return result;
 }
 
 module.exports = formatDate;
