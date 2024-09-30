@@ -16,14 +16,16 @@ function formatDate(date, fromFormat, toFormat) {
     switch (fromFormat[i]) {
       case 'YYYY':
         receivedDate['YY'] = dateArr[i].slice(2);
+        receivedDate['YYYY'] = dateArr[i];
         break;
       case 'YY':
-        receivedDate['YYYY'] = (dateArr[i] <= 20 ? 20 : 19) + dateArr[i];
+        receivedDate['YYYY'] = (dateArr[i] < 30 ? 20 : 19) + dateArr[i];
+        receivedDate['YY'] = dateArr[i];
         break;
       default:
+        receivedDate[fromFormat[i]] = dateArr[i];
         break;
     }
-    receivedDate[fromFormat[i]] = dateArr[i];
   }
 
   for (const elem of toFormat.slice(0, -1)) {
