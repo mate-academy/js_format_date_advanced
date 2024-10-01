@@ -27,14 +27,20 @@ const convertYear = (objectDate, toFormat) => {
 };
 
 function formatDate(date, fromFormat, toFormat) {
-  const separatorFrom = fromFormat.pop();
-  const separatorTo = toFormat.pop();
+  const separatorFrom = fromFormat[fromFormat.length - 1];
+  const separatorTo = toFormat[toFormat.length - 1];
+
+  const actualFromFormat = fromFormat.slice(0, -1);
+  const actualToFormat = toFormat.slice(0, -1);
+
   const dateParts = date.split(separatorFrom);
-  const objectDate = getObjectDate(dateParts, fromFormat);
+  const objectDate = getObjectDate(dateParts, actualFromFormat);
 
-  convertYear(objectDate, toFormat);
+  convertYear(objectDate, actualToFormat);
 
-  return toFormat.map((format) => objectDate[format]).join(separatorTo);
+  return actualToFormat
+    .map((format) => (objectDate[format] ? objectDate[format] : ''))
+    .join(separatorTo);
 }
 
 module.exports = formatDate;
