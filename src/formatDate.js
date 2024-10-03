@@ -19,14 +19,14 @@ function formatDate(date, fromFormat, toFormat) {
     dateData[fromFormat[i]] = separatedDate[i];
   }
 
-  if (!dateData[year4]) {
+  if (!dateData[year2]) {
+    dateData[year2] = dateData[year4].slice(-2);
+  } else {
     if (dateData[year2] < 30) {
       dateData[year4] = `20${dateData[year2]}`;
     } else {
       dateData[year4] = `19${dateData[year2]}`;
     }
-  } else {
-    dateData[year2] = dateData[year4].slice(2, 4);
   }
 
   const result = [];
