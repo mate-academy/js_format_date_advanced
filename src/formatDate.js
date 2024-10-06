@@ -18,11 +18,9 @@ function formatDate(date, fromFormat, toFormat) {
   }
 
   if (dateObject.YY) {
-    if (dateObject.YY < '30') {
-      dateObject.YYYY = '20' + dateObject.YY;
-    } else {
-      dateObject.YYYY = '19' + dateObject.YY;
-    }
+    const year = Number(dateObject.YY);
+
+    dateObject.YYYY = year < 30 ? '20' + dateObject.YY : '19' + dateObject.YY;
   }
 
   if (dateObject.YYYY) {
@@ -31,10 +29,12 @@ function formatDate(date, fromFormat, toFormat) {
 
   const newDateArr = [];
 
-  for (const key in dateObject) {
-    const index = toFormat.indexOf(key);
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const key = toFormat[i];
 
-    newDateArr[index] = dateObject[key];
+    if (dateObject[key]) {
+      newDateArr.push(dateObject[key]);
+    }
   }
 
   const newDate = newDateArr.join(`${newSeparator}`);
