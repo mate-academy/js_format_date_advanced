@@ -1,6 +1,6 @@
 # Format Date Advanced
 
-**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
+**Read [the guideline](https://github.com/Misha20850/js_task-guideline/blob/master/README.md) before start**
 
 Time flies, standards change. Let's get rid of the routine of changing the date format.
 
