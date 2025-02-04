@@ -8,8 +8,8 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const fromSeparator = fromFormat[fromFormat.length - 1];
-  const toSeparator = toFormat[toFormat.length - 1];
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
   const partsOfDate = date.split(fromSeparator);
   let dateNewFormat = '';
 
@@ -21,9 +21,9 @@ function formatDate(date, fromFormat, toFormat) {
         index = fromFormat.indexOf('YY');
 
         if (partsOfDate[index] >= 30) {
-          partsOfDate[index] = +partsOfDate[index] + 1900;
+          partsOfDate[index] = 19 + partsOfDate[index];
         } else {
-          partsOfDate[index] = +partsOfDate[index] + 2000;
+          partsOfDate[index] = 20 + partsOfDate[index];
         }
       }
 
