@@ -8,37 +8,62 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
   const separatorFrom = fromFormat[3];
-  const separatorTo = toFormat[3];
-
-  const parts = date.split(separatorFrom);
+  const dateParts = date.split(separatorFrom);
+  const formatParts = [];
   const dateObj = {};
 
-  for (let i = 0; i < 3; i++) {
-    dateObj[fromFormat[i]] = parts[i];
-  }
-
-  if (fromFormat[0] === 'YYYY' && toFormat[0] === 'YY') {
-    dateObj['YY'] = dateObj['YYYY'].slice(2);
-  } else if (fromFormat[0] === 'YY' && toFormat[0] === 'YYYY') {
-    let yearPrefix;
-
-    if (dateObj['YY'] < '30') {
-      yearPrefix = '20';
-    } else {
-      yearPrefix = '19';
+  for (const char of fromFormat) {
+    if (char !== '/' && char !== '-' && char !== '.') {
+      formatParts.push(char);
     }
-    dateObj['YYYY'] = yearPrefix + dateObj['YY'];
   }
 
-  const newDate = [];
-
-  for (let i = 0; i < 3; i++) {
-    newDate.push(dateObj[toFormat[i]]);
+  for (let i = 0; i < formatParts.length; i++) {
+    dateObj[formatParts[i]] = dateParts[i];
   }
 
-  return newDate.join(separatorTo);
+  if ('YYYY' in dateObj && toFormat.includes('YY')) {
+    dateObj['YY'] = dateObj['YYYY'].slice(2);
+  }
+
+  if ('YY' in dateObj && toFormat.includes('YYYY')) {
+    const yearNum = parseInt(dateObj['YY']);
+    let century = '19';
+
+    if (yearNum < 30) {
+      century = '20';
+    }
+
+    dateObj['YYYY'] = century + dateObj['YY'];
+  }
+
+  const separatorTo =
+    toFormat.find((part) => ['-', '.', '/'].includes(part)) || '-';
+
+  const result = [];
+  let index = 0;
+
+  for (const part of toFormat) {
+    if (part === '/' || part === '-' || part === '.') {
+      result.push(part);
+    } else {
+      result.push(dateObj[part] || '');
+    }
+
+    if (
+      index < toFormat.length - 1 &&
+      part !== '/' &&
+      part !== '-' &&
+      part !== '.'
+    ) {
+      result.push(separatorTo);
+    }
+
+    index++;
+  }
+
+  return result.join('').slice(0, -2);
 }
 
 module.exports = formatDate;
