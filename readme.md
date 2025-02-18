@@ -1,49 +1,19 @@
 # Format Date Advanced
 
-**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
+## 🎮 About the Project
+A JavaScript function `formatDate` that allows you to transform a given `date` string from one format to another. The function accepts the old format (`fromFormat`) and the new desired format (`toFormat`) as arrays, and returns the date in the new format. This provides flexibility in handling various date format conversions.
 
-Time flies, standards change. Let's get rid of the routine of changing the date format.
+## 🚀 Tech Stack
+- **JavaScript** (Function implementation and logic)
 
-## Task description:
+## 🛠️ Tools & Dependencies
+- **ESLint** – Ensuring code quality
+- **Prettier** – Code formatting for readability
+- **Jest** – Unit testing framework
 
-Create a `formatDate` function that accepts the `date` string,
-the old `fromFormat` array and the new `toFormat` array. Function returns given date in new format.
+## 📌 Features
+✅ Converts date from one format to another  
+✅ Flexible with custom date formats
 
-The function can change a separator, reorder the date parts of convert a year from `4` digits to `2` digits and back.
-
-- When converting from `YYYY` to `YY` just use `2` last digit (`1997` -> `97`).
-- When converting from `YY` to `YYYY` use `20YY` if `YY < 30` and `19YY` otherwise.
-
-Examples:
-
-```js
-formatDate(
-  '2020-02-18',
-  ['YYYY', 'MM', 'DD', '-'],
-  ['YYYY', 'MM', 'DD', '.'],
-); // '2020.02.18'
-
-formatDate(
-  '2020-02-18',
-  ['YYYY', 'MM', 'DD', '-'],
-  ['DD', 'MM', 'YYYY', '.'],
-); // '18.02.2020'
-
-formatDate(
-  '18-02-2020',
-  ['DD', 'MM', 'YYYY', '-'],
-  ['DD', 'MM', 'YY', '/'],
-); // '18/02/20'
-
-formatDate(
-  '20/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['YYYY', 'MM', 'DD', '.'],
-); // '2020.02.18'
-
-formatDate(
-  '97/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['DD', 'MM', 'YYYY', '.'],
-); // '18.02.1997'
-```
+## 📜 License
+This project is forked from 💻 [Mate Academy](https://github.com/mate-academy/js_format_date_advanced)
