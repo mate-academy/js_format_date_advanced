@@ -8,28 +8,37 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dateArr = date.split(fromFormat[3]);
+  const delimiterFrom = fromFormat[findDelimiter(fromFormat)];
+  const delimiterTo = toFormat[findDelimiter(toFormat)];
 
-  const day = dateArr[fromFormat.indexOf('DD')];
-  const month = dateArr[fromFormat.indexOf('MM')];
-  let year =
-    dateArr[fromFormat.indexOf('YYYY')] || dateArr[fromFormat.indexOf('YY')];
+  const dateArr = date.split(delimiterFrom);
+
+  const getValue = (element) => dateArr[fromFormat.indexOf(element)];
+  let year = getValue('YY') || getValue('YYYY');
+
+  if (fromFormat.includes('YY')) {
+    year = Number(year) < 30 ? `20${year}` : `19${year}`;
+  }
 
   const result = [];
 
-  result[toFormat.indexOf('DD')] = day;
-  result[toFormat.indexOf('MM')] = month;
+  result[toFormat.indexOf('DD')] = getValue('DD');
+  result[toFormat.indexOf('MM')] = getValue('MM');
 
-  if (toFormat.includes('YY')) {
-    result[toFormat.indexOf('YY')] = year.slice(-2);
-  } else {
-    if (year.length === 2) {
-      year = Number(year) < 30 ? '20' + year : '19' + year;
+  result[toFormat.indexOf(toFormat.includes('YY') ? 'YY' : 'YYYY')] =
+    toFormat.includes('YY') ? year.slice(-2) : year;
+
+  return result.join(delimiterTo);
+}
+
+const findDelimiter = (dateFormat) => {
+  for (let i = 0; i < dateFormat.length; i++) {
+    if (!['YY', 'YYYY', 'MM', 'DD'].includes(dateFormat[i])) {
+      return i;
     }
-    result[toFormat.indexOf('YYYY')] = year;
   }
 
-  return result.join(toFormat[3]);
-}
+  return -1;
+};
 
 module.exports = formatDate;
