@@ -8,7 +8,7 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const dateSplit = date.split(fromFormat[3]);
+  const dateSplit = date.split(fromFormat.pop());
   let month = '';
   let day = '';
   let year = '';
@@ -61,7 +61,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return result.join(toFormat[3]);
+  return result.join(toFormat.pop());
 }
 
 module.exports = formatDate;
