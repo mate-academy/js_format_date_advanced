@@ -4,7 +4,7 @@
 
 Time flies, standards change. Let's get rid of the routine of changing the date format.
 
-## Task description:
+## Task description
 
 Create a `formatDate` function that accepts the `date` string,
 the old `fromFormat` array and the new `toFormat` array. Function returns given date in new format.
