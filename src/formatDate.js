@@ -30,8 +30,7 @@ function formatDate(date, fromFormat, toFormat) {
   const newDayPosition = toFormat.indexOf('DD');
 
   if (fromFormat[oldYearPosition].length > toFormat[newYearPosition].length) {
-    oldDate[oldYearPosition] =
-      oldDate[oldYearPosition][2] + oldDate[oldYearPosition][3];
+    oldDate[oldYearPosition] = oldDate[oldYearPosition].slice(-2);
   }
 
   if (fromFormat[oldYearPosition].length < toFormat[newYearPosition].length) {
