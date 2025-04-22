@@ -7,18 +7,20 @@
  *
  * @returns {string}
  */
+
 function formatDate(date, fromFormat, toFormat) {
-  const separatorFrom = fromFormat.pop();
-  const separatorTo = toFormat.pop();
+  const separatorFrom = fromFormat[fromFormat.length - 1];
+  const separatorTo = toFormat[toFormat.length - 1];
 
   const dateParts = date.split(separatorFrom);
   const dateMap = {};
 
-  fromFormat.forEach((part, index) => {
+  fromFormat.slice(0, -1).forEach((part, index) => {
     dateMap[part] = dateParts[index];
   });
 
   const formattedDate = toFormat
+    .slice(0, -1)
     .map((part) => {
       if (part === 'YY' && dateMap['YYYY']) {
         return dateMap['YYYY'].slice(-2);
