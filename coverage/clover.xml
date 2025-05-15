@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1747265701874" clover="3.2.0">
+  <project timestamp="1747265701874" name="All files">
+    <metrics statements="16" coveredstatements="16" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1" elements="27" coveredelements="27" complexity="0" loc="16" ncloc="16" packages="1" files="1" classes="1"/>
+    <file name="formatDate.js" path="D:\Project\JS\js_format_date_advanced\src\formatDate.js">
+      <metrics statements="16" coveredstatements="16" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1"/>
+      <line num="11" count="10" type="stmt"/>
+      <line num="12" count="10" type="stmt"/>
+      <line num="13" count="10" type="stmt"/>
+      <line num="14" count="10" type="stmt"/>
+      <line num="15" count="10" type="stmt"/>
+      <line num="16" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="17" count="10" type="stmt"/>
+      <line num="18" count="10" type="stmt"/>
+      <line num="25" count="10" type="stmt"/>
+      <line num="26" count="30" type="cond" truecount="4" falsecount="0"/>
+      <line num="27" count="6" type="stmt"/>
+      <line num="30" count="30" type="cond" truecount="4" falsecount="0"/>
+      <line num="31" count="2" type="stmt"/>
+      <line num="33" count="30" type="stmt"/>
+      <line num="36" count="10" type="stmt"/>
+      <line num="39" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
