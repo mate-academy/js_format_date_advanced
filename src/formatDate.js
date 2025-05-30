@@ -75,7 +75,7 @@ function formatDate(date, fromFormat, toFormat) {
       newYearFormat = '19' + year;
     }
   } else {
-    newYearFormat = year[2] + year[3];
+    newYearFormat = year.slice(-2);
   }
 
   /*
