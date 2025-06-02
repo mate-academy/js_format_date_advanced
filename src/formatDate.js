@@ -16,8 +16,6 @@ function formatDate(date, fromFormat, toFormat) {
   let day = '';
   const result = [];
 
-  result.length = toFormat.length - 1;
-
   for (let i = 0; i < date.length; i++) {
     if (chars.includes(date[i])) {
       separator = date[i];
@@ -27,7 +25,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   const data = date.split(separator);
 
-  for (let i = 0; i < fromFormat.length - 1; i++) {
+  for (let i = 0; i < fromFormat.length; i++) {
     if (fromFormat[i] === 'YY') {
       yearShort = data[i];
       yearFull = +yearShort < 30 ? '20' + yearShort : '19' + yearShort;
@@ -49,7 +47,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   separator = toFormat[toFormat.length - 1];
 
-  for (let i = 0; i < toFormat.length - 1; i++) {
+  for (let i = 0; i < toFormat.length; i++) {
     if (toFormat[i] === 'YYYY') {
       result[i] = yearFull;
     }
