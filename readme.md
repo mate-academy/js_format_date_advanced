@@ -16,6 +16,7 @@ The function can change a separator, reorder the date parts of convert a year fr
 
 Examples:
 
+
 ```js
 formatDate(
   '2020-02-18',
