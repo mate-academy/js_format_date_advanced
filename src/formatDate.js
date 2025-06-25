@@ -11,7 +11,7 @@ function formatDate(date, fromFormat, toFormat) {
   let year = null;
   let day = null;
   let month = null;
-  let newArr = 'dsfsdfsd';
+  let newArr;
 
   // #region toFormat
   switch (fromFormat.join('')) {
@@ -41,12 +41,12 @@ function formatDate(date, fromFormat, toFormat) {
     case 'DDMMYYYY-':
       newArr = date.split('-');
       year = newArr[2];
-      month = newArr[2];
+      month = newArr[1];
       day = newArr[0];
 
       break;
     case 'DDMMYY/':
-      newArr = date.split('.');
+      newArr = date.split('/');
 
       if (newArr[2] <= 30) {
         year = '20' + newArr[2];
@@ -116,9 +116,7 @@ function formatDate(date, fromFormat, toFormat) {
     case 'DDMMYYYY-':
       return day + '-' + month + '-' + year;
     case 'DDMMYY/':
-      year.slice(2);
-
-      return day + '/' + month + '/' + year;
+      return day + '/' + month + '/' + year.slice(2);
 
     case 'YYYYMMDD-':
       return year + '-' + month + '-' + day;
