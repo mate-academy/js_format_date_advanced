@@ -39,14 +39,14 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       if (toFormat[i].length === 2 && currentYearLength === 4) {
-        result.push(Number(String(currentYear).slice(2)));
+        result.push(String(currentYear).slice(2));
       }
 
       if (toFormat[i].length === 4 && currentYearLength === 2) {
         if (currentYear < 30) {
-          result.push(Number('20' + String(currentYear)));
+          result.push('20' + String(currentYear));
         } else {
-          result.push(Number('19' + String(currentYear)));
+          result.push('19' + String(currentYear));
         }
       }
     }
