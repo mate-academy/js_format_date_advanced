@@ -12,7 +12,7 @@ function formatDate(date, fromFormat, toFormat) {
   // const newArrFrom = [];
   
   for (const i = 0; i < fromFormat.length; i++){
-    fromFormat.pop();
+    fromFormat.shift();
     toFormat[i].push(fromFormat[i]);
   }
 
