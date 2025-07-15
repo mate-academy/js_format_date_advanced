@@ -8,7 +8,15 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // const [year, month, day] = date.split('-');
+  // const newArrFrom = [];
+  
+  for (const i = 0; i < fromFormat.length; i++){
+    fromFormat.pop();
+    toFormat[i].push(fromFormat[i]);
+  }
+
+  return date.toFormat;
 }
 
 module.exports = formatDate;
