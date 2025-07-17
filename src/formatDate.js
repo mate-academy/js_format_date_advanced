@@ -7,8 +7,72 @@
  *
  * @returns {string}
  */
+'use strict';
+
 function formatDate(date, fromFormat, toFormat) {
-  // write code here
+  // Extract separator from fromFormat (last element)
+  const fromSep = fromFormat[fromFormat.length - 1];
+  const toSep = toFormat[toFormat.length - 1];
+
+  // Extract date parts from date string by splitting by fromSep
+  const parts = [];
+  let start = 0;
+
+  for (let i = 0; i <= date.length; i++) {
+    if (i === date.length || date[i] === fromSep) {
+      parts.push(date.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  // Map fromFormat parts to their values from input date
+  const dateMap = {};
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    dateMap[fromFormat[i]] = parts[i];
+  }
+
+  // Function to convert year format
+  function convertYear(yearStr, fromFmt, toFmt) {
+    if (fromFmt === toFmt) {
+      return yearStr;
+    }
+
+    if (fromFmt === 'YYYY' && toFmt === 'YY') {
+      return yearStr.slice(-2);
+    }
+
+    if (fromFmt === 'YY' && toFmt === 'YYYY') {
+      const num = parseInt(yearStr, 10);
+
+      if (num < 30) {
+        return '20' + (num < 10 ? '0' + num : num);
+      } else {
+        return '19' + num;
+      }
+    }
+
+    return yearStr;
+  }
+
+  // Build the output parts array according to toFormat (excluding separator)
+  const outputParts = [];
+
+  for (let i = 0; i < toFormat.length - 1; i++) {
+    const fmt = toFormat[i];
+
+    if (fmt === 'YY' || fmt === 'YYYY') {
+      const fromYearFmt = fromFormat.includes('YYYY') ? 'YYYY' : 'YY';
+
+      outputParts.push(convertYear(dateMap[fromYearFmt], fromYearFmt, fmt));
+    } else {
+      outputParts.push(dateMap[fmt]);
+    }
+  }
+
+  return outputParts.join(toSep);
 }
+
+module.exports = formatDate;
 
 module.exports = formatDate;
