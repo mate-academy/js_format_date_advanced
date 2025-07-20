@@ -17,12 +17,12 @@ function formatDate(date, fromFormat, toFormat) {
     oldFormat[fromFormat[i]] = arrayDate[i];
   }
 
-  if (fromFormat.includes('YYYY') || toFormat.includes('YY')) {
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     oldFormat['YY'] = oldFormat['YYYY'].slice(-2);
     delete oldFormat['YYYY'];
   }
 
-  if (fromFormat.includes('YY') || toFormat.includes('YYYY')) {
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
     if (Number(oldFormat['YY']) < 30) {
       oldFormat['YYYY'] = '20' + oldFormat['YY'];
     } else {
