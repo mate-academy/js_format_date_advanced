@@ -10,30 +10,38 @@
 function formatDate(date, fromFormat, toFormat) {
   const fromDelimiter = fromFormat[fromFormat.length - 1];
   const toDelimiter = toFormat[toFormat.length - 1];
-
   const fromParts = fromFormat.slice(0, -1);
   const toParts = toFormat.slice(0, -1);
-
   const dateParts = date.split(fromDelimiter);
-
   const dateMap = {};
 
-  fromFormat.forEach((part, index) => {
-    dateMap[part] = dateParts[index];
-  });
+  for (let index = 0; index < fromParts.length; index++) {
+    const el = fromParts[index];
 
-  if (fromParts.includes('YY') && toParts.includes('YYYY')) {
-    dateMap['YYYY'] =
-      parseInt(dateMap['YY']) < 30
-        ? '20' + dateMap['YY']
-        : '19' + dateMap['YY'];
-  } else if (fromParts.includes('YYYY') && toParts.includes('YY')) {
-    dateMap['YY'] = dateMap['YYYY'].slice(-2);
+    dateMap[el] = dateParts[index];
   }
 
-  const newDateParts = toParts.map((part) => dateMap[part]);
+  const newDate = {};
 
-  return newDateParts.join(toDelimiter);
+  for (let index = 0; index < toParts.length; index++) {
+    const element = toParts[index];
+
+    if (element === 'YY' && !(element in dateMap)) {
+      newDate[element] = dateMap.YYYY.slice(2, 4);
+      continue;
+    }
+
+    if (element === 'YYYY' && !(element in dateMap)) {
+      newDate[element] =
+        dateMap.YY < 30 ? `20${dateMap.YY}` : `19${dateMap.YY}`;
+      continue;
+    }
+    newDate[element] = dateMap[element];
+  }
+
+  const dateFinal = Object.values(newDate).join(toDelimiter);
+
+  return dateFinal;
 }
 
 module.exports = formatDate;
