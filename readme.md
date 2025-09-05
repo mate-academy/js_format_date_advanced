@@ -1,6 +1,6 @@
 # Format Date Advanced
 
-**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
+**Read [the guideline](https://matheus-s-araujo.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
 
 Time flies, standards change. Let's get rid of the routine of changing the date format.
 
@@ -17,33 +17,13 @@ The function can change a separator, reorder the date parts of convert a year fr
 Examples:
 
 ```js
-formatDate(
-  '2020-02-18',
-  ['YYYY', 'MM', 'DD', '-'],
-  ['YYYY', 'MM', 'DD', '.'],
-); // '2020.02.18'
+formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['YYYY', 'MM', 'DD', '.']); // '2020.02.18'
 
-formatDate(
-  '2020-02-18',
-  ['YYYY', 'MM', 'DD', '-'],
-  ['DD', 'MM', 'YYYY', '.'],
-); // '18.02.2020'
+formatDate('2020-02-18', ['YYYY', 'MM', 'DD', '-'], ['DD', 'MM', 'YYYY', '.']); // '18.02.2020'
 
-formatDate(
-  '18-02-2020',
-  ['DD', 'MM', 'YYYY', '-'],
-  ['DD', 'MM', 'YY', '/'],
-); // '18/02/20'
+formatDate('18-02-2020', ['DD', 'MM', 'YYYY', '-'], ['DD', 'MM', 'YY', '/']); // '18/02/20'
 
-formatDate(
-  '20/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['YYYY', 'MM', 'DD', '.'],
-); // '2020.02.18'
+formatDate('20/02/18', ['YY', 'MM', 'DD', '/'], ['YYYY', 'MM', 'DD', '.']); // '2020.02.18'
 
-formatDate(
-  '97/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['DD', 'MM', 'YYYY', '.'],
-); // '18.02.1997'
+formatDate('97/02/18', ['YY', 'MM', 'DD', '/'], ['DD', 'MM', 'YYYY', '.']); // '18.02.1997'
 ```
