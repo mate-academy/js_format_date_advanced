@@ -33,29 +33,29 @@ function formatDate(date, fromFormat, toFormat) {
     year4 = (parseInt(year2) < 30 ? '20' : '19') + year2;
   }
 
-  const mm = pad2(OLD_MAP['MM']);
-  const dd = pad2(OLD_MAP['DD']);
+  const MM = pad2(OLD_MAP['MM']);
+  const DD = pad2(OLD_MAP['DD']);
 
-  const result = [];
+  const RESULT = [];
 
   for (const token of NEW_TOKENS) {
     switch (token) {
       case 'YYYY':
-        result.push(year4);
+        RESULT.push(year4);
         continue;
       case 'YY':
-        result.push(year2);
+        RESULT.push(year2);
         continue;
       case 'MM':
-        result.push(mm);
+        RESULT.push(MM);
         continue;
       case 'DD':
-        result.push(dd);
+        RESULT.push(DD);
         continue;
     }
   }
 
-  return result.join(NEW_SEP);
+  return RESULT.join(NEW_SEP);
 }
 
 function pad2(data) {
