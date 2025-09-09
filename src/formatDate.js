@@ -8,16 +8,18 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const OLD_SEP = fromFormat.at(-1);
-  const OLD_TOKENS = fromFormat.slice(0, 3);
-  const NEW_SEP = toFormat.at(-1);
-  const NEW_TOKENS = toFormat.slice(0, 3);
+  const ALLOWED = new Set(['YYYY', 'YY', 'MM', 'DD']);
 
-  const DATE_PARTS = date.split(OLD_SEP);
+  const OLD_SEP = fromFormat.find((x) => !ALLOWED.has(x)) ?? '';
+  const NEW_SEP = toFormat.find((x) => !ALLOWED.has(x)) ?? '';
+  const OLD_TOKENS = fromFormat.filter((x) => ALLOWED.has(x));
+  const NEW_TOKENS = toFormat.filter((x) => ALLOWED.has(x));
+
+  const DATE_PARTS = OLD_SEP ? date.split(OLD_SEP) : [date];
 
   const OLD_MAP = {};
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < OLD_TOKENS.length; i++) {
     OLD_MAP[OLD_TOKENS[i]] = DATE_PARTS[i];
   }
 
@@ -33,9 +35,6 @@ function formatDate(date, fromFormat, toFormat) {
     year4 = (parseInt(year2) < 30 ? '20' : '19') + year2;
   }
 
-  const MM = pad2(OLD_MAP['MM']);
-  const DD = pad2(OLD_MAP['DD']);
-
   const RESULT = [];
 
   for (const token of NEW_TOKENS) {
@@ -47,19 +46,15 @@ function formatDate(date, fromFormat, toFormat) {
         RESULT.push(year2);
         continue;
       case 'MM':
-        RESULT.push(MM);
+        RESULT.push(OLD_MAP['MM']);
         continue;
       case 'DD':
-        RESULT.push(DD);
+        RESULT.push(OLD_MAP['DD']);
         continue;
     }
   }
 
   return RESULT.join(NEW_SEP);
-}
-
-function pad2(data) {
-  return data.toString().padStart(2, '0');
 }
 
 module.exports = formatDate;
