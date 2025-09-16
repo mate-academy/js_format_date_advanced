@@ -20,23 +20,24 @@ function formatDate(date, fromFormat, toFormat) {
   const result = [];
 
   for (let j = 0; j < toFormat.length - 1; j++) {
-    if (toFormat[j] === 'YY') {
-      if (dateObj['YYYY']) {
-        result.push(dateObj['YYYY'].slice(-2));
-      } else {
-        result.push(dateObj['YY']);
-      }
-    } else if (toFormat[j] === 'YYYY') {
-      if (dateObj['YYYY']) {
-        result.push(dateObj['YYYY']);
-      } else if (dateObj['YY'] <= 29) {
-        result.push('20' + dateObj['YY']);
-      } else if (dateObj['YY'] >= 30) {
-        result.push('19' + dateObj['YY']);
-      }
-    } else {
-      result.push(dateObj[toFormat[j]]);
+    let value;
+
+    switch (toFormat[j]) {
+      case 'YY':
+        value = dateObj['YYYY'] ? dateObj['YYYY'].slice(-2) : dateObj['YY'];
+        break;
+      case 'YYYY':
+        value = dateObj['YYYY']
+          ? dateObj['YYYY']
+          : dateObj['YY'] <= 29
+            ? '20' + dateObj['YY']
+            : '19' + dateObj['YY'];
+        break;
+      default:
+        value = dateObj[toFormat[j]];
     }
+
+    result.push(value);
   }
 
   return result.join(separatorTo);
