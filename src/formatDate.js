@@ -23,10 +23,10 @@ function formatDate(date, fromFormat, toFormat) {
   if (toFormat.includes('YYYY') && fromFormat.includes('YY')) {
     const year = Number(temp.YY);
 
-    if (year <= 1999) {
-      temp.YYYY = '19' + temp.YY;
+    if (year >= 30) {
+      temp.YYYY = 19 + temp.YY;
     } else {
-      temp.YYYY = '20' + temp.YY;
+      temp.YYYY = 20 + temp.YY;
     }
   }
 
