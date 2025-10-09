@@ -8,7 +8,8 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const getSepFromArray = (arr) => arr[arr.length - 1];
+  const TOKENS = ['YYYY', 'YY', 'MM', 'DD'];
+  const getSepFromArray = (arr) => arr.find((el) => !TOKENS.includes(el));
   const getSepFromString = (str) => {
     for (let i = 0; i < str.length; i++) {
       if (str[i] < 'A' || str[i] > 'Z') {
@@ -25,10 +26,10 @@ function formatDate(date, fromFormat, toFormat) {
   const sepTo = getSep(toFormat);
 
   const fromParts = Array.isArray(fromFormat)
-    ? fromFormat.slice(0, 3)
+    ? fromFormat.filter((el) => el !== sepFrom)
     : fromFormat.split(sepFrom);
   const toParts = Array.isArray(toFormat)
-    ? toFormat.slice(0, 3)
+    ? toFormat.filter((el) => el !== sepTo)
     : toFormat.split(sepTo);
 
   const values = date.split(sepFrom);
