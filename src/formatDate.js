@@ -8,61 +8,84 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const oldSeparator = fromFormat.at(-1);
-  const newSeparator = toFormat.at(-1);
-
-  const dateParts = date.split(oldSeparator);
-
-  const oldFormatIndices = { year: null, month: null, day: null };
-  const newFormatIndices = { ...oldFormatIndices };
-
-  // find indices of Date format both `fromFormat` (old) and `toFormat` (new)
-  for (let i = 0; i < fromFormat.length - 1; i++) {
-    setIndex(fromFormat, i, oldFormatIndices);
-    setIndex(toFormat, i, newFormatIndices);
+  if (!date || !fromFormat || !toFormat) {
+    throw new Error('Invalid arguments');
   }
 
-  const oldFormatYearLength = fromFormat[oldFormatIndices.year].length;
-  const newFormatYearLength = toFormat[newFormatIndices.year].length;
+  const fromSeparator = extractSeparator(fromFormat);
+  const toSeparator = extractSeparator(toFormat);
 
-  if (oldFormatYearLength !== newFormatYearLength) {
-    // from YYYY to YY
-    if (oldFormatYearLength > newFormatYearLength) {
-      dateParts[oldFormatIndices.year] =
-        dateParts[oldFormatIndices.year].slice(2);
-      // from YY to YYYY
-    } else {
-      const yearPrefix =
-        Number.parseInt(dateParts[oldFormatIndices.year]) < 30 ? '20' : '19';
+  const dateParts = date.split(fromSeparator);
 
-      dateParts[oldFormatIndices.year] =
-        yearPrefix + dateParts[oldFormatIndices.year];
-    }
+  const fromDateIndices = { year: null, month: null, day: null };
+  const toDateIndices = { ...fromDateIndices };
+
+  for (let i = 0; i < fromFormat.length - 1; i++) {
+    setIndex(fromFormat, i, fromDateIndices);
+    setIndex(toFormat, i, toDateIndices);
+  }
+
+  const fromYearLength = fromFormat[fromDateIndices.year].length;
+  const toYearLength = toFormat[toDateIndices.year].length;
+
+  if (fromYearLength !== toYearLength) {
+    dateParts[fromDateIndices.year] = formatYear(
+      dateParts[fromDateIndices.year],
+      fromYearLength,
+      toYearLength,
+    );
   }
 
   const newDateFormat = [];
 
-  newDateFormat[newFormatIndices.year] = dateParts[oldFormatIndices.year];
-  newDateFormat[newFormatIndices.month] = dateParts[oldFormatIndices.month];
-  newDateFormat[newFormatIndices.day] = dateParts[oldFormatIndices.day];
+  newDateFormat[toDateIndices.year] = dateParts[fromDateIndices.year];
+  newDateFormat[toDateIndices.month] = dateParts[fromDateIndices.month];
+  newDateFormat[toDateIndices.day] = dateParts[fromDateIndices.day];
 
-  return newDateFormat.join(newSeparator);
+  return newDateFormat.join(toSeparator);
+}
 
-  function setIndex(formatArr, idx, target) {
-    switch (formatArr[idx][0]) {
-      case 'Y':
-        target.year = idx;
-        break;
-      case 'M':
-        target.month = idx;
-        break;
-      case 'D':
-        target.day = idx;
-        break;
-      default:
-        throw new Error(`Unknown date format ${formatArr[idx]}`);
-    }
+function extractSeparator(format) {
+  return format.at(-1);
+}
+
+function setIndex(dateFormat, index, dateIndices) {
+  switch (dateFormat[index][0]) {
+    case 'Y':
+      dateIndices.year = index;
+      break;
+    case 'M':
+      dateIndices.month = index;
+      break;
+    case 'D':
+      dateIndices.day = index;
+      break;
+    default:
+      throw new Error(`Unknown date format ${dateFormat[index]}`);
   }
+}
+
+/**
+ * Converts a year string between 2-digit (YY) and 4-digit (YYYY) formats.
+ *
+ * @param {string} currentYear - The year string to format (e.g., "2024"
+ * or "24").
+ * @param {number} fromLength - The length of the current year string (e.g., 4).
+ * @param {number} toLength - The target length for the year string (e.g., 2).
+ * @returns {string} The formatted year string.
+ */
+function formatYear(currentYear, fromLength, toLength) {
+  // from YYYY to YY
+  if (fromLength > toLength) {
+    return currentYear.slice(2);
+  }
+
+  // from YY to YYYY
+  const DECADES_THRESHOLD = 30;
+  const yearPrefix =
+    Number.parseInt(currentYear) < DECADES_THRESHOLD ? '20' : '19';
+
+  return yearPrefix + currentYear;
 }
 
 module.exports = formatDate;
