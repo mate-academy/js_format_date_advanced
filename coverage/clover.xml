@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1762964344532" clover="3.2.0">
+  <project timestamp="1762964344532" name="All files">
+    <metrics statements="29" coveredstatements="28" conditionals="10" coveredconditionals="9" methods="2" coveredmethods="2" elements="41" coveredelements="39" complexity="0" loc="29" ncloc="29" packages="1" files="1" classes="1"/>
+    <file name="formatDate.js" path="D:\Repo\js_format_date_advanced\src\formatDate.js">
+      <metrics statements="29" coveredstatements="28" conditionals="10" coveredconditionals="9" methods="2" coveredmethods="2"/>
+      <line num="11" count="10" type="stmt"/>
+      <line num="12" count="10" type="stmt"/>
+      <line num="14" count="10" type="stmt"/>
+      <line num="16" count="10" type="stmt"/>
+      <line num="17" count="10" type="stmt"/>
+      <line num="20" count="10" type="stmt"/>
+      <line num="21" count="30" type="stmt"/>
+      <line num="22" count="30" type="stmt"/>
+      <line num="25" count="10" type="stmt"/>
+      <line num="26" count="10" type="stmt"/>
+      <line num="28" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="30" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="31" count="2" type="stmt"/>
+      <line num="36" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="38" count="4" type="stmt"/>
+      <line num="43" count="10" type="stmt"/>
+      <line num="45" count="10" type="stmt"/>
+      <line num="46" count="10" type="stmt"/>
+      <line num="47" count="10" type="stmt"/>
+      <line num="49" count="10" type="stmt"/>
+      <line num="52" count="60" type="cond" truecount="3" falsecount="1"/>
+      <line num="54" count="20" type="stmt"/>
+      <line num="55" count="20" type="stmt"/>
+      <line num="57" count="20" type="stmt"/>
+      <line num="58" count="20" type="stmt"/>
+      <line num="60" count="20" type="stmt"/>
+      <line num="61" count="20" type="stmt"/>
+      <line num="63" count="0" type="stmt"/>
+      <line num="68" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
