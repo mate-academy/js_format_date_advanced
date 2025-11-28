@@ -8,41 +8,70 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const [fYear, fMonth, fDay, fromSeparator] = fromFormat;
-  const [tYear, tMonth, tDay, toSeparator] = toFormat;
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
 
   const parts = date.split(fromSeparator);
 
-  const map = {
-    [fYear]: parts[0],
-    [fMonth]: parts[1],
-    [fDay]: parts[2],
+  const getFromPart = (token) => {
+    const idx = fromFormat.indexOf(token);
+
+    return idx === -1 ? undefined : parts[idx];
   };
 
-  let year = map['YYYY'] || map['YY'];
-  const month = map['MM'];
-  const day = map['DD'];
+  const fromYearToken = fromFormat.includes('YYYY') ? 'YYYY' : 'YY';
+  const rawYear = getFromPart(fromYearToken);
+  const month = getFromPart('MM') || '';
+  const day = getFromPart('DD') || '';
 
-  if (fYear === 'YYYY' && tYear === 'YY') {
-    year = year.slice(-2);
+  function convertYear(value, fromToken, toToken) {
+    if (value === undefined) {
+      return '';
+    }
+
+    const v = String(value);
+
+    // YYYY -> YY
+    if (fromToken === 'YYYY' && toToken === 'YY') {
+      return v.slice(-2);
+    }
+
+    // YY -> YYYY
+    if (fromToken === 'YY' && toToken === 'YYYY') {
+      const num = Number(v);
+      const padded = v.padStart(2, '0');
+
+      return num < 30 ? '20' + padded : '19' + padded;
+    }
+
+    if (fromToken === 'YYYY' && toToken === 'YYYY') {
+      return v;
+    }
+
+    if (fromToken === 'YY' && toToken === 'YY') {
+      return v.padStart(2, '0');
+    }
+
+    return v;
   }
 
-  if (fYear === 'YY' && tYear === 'YYYY') {
-    const num = Number(year);
+  const resultParts = toFormat.slice(0, 3).map((token) => {
+    if (token === 'MM') {
+      return month;
+    }
 
-    year = num < 30 ? `20${year}` : `19${year}`;
-  }
+    if (token === 'DD') {
+      return day;
+    }
 
-  const resultMap = {
-    YYYY: year,
-    YY: year.slice(-2),
-    MM: month,
-    DD: day,
-  };
+    if (token === 'YYYY' || token === 'YY') {
+      return convertYear(rawYear, fromYearToken, token);
+    }
 
-  return [resultMap[tYear], resultMap[tMonth], resultMap[tDay]].join(
-    toSeparator,
-  );
+    return '';
+  });
+
+  return resultParts.join(toSeparator);
 }
 
 module.exports = formatDate;
