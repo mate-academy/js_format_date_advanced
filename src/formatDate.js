@@ -11,12 +11,13 @@ function formatDate(date, fromFormat, toFormat) {
   // write code here
   const result = [];
   const separator = fromFormat[fromFormat.length - 1];
+  const newSeparator = toFormat[toFormat.length - 1];
+
   const newDate = date.split(separator);
+
   let year = '';
   let month = '';
   let day = '';
-
-  const newSeparator = toFormat[toFormat.length - 1];
 
   for (let i = 0; i < fromFormat.length - 1; i++) {
     if (fromFormat[i] === 'YYYY') {
@@ -40,7 +41,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'DD') {
       result.push(day);
     }
@@ -54,8 +55,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (toFormat[i] === 'YY') {
-      year = year.slice(2);
-      result.push(year);
+      result.push(year.slice(2));
     }
   }
 
