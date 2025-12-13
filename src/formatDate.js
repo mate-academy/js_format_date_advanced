@@ -8,6 +8,12 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
+  const DateTokens = {
+    FULL_YEAR: 'YYYY',
+    SHORT_YEAR: 'YY',
+    MONTH: 'MM',
+    DAY: 'DD',
+  };
   const fromSeparator = fromFormat[fromFormat.length - 1];
   const toSeparator = toFormat[toFormat.length - 1];
   const dateArr = date.split(fromSeparator);
@@ -19,11 +25,11 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (let i = 0; i < dateArr.length; i++) {
     switch (fromFormat[i]) {
-      case 'YYYY':
+      case DateTokens.FULL_YEAR:
         year = dateArr[i];
         break;
 
-      case 'YY':
+      case DateTokens.SHORT_YEAR:
         if (Number(dateArr[i]) < 30) {
           year = '20' + dateArr[i];
         } else {
@@ -31,11 +37,11 @@ function formatDate(date, fromFormat, toFormat) {
         }
         break;
 
-      case 'MM':
+      case DateTokens.MONTH:
         month = dateArr[i];
         break;
 
-      case 'DD':
+      case DateTokens.DAY:
         day = dateArr[i];
         break;
     }
@@ -43,19 +49,19 @@ function formatDate(date, fromFormat, toFormat) {
 
   for (const format of toFormat) {
     switch (format) {
-      case 'YYYY':
+      case DateTokens.FULL_YEAR:
         result.push(year);
         break;
 
-      case 'YY':
+      case DateTokens.SHORT_YEAR:
         result.push(year.slice(2));
         break;
 
-      case 'MM':
+      case DateTokens.MONTH:
         result.push(month);
         break;
 
-      case 'DD':
+      case DateTokens.DAY:
         result.push(day);
         break;
     }
