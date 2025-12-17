@@ -20,9 +20,7 @@ function formatDate(date, fromFormat, toFormat) {
 
   if (parts['YY']) {
     parts['YYYY'] = (Number(parts['YY']) < 30 ? '20' : '19') + parts['YY'];
-  }
-
-  if (parts['YYYY']) {
+  } else if (parts['YYYY']) {
     parts['YY'] = parts['YYYY'].slice(-2);
   }
 
