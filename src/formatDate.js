@@ -8,15 +8,19 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const values = date.split(/[^0-9]+/).filter(Boolean);
-
   const separator = toFormat[toFormat.length - 1];
   const partsFormat = toFormat.slice(0, -1);
 
+  const values = date.split(/[^0-9]+/).filter(Boolean);
+
   const newDateParts = partsFormat.map((partName) => {
-    const indexInFrom = fromFormat.indexOf(
-      partName === 'YY' ? 'YYYY' : partName,
-    );
+    let searchName = partName;
+
+    if (partName === 'YY') {
+      searchName = 'YYYY';
+    }
+
+    const indexInFrom = fromFormat.indexOf(searchName);
 
     if (indexInFrom === -1) {
       return '';
