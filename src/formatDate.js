@@ -8,18 +8,25 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const values = date.split(/[^0-9]/);
+  const values = date.split(/[^0-9]+/).filter(Boolean);
 
-  const newDateParts = [];
+  const separator = toFormat[toFormat.length - 1];
+  const partsFormat = toFormat.slice(0, -1);
 
-  for (let i = 0; i < toFormat.length; i++) {
-    const partName = toFormat[i];
-
+  const newDateParts = partsFormat.map((partName) => {
     const indexInFrom = fromFormat.indexOf(
       partName === 'YY' ? 'YYYY' : partName,
     );
 
+    if (indexInFrom === -1) {
+      return '';
+    }
+
     let value = values[indexInFrom];
+
+    if (!value) {
+      return '';
+    }
 
     if (partName === 'YY' && value.length === 4) {
       value = value.slice(-2);
@@ -27,13 +34,10 @@ function formatDate(date, fromFormat, toFormat) {
       value = Number(value) < 30 ? '20' + value : '19' + value;
     }
 
-    newDateParts.push(value);
-  }
+    return value;
+  });
 
-  const separator = '.';
-  const newDate = newDateParts.join(separator);
-
-  return newDate;
+  return newDateParts.join(separator);
 }
 
 module.exports = formatDate;
