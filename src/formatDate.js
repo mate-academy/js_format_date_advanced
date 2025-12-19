@@ -10,17 +10,26 @@
 function formatDate(date, fromFormat, toFormat) {
   const separator = toFormat[toFormat.length - 1];
   const partsFormat = toFormat.slice(0, -1);
-
   const values = date.split(/[^0-9]+/).filter(Boolean);
 
   const newDateParts = partsFormat.map((partName) => {
-    let searchName = partName;
+    let indexInFrom;
 
-    if (partName === 'YY') {
-      searchName = 'YYYY';
+    if (partName === 'YYYY') {
+      indexInFrom = fromFormat.indexOf('YYYY');
+
+      if (indexInFrom === -1) {
+        indexInFrom = fromFormat.indexOf('YY');
+      }
+    } else if (partName === 'YY') {
+      indexInFrom = fromFormat.indexOf('YY');
+
+      if (indexInFrom === -1) {
+        indexInFrom = fromFormat.indexOf('YYYY');
+      }
+    } else {
+      indexInFrom = fromFormat.indexOf(partName);
     }
-
-    const indexInFrom = fromFormat.indexOf(searchName);
 
     if (indexInFrom === -1) {
       return '';
@@ -31,6 +40,7 @@ function formatDate(date, fromFormat, toFormat) {
     if (!value) {
       return '';
     }
+
 
     if (partName === 'YY' && value.length === 4) {
       value = value.slice(-2);
