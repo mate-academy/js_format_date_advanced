@@ -8,10 +8,6 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  if (!date) {
-    return {};
-  }
-
   const fromSeparator = fromFormat[3];
   const toSeparator = toFormat[3];
 
