@@ -65,20 +65,3 @@ function formatDate(date, fromFormat, toFormat) {
 }
 
 module.exports = formatDate;
-
-const test = [
-  {
-    date: '10/22/1979',
-    fromFormat: ['MM', 'DD', 'YYYY', '/'],
-    toFormat: ['MM', 'DD', 'YY', '/'],
-  },
-  // {
-  //   date: '2012-12-21',
-  //   fromFormat: ['YYYY', 'MM', 'DD', '-'],
-  //   toFormat: ['DD', 'MM', 'YYYY', '-'],
-  // },
-];
-
-test.forEach((item) => {
-  console.log(formatDate(item.date, item.fromFormat, item.toFormat));
-});
