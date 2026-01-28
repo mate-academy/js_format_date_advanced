@@ -9,10 +9,9 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const splitDate = date.split(fromFormat[3]);
-  const [part0, part1, part2] = fromFormat;
   const newFormat = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YYYY') {
       for (let j = 0; j < fromFormat.length; j++) {
         if (fromFormat[j] === 'YY') {
@@ -33,16 +32,10 @@ function formatDate(date, fromFormat, toFormat) {
       }
     }
 
-    if (part0 === toFormat[i]) {
-      newFormat[i] = splitDate[0];
-    }
-
-    if (part1 === toFormat[i]) {
-      newFormat[i] = splitDate[1];
-    }
-
-    if (part2 === toFormat[i]) {
-      newFormat[i] = splitDate[2];
+    for (let j = 0; j < fromFormat.length; j++) {
+      if (fromFormat[j] === toFormat[i]) {
+        newFormat[i] = splitDate[j];
+      }
     }
   }
 
