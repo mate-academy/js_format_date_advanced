@@ -39,6 +39,10 @@ function formatDate(date, fromFormat, toFormat) {
       if (fromFormat[fromY] === 'YYYY' && toFormat[toY] === 'YYYY') {
         newFormat[toY] = dateArr[fromY];
       }
+
+      if (fromFormat[fromY] === 'YY' && toFormat[toY] === 'YY') {
+        newFormat[toY] = dateArr[fromY];
+      }
     }
 
     if (i === toM) {
