@@ -1,72 +1,73 @@
 'use strict';
 
 function formatDate(date, fromFormat, toFormat) {
-  const [oldPart1, , oldPart3] = fromFormat;
-  const [newPart1, , newPart3] = toFormat;
-  let oldYearIndex = '';
-  let newYearIndex = '';
-  let year = '';
-  let month = '';
-  let oldDayIndex = '';
-  const dateArray = date.split(fromFormat[3]);
+  let oldYearIndex;
+  let oldMonthIndex;
+  let oldDayIndex = 0;
+  let newYearIndex;
+  let newMonthIndex;
+  let newDayIndex = 0;
+  let day;
+  let month;
+  let year = 0;
   const dateUpdated = [];
 
-  const getDateIndex = () => {
-    if (oldPart1 === 'YYYY' || oldPart1 === 'YY') {
-      oldYearIndex = 0;
-      oldDayIndex = 2;
-      month = 1;
-    } else if (oldPart3 === 'YYYY' || oldPart3 === 'YY') {
-      oldYearIndex = 2;
-      oldDayIndex = 0;
-      month = 1;
-    } else {
-      oldYearIndex = 1;
+  const dateArray = date.split(fromFormat[3]);
 
-      if (oldPart1 === 'DD') {
-        oldDayIndex = 0;
-        month = 2;
-      } else {
-        oldDayIndex = 2;
-        month = 0;
+  const getOldDateIndex = () => {
+    for (let i = 0; i <= fromFormat.length; i++) {
+      if (fromFormat[i] === 'YYYY' || fromFormat[i] === 'YY') {
+        oldYearIndex = i;
+        year = dateArray[oldYearIndex];
+      } else if (fromFormat[i] === 'MM') {
+        oldMonthIndex = i;
+        month = dateArray[oldMonthIndex];
+      } else if (fromFormat[i] === 'DD') {
+        oldDayIndex = i;
+        day = dateArray[oldDayIndex];
       }
     }
   };
 
-  const setDateIndex = () => {
-    if (newPart1 === 'YYYY' || newPart1 === 'YY') {
-      newYearIndex = 0;
-      dateUpdated[2] = dateArray[oldDayIndex];
-      dateUpdated[1] = dateArray[month];
-    } else {
-      newYearIndex = 2;
-      dateUpdated[0] = dateArray[oldDayIndex];
-      dateUpdated[1] = dateArray[month];
-    }
-
-    if (fromFormat[oldYearIndex].length === 4) {
-      if (toFormat[newYearIndex].length === 2) {
-        year = dateArray[oldYearIndex].slice(2, 4);
+  const getNewDateIndex = () => {
+    for (let i = 0; i <= toFormat.length; i++) {
+      if (toFormat[i] === 'YYYY' || toFormat[i] === 'YY') {
+        newYearIndex = i;
         dateUpdated[newYearIndex] = year;
-      } else {
-        year = dateArray[oldYearIndex];
-        dateUpdated[newYearIndex] = year;
+      } else if (toFormat[i] === 'MM') {
+        newMonthIndex = i;
+        dateUpdated[newMonthIndex] = month;
+      } else if (toFormat[i] === 'DD') {
+        newDayIndex = i;
+        dateUpdated[newDayIndex] = day;
       }
+    }
+  };
+
+  const updateDate = () => {
+    if (dateUpdated[newYearIndex].length === toFormat[newYearIndex].length) {
     } else {
-      if (toFormat[newYearIndex].length === 4) {
-        if (dateArray[oldYearIndex] < 30) {
-          year = `20${dateArray[oldYearIndex]}`;
-          dateUpdated[newYearIndex] = year;
+      if (
+        dateUpdated[newYearIndex].length === 4 &&
+        toFormat[newYearIndex].length === 2
+      ) {
+        dateUpdated[newYearIndex] = dateUpdated[newYearIndex].slice(2, 4);
+      } else if (
+        dateUpdated[newYearIndex].length === 2 &&
+        toFormat[newYearIndex].length === 4
+      ) {
+        if (dateUpdated[newYearIndex] < 30) {
+          dateUpdated[newYearIndex] = `20${dateUpdated[newYearIndex]}`;
         } else {
-          year = `19${dateArray[oldYearIndex]}`;
-          dateUpdated[newYearIndex] = year;
+          dateUpdated[newYearIndex] = `19${dateUpdated[newYearIndex]}`;
         }
       }
     }
   };
 
-  getDateIndex(oldPart1, oldPart3);
-  setDateIndex(newPart1, newPart3);
+  getOldDateIndex();
+  getNewDateIndex();
+  updateDate();
 
   return dateUpdated.join(toFormat[3]);
 }
