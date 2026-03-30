@@ -25,7 +25,7 @@ function formatDate(date, fromFormat, toFormat) {
       }
 
       if (toFormat[i].slice(2) === fromFormat[n]) {
-        switch (dateSplit[n] > 30) {
+        switch (dateSplit[n] >= 30) {
           case true:
             result.push(`19${dateSplit[n]}`);
             break;
