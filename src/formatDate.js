@@ -33,6 +33,7 @@ function formatDate(date, fromFormat, toFormat) {
   dateObject['YYYY'] = year;
   dateObject['YY'] = year;
 
+
   const newDate = [];
 
   for (let i = 0; i <= 2; i++) {
