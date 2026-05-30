@@ -17,12 +17,12 @@ function formatDate(date, fromFormat, toFormat) {
     obj[fromFormat[i]] = dateParts[i];
   }
 
-  if ('YYYY' in obj && toFormat[0].length === toFormat[2].length) {
+  if (fromFormat.includes('YYYY') && toFormat.includes('YY')) {
     obj['YYYY'] = obj['YYYY'].slice(-2);
-  } else if (+obj['YY'] < 30) {
-    obj['YY'] = '20' + obj['YY'];
-  } else {
-    obj['YY'] = '19' + obj['YY'];
+  }
+
+  if (fromFormat.includes('YY') && toFormat.includes('YYYY')) {
+    obj['YY'] = Number(obj['YY'] < 30) ? '20' + obj['YY'] : '19' + obj['YY'];
   }
 
   const toDateParts = [];
