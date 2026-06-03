@@ -26,7 +26,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (target === 'YYYY' && value.length === 2) {
-      let yy = parseInt(value);
+      let yy = parseInt(value, 10);
 
       if (yy === 0) {
         yy = '00';
