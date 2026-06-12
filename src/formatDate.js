@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * @param {string} date
  * @param {string[]} fromFormat
@@ -7,52 +6,40 @@
  *
  * @returns {string}
  */
+
 function formatDate(date, fromFormat, toFormat) {
-  let separator = '';
-
-  for (let i = 0; i < date.length; i++) {
-    if (date[i] < '0' || date[i] > '9') {
-      separator = date[i];
-      break;
-    }
-  }
-
-  const parts = date.split(separator);
-
+  const fromSeparator = fromFormat[3];
+  const toSeparator = toFormat[3];
+  const parts = date.split(fromSeparator);
   const result = {};
 
-  for (let i = 0; i < fromFormat.length; i++) {
+  for (let i = 0; i < fromFormat.length - 1; i++) {
     let value = parts[i];
-    const key = fromFormat[i];
+    let key = fromFormat[i];
 
-    if (key === 'YYYY') {
-      value = value.slice(-2);
+    if (key === 'YYYY' && toFormat.includes('YY')) {
+      key = 'YY';
+      value = value.slice(2);
     }
 
-    if (key === 'YY') {
+    if (key === 'YY' && toFormat.includes('YYYY')) {
+      key = 'YYYY';
+
       if (Number(value) < 30) {
         value = '20' + value;
       } else {
         value = '19' + value;
       }
     }
-
-    let normalizedKey = key;
-
-    if (key === 'YY') {
-      normalizedKey = 'YYYY';
-    }
-    result[normalizedKey] = value;
     result[key] = value;
   }
 
   const output = [];
 
-  for (let i = 0; i < toFormat.length; i++) {
+  for (let i = 0; i < toFormat.length - 1; i++) {
     output.push(result[toFormat[i]]);
   }
 
-  return output.join(toFormat[3]);
+  return output.join(toSeparator);
 }
-
 module.exports = formatDate;
