@@ -8,18 +8,20 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const newSeparator = toFormat.pop();
-  const oldSeparator = fromFormat.pop();
-  let dateParts = date.split(oldSeparator);
+  const newOrder = toFormat.slice(0, -1);
+  const newSeparator = toFormat.slice(-1);
+  const oldOrder = fromFormat.slice(0, -1);
+  const oldSeparator = fromFormat.slice(-1);
   const formatToDate = {};
+  let dateParts = date.split(oldSeparator);
 
   for (let i = 0; i < dateParts.length; i++) {
-    formatToDate[fromFormat[i]] = dateParts[i];
+    formatToDate[oldOrder[i]] = dateParts[i];
   }
 
   dateParts = [];
 
-  for (const part of toFormat) {
+  for (const part of newOrder) {
     if (part in formatToDate) {
       dateParts.push(formatToDate[part]);
     } else if (part === 'YYYY') {
