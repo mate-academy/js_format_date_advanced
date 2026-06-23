@@ -9,9 +9,9 @@
  */
 function formatDate(date, fromFormat, toFormat) {
   const newOrder = toFormat.slice(0, -1);
-  const newSeparator = toFormat.slice(-1);
+  const newSeparator = toFormat[toFormat.length - 1];
   const oldOrder = fromFormat.slice(0, -1);
-  const oldSeparator = fromFormat.slice(-1);
+  const oldSeparator = fromFormat[fromFormat.length - 1];
   const formatToDate = {};
   let dateParts = date.split(oldSeparator);
 
