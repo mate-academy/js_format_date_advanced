@@ -8,6 +8,7 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
+  const baseElement = fromFormat[toFormat.length - 1];
   const changeElement = toFormat[toFormat.length - 1];
   const parts = date.split(baseElement);
 
