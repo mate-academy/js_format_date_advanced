@@ -8,9 +8,9 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const baseElement = fromFormat[toFormat.length - 1];
-  const changeElement = toFormat[toFormat.length - 1];
-  const parts = date.split(baseElement);
+  const inputSeparator = fromFormat[fromFormat.length - 1];
+  const outputSeparator = toFormat[toFormat.length - 1];
+  const parts = date.split(inputSeparator);
 
   const fromDay = fromFormat.indexOf('DD');
   const fromMonth = fromFormat.indexOf('MM');
@@ -47,7 +47,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
-  return result.join(changeElement);
+  return result.join(outputSeparator);
 }
 
 module.exports = formatDate;
