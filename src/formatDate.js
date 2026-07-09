@@ -20,7 +20,7 @@ function formatDate(date, fromFormat, toFormat) {
   let DATE_FINAL_JOIN = '';
 
   for (let i = 0; i < FROM_LEN; i++) {
-    if (fromFormat[i] === 'YYYY' || fromFormat === 'YY'){
+    if (fromFormat[i] === 'YY' || fromFormat[i] === 'YYYY') {
       YEAR_INDEX = i;
     }
 
@@ -33,21 +33,45 @@ function formatDate(date, fromFormat, toFormat) {
     }
   }
 
+  const YEAR = DATE_SPLIT[YEAR_INDEX];
+  const YEAR_LEN = YEAR.length;
+
   for (let j = 0; j < TO_LEN; j++) {
-    if (fromFormat[j] === 'YYYY' || fromFormat === 'YY') {
-      DATE_FINAL.push(DATE_SPLIT[YEAR_INDEX]);
+    if (toFormat[j] === 'YYYY' && YEAR_LEN === 2) {
+      let YEAR_CONVERTED = '';
+
+      if (parseInt(YEAR) < 30) {
+        YEAR_CONVERTED = '20' + YEAR;
+      } else {
+        YEAR_CONVERTED = '19' + YEAR;
+      }
+
+      DATE_FINAL.push(YEAR_CONVERTED);
     }
 
-    if (fromFormat[j] === 'MM') {
+    if (
+      (toFormat[j] === 'YYYY' && YEAR_LEN === 4) ||
+      (toFormat[j] === 'YY' && YEAR_LEN === 2)
+    ) {
+      DATE_FINAL.push(YEAR);
+    }
+
+    if (toFormat[j] === 'YY' && YEAR_LEN === 4) {
+      const YYYY_TO_YY = YEAR.slice(2, 4);
+
+      DATE_FINAL.push(YYYY_TO_YY);
+    }
+
+    if (toFormat[j] === 'MM') {
       DATE_FINAL.push(DATE_SPLIT[MONTH_INDEX]);
     }
 
-    if (fromFormat[j] === 'DD') {
+    if (toFormat[j] === 'DD') {
       DATE_FINAL.push(DATE_SPLIT[DAY_INDEX]);
     }
   }
 
-  DATE_FINAL_JOIN = DATE_FINAL.join(date[date.length - 1]);
+  DATE_FINAL_JOIN = DATE_FINAL.join(toFormat[toFormat.length - 1]);
 
   return DATE_FINAL_JOIN;
 }
