@@ -47,7 +47,10 @@ function formatDate(date, fromFormat, toFormat) {
         break;
 
       case 'YY':
-        resultArray[i] = givenArray[yearIndex].slice(2);
+        if (givenArray[yearIndex].length === 4) {
+          givenArray[yearIndex] = givenArray[yearIndex].slice(2);
+        }
+        resultArray[i] = givenArray[yearIndex];
         break;
 
       case 'MM':
