@@ -25,6 +25,7 @@ formatDate(
 
 formatDate(
   '2020-02-18',
+  x x x
   ['YYYY', 'MM', 'DD', '-'],
   ['DD', 'MM', 'YYYY', '.'],
 ); // '18.02.2020'
