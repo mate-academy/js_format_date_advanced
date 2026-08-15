@@ -13,7 +13,13 @@ function formatDate(date, fromFormat, toFormat) {
 
   const indexDay = fromFormat.indexOf('DD');
   const indexMonth = fromFormat.indexOf('MM');
-  const indexYear = dateArr.length - indexDay - indexMonth;
+  let indexYear = 0;
+
+  if (fromFormat.indexOf('YYYY') !== -1) {
+    indexYear = fromFormat.indexOf('YYYY');
+  } else {
+    indexYear = fromFormat.indexOf('YY');
+  }
 
   const day = dateArr[indexDay];
   const month = dateArr[indexMonth];
