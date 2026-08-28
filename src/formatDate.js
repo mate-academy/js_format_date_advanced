@@ -38,4 +38,3 @@ function createDateObject(date, fromFormat) {
 }
 
 module.exports = formatDate;
-createDateObject('31-02-18', ['YY', 'MM', 'DD', '-']);
