@@ -8,41 +8,53 @@
  * @returns {string}
  */
 function formatDate(date, fromFormat, toFormat) {
-  const parts = {};
-  let dateIndex = 0;
+  const dateParts = {};
+  const separator = fromFormat[fromFormat.length - 1];
+
+  const parts = date.split(separator);
+
+  let partIndex = 0;
 
   for (const format of fromFormat) {
-    if (format === 'YYYY' || format === 'YY' || format === 'MM' || format === 'DD') {
-      parts[format] = date.slice(dateIndex, dateIndex + format.length);
-      dateIndex += format.length;
-    } else {
-      dateIndex += format.length;
+    if (
+      format === 'YYYY' ||
+      format === 'YY' ||
+      format === 'MM' ||
+      format === 'DD'
+    ) {
+      dateParts[format] = parts[partIndex];
+      partIndex++;
     }
   }
 
-  if (parts.YYYY) {
-    parts.YY = parts.YYYY.slice(-2);
+  // Якщо потрібно YYYY → YY
+  if (dateParts.YYYY) {
+    dateParts.YY = dateParts.YYYY.slice(-2);
   }
 
-  if (parts.YY) {
-    const year = Number(parts.YY);
+  // Якщо потрібно YY → YYYY
+  if (dateParts.YY) {
+    const year = Number(dateParts.YY);
 
-    parts.YYYY = year < 30
-      ? `20${parts.YY}`
-      : `19${parts.YY}`;
+    dateParts.YYYY = year < 30 ? `20${dateParts.YY}` : `19${dateParts.YY}`;
   }
 
-  let result = '';
+  const toSeparator = toFormat[toFormat.length - 1];
+
+  const resultParts = [];
 
   for (const format of toFormat) {
-    if (format === 'YYYY' || format === 'YY' || format === 'MM' || format === 'DD') {
-      result += parts[format];
-    } else {
-      result += format;
+    if (
+      format === 'YYYY' ||
+      format === 'YY' ||
+      format === 'MM' ||
+      format === 'DD'
+    ) {
+      resultParts.push(dateParts[format]);
     }
   }
 
-  return result;
+  return resultParts.join(toSeparator);
 }
 
 module.exports = formatDate;
