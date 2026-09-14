@@ -16,11 +16,17 @@ function formatDate(date, fromFormat, toFormat) {
   parts[fromFormat[1]] = dateParts[1];
   parts[fromFormat[2]] = dateParts[2];
 
-  if (parts.YYYY && !parts.YYYY && toFormat.includes('YYYY')) {
+  // Конвертация года, если нужно
+  if (
+    parts.YYYY &&
+    !parts.YY &&
+    toFormat.includes('YY') &&
+    !toFormat.includes('YYYY')
+  ) {
     parts.YY = parts.YYYY.slice(-2);
   }
 
-  if (parts.YY && !parts.YY && toFormat.includes('YY')) {
+  if (parts.YY && !parts.YYYY && toFormat.includes('YYYY')) {
     const yy = Number(parts.YY);
 
     parts.YYYY = (yy < 30 ? '20' : '19') + parts.YY;
