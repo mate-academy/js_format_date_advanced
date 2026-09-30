@@ -20,7 +20,7 @@ function formatDate(date, fromFormat, toFormat) {
     }
 
     if (fromFormat[i] === 'YY') {
-      year = dateTableSplit[i].split('').slice(-2);
+      year = dateTableSplit[i].split('').slice(-2).join('');
     }
 
     if (fromFormat[i] === 'MM') {
@@ -35,7 +35,7 @@ function formatDate(date, fromFormat, toFormat) {
   for (let i = 0; i < toFormat.length - 1; i++) {
     if (toFormat[i] === 'YYYY') {
       if (year.length !== 4) {
-        if (+year <= 30 || year === '00') {
+        if (+year < 30 || year === '00') {
           year = '20' + year;
         } else {
           year = '19' + year;
@@ -46,7 +46,7 @@ function formatDate(date, fromFormat, toFormat) {
 
     if (toFormat[i] === 'YY') {
       if (year.length !== 2) {
-        year = year.slice(-2);
+        year = year.split('').slice(-2).join('');
         finalString.push(year);
       }
     }
