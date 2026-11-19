@@ -34,7 +34,7 @@ function formatDate(date, fromFormat, toFormat) {
     let year = oldFormatInfo.year;
 
     if (key.includes('Y')) {
-      year = key.length === 4 ? `19${year}` : year.slice(2);
+      year = key.length === 4 ? `${year < 30 ? 20 : 19}${year}` : year.slice(2);
     }
     newDate[key] = value || year;
   }
@@ -42,8 +42,4 @@ function formatDate(date, fromFormat, toFormat) {
   return Object.values(newDate).join(toFormat[toFormat.length - 1]);
 }
 
-module.exports = formatDate(
-  '97/02/18',
-  ['YY', 'MM', 'DD', '/'],
-  ['DD', 'MM', 'YYYY', '.'],
-);
+module.exports = formatDate();
